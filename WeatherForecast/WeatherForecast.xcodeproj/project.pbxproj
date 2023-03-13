@@ -80,13 +80,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3B95C15729BECFCF00C0D0ED /* BulkData */ = {
+		3B95C15729BECFCF00C0D0ED /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				3B95C15D29BEE16A00C0D0ED /* CurrentWeather.json */,
 				3B95C15C29BEE16A00C0D0ED /* FiveDaysWeather.json */,
 			);
-			path = BulkData;
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		C79C8CE725ADDDF200EEE3F1 = {
@@ -112,13 +113,11 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
-				3B95C15729BECFCF00C0D0ED /* BulkData */,
-				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
-				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
-				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
-				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
-				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
-				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
+				F08A26BF29BF0136006D6ABF /* Model */,
+				F08A26C029BF0140006D6ABF /* View */,
+				F08A26C129BF0147006D6ABF /* Controller */,
+				F08A26C229BF035F006D6ABF /* AppConfiguration */,
+				3B95C15729BECFCF00C0D0ED /* Resource */,
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
 			);
 			path = WeatherForecast;
@@ -140,6 +139,39 @@
 				C79C8D1725ADDDF400EEE3F1 /* Info.plist */,
 			);
 			path = WeatherForecastUITests;
+			sourceTree = "<group>";
+		};
+		F08A26BF29BF0136006D6ABF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F08A26C029BF0140006D6ABF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
+				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F08A26C129BF0147006D6ABF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		F08A26C229BF035F006D6ABF /* AppConfiguration */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
+				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
+			);
+			path = AppConfiguration;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
