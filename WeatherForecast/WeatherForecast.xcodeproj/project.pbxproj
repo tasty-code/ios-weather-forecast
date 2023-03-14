@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		5BB7B35029C04F8900A14093 /* API+KEY.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB7B34F29C04F8900A14093 /* API+KEY.plist */; };
 		5BB7B35229C04FD800A14093 /* Extension+APIKEY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35129C04FD800A14093 /* Extension+APIKEY.swift */; };
+		5BB7B35529C0546100A14093 /* MockCurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35429C0546100A14093 /* MockCurrentWeather.swift */; };
+		5BB7B35829C0550200A14093 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35729C0550200A14093 /* City.swift */; };
+		5BB7B35A29C055CC00A14093 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35929C055CC00A14093 /* Coordinate.swift */; };
+		5BB7B35C29C0560100A14093 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35B29C0560100A14093 /* Language.swift */; };
+		5BB7B35E29C0565E00A14093 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35D29C0565E00A14093 /* Main.swift */; };
+		5BB7B36029C056A200A14093 /* Wind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35F29C056A200A14093 /* Wind.swift */; };
+		5BB7B36229C056CB00A14093 /* Clouds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B36129C056CB00A14093 /* Clouds.swift */; };
+		5BB7B36429C056F800A14093 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B36329C056F800A14093 /* Weather.swift */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
 		C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */; };
 		C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */; };
@@ -43,6 +51,14 @@
 /* Begin PBXFileReference section */
 		5BB7B34F29C04F8900A14093 /* API+KEY.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "API+KEY.plist"; sourceTree = "<group>"; };
 		5BB7B35129C04FD800A14093 /* Extension+APIKEY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+APIKEY.swift"; sourceTree = "<group>"; };
+		5BB7B35429C0546100A14093 /* MockCurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCurrentWeather.swift; sourceTree = "<group>"; };
+		5BB7B35729C0550200A14093 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		5BB7B35929C055CC00A14093 /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
+		5BB7B35B29C0560100A14093 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		5BB7B35D29C0565E00A14093 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		5BB7B35F29C056A200A14093 /* Wind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wind.swift; sourceTree = "<group>"; };
+		5BB7B36129C056CB00A14093 /* Clouds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clouds.swift; sourceTree = "<group>"; };
+		5BB7B36329C056F800A14093 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +133,37 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		5BB7B35329C0544000A14093 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				5BB7B35629C054DD00A14093 /* CurrentWeather */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		5BB7B35629C054DD00A14093 /* CurrentWeather */ = {
+			isa = PBXGroup;
+			children = (
+				5BB7B35429C0546100A14093 /* MockCurrentWeather.swift */,
+				5BB7B36529C057A100A14093 /* City */,
+				5BB7B35D29C0565E00A14093 /* Main.swift */,
+				5BB7B35F29C056A200A14093 /* Wind.swift */,
+				5BB7B36129C056CB00A14093 /* Clouds.swift */,
+				5BB7B36329C056F800A14093 /* Weather.swift */,
+			);
+			path = CurrentWeather;
+			sourceTree = "<group>";
+		};
+		5BB7B36529C057A100A14093 /* City */ = {
+			isa = PBXGroup;
+			children = (
+				5BB7B35729C0550200A14093 /* City.swift */,
+				5BB7B35929C055CC00A14093 /* Coordinate.swift */,
+				5BB7B35B29C0560100A14093 /* Language.swift */,
+			);
+			path = City;
+			sourceTree = "<group>";
+		};
 		C79C8CE725ADDDF200EEE3F1 = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +187,7 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				5BB7B35329C0544000A14093 /* Entity */,
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
 				5B3BD37F29BEB1D700A0EC83 /* AppEnvironment */,
 				5B3BD38129BEB20900A0EC83 /* View */,
@@ -301,7 +349,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BB7B35E29C0565E00A14093 /* Main.swift in Sources */,
+				5BB7B36029C056A200A14093 /* Wind.swift in Sources */,
+				5BB7B35A29C055CC00A14093 /* Coordinate.swift in Sources */,
+				5BB7B36229C056CB00A14093 /* Clouds.swift in Sources */,
+				5BB7B36429C056F800A14093 /* Weather.swift in Sources */,
+				5BB7B35529C0546100A14093 /* MockCurrentWeather.swift in Sources */,
 				5BB7B35229C04FD800A14093 /* Extension+APIKEY.swift in Sources */,
+				5BB7B35C29C0560100A14093 /* Language.swift in Sources */,
+				5BB7B35829C0550200A14093 /* City.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
