@@ -8,14 +8,14 @@
 import Foundation
 
 struct ForecastWeatherData {
-    var dt: Int
-    var main: Main
-    var weather: [Weather]
-    var clouds: Clouds
-    var wind: Wind
-    var rain: Rain
-    var sys: WeatherSystem
-    var date: String
+    let dt: Int
+    let main: Main
+    let weather: [Weather]
+    let clouds: Clouds
+    let wind: Wind
+    let rain: Rain
+    let sys: WeatherSystem
+    let date: String
 
     enum CodingKeys: String, CodingKey {
         case date = "dt_txt"

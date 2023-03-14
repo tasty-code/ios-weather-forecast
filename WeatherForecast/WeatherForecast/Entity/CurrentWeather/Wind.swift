@@ -10,6 +10,7 @@ import Foundation
 struct Wind {
     let speed: Double
     let degree: Double
+    let gust: Double
     
     private enum CodingKeys: String, CodingKey {
         case degree = "deg"

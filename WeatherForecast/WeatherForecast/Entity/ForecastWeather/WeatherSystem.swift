@@ -8,5 +8,8 @@
 import Foundation
 
 struct WeatherSystem {
-    var pod : String
+    let pod : String?
+    let country: String
+    let sunrise: Double
+    let sunset: Double
 }

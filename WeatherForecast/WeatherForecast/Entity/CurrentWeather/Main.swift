@@ -9,14 +9,20 @@ import Foundation
 
 struct Main {
     let temperature: Double
-    let pressure: Int
-    let humidity: Int
+    let feelsLike: Double
     let temperatureMin: Double
     let temperatureMax: Double
+    let pressure: Int
+    let humidity: Int
+    let seaLevel: Int
+    let groundLevel: Int
     
     private enum CodingKeys: String, CodingKey {
         case temperature = "temp"
+        case feelsLike = "feels_like"
         case temperatureMin = "temp_min"
         case temperatureMax = "temp_max"
+        case seaLevel = "sea_level"
+        case groundLevel = "grnd_level"
     }
 }

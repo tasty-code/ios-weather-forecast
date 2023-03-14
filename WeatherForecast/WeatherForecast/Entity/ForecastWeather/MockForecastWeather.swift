@@ -8,7 +8,7 @@
 import Foundation
 
 struct MockForecastWeather {
-    var city: City
-    var time: Int
-    var data: [ForecastWeatherData]
+    let city: City
+    let time: Int
+    let data: [ForecastWeatherData]
 }
