@@ -13,28 +13,25 @@ class NetworkManager {
     init(session: URLSession = .shared) {
         self.session = session
     }
-
-    func makeURL() -> URL {
-        let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=37&lon=126&units=metric&appid=\(APIKeyManager.openWeather.apiKey)")!
-        return url
-    }
     
-    func fetchWeatherInformation() {
-        let url = makeURL()
+    func fetchWeatherInformation(of weatherAPI: WeatherAPI, in coordinate: Coordinate) {
+        let url = URL.makeOpenWeatherURL(of: .currentWeather, coordinate: coordinate, key: APIKeyManager.openWeather.apiKey)
+        print(url)
         let task = session.dataTask(with: url) { data, response, error in
             if error != nil {
-                print("error")
+                print("error1")
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse,
                 (200...299).contains(httpResponse.statusCode) else {
-                print("error")
+                print("error2")
                 return
             }
             if let data = data {
                 do {
                     let decoder = JSONDecoder()
                     let weatherInSeoul = try decoder.decode(CurrentWeather.self, from: data)
+                    print(weatherInSeoul.coordinate.description)
                 } catch {
                     print(error)
                 }
