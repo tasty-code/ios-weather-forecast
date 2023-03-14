@@ -8,5 +8,12 @@
 import Foundation
 
 struct Language {
-    let kr: String
+    let korea: String
+    let korean: String
+    let link: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case korea = "kr"
+        case korean = "ko"
+    }
 }
