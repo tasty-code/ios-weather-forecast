@@ -13,8 +13,15 @@ class ViewController: UIViewController {
 
         let repository = OpenWeatherRepository()
         
-        repository.fetchWeather(lattitude: 44.34, longitude: 10.99)
-//        print(Bundle.main.apiKey)
+        repository.fetchWeather(lattitude: 44.34, longitude: 10.99) { result in
+            switch result {
+            case .success(let data):
+                print(data)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
+    
 }
 
