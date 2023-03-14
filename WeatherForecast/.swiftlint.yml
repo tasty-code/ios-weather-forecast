@@ -3,3 +3,8 @@ excluded:
 - WeatherForecast/SceneDelegate.swift
 - WeatherForecastUITests
 - WeatherForecastTests
+
+identifier_name:
+  excluded:
+    - dt
+    - id
