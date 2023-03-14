@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B43FAD9C29BFFFB800CF9E06 /* WeatherAPIKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = B43FAD9B29BFFFB800CF9E06 /* WeatherAPIKey.plist */; };
 		B43FAD9F29C0018600CF9E06 /* Bundle+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43FAD9E29C0018600CF9E06 /* Bundle+.swift */; };
+		B43FADA129C03E7400CF9E06 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43FADA029C03E7400CF9E06 /* NetworkError.swift */; };
 		B47DBD0C29BF15420006D8E2 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47DBD0B29BF15420006D8E2 /* CurrentWeather.swift */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
 		C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		B43FAD9B29BFFFB800CF9E06 /* WeatherAPIKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WeatherAPIKey.plist; sourceTree = "<group>"; };
 		B43FAD9E29C0018600CF9E06 /* Bundle+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+.swift"; sourceTree = "<group>"; };
+		B43FADA029C03E7400CF9E06 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		B47DBD0B29BF15420006D8E2 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				B47DBD0A29BF15330006D8E2 /* DTO */,
+				B43FADA029C03E7400CF9E06 /* NetworkError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F169CDFF29C00E800022E007 /* OpenWeatherRepository.swift in Sources */,
+				B43FADA129C03E7400CF9E06 /* NetworkError.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				B47DBD0C29BF15420006D8E2 /* CurrentWeather.swift in Sources */,
