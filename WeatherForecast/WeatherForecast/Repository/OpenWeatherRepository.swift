@@ -8,18 +8,24 @@
 import Foundation
 
 final class OpenWeatherRepository {
+    
+    enum RequestType {
+        static let weather = "weather"
+        static let forecast = "forecast"
+    }
 
     // baseURL 분리
+    private let baseURL = "https://api.openweathermap.org/data/2.5/"
     
     func fetchWeather(lattitude: Double, longitude: Double,
                       completion: @escaping (Result<CurrentWeather, NetworkError>) -> Void) {
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(lattitude)&lon=\(longitude)&appid=\(Bundle.main.apiKey)"
+        let urlString = "\(baseURL)\(RequestType.weather)?lat=\(lattitude)&lon=\(longitude)&appid=\(Bundle.main.apiKey)"
         performRequest(with: urlString, completion: completion)
     }
 
     func fetchForecast(lattitude: Double, longitude: Double,
                        completion: @escaping (Result<Forecast, NetworkError>) -> Void) {
-        let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(lattitude)&lon=\(longitude)&appid=\(Bundle.main.apiKey)"
+        let urlString = "\(baseURL)\(RequestType.forecast)?lat=\(lattitude)&lon=\(longitude)&appid=\(Bundle.main.apiKey)"
         performRequest(with: urlString, completion: completion)
     }
 
@@ -58,5 +64,9 @@ final class OpenWeatherRepository {
         task.resume()
     }
 
+    private func decodeToJson() {
+        let decoder = JSONDecoder()
+    }
+    
     // JSONDecoding 분리
 }
