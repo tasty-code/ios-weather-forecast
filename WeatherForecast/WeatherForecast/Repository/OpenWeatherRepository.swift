@@ -9,28 +9,61 @@ import Foundation
 
 final class OpenWeatherRepository {
     
-    enum RequestType {
-        static let weather = "weather"
-        static let forecast = "forecast"
+    private enum Constant {
+        static let baseURL = "https://api.openweathermap.org"
+
+        static let weatherPath = "/data/2.5/weather"
+        static let forecastPath = "/data/2.5/forecast"
+
+        static let lattitudeQueryName = "lat"
+        static let longitudeQueryName = "lon"
+        static let appIdQueryName = "appid"
     }
 
-    // baseURL 분리
-    private let baseURL = "https://api.openweathermap.org/data/2.5/"
-    
     func fetchWeather(lattitude: Double, longitude: Double,
                       completion: @escaping (Result<CurrentWeather, NetworkError>) -> Void) {
-        let urlString = "\(baseURL)\(RequestType.weather)?lat=\(lattitude)&lon=\(longitude)&appid=\(Bundle.main.apiKey)"
-        performRequest(with: urlString, completion: completion)
+        guard var urlComponents = URLComponents(string: Constant.baseURL) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        urlComponents.path = Constant.weatherPath
+        urlComponents.queryItems = generateQueryItems(lattitude: lattitude, longitude: longitude)
+
+        guard let url = urlComponents.url else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        performRequest(with: url, completion: completion)
     }
 
     func fetchForecast(lattitude: Double, longitude: Double,
                        completion: @escaping (Result<Forecast, NetworkError>) -> Void) {
-        let urlString = "\(baseURL)\(RequestType.forecast)?lat=\(lattitude)&lon=\(longitude)&appid=\(Bundle.main.apiKey)"
-        performRequest(with: urlString, completion: completion)
+        guard var urlComponents = URLComponents(string: Constant.baseURL) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        urlComponents.path = Constant.forecastPath
+        urlComponents.queryItems = generateQueryItems(lattitude: lattitude, longitude: longitude)
+
+        guard let url = urlComponents.url else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        performRequest(with: url, completion: completion)
     }
 
-    private func performRequest<T: Decodable>(with urlString: String, completion: @escaping (Result<T, NetworkError>) -> Void) {
-        guard let url = URL(string: urlString) else {
+    private func generateQueryItems(lattitude: Double, longitude: Double) -> [URLQueryItem] {
+         return [
+            URLQueryItem(name: Constant.lattitudeQueryName, value: "\(lattitude)"),
+            URLQueryItem(name: Constant.longitudeQueryName, value: "\(longitude)"),
+            URLQueryItem(name: Constant.appIdQueryName, value: "\(Bundle.main.apiKey)")
+        ]
+    }
+
+    private func performRequest<T: Decodable>(with url: URL?, completion: @escaping (Result<T, NetworkError>) -> Void) {
+        guard let url else {
             completion(.failure(.invalidURL))
             return
         }
