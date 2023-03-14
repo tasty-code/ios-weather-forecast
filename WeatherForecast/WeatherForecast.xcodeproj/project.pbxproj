@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5BB7B35029C04F8900A14093 /* API+KEY.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB7B34F29C04F8900A14093 /* API+KEY.plist */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
 		C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */; };
 		C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5BB7B34F29C04F8900A14093 /* API+KEY.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "API+KEY.plist"; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
 				F62203E629C0436E00A00108 /* MockWeather.json */,
 				F62203E929C0449600A00108 /* MockFiveDaysWeather.json */,
+				5BB7B34F29C04F8900A14093 /* API+KEY.plist */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F62203EA29C0449600A00108 /* MockFiveDaysWeather.json in Resources */,
+				5BB7B35029C04F8900A14093 /* API+KEY.plist in Resources */,
 				C79C8D0025ADDDF300EEE3F1 /* LaunchScreen.storyboard in Resources */,
 				C79C8CFD25ADDDF300EEE3F1 /* Assets.xcassets in Resources */,
 				F62203E729C0436E00A00108 /* MockWeather.json in Resources */,
