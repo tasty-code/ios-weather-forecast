@@ -97,9 +97,5 @@ final class OpenWeatherRepository {
         task.resume()
     }
 
-    private func decodeToJson() {
-        let decoder = JSONDecoder()
-    }
-    
     // JSONDecoding 분리
 }
