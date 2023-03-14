@@ -15,7 +15,7 @@ class NetworkManager {
     }
 
     func makeURL() -> URL {
-        let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=37&lon=126&units=metric&appid=\(APIKeys.openWeatherKey)")!
+        let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=37&lon=126&units=metric&appid=\(APIKeyManager.openWeather.apiKey)")!
         return url
     }
     
