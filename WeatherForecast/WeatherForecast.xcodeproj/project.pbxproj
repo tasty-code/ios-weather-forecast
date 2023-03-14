@@ -29,6 +29,10 @@
 		F62203E829C0436E00A00108 /* MockWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = F62203E629C0436E00A00108 /* MockWeather.json */; };
 		F62203EA29C0449600A00108 /* MockFiveDaysWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = F62203E929C0449600A00108 /* MockFiveDaysWeather.json */; };
 		F62203EB29C0449600A00108 /* MockFiveDaysWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = F62203E929C0449600A00108 /* MockFiveDaysWeather.json */; };
+		F62203FB29C05D2700A00108 /* MockForecastWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62203FA29C05D2700A00108 /* MockForecastWeather.swift */; };
+		F62203FD29C05F3100A00108 /* Rain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62203FC29C05F3100A00108 /* Rain.swift */; };
+		F62203FF29C05FAD00A00108 /* WeatherSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62203FE29C05FAD00A00108 /* WeatherSystem.swift */; };
+		F622040129C0604800A00108 /* ForecastWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F622040029C0604800A00108 /* ForecastWeatherData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +79,10 @@
 		C79C8D1725ADDDF400EEE3F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F62203E629C0436E00A00108 /* MockWeather.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockWeather.json; sourceTree = "<group>"; };
 		F62203E929C0449600A00108 /* MockFiveDaysWeather.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockFiveDaysWeather.json; sourceTree = "<group>"; };
+		F62203FA29C05D2700A00108 /* MockForecastWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockForecastWeather.swift; sourceTree = "<group>"; };
+		F62203FC29C05F3100A00108 /* Rain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rain.swift; sourceTree = "<group>"; };
+		F62203FE29C05FAD00A00108 /* WeatherSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherSystem.swift; sourceTree = "<group>"; };
+		F622040029C0604800A00108 /* ForecastWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastWeatherData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +144,7 @@
 		5BB7B35329C0544000A14093 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				F62203F729C05CC800A00108 /* ForecastWeather */,
 				5BB7B35629C054DD00A14093 /* CurrentWeather */,
 			);
 			path = Entity;
@@ -212,6 +221,17 @@
 				C79C8D1725ADDDF400EEE3F1 /* Info.plist */,
 			);
 			path = WeatherForecastUITests;
+			sourceTree = "<group>";
+		};
+		F62203F729C05CC800A00108 /* ForecastWeather */ = {
+			isa = PBXGroup;
+			children = (
+				F62203FA29C05D2700A00108 /* MockForecastWeather.swift */,
+				F622040029C0604800A00108 /* ForecastWeatherData.swift */,
+				F62203FC29C05F3100A00108 /* Rain.swift */,
+				F62203FE29C05FAD00A00108 /* WeatherSystem.swift */,
+			);
+			path = ForecastWeather;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -352,10 +372,14 @@
 				5BB7B35E29C0565E00A14093 /* Main.swift in Sources */,
 				5BB7B36029C056A200A14093 /* Wind.swift in Sources */,
 				5BB7B35A29C055CC00A14093 /* Coordinate.swift in Sources */,
+				F62203FF29C05FAD00A00108 /* WeatherSystem.swift in Sources */,
+				F622040129C0604800A00108 /* ForecastWeatherData.swift in Sources */,
+				F62203FD29C05F3100A00108 /* Rain.swift in Sources */,
 				5BB7B36229C056CB00A14093 /* Clouds.swift in Sources */,
 				5BB7B36429C056F800A14093 /* Weather.swift in Sources */,
 				5BB7B35529C0546100A14093 /* MockCurrentWeather.swift in Sources */,
 				5BB7B35229C04FD800A14093 /* Extension+APIKEY.swift in Sources */,
+				F62203FB29C05D2700A00108 /* MockForecastWeather.swift in Sources */,
 				5BB7B35C29C0560100A14093 /* Language.swift in Sources */,
 				5BB7B35829C0550200A14093 /* City.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,

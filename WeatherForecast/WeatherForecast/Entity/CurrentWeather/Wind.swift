@@ -11,7 +11,7 @@ struct Wind {
     let speed: Double
     let degree: Double
     
-    private enum CodingKey: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case degree = "deg"
     }
 }
