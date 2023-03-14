@@ -11,7 +11,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print(Bundle.main.apiKey)
+        let repository = OpenWeatherRepository()
+        
+        repository.fetchWeather(lattitude: 44.34, longitude: 10.99)
+//        print(Bundle.main.apiKey)
     }
 }
 
