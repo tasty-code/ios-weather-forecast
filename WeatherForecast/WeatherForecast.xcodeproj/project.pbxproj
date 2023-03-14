@@ -17,6 +17,8 @@
 		C79C8D1625ADDDF400EEE3F1 /* WeatherForecastUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */; };
 		F62203E729C0436E00A00108 /* MockWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = F62203E629C0436E00A00108 /* MockWeather.json */; };
 		F62203E829C0436E00A00108 /* MockWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = F62203E629C0436E00A00108 /* MockWeather.json */; };
+		F62203EA29C0449600A00108 /* MockFiveDaysWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = F62203E929C0449600A00108 /* MockFiveDaysWeather.json */; };
+		F62203EB29C0449600A00108 /* MockFiveDaysWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = F62203E929C0449600A00108 /* MockFiveDaysWeather.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,7 @@
 		C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastUITests.swift; sourceTree = "<group>"; };
 		C79C8D1725ADDDF400EEE3F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F62203E629C0436E00A00108 /* MockWeather.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockWeather.json; sourceTree = "<group>"; };
+		F62203E929C0449600A00108 /* MockFiveDaysWeather.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockFiveDaysWeather.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +97,7 @@
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
 				F62203E629C0436E00A00108 /* MockWeather.json */,
+				F62203E929C0449600A00108 /* MockFiveDaysWeather.json */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -259,6 +263,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F62203EA29C0449600A00108 /* MockFiveDaysWeather.json in Resources */,
 				C79C8D0025ADDDF300EEE3F1 /* LaunchScreen.storyboard in Resources */,
 				C79C8CFD25ADDDF300EEE3F1 /* Assets.xcassets in Resources */,
 				F62203E729C0436E00A00108 /* MockWeather.json in Resources */,
@@ -271,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F62203E829C0436E00A00108 /* MockWeather.json in Resources */,
+				F62203EB29C0449600A00108 /* MockFiveDaysWeather.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
