@@ -7,7 +7,7 @@
 .AppleDouble
 .LSOverride
 *.xcuserstate
-## /WeatherForecast/Network/APIKeys.swift
+/WeatherForecast/Network/APIKeys.swift
 
 # Icon must end with two \r
 Icon
