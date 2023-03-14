@@ -17,25 +17,22 @@ struct FiveDayWeather: Codable {
 
 // MARK: - City
 struct City: Codable {
-    let id: Int
-    let name: String
+    let name, country: String
+    let id, population, timezone, sunrise, sunset: Int
     let coord: Coord
-    let country: String
-    let population, timezone, sunrise, sunset: Int
 }
 
 // MARK: - List
 struct List: Codable {
-    let dt: Int
+    let dt, visibility: Int
+    let pop: Double
+    let dtTxt: String
     let main: Main
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
-    let visibility: Int
-    let pop: Double
     let rain: FiveDayRain?
     let sys: FiveDaySys
-    let dtTxt: String
 
     enum CodingKeys: String, CodingKey {
         case dt, main, weather, clouds, wind, visibility, pop, rain, sys
