@@ -7,16 +7,20 @@
 
 import Foundation
 
-struct WeatherData {
+struct WeatherData: Decodable {
     let TimeOfDataCalculation: Double
     let main: Main
     let weather: [Weather]
-    let clounds: Clouds
+    let clouds: Clouds
     let wind: Wind
-    let date: Date
+    let date: String
 
     enum CodingKeys: String, CodingKey {
         case TimeOfDataCalculation = "dt"
+        case main
+        case weather
+        case clouds
+        case wind
         case date = "dt_txt"
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct City {
+struct City: Decodable {
     let id: Int
     let name: String
     let coordinator: Coordinate
@@ -16,6 +16,11 @@ struct City {
     let sunset: Double
 
     enum CodingKeys: String, CodingKey {
+        case id
+        case name
         case coordinator = "coord"
+        case country
+        case sunrise
+        case sunset
     }
 }

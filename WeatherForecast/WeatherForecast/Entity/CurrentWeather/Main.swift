@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Main {
+struct Main: Decodable {
     let temperature: Double
     let feelsLike: Double
     let temperatureMin: Double
@@ -22,6 +22,8 @@ struct Main {
         case feelsLike = "feels_like"
         case temperatureMin = "temp_min"
         case temperatureMax = "temp_max"
+        case pressure
+        case humidity
         case seaLevel = "sea_level"
         case groundLevel = "grnd_level"
     }

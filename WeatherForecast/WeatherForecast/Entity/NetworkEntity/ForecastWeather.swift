@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct ForecastWeather {
+struct ForecastWeather: Decodable {
     let list: [WeatherData]
     let city: City
+
+    enum CodingKeys: String, CodingKey {
+        case list
+        case city
+    }
 }
