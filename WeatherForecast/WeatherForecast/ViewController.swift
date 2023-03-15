@@ -9,6 +9,9 @@ import UIKit
 class ViewController: UIViewController {
 
     var currentWeather: CurrentWeather?
+    var fiveDayWeather: FiveDayWeather?
+    let currentWeatherKey = "https://api.openweathermap.org/data/2.5/weather?lat=37.533624&lon=126.963206&appid="
+    let fiveDayWeatherKey = "https://api.openweathermap.org/data/2.5/forecast?lat=37.42374932&lon=126.123712897&appid="
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,21 +19,34 @@ class ViewController: UIViewController {
     }
 
     private func callAPI() {
-        guard let weatherBaseURL = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=37.533624&lon=126.963206&appid=") else { return }
-        let weatherUrlRequest = URLRequest(url: weatherBaseURL)
         let decoder = JSONDecoder()
-
-        let task = URLSession.shared.dataTask(with: weatherUrlRequest) { data, response, error in
+        guard let currentWeatherBaseURL = URL(string: currentWeatherKey) else { return }
+        let weatherURLRequest = URLRequest(url: currentWeatherBaseURL)
+        let currentWeatherTask = URLSession.shared.dataTask(with: weatherURLRequest) { data, response, error in
             if let data = data {
                 do {
                     try self.currentWeather = decoder.decode(CurrentWeather.self, from: data)
-                    print(self.currentWeather)
+                    print("currentWeather: ",self.currentWeather)
                 } catch {
                     print(error)
                 }
             }
         }
-        task.resume()
+        currentWeatherTask.resume()
+        
+        guard let fiveDayWeatherBaseURL = URL(string: fiveDayWeatherKey) else { return }
+        let fiveDayURLRequest = URLRequest(url: fiveDayWeatherBaseURL)
+        let fiveDayWeatherTask = URLSession.shared.dataTask(with: fiveDayURLRequest) { data, response, error in
+            if let data = data {
+                do {
+                    try self.fiveDayWeather = decoder.decode(FiveDayWeather.self, from: data)
+                    print("fiveDayWeather: ",self.fiveDayWeather)
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        fiveDayWeatherTask.resume()
     }
 
 }
