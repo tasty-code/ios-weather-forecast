@@ -8,7 +8,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    var model: Model?
+    var currentWeather: CurrentWeather?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +23,8 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: weatherUrlRequest) { data, response, error in
             if let data = data {
                 do {
-                    try self.model = decoder.decode(Model.self, from: data)
-                    print(self.model)
+                    try self.currentWeather = decoder.decode(CurrentWeather.self, from: data)
+                    print(self.currentWeather)
                 } catch {
                     print(error)
                 }
