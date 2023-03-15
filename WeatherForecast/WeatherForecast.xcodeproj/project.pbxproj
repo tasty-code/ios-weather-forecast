@@ -154,6 +154,7 @@
 		5BB7B35329C0544000A14093 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
 				5BB7B36729C063AF00A14093 /* NetworkEntity */,
 				F62203F729C05CC800A00108 /* ForecastWeather */,
 				5BB7B35629C054DD00A14093 /* CurrentWeather */,
@@ -218,7 +219,6 @@
 			isa = PBXGroup;
 			children = (
 				5BB7B35329C0544000A14093 /* Entity */,
-				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
 				5B3BD37F29BEB1D700A0EC83 /* AppEnvironment */,
 				5B3BD38129BEB20900A0EC83 /* View */,
 				5B3BD38029BEB1F900A0EC83 /* Configuration */,
