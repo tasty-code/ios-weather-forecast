@@ -7,8 +7,8 @@
 
 import Foundation
 
-// MARK: - Coord
-struct Coord: Decodable {
+// MARK: - Coordinate
+struct Coordinate: Decodable {
     let longitude, latitude: Double
     
     enum CodingKeys: String, CodingKey {

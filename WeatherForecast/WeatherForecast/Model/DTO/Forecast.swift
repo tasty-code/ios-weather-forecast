@@ -20,7 +20,7 @@ struct Forecast: Decodable {
 struct City: Decodable {
     let id: Int
     let name: String
-    let coord: Coord
+    let coord: Coordinate
     let country: String
     let population: Int
     let timezone: Int

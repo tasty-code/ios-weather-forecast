@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - CurrentWeather
 struct CurrentWeather: Decodable {
-    let coord: Coord
+    let coord: Coordinate
     let weather: [Weather]
     let base: String
     let main: Main

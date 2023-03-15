@@ -24,22 +24,20 @@ final class OpenWeatherRepository {
 
     // MARK: - Public
 
-    func fetchWeather(latitude: Double, longitude: Double,
+    func fetchWeather(coordinate: Coordinate,
                       completion: @escaping (Result<CurrentWeather, NetworkError>) -> Void) {
         let url = generateURL(
             withPath: Constant.weatherPath,
-            latitude: latitude,
-            longitude: longitude
+            coordinate: coordinate
         )
         performRequest(with: url, completion: completion)
     }
 
-    func fetchForecast(latitude: Double, longitude: Double,
+    func fetchForecast(coordinate: Coordinate,
                        completion: @escaping (Result<Forecast, NetworkError>) -> Void) {
         let url = generateURL(
             withPath: Constant.forecastPath,
-            latitude: latitude,
-            longitude: longitude
+            coordinate: coordinate
         )
         performRequest(with: url, completion: completion)
     }
@@ -47,21 +45,21 @@ final class OpenWeatherRepository {
     // MARK: - Private
 
     private func generateURL(withPath path: String,
-                             latitude: Double, longitude: Double) -> URL? {
+                             coordinate: Coordinate) -> URL? {
         guard var urlComponents = URLComponents(string: Constant.baseURL) else {
             return nil
         }
 
         urlComponents.path = path
-        urlComponents.queryItems = generateQueryItems(latitude: latitude, longitude: longitude)
+        urlComponents.queryItems = generateQueryItems(coordinate: coordinate)
 
         return urlComponents.url
     }
 
-    private func generateQueryItems(latitude: Double, longitude: Double) -> [URLQueryItem] {
+    private func generateQueryItems(coordinate: Coordinate) -> [URLQueryItem] {
          return [
-            URLQueryItem(name: Constant.latitudeQueryName, value: "\(latitude)"),
-            URLQueryItem(name: Constant.longitudeQueryName, value: "\(longitude)"),
+            URLQueryItem(name: Constant.latitudeQueryName, value: "\(coordinate.latitude)"),
+            URLQueryItem(name: Constant.longitudeQueryName, value: "\(coordinate.longitude)"),
             URLQueryItem(name: Constant.appIdQueryName, value: "\(Bundle.main.apiKey)")
         ]
     }
