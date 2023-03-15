@@ -52,7 +52,7 @@ final class OpenWeatherRepository {
             return nil
         }
 
-        urlComponents.path = Constant.weatherPath
+        urlComponents.path = path
         urlComponents.queryItems = generateQueryItems(lattitude: lattitude, longitude: longitude)
 
         return urlComponents.url
