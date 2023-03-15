@@ -9,7 +9,12 @@ import Foundation
 
 // MARK: - Coord
 struct Coord: Decodable {
-    let lon, lat: Double
+    let longitude, latitude: Double
+    
+    enum CodingKeys: String, CodingKey {
+        case longitude = "lon"
+        case latitude = "lat"
+    }
 }
 
 // MARK: - Clouds

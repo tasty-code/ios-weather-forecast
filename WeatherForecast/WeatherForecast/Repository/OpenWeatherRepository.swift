@@ -17,28 +17,28 @@ final class OpenWeatherRepository {
         static let weatherPath = "/data/2.5/weather"
         static let forecastPath = "/data/2.5/forecast"
 
-        static let lattitudeQueryName = "lat"
+        static let latitudeQueryName = "lat"
         static let longitudeQueryName = "lon"
         static let appIdQueryName = "appid"
     }
 
     // MARK: - Public
 
-    func fetchWeather(lattitude: Double, longitude: Double,
+    func fetchWeather(latitude: Double, longitude: Double,
                       completion: @escaping (Result<CurrentWeather, NetworkError>) -> Void) {
         let url = generateURL(
             withPath: Constant.weatherPath,
-            lattitude: lattitude,
+            latitude: latitude,
             longitude: longitude
         )
         performRequest(with: url, completion: completion)
     }
 
-    func fetchForecast(lattitude: Double, longitude: Double,
+    func fetchForecast(latitude: Double, longitude: Double,
                        completion: @escaping (Result<Forecast, NetworkError>) -> Void) {
         let url = generateURL(
             withPath: Constant.forecastPath,
-            lattitude: lattitude,
+            latitude: latitude,
             longitude: longitude
         )
         performRequest(with: url, completion: completion)
@@ -47,20 +47,20 @@ final class OpenWeatherRepository {
     // MARK: - Private
 
     private func generateURL(withPath path: String,
-                             lattitude: Double, longitude: Double) -> URL? {
+                             latitude: Double, longitude: Double) -> URL? {
         guard var urlComponents = URLComponents(string: Constant.baseURL) else {
             return nil
         }
 
         urlComponents.path = path
-        urlComponents.queryItems = generateQueryItems(lattitude: lattitude, longitude: longitude)
+        urlComponents.queryItems = generateQueryItems(latitude: latitude, longitude: longitude)
 
         return urlComponents.url
     }
 
-    private func generateQueryItems(lattitude: Double, longitude: Double) -> [URLQueryItem] {
+    private func generateQueryItems(latitude: Double, longitude: Double) -> [URLQueryItem] {
          return [
-            URLQueryItem(name: Constant.lattitudeQueryName, value: "\(lattitude)"),
+            URLQueryItem(name: Constant.latitudeQueryName, value: "\(latitude)"),
             URLQueryItem(name: Constant.longitudeQueryName, value: "\(longitude)"),
             URLQueryItem(name: Constant.appIdQueryName, value: "\(Bundle.main.apiKey)")
         ]
