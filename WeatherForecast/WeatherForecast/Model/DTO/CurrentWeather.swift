@@ -12,7 +12,7 @@ struct CurrentWeather: Decodable {
     let coord: Coordinate
     let weather: [Weather]
     let base: String
-    let main: Main
+    let main: MainData
     let visibility: Int
     let wind: Wind
     let clouds: Clouds

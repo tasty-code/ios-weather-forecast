@@ -23,7 +23,7 @@ struct Clouds: Decodable {
 }
 
 // MARK: - Main
-struct Main: Decodable {
+struct MainData: Decodable {
     let temp, feelsLike, tempMin, tempMax: Double
     let pressure, humidity, seaLevel, grndLevel: Int
 

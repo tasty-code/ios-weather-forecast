@@ -31,7 +31,7 @@ struct City: Decodable {
 // MARK: - List
 struct List: Decodable {
     let dt: Int
-    let main: Main
+    let main: MainData
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
