@@ -8,5 +8,5 @@
 import Foundation
 
 enum WeatherError: Error {
-    case invalidURL, invalidData
+    case invalidURL, invalidRequest, invalidData
 }
