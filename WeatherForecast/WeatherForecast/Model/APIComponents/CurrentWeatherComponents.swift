@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct CurrentWeatherComponents: Decodable {
+struct CurrentWeatherComponents: WeatherComposable {
+    static var weatherRange: WeatherRange = .current
+    
     let coord: Coord
     let weather: [Weather]
     let base: String

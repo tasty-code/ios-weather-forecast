@@ -1,5 +1,5 @@
 //
-//  FiveDaysWeatherComponents.swift
+//  ForecastWeatherComponents.swift
 //  WeatherForecast
 //
 //  Created by J.E on 2023/03/14.
@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct FiveDaysWeatherComponents: Decodable {
+struct ForecastWeatherComponents: WeatherComposable {
+    static var weatherRange: WeatherRange = .forecast
+    
     let cod: String
     let message, cnt: Int
     let list: [List]
