@@ -8,6 +8,8 @@
 import Foundation
 
 final class OpenWeatherRepository {
+
+    // MARK: - Constant
     
     private enum Constant {
         static let baseURL = "https://api.openweathermap.org"
@@ -20,38 +22,40 @@ final class OpenWeatherRepository {
         static let appIdQueryName = "appid"
     }
 
+    // MARK: - Public
+
     func fetchWeather(lattitude: Double, longitude: Double,
                       completion: @escaping (Result<CurrentWeather, NetworkError>) -> Void) {
-        guard var urlComponents = URLComponents(string: Constant.baseURL) else {
-            completion(.failure(.invalidURL))
-            return
-        }
-
-        urlComponents.path = Constant.weatherPath
-        urlComponents.queryItems = generateQueryItems(lattitude: lattitude, longitude: longitude)
-
-        guard let url = urlComponents.url else {
-            completion(.failure(.invalidURL))
-            return
-        }
+        let url = generateURL(
+            withPath: Constant.weatherPath,
+            lattitude: lattitude,
+            longitude: longitude
+        )
         performRequest(with: url, completion: completion)
     }
 
     func fetchForecast(lattitude: Double, longitude: Double,
                        completion: @escaping (Result<Forecast, NetworkError>) -> Void) {
+        let url = generateURL(
+            withPath: Constant.forecastPath,
+            lattitude: lattitude,
+            longitude: longitude
+        )
+        performRequest(with: url, completion: completion)
+    }
+
+    // MARK: - Private
+
+    private func generateURL(withPath path: String,
+                             lattitude: Double, longitude: Double) -> URL? {
         guard var urlComponents = URLComponents(string: Constant.baseURL) else {
-            completion(.failure(.invalidURL))
-            return
+            return nil
         }
 
-        urlComponents.path = Constant.forecastPath
+        urlComponents.path = Constant.weatherPath
         urlComponents.queryItems = generateQueryItems(lattitude: lattitude, longitude: longitude)
 
-        guard let url = urlComponents.url else {
-            completion(.failure(.invalidURL))
-            return
-        }
-        performRequest(with: url, completion: completion)
+        return urlComponents.url
     }
 
     private func generateQueryItems(lattitude: Double, longitude: Double) -> [URLQueryItem] {
@@ -96,6 +100,4 @@ final class OpenWeatherRepository {
         }
         task.resume()
     }
-
-    // JSONDecoding 분리
 }
