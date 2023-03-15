@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct City {
+struct MockCity {
     let id: Double
     let name: String
     let findname: String?
