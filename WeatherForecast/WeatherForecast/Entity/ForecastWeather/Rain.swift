@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Rain {
+struct Rain: Decodable {
     let oneHours: Double
     let threeHours: Double
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Snow {
+struct Snow: Decodable {
     let oneHours: Double
     let threeHours: Double
     
