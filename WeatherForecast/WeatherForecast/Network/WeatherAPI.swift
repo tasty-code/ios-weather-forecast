@@ -11,6 +11,15 @@ enum WeatherAPI: String {
     case currentWeather
     case fiveDaysForecast
     
+    var decodingType: Codable.Type {
+        switch self {
+        case .currentWeather:
+            return CurrentWeather.self
+        case .fiveDaysForecast:
+            return FiveDaysForecast.self
+        }
+    }
+    
     static let baseURL = "https://api.openweathermap.org"
     var path: String {
         switch self {

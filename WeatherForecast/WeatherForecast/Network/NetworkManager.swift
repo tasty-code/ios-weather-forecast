@@ -19,21 +19,9 @@ class NetworkManager {
         let urlRequest = URLRequest(url: url)
         
         let task = task(session: session, urlRequest: urlRequest) { error, response, data in
-            switch self.handleError(error: error) {
-            case .success(let message):
-                print(message)
-            case .failure(let error):
-                print(error.message)
-            }
-            
+            self.handleError(result: self.checkError(error))
             self.handleResponse(response: response)
-            
-            switch self.handleData(data: data) {
-            case .success(let message):
-                print(message)
-            case .failure(let error):
-                print(error.message)
-            }
+            self.convertData(from: data, to: weatherAPI.decodingType)
         }
         task.resume()
     }
@@ -45,11 +33,20 @@ class NetworkManager {
         return task
     }
     
-    func handleError(error: Error?) -> NetworkResult {
+    func checkError(_ error: Error?) -> NetworkResult {
         guard error == nil else {
             return NetworkError.failedRequest.resultOfNetworkError()
         }
         return .success("Error가 없습니다.")
+    }
+    
+    func handleError(result: NetworkResult) {
+        switch result {
+        case .success(let message):
+            print(message)
+        case .failure(let error):
+            print(error.message)
+        }
     }
     
     func handleResponse(response: URLResponse?) {
@@ -63,12 +60,9 @@ class NetworkManager {
         }
     }
     
-    func handleData(data: Data?) -> NetworkResult {
-        guard let result = self.decode(from: data, to: FiveDaysForecast.self) else {
-            return NetworkResult.failure(NetworkError.failedRequest)
-        }
-        print(result)
-        return NetworkResult.success("성공")
+    func convertData<T: Decodable>(from data: Data?, to type: T.Type) {
+        guard let result = decode(from: data, to: type) else { return }
+        print("결과야 \(result)")
     }
     
     func decode<T: Decodable>(from data: Data?, to type: T.Type) -> T? {
@@ -80,7 +74,6 @@ class NetworkManager {
             let data = try decoder.decode(type, from: data)
             return data
         } catch {
-            print(NetworkError.failedDecoding.message)
             return nil
         }
     }
