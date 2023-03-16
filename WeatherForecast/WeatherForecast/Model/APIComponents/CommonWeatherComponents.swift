@@ -7,70 +7,52 @@
 
 import Foundation
 
-struct Coord: Decodable {
-    let lon, lat: Double
+struct Coordinate: Decodable {
+    let longitude, latitude: Double
+    
+    enum CodingKeys: String, CodingKey {
+        case longitude = "lon"
+        case latitude = "lat"
+    }
 }
 
 struct Weather: Decodable {
     let id: Int
-    let main: MainEnum
-    let description: Description
-    let icon: String
+    let main, description, icon: String
 }
 
-enum Description: String, Decodable {
-    case brokenClouds = "broken clouds"
-    case clearSky = "clear sky"
-    case fewClouds = "few clouds"
-    case lightRain = "light rain"
-    case overcastClouds = "overcast clouds"
-    case scatteredClouds = "scattered clouds"
-}
+struct NumericalWeatherInformation: Decodable {
+    let temperature, feelsLike, minimumTemperature, maximumTemperature: Double
+    let pressure, humidity: Int
+    let seaLevel, grandLevel: Int?
 
-enum MainEnum: String, Decodable {
-    case clear = "Clear"
-    case clouds = "Clouds"
-    case rain = "Rain"
+    enum CodingKeys: String, CodingKey {
+        case feelsLike = "feels_like"
+        case minimumTemperature = "temp_min"
+        case maximumTemperature = "temp_max"
+        case seaLevel = "sea_level"
+        case grandLevel = "grnd_level"
+        case temperature, pressure, humidity
+    }
 }
 
 struct Wind: Decodable {
     let speed: Double
-    let deg: Int
+    let degree: Int
     let gust: Double?
 }
 
 struct Clouds: Decodable {
-    let all: Int
+    let cloudiness: Int
 }
 
-struct Sys: Decodable {
-    let type, id: Int?
+struct System: Decodable {
     let country: String?
     let sunrise, sunset: Int?
-    let pod: Pod?
+    let partOfTheDay: DayPart?
 }
 
-enum Pod: String, Decodable {
-    case d = "d"
-    case n = "n"
+enum DayPart: String, Decodable {
+    case day = "d"
+    case night = "n"
 }
-
-struct Main: Decodable {
-    let temp, feelsLike, tempMin, tempMax: Double
-    let pressure, humidity: Int
-    let seaLevel, grndLevel: Int?
-    let tempKf: Double?
-
-    enum CodingKeys: String, CodingKey {
-        case temp
-        case feelsLike = "feels_like"
-        case tempMin = "temp_min"
-        case tempMax = "temp_max"
-        case pressure
-        case seaLevel = "sea_level"
-        case grndLevel = "grnd_level"
-        case humidity
-        case tempKf = "temp_kf"
-    }
-}
-

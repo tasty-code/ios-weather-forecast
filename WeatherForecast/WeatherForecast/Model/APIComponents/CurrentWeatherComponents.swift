@@ -10,16 +10,20 @@ import Foundation
 struct CurrentWeatherComponents: WeatherComposable {
     static var weatherRange: WeatherRange = .current
     
-    let coord: Coord
+    let name: String
+    let coordinate: Coordinate
     let weather: [Weather]
-    let base: String
-    let main: Main
-    let visibility: Int
+    let numericalInformation: NumericalWeatherInformation
     let wind: Wind
     let clouds: Clouds
-    let dt: Int
-    let sys: Sys
-    let timezone, id: Int
-    let name: String
-    let cod: Int
+    let system: System
+    let visibility, timezone, cityID: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case coordinate = "coord"
+        case numericalInformation = "main"
+        case system = "sys"
+        case cityID = "id"
+        case name, weather, visibility, wind, clouds, timezone
+    }
 }

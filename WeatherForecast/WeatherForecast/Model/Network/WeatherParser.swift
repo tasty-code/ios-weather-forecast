@@ -8,7 +8,7 @@
 import Foundation
 
 struct WeatherParser<T: WeatherComposable> {
-    static func parse(at coordinate: Coord) async throws -> T {
+    static func parse(at coordinate: Coordinate) async throws -> T {
         guard let request = WeatherURL.request(for: T.weatherRange, at: coordinate) else {
             throw WeatherError.invalidRequest
         }

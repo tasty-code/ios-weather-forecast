@@ -10,43 +10,45 @@ import Foundation
 struct ForecastWeatherComponents: WeatherComposable {
     static var weatherRange: WeatherRange = .forecast
     
-    let cod: String
-    let message, cnt: Int
-    let list: [List]
+    let list: [WeatherInformation]
     let city: City
 }
 
-struct City: Decodable {
-    let id: Int
-    let name: String
-    let coord: Coord
-    let country: String
-    let population, timezone, sunrise, sunset: Int
-}
-
-struct List: Decodable {
-    let dt: Int
-    let main: Main
+struct WeatherInformation: Decodable {
     let weather: [Weather]
-    let clouds: Clouds
+    let numericalInformation: NumericalWeatherInformation
     let wind: Wind
-    let visibility: Int
-    let pop: Double
-    let sys: Sys
-    let dtTxt: String
+    let clouds: Clouds
     let rain: Rain?
+    let system: System
+    let visibility: Int
+    let precipitationProbability: Double
+    let dataTime: String
 
     enum CodingKeys: String, CodingKey {
-        case dt, main, weather, clouds, wind, visibility, pop, sys
-        case dtTxt = "dt_txt"
-        case rain
+        case dataTime = "dt_txt"
+        case numericalInformation = "main"
+        case weather, clouds, wind, visibility, rain
+        case precipitationProbability = "pop"
+        case system = "sys"
     }
 }
 
 struct Rain: Decodable {
-    let the3H: Double
+    let volumeForLast3Hours: Double
 
     enum CodingKeys: String, CodingKey {
-        case the3H = "3h"
+        case volumeForLast3Hours = "3h"
+    }
+}
+
+struct City: Decodable {
+    let name, country: String
+    let coordinate: Coordinate
+    let id, population, timezone, sunrise, sunset: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case id, name, country, population, timezone, sunrise, sunset
+        case coordinate = "coord"
     }
 }
