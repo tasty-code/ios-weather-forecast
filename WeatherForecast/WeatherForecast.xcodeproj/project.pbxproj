@@ -22,6 +22,7 @@
 		F169CDFD29BF183E0022E007 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F169CDFC29BF183E0022E007 /* Forecast.swift */; };
 		F169CDFF29C00E800022E007 /* OpenWeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F169CDFE29C00E800022E007 /* OpenWeatherRepository.swift */; };
 		F1DA56EF29C2AE2100312C9F /* Deserializerable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DA56EE29C2AE2100312C9F /* Deserializerable.swift */; };
+		F1DA56F129C2B04700312C9F /* JSONDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DA56F029C2B04700312C9F /* JSONDeserializer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		F169CDFC29BF183E0022E007 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
 		F169CDFE29C00E800022E007 /* OpenWeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherRepository.swift; sourceTree = "<group>"; };
 		F1DA56EE29C2AE2100312C9F /* Deserializerable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deserializerable.swift; sourceTree = "<group>"; };
+		F1DA56F029C2B04700312C9F /* JSONDeserializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDeserializer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 				B47DBD0A29BF15330006D8E2 /* DTO */,
 				B43FADA029C03E7400CF9E06 /* NetworkError.swift */,
 				F1DA56EE29C2AE2100312C9F /* Deserializerable.swift */,
+				F1DA56F029C2B04700312C9F /* JSONDeserializer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				B47DBD0C29BF15420006D8E2 /* CurrentWeather.swift in Sources */,
 				F1DA56EF29C2AE2100312C9F /* Deserializerable.swift in Sources */,
 				B43FAD9F29C0018600CF9E06 /* Bundle+.swift in Sources */,
+				F1DA56F129C2B04700312C9F /* JSONDeserializer.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				F169CDFD29BF183E0022E007 /* Forecast.swift in Sources */,
 			);

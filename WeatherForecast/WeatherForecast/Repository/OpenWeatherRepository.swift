@@ -8,6 +8,16 @@
 import Foundation
 
 final class OpenWeatherRepository {
+    
+    //MARK: - Property
+    
+    private let decoder: Deserializerable
+    
+    //MARK: - LifeCycle
+    init(decoder: Deserializerable) {
+        self.decoder = decoder
+    }
+
 
     // MARK: - Constant
     
@@ -70,8 +80,6 @@ final class OpenWeatherRepository {
             return
         }
 
-        let decoder = JSONDecoder()
-
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard error == nil else {
                 completion(.failure(.networkingError))
@@ -89,8 +97,8 @@ final class OpenWeatherRepository {
                 return
             }
 
-            do {
-                let decodedData = try decoder.decode(T.self, from: data)
+            do {   
+                let decodedData = try self.decoder.deserialize(T.self, data: data)
                 completion(.success(decodedData))
             } catch {
                 completion(.failure(.parseError))
