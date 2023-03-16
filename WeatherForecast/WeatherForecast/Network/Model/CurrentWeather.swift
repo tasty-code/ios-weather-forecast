@@ -9,11 +9,11 @@ import Foundation
 
 struct CurrentWeather: Codable {
     let coordinate: Coordinate
-    let weather: [WeatherData]
+    let weatherData: WeatherData
     
     enum CodingKeys: String, CodingKey {
         case coordinate = "coord"
-        case weather
+        case weatherData = "main"
     }
 }
 
@@ -33,9 +33,3 @@ extension Coordinate: CustomStringConvertible {
     }
 }
 
-struct WeatherData: Codable {
-    let id: Int
-    let main: String
-    let description: String
-    let icon: String
-}

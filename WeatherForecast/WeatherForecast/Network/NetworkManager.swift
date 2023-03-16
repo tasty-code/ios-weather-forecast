@@ -30,8 +30,8 @@ class NetworkManager {
             if let data = data {
                 do {
                     let decoder = JSONDecoder()
-                    let weatherInSeoul = try decoder.decode(CurrentWeather.self, from: data)
-                    print(weatherInSeoul.coordinate.description)
+                    let fiveDaysForcastInSeoul = try decoder.decode(FiveDaysForecast.self, from: data)
+                    print(fiveDaysForcastInSeoul.list[0].weatherData.maximumTemperature)
                 } catch {
                     print(error)
                 }
