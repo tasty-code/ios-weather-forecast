@@ -30,9 +30,12 @@ enum URLPath: String {
         let longitude = URLQueryItem(name: "lon", value: coordintate.longitude.description)
         let appid = URLQueryItem(name: "appid", value: Bundle.main.APIKey)
         let unitsOfMeasurement = URLQueryItem(name: "units", value: "metric")
-        let countOfDay = URLQueryItem(name: "cnt", value: "5")
-        
-        components.queryItems = [latitude, longitude, appid, unitsOfMeasurement, countOfDay]
+
+        components.queryItems = [latitude, longitude, appid, unitsOfMeasurement]
+        if getPath == .forecastWeather {
+            let countOfDay = URLQueryItem(name: "cnt", value: "5")
+            components.queryItems?.append(countOfDay)
+        }
         
         guard let url = components.url else {
             throw URLError(.badURL)
