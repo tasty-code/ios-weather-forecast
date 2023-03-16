@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ForecastWeather: Decodable {
+struct ForecastWeather: WeatherModel {
     let list: [WeatherData]
     let city: City
 

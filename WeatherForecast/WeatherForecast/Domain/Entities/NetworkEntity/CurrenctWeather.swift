@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CurrentWeather: Decodable {
+struct CurrentWeather: WeatherModel {
     let coordinator: Coordinate
     let weather: [Weather]
     let main: Main
