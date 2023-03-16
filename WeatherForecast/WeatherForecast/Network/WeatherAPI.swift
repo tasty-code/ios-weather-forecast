@@ -11,12 +11,23 @@ enum WeatherAPI: String {
     case currentWeather
     case fiveDaysForecast
     
-    var urlComponent: String {
+    static let baseURL = "https://api.openweathermap.org"
+    var path: String {
         switch self {
         case .currentWeather:
-            return "weather"
+            return "/data/2.5/weather?"
         case .fiveDaysForecast:
-            return "forecast"
+            return "/data/2.5/forecast?"
         }
+    }
+}
+
+extension WeatherAPI {
+    
+    func makeWeatherURL(coordinate: Coordinate) -> URL {
+        let queryItems = "\(coordinate.description)&units=metric&appid="
+        let apiKey = APIKeyManager.openWeather.apiKey
+        
+        return URL(string: WeatherAPI.baseURL + self.path + queryItems + apiKey)!
     }
 }

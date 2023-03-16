@@ -27,6 +27,12 @@ struct Coordinate: Codable {
     }
 }
 
+extension Coordinate: CustomStringConvertible {
+    var description: String {
+        return "lat=\(latitude)&lon=\(longitude)"
+    }
+}
+
 struct WeatherData: Codable {
     let id: Int
     let main: String
