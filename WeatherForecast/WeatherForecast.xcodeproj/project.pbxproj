@@ -45,7 +45,7 @@
 
 /* Begin PBXFileReference section */
 		4F2D797329C04DC500C30BE2 /* WeatherAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPIManager.swift; sourceTree = "<group>"; };
-		4FC8C12429C2A3D6005005A9 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
+		4FC8C12429C2A3D6005005A9 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIKeys.swift; path = WeatherForecast/Network/API/APIKeys.swift; sourceTree = SOURCE_ROOT; };
 		870E0EFA29C3095D00DF5695 /* URLResponse+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLResponse+.swift"; sourceTree = "<group>"; };
 		8797480A29C04D1100C5F3D5 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
 		8797480C29C04E4600C5F3D5 /* APIKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyManager.swift; sourceTree = "<group>"; };
@@ -94,14 +94,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F11681829C40EBD0049B01A /* APIKeys */ = {
+			isa = PBXGroup;
+			children = (
+				8797480C29C04E4600C5F3D5 /* APIKeyManager.swift */,
+				4FC8C12429C2A3D6005005A9 /* APIKeys.swift */,
+			);
+			path = APIKeys;
+			sourceTree = "<group>";
+		};
 		4F2D796F29C04D8E00C30BE2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				4FC8C12329C2A3A2005005A9 /* API */,
-				4F2D797329C04DC500C30BE2 /* WeatherAPIManager.swift */,
-				8797480E29C0668D00C5F3D5 /* WeatherAPI.swift */,
-				87ED40A829C3069B0018EE21 /* NetworkError.swift */,
 				8797480929C04CFE00C5F3D5 /* Model */,
+				4FC8C12329C2A3A2005005A9 /* API */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -109,8 +115,9 @@
 		4FC8C12329C2A3A2005005A9 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				8797480C29C04E4600C5F3D5 /* APIKeyManager.swift */,
-				4FC8C12429C2A3D6005005A9 /* APIKeys.swift */,
+				4F11681829C40EBD0049B01A /* APIKeys */,
+				8797480E29C0668D00C5F3D5 /* WeatherAPI.swift */,
+				4F2D797329C04DC500C30BE2 /* WeatherAPIManager.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -126,6 +133,7 @@
 		8797480929C04CFE00C5F3D5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				87ED40A829C3069B0018EE21 /* NetworkError.swift */,
 				879E476629C40383002A4496 /* NetworkModel.swift */,
 				8797480A29C04D1100C5F3D5 /* CurrentWeather.swift */,
 				87B6EE5C29C2A70A00BB19BC /* FiveDaysForecast.swift */,
