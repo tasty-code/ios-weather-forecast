@@ -9,7 +9,7 @@ import Foundation
 
 struct ForecastWeatherComponents: WeatherComposable {
     static var weatherRange: WeatherRange = .forecast
-    
+
     let list: [WeatherInformation]
     let city: City
 }
@@ -44,9 +44,9 @@ struct Rain: Decodable {
 
 struct City: Decodable {
     let name, country: String
-    let coordinate: Coordinate
+    let coordinate: CurrentCoordinate
     let id, population, timezone, sunrise, sunset: Int
-    
+
     enum CodingKeys: String, CodingKey {
         case id, name, country, population, timezone, sunrise, sunset
         case coordinate = "coord"

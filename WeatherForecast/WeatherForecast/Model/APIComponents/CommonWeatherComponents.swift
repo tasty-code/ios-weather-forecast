@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Coordinate: Decodable {
+struct CurrentCoordinate: Decodable {
     let longitude, latitude: Double
-    
+
     enum CodingKeys: String, CodingKey {
         case longitude = "lon"
         case latitude = "lat"
@@ -32,7 +32,8 @@ struct NumericalWeatherInformation: Decodable {
         case maximumTemperature = "temp_max"
         case seaLevel = "sea_level"
         case grandLevel = "grnd_level"
-        case temperature, pressure, humidity
+        case temperature = "temp"
+        case pressure, humidity
     }
 }
 
@@ -40,16 +41,30 @@ struct Wind: Decodable {
     let speed: Double
     let degree: Int
     let gust: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case speed, gust
+        case degree = "deg"
+    }
 }
 
 struct Clouds: Decodable {
     let cloudiness: Int
+
+    enum CodingKeys: String, CodingKey {
+        case cloudiness = "all"
+    }
 }
 
 struct System: Decodable {
     let country: String?
     let sunrise, sunset: Int?
     let partOfTheDay: DayPart?
+
+    enum CodingKeys: String, CodingKey {
+        case country, sunrise, sunset
+        case partOfTheDay = "pod"
+    }
 }
 
 enum DayPart: String, Decodable {

@@ -11,9 +11,9 @@ enum WeatherURL {
     private static let baseURL = "https://api.openweathermap.org/data/2.5/"
     private static let measurementUnit = "metric"
     private static let language = "kr"
-    private static let apiKey = "33f6d884e30621345ee893c404cd9866"
+    private static let apiKey = Bundle.main.apiKey
 
-    static func make(at coordinate: Coordinate, weatherRange: WeatherRange) throws -> URL {
+    static func make(at coordinate: CurrentCoordinate, weatherRange: WeatherRange) throws -> URL {
         let query = ["lat=\(coordinate.latitude)",
                      "lon=\(coordinate.longitude)",
                      "units=\(measurementUnit)",
@@ -28,7 +28,7 @@ enum WeatherURL {
         return url
     }
 
-    static func request(for weather: WeatherRange, at coordinate: Coordinate) -> URLRequest? {
+    static func request(for weather: WeatherRange, at coordinate: CurrentCoordinate) -> URLRequest? {
         return try? URLRequest(url: make(at: coordinate, weatherRange: weather))
     }
 }
