@@ -8,11 +8,13 @@
 import UIKit
 
 enum NetworkError: LocalizedError {
+    
     case outOfReponseCode
     case failedRequest
     case emptyData
     
     var errorDescription: String? {
+        
         switch self {
         case .outOfReponseCode:
             return "응답코드가 정상코드 밖에 있습니다."

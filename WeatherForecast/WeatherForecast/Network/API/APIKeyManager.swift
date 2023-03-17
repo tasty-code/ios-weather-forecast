@@ -8,9 +8,11 @@
 import UIKit
 
 enum APIKeyManager {
+    
     case openWeather
     
     var apiKey: String {
+        
         switch self {
         case .openWeather:
             return APIKeys.openWeatherKey

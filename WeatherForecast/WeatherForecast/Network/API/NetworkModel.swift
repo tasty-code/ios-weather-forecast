@@ -11,7 +11,11 @@ typealias NetworkResult = Result<Data, NetworkError>
 
 final class NetworkModel {
     
-    func task(session: URLSession, urlRequest: URLRequest, completionHandler: @escaping (NetworkResult) -> Void) -> URLSessionDataTask {
+    func task(session: URLSession,
+              urlRequest: URLRequest,
+              completionHandler: @escaping (NetworkResult) -> Void
+    ) -> URLSessionDataTask {
+        
         let task = session.dataTask(with: urlRequest) { data, response, error in
             
             guard error == nil else {
@@ -31,13 +35,14 @@ final class NetworkModel {
             
             completionHandler(.success(data))
         }
+        
         return task
     }
     
-    func decode<T: Decodable>(from data: Data?, to type: T.Type) -> T? {
-        guard let data = data else { return nil }
+    func decode<T: Decodable>(from data: Data, to type: T.Type) -> T? {
         
         let decoder = JSONDecoder()
+        
         do {
             let data = try decoder.decode(type, from: data)
             return data
