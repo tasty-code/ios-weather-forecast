@@ -13,11 +13,11 @@ extension URLResponse {
         return 200...299
     }
     
-    func checkResponse() -> NetworkResult {
+    var checkResponse: Bool {
         guard let httpResponse = self as? HTTPURLResponse,
               successRange.contains(httpResponse.statusCode) else {
-            return NetworkResult.failure(NetworkError.outOfReponseCode)
+            return false
         }
-        return .success("Reponse 성공했습니다.")
+        return true
     }
 }
