@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NetworkManager {
+final class WeatherAPIManager {
     
     private let session: URLSession
     private let networkModel: NetworkModel
