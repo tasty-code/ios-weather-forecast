@@ -103,7 +103,6 @@
 			isa = PBXGroup;
 			children = (
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
-				F0C4448529C40AAA00A583C4 /* Bundle+.swift */,
 				3B95C15D29BEE16A00C0D0ED /* CurrentWeather.json */,
 				3B95C15C29BEE16A00C0D0ED /* FiveDaysWeather.json */,
 				F0069FB929C2D692002C549C /* Secrets.xcconfig */,
@@ -117,6 +116,14 @@
 				3B95C17329C1B0AE00C0D0ED /* WeatherComposable.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		3B95C17629C42BB000C0D0ED /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				F0C4448529C40AAA00A583C4 /* Bundle+.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		C79C8CE725ADDDF200EEE3F1 = {
@@ -174,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				F0ADB03529C05D9600DE8331 /* WeatherRange.swift */,
+				3B95C17629C42BB000C0D0ED /* Extension */,
 				3B95C17529C1B20400C0D0ED /* Protocol */,
 				F09A34EB29C062B90080E296 /* APIComponents */,
 				F09A34EA29C062A00080E296 /* Network */,

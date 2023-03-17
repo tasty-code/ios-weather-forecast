@@ -8,25 +8,48 @@ import XCTest
 @testable import WeatherForecast
 
 class WeatherForecastTests: XCTestCase {
+    var sutCurrent: WeatherParser<CurrentWeatherComponents>!
+    var sutForecast: WeatherParser<ForecastWeatherComponents>!
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        try super.setUpWithError()
+        sutCurrent = WeatherParser()
+        sutForecast = WeatherParser()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        try super.tearDownWithError()
+        sutCurrent = nil
+        sutForecast = nil
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func test_URL이_Query형식에_맞게_생성되는가() {
+        // given
+        let yongsanCoordinate = CurrentCoordinate(longitude: 126.96, latitude: 37.53)
+        let apiKey = Bundle.main.apiKey
+
+        // when
+        let yonsanCurrentURL = try? WeatherURL.make(at: yongsanCoordinate, weatherRange: CurrentWeatherComponents.weatherRange)
+        let yonsanForecastURL = try? WeatherURL.make(at: yongsanCoordinate, weatherRange: ForecastWeatherComponents.weatherRange)
+        let resultCurrentURL = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=37.53&lon=126.96&units=metric&lang=kr&appid=\(apiKey)")
+        let resultForecastURL = URL(string: "https://api.openweathermap.org/data/2.5/forecast?lat=37.53&lon=126.96&units=metric&lang=kr&appid=\(apiKey)")
+
+        // then
+        XCTAssertEqual(yonsanCurrentURL, resultCurrentURL)
+        XCTAssertEqual(yonsanForecastURL, resultForecastURL)
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+    func test_요청한_위경도와_호출된_데이터의_지역이_일치하는가() async {
+        // given
+        let yongsanCoordinate = CurrentCoordinate(longitude: 126.96, latitude: 37.53)
 
+        // when
+        let cityOfRequestedCurrentWeather = try? await type(of: sutCurrent).parse(at: yongsanCoordinate).name
+        let cityOfRequestedForecastWeather = try? await type(of: sutForecast).parse(at: yongsanCoordinate).city.name
+        let resultCityName = "Yongsan"
+
+        // then
+        XCTAssertEqual(cityOfRequestedCurrentWeather, resultCityName)
+        XCTAssertEqual(cityOfRequestedForecastWeather, resultCityName)
+    }
 }
