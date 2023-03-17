@@ -9,22 +9,19 @@ import UIKit
 
 typealias NetworkResult = Result<String, NetworkError>
 
-enum NetworkError: Error {
+enum NetworkError: LocalizedError {
     case outOfReponseCode
     case failedRequest
+    case emptyData
     
-    var message: String {
+    var errorDescription: String? {
         switch self {
         case .outOfReponseCode:
-            return "응답코드가 정상코드 범위에 없습니다."
+            return "응답코드가 정상코드 밖에 있습니다."
         case .failedRequest:
             return "잘못된 요청입니다."
+        case .emptyData:
+            return "빈 데이터 입니다."
         }
-    }
-}
-
-extension NetworkError {
-    func resultOfNetworkError() -> NetworkResult {
-        return .failure(self)
     }
 }
