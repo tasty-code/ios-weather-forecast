@@ -10,8 +10,9 @@ class ViewController: UIViewController {
 
     var currentWeather: CurrentWeather?
     var fiveDayWeather: FiveDayWeather?
+    let appid = Bundle.main.apiKey
     let currentWeatherKey = "https://api.openweathermap.org/data/2.5/weather?lat=37.533624&lon=126.963206&appid="
-    let fiveDayWeatherKey = "https://api.openweathermap.org/data/2.5/forecast?lat=37.42374932&lon=126.123712897&appid="
+    let fiveDayWeatherKey = "https://api.openweathermap.org/data/2.5/forecast?lat=37.533624&lon=126.963206&appid="
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +21,7 @@ class ViewController: UIViewController {
 
     private func callAPI() {
         let decoder = JSONDecoder()
-        guard let currentWeatherBaseURL = URL(string: currentWeatherKey) else { return }
+        guard let currentWeatherBaseURL = URL(string: currentWeatherKey + appid) else { return }
         let weatherURLRequest = URLRequest(url: currentWeatherBaseURL)
         let currentWeatherTask = URLSession.shared.dataTask(with: weatherURLRequest) { data, response, error in
             if let data = data {
@@ -34,7 +35,7 @@ class ViewController: UIViewController {
         }
         currentWeatherTask.resume()
         
-        guard let fiveDayWeatherBaseURL = URL(string: fiveDayWeatherKey) else { return }
+        guard let fiveDayWeatherBaseURL = URL(string: fiveDayWeatherKey + appid) else { return }
         let fiveDayURLRequest = URLRequest(url: fiveDayWeatherBaseURL)
         let fiveDayWeatherTask = URLSession.shared.dataTask(with: fiveDayURLRequest) { data, response, error in
             if let data = data {
