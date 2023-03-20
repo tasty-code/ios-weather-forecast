@@ -16,13 +16,13 @@ final class OpenWeatherService: ServiceProtocol {
 
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard error == nil else {
-                completion(.failure(.networkingError))
+                completion(.failure(.networking))
                 return
             }
 
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(.responseError))
+                completion(.failure(.response))
                 return
             }
 

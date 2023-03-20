@@ -9,6 +9,12 @@ import Foundation
 
 struct Wind: Decodable {
     let speed: Double
-    let deg: Int
-    let gust: Double
+    let windDirectionDegrees: Int?
+    let gust: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case windDirectionDegrees = "deg"
+        case speed, gust
+    }
 }
+

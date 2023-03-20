@@ -9,15 +9,23 @@ import Foundation
 
 // MARK: - CurrentWeather
 struct CurrentWeather: Decodable {
-    let coord: Coordinate
+    let coordinate: Coordinate
     let weather: [Weather]
     let base: String
-    let main: MainData
+    let weatherDetail: WeatherDetail
     let visibility: Int
     let wind: Wind
     let clouds: Clouds
-    let dt: Int
+    let timestamp: Int
     let timezone, id: Int
-    let name: String
-    let cod: Int
+    let cityName: String
+
+    enum CodingKeys: String, CodingKey {
+        case coordinate = "coord"
+        case weatherDetail = "main"
+        case timestamp = "dt"
+        case cityName = "name"
+        case weather, base, visibility, wind, clouds, timezone, id
+    }
 }
+

@@ -8,5 +8,9 @@
 import Foundation
 
 struct Clouds: Decodable {
-    let all: Int
+    let cloudiness: Int
+
+    enum CodingKeys: String, CodingKey {
+        case cloudiness = "all"
+    }
 }

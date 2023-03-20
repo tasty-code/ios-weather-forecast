@@ -1,13 +1,13 @@
 //
-//  Rain.swift
+//  Snow.swift
 //  WeatherForecast
 //
-//  Created by DONGWOOK SEO on 2023/03/20.
+//  Created by Mason Kim on 2023/03/20.
 //
 
 import Foundation
 
-struct Rain: Decodable {
+struct Snow: Decodable {
     let volumeForLast3Hours: Double?
 
     enum CodingKeys: String, CodingKey {

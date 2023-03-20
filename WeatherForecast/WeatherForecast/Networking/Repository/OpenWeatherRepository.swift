@@ -53,7 +53,7 @@ final class OpenWeatherRepository {
                     let weatherData = try self.deserializer.deserialize(CurrentWeather.self, data: data)
                     completion(.success(weatherData))
                 } catch {
-                    completion(.failure(.parseError))
+                    completion(.failure(.parse))
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -75,7 +75,7 @@ final class OpenWeatherRepository {
                     let forecastData = try self.deserializer.deserialize(Forecast.self, data: data)
                     completion(.success(forecastData))
                 } catch {
-                    completion(.failure(.parseError))
+                    completion(.failure(.parse))
                 }
             case .failure(let error):
                 completion(.failure(error))
