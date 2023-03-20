@@ -10,9 +10,10 @@ import UIKit
 typealias NetworkResult = Result<Decodable, NetworkError>
 
 final class NetworkModel {
+    private let session = URLSession.shared
     
-    func task<DecodedData: Decodable>(session: URLSession,
-              urlRequest: URLRequest, to type: DecodedData.Type,
+    func task<DecodedData: Decodable>(urlRequest: URLRequest,
+                                      to type: DecodedData.Type,
               completionHandler: @escaping (NetworkResult) -> Void
     ) -> URLSessionDataTask {
         
@@ -33,7 +34,7 @@ final class NetworkModel {
                 return
             }
             
-            guard let decodedData = self.decode(from: data, to: type) else { return completionHandler(.failure(.emptyData))}
+            guard let decodedData = self.decode(from: data, to: type) else { return completionHandler(.failure(.failedDecoding))}
             
             completionHandler(.success(decodedData))
         }

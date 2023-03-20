@@ -9,13 +9,10 @@ import UIKit
 
 final class WeatherAPIManager {
     
-    private let session: URLSession
     private let networkModel: NetworkModel
     
-    init(session: URLSession = .shared) {
-        
-        self.session = session
-        self.networkModel = NetworkModel()
+    init(networkModel: NetworkModel) {
+        self.networkModel = networkModel
     }
     
     func fetchWeatherInformation(of weatherAPI: WeatherAPI, in coordinate: Coordinate) {
@@ -23,7 +20,7 @@ final class WeatherAPIManager {
         let url = weatherAPI.makeWeatherURL(coordinate: coordinate)
         let urlRequest = URLRequest(url: url)
         
-        let task = networkModel.task(session: session, urlRequest: urlRequest, to: weatherAPI.decodingType) { result in
+        let task = networkModel.task(urlRequest: urlRequest, to: weatherAPI.decodingType) { result in
             
             switch result {
             case .success(let data):
