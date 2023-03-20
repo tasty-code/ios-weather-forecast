@@ -12,6 +12,7 @@ enum NetworkError: LocalizedError {
     case outOfReponseCode
     case failedRequest
     case emptyData
+    case failedDecoding
     
     var errorDescription: String? {
         
@@ -22,6 +23,8 @@ enum NetworkError: LocalizedError {
             return "잘못된 요청입니다."
         case .emptyData:
             return "빈 데이터 입니다."
+        case .failedDecoding:
+            return "디코딩에 실패하였습니다."
         }
     }
 }

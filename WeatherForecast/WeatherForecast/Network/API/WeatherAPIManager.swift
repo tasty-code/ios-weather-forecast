@@ -23,11 +23,11 @@ final class WeatherAPIManager {
         let url = weatherAPI.makeWeatherURL(coordinate: coordinate)
         let urlRequest = URLRequest(url: url)
         
-        let task = networkModel.task(session: session, urlRequest: urlRequest) { result in
+        let task = networkModel.task(session: session, urlRequest: urlRequest, to: weatherAPI.decodingType) { result in
             
             switch result {
             case .success(let data):
-                let decodedData = self.networkModel.decode(from: data, to: weatherAPI.decodingType)
+                print("Success")
             case .failure(let error):
                 print(error.localizedDescription)
             }
