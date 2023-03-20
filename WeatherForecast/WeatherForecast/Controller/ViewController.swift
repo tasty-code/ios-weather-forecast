@@ -11,7 +11,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let repository = OpenWeatherRepository(decoder: JSONDesirializer())
+        let repository = OpenWeatherRepository(
+            deserializer: JSONDesirializer(),
+            service: OpenWeatherService()
+        )
+
         let coordinate = Coordinate(longitude: 10.99, latitude: 44.34)
 
         repository.fetchWeather(coordinate: coordinate) { result in

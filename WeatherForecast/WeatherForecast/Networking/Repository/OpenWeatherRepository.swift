@@ -11,13 +11,18 @@ final class OpenWeatherRepository {
     
     //MARK: - Property
     
-    private let decoder: Deserializerable
+    private let deserializer: Deserializerable
+    private let service: ServiceProtocol
     
     //MARK: - LifeCycle
-    init(decoder: Deserializerable) {
-        self.decoder = decoder
-    }
 
+    init(
+        deserializer: Deserializerable,
+        service: ServiceProtocol
+    ) {
+        self.deserializer = deserializer
+        self.service = service
+    }
 
     // MARK: - Constant
     
@@ -40,7 +45,20 @@ final class OpenWeatherRepository {
             withPath: Constant.weatherPath,
             coordinate: coordinate
         )
-        performRequest(with: url, completion: completion)
+
+        service.performRequest(with: url) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let weatherData = try self.deserializer.deserialize(CurrentWeather.self, data: data)
+                    completion(.success(weatherData))
+                } catch {
+                    completion(.failure(.parseError))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     func fetchForecast(coordinate: Coordinate,
@@ -49,7 +67,20 @@ final class OpenWeatherRepository {
             withPath: Constant.forecastPath,
             coordinate: coordinate
         )
-        performRequest(with: url, completion: completion)
+
+        service.performRequest(with: url) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let forecastData = try self.deserializer.deserialize(Forecast.self, data: data)
+                    completion(.success(forecastData))
+                } catch {
+                    completion(.failure(.parseError))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     // MARK: - Private
@@ -67,43 +98,10 @@ final class OpenWeatherRepository {
     }
 
     private func generateQueryItems(coordinate: Coordinate) -> [URLQueryItem] {
-         return [
+        return [
             URLQueryItem(name: Constant.latitudeQueryName, value: "\(coordinate.latitude)"),
             URLQueryItem(name: Constant.longitudeQueryName, value: "\(coordinate.longitude)"),
             URLQueryItem(name: Constant.appIdQueryName, value: "\(Bundle.main.apiKey)")
         ]
-    }
-
-    private func performRequest<T: Decodable>(with url: URL?, completion: @escaping (Result<T, NetworkError>) -> Void) {
-        guard let url else {
-            completion(.failure(.invalidURL))
-            return
-        }
-
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard error == nil else {
-                completion(.failure(.networkingError))
-                return
-            }
-
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(.responseError))
-                return
-            }
-
-            guard let data else {
-                completion(.failure(.invalidData))
-                return
-            }
-
-            do {   
-                let decodedData = try self.decoder.deserialize(T.self, data: data)
-                completion(.success(decodedData))
-            } catch {
-                completion(.failure(.parseError))
-            }
-        }
-        task.resume()
     }
 }
