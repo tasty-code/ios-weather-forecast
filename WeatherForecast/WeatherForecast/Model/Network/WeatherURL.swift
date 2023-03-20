@@ -22,7 +22,7 @@ enum WeatherURL {
         let urlString = baseURL + weatherRange.description + "?" + query
 
         guard let url = URL(string: urlString) else {
-            throw WeatherError.invalidURL
+            throw WeatherNetworkError.invalidURL
         }
 
         return url
