@@ -13,7 +13,7 @@ class ViewController: UIViewController {
 
         let repository = OpenWeatherRepository(
             deserializer: JSONDesirializer(),
-            service: OpenWeatherService()
+            service: NetworkService()
         )
 
         let coordinate = Coordinate(longitude: 10.99, latitude: 44.34)
@@ -38,3 +38,4 @@ class ViewController: UIViewController {
     }
     
 }
+

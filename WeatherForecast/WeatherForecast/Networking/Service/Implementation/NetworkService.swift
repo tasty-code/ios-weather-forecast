@@ -1,5 +1,5 @@
 //
-//  OpenWeatherService.swift
+//  NetworkService.swift
 //  WeatherForecast
 //
 //  Created by Mason Kim on 2023/03/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class OpenWeatherService: ServiceProtocol {
+final class NetworkService: ServiceProtocol {
     func performRequest(with url: URL?, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         guard let url else {
             completion(.failure(.invalidURL))
