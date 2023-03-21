@@ -12,7 +12,7 @@ import CoreLocation
 protocol LocationDataManagerDelegate: AnyObject {
 
     func locationDataManager(_ locationDataManager: LocationDataManager,
-                             didUpdateCoordinate coordinate: Coordinate)
+                             didUpdateLocation location: CLLocation)
     func locationDataManager(_ locationDataManager: LocationDataManager,
                              didAuthorized isAuthorized: Bool)
 
@@ -51,10 +51,7 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        let coordinate = Coordinate(longitude: location.coordinate.longitude,
-                                    latitude: location.coordinate.latitude)
-
-        delegate?.locationDataManager(self, didUpdateCoordinate: coordinate)
+        delegate?.locationDataManager(self, didUpdateLocation: location)
     }
 
     func locationManager(_ manager: CLLocationManager,
