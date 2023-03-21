@@ -1,5 +1,5 @@
 //
-//  CurrentWeather.swift
+//  Weather.swift
 //  WeatherForecast
 //
 //  Created by Bora Yang on 2023/03/14.
@@ -7,12 +7,11 @@
 
 import Foundation
 
-// MARK: - CurrentWeather
-struct CurrentWeather: Codable {
+struct Weather: Codable {
     let visibility, dt, timezone, id, cod: Int?
     let base, name: String?
     let coord: Coord?
-    let weather: [Weather]
+    let weather: [WeatherElement]
     let main: Main?
     let wind: Wind?
     let rain: Rain?
@@ -20,17 +19,14 @@ struct CurrentWeather: Codable {
     let sys: Sys?
 }
 
-// MARK: - Clouds
 struct Clouds: Codable {
     let all: Int?
 }
 
-// MARK: - Coord
 struct Coord: Codable {
     let lon, lat: Double?
 }
 
-// MARK: - Main
 struct Main: Codable {
     let temp, feelsLike, tempMin, tempMax: Double?
     let pressure, humidity, seaLevel, grndLevel: Int?
@@ -46,7 +42,6 @@ struct Main: Codable {
     }
 }
 
-// MARK: - Rain
 struct Rain: Codable {
     let the1H: Double?
 
@@ -55,19 +50,16 @@ struct Rain: Codable {
     }
 }
 
-// MARK: - Sys
 struct Sys: Codable {
     let type, id, sunrise, sunset: Int?
     let country: String?
 }
 
-// MARK: - Weather
-struct Weather: Codable {
+struct WeatherElement: Codable {
     let id: Int?
     let main, description, icon: String?
 }
 
-// MARK: - Wind
 struct Wind: Codable {
     let speed, gust: Double?
     let deg: Int?

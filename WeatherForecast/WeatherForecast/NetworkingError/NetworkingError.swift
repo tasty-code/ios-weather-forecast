@@ -18,7 +18,7 @@ extension NetworkingError: LocalizedError {
         switch self {
         case .networkError:
             return "네트워크 오류입니다"
-        case . dataError:
+        case .dataError:
             return "데이터 오류입니다"
         case .parseError:
             return "파싱 오류입니다"

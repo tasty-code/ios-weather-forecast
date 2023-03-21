@@ -15,7 +15,7 @@ class APIService {
 
     func fetchCurrentWeather(lat: Double,
                              lon: Double,
-                             completion: @escaping (Result<CurrentWeather, NetworkingError>) -> Void) {
+                             completion: @escaping (Result<Weather, NetworkingError>) -> Void) {
 
         let latString = doubleToString(lat)
         let lonString = doubleToString(lon)
@@ -36,7 +36,7 @@ class APIService {
             }
 
             do {
-                let currentWeatherData = try JSONDecoder().decode(CurrentWeather.self, from: safeData)
+                let currentWeatherData = try JSONDecoder().decode(Weather.self, from: safeData)
 
                 completion(.success(currentWeatherData))
                 return
@@ -50,7 +50,7 @@ class APIService {
 
     func fetchFiveDayWeather(lat: Double,
                              lon: Double,
-                             completion: @escaping (Result<FiveDayWeather, NetworkingError>) -> Void) {
+                             completion: @escaping (Result<Forecast, NetworkingError>) -> Void) {
 
         let latString = doubleToString(lat)
         let lonString = doubleToString(lon)
@@ -71,7 +71,7 @@ class APIService {
             }
 
             do {
-                let fiveDayWeatherData = try JSONDecoder().decode(FiveDayWeather.self, from: safeData)
+                let fiveDayWeatherData = try JSONDecoder().decode(Forecast.self, from: safeData)
                 completion(.success(fiveDayWeatherData))
                 return
             } catch {
