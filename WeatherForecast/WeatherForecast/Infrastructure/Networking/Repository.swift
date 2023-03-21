@@ -32,7 +32,7 @@ class Repository {
                 return
             }
             
-            guard let wishData = self.loadJSON(weatherType: type.getWeatherMetaType, weatherData: data) else {
+            guard let wishData = self.loadJSON(weatherType: type.weatherMetaType, weatherData: data) else {
                 return
             }
             print(wishData)

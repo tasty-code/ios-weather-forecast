@@ -17,7 +17,7 @@ struct CurrentWeather: WeatherModel {
     let rain: Rain?
     let snow: Snow?
     let TimeOfDataCalculation: Double
-    let sys: WeatherSystem
+    let weatherSystem: WeatherSystem
     let timezone: Int
     let id: Int
     let name: String
@@ -32,7 +32,7 @@ struct CurrentWeather: WeatherModel {
         case rain
         case snow
         case TimeOfDataCalculation = "dt"
-        case sys
+        case weatherSystem = "sys"
         case timezone
         case id
         case name
