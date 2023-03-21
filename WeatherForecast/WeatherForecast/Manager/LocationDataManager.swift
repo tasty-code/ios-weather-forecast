@@ -8,12 +8,25 @@
 import Foundation
 import CoreLocation
 
+protocol LocationDataManagerDelegate: AnyObject {
+
+    func locationDataManager(_ locationDataManager: LocationDataManager,
+                             didUpdateCoordinate coordinate: Coordinate)
+    func locationDataManager(_ locationDataManager: LocationDataManager,
+                             didAuthorized isAuthorized: Bool)
+
+}
+
 final class LocationDataManager: NSObject, CLLocationManagerDelegate {
 
     // MARK: - Properties
 
-    let locationManager = CLLocationManager()
-    private var locationUpdateCompletion: ((CLLocation) -> Void)?
+    private let locationManager = CLLocationManager()
+    weak var delegate: LocationDataManagerDelegate?
+
+    var isAuthorized: Bool {
+        locationManager.authorizationStatus == .authorizedWhenInUse
+    }
 
     // MARK: - Lifecycle
 
@@ -28,22 +41,28 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
     }
 
-    func requestLocation(completion: @escaping (CLLocation?) -> Void) {
-        locationUpdateCompletion = completion
+    func requestLocation() {
         locationManager.requestLocation()
     }
 
     // MARK: - CLLocationManagerDelegate
 
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager,
+                         didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        locationUpdateCompletion?(location)
-        locationUpdateCompletion = nil
+        let coordinate = Coordinate(longitude: location.coordinate.longitude,
+                                    latitude: location.coordinate.latitude)
+
+        delegate?.locationDataManager(self, didUpdateCoordinate: coordinate)
     }
 
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
-        locationUpdateCompletion = nil
+    func locationManager(_ manager: CLLocationManager,
+                         didFailWithError error: Error) {
+        // MARK: 로그 찍어놓기 구현
     }
-    
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        delegate?.locationDataManager(self, didAuthorized: isAuthorized)
+    }
+
 }

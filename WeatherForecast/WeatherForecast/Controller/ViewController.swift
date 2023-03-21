@@ -5,6 +5,7 @@
 // 
 
 import UIKit
+import CoreLocation
 
 class ViewController: UIViewController {
 
@@ -26,17 +27,21 @@ class ViewController: UIViewController {
         fetchWeather(coordinate: coordinate)
         fetchForecast(coordinate: coordinate)
 
-        guard locationDataManager.locationManager.authorizationStatus == .authorizedWhenInUse else {
+        locationDataManager.delegate = self
+
+        guard locationDataManager.isAuthorized else {
             locationDataManager.requestAuthorization()
             return
         }
 
-        locationDataManager.requestLocation { location in
-            print(location?.coordinate.latitude, location?.coordinate.longitude)
-        }
+        fetchLocation()
     }
 
     // MARK: - Private
+
+    private func fetchLocation() {
+        locationDataManager.requestLocation()
+    }
 
     private func fetchWeather(coordinate: Coordinate) {
         repository.fetchWeather(coordinate: coordinate) { result in
@@ -64,3 +69,18 @@ class ViewController: UIViewController {
     
 }
 
+// MARK: - LocationDataManagerDelegate
+
+extension ViewController: LocationDataManagerDelegate {
+
+    func locationDataManager(_ locationDataManager: LocationDataManager, didUpdateCoordinate coordinate: Coordinate) {
+        fetchWeather(coordinate: coordinate)
+    }
+
+    func locationDataManager(_ locationDataManager: LocationDataManager,
+                             didAuthorized isAuthorized: Bool) {
+        guard isAuthorized else { return }
+        fetchLocation()
+    }
+
+}
