@@ -162,7 +162,7 @@
 		5BB7B35329C0544000A14093 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				5BB7B36729C063AF00A14093 /* NetworkEntity */,
+				5BB7B36729C063AF00A14093 /* Network */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -185,14 +185,14 @@
 			path = MockCity;
 			sourceTree = "<group>";
 		};
-		5BB7B36729C063AF00A14093 /* NetworkEntity */ = {
+		5BB7B36729C063AF00A14093 /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				F6F1236C29C1A7CD00CF4416 /* SubEntity */,
 				5BB7B36829C063C300A14093 /* CurrenctWeather.swift */,
 				F6F1236829C06F2400CF4416 /* ForecastWeather.swift */,
 			);
-			path = NetworkEntity;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		5BDE43F729C31D3200686034 /* Domain */ = {
