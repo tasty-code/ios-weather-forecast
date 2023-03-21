@@ -12,7 +12,7 @@ enum URLPath: String {
     case currentWeather
     case forecastWeather
     
-    var getWeatherMetaType: WeatherModel.Type {
+    var weatherMetaType: WeatherModel.Type {
         switch self {
         case .currentWeather:
             return CurrentWeather.self
