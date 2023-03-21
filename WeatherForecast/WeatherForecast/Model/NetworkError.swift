@@ -8,6 +8,7 @@
 import Foundation
 
 enum NetworkError: LocalizedError {
+    
     case invalidURL
     case invalidData
     case networking
@@ -28,4 +29,5 @@ enum NetworkError: LocalizedError {
             return "응답코드가 정상코드가 아닙니다."
         }
     }
+    
 }

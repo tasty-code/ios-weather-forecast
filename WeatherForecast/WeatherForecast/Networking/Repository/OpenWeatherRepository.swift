@@ -46,7 +46,7 @@ final class OpenWeatherRepository {
             coordinate: coordinate
         )
 
-        service.performRequest(with: url) { result in
+        service.performRequest(with: url, httpMethodType: HTTPMethodType.get) { result in
             switch result {
             case .success(let data):
                 do {
@@ -68,7 +68,7 @@ final class OpenWeatherRepository {
             coordinate: coordinate
         )
 
-        service.performRequest(with: url) { result in
+        service.performRequest(with: url, httpMethodType: HTTPMethodType.get) { result in
             switch result {
             case .success(let data):
                 do {
@@ -104,4 +104,5 @@ final class OpenWeatherRepository {
             URLQueryItem(name: Constant.appIdQueryName, value: "\(Bundle.main.apiKey)")
         ]
     }
+    
 }

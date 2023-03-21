@@ -8,5 +8,9 @@
 import Foundation
 
 protocol ServiceProtocol {
-    func performRequest(with url: URL?, completion: @escaping (Result<Data, NetworkError>) -> Void)
+    
+    func performRequest(with url: URL?,
+                        httpMethodType: HTTPMethodType,
+                        completion: @escaping (Result<Data, NetworkError>) -> Void)
+    
 }

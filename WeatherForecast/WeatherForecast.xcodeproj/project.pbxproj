@@ -34,6 +34,7 @@
 		F169CDFF29C00E800022E007 /* OpenWeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F169CDFE29C00E800022E007 /* OpenWeatherRepository.swift */; };
 		F1DA56EF29C2AE2100312C9F /* Deserializerable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DA56EE29C2AE2100312C9F /* Deserializerable.swift */; };
 		F1DA56F129C2B04700312C9F /* JSONDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DA56F029C2B04700312C9F /* JSONDeserializer.swift */; };
+		F1F5FFE929C948A900F9707C /* HTTPMethodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5FFE829C948A900F9707C /* HTTPMethodType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		F169CDFE29C00E800022E007 /* OpenWeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherRepository.swift; sourceTree = "<group>"; };
 		F1DA56EE29C2AE2100312C9F /* Deserializerable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deserializerable.swift; sourceTree = "<group>"; };
 		F1DA56F029C2B04700312C9F /* JSONDeserializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDeserializer.swift; sourceTree = "<group>"; };
+		F1F5FFE829C948A900F9707C /* HTTPMethodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethodType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 			children = (
 				B47DBD0A29BF15330006D8E2 /* DTO */,
 				B43FADA029C03E7400CF9E06 /* NetworkError.swift */,
+				F1F5FFE829C948A900F9707C /* HTTPMethodType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 				B4A728BA29C81F2600B589CE /* Snow.swift in Sources */,
 				F159663B29C8102800EEB62F /* Weather.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
+				F1F5FFE929C948A900F9707C /* HTTPMethodType.swift in Sources */,
 				F169CDFD29BF183E0022E007 /* Forecast.swift in Sources */,
 				F159663429C80FAB00EEB62F /* Rain.swift in Sources */,
 			);

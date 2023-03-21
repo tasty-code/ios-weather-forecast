@@ -18,4 +18,5 @@ class JSONDesirializer: Deserializerable {
     func deserialize<T: Decodable>(_ type: T.Type, data: Data) throws -> T {
         try decoder.decode(T.self, from: data)
     }
+    
 }

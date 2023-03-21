@@ -8,13 +8,19 @@
 import Foundation
 
 final class NetworkService: ServiceProtocol {
-    func performRequest(with url: URL?, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+
+    func performRequest(with url: URL?,
+                        httpMethodType: HTTPMethodType,
+                        completion: @escaping (Result<Data, NetworkError>) -> Void) {
         guard let url else {
             completion(.failure(.invalidURL))
             return
         }
-
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = httpMethodType.rawValue
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             guard error == nil else {
                 completion(.failure(.networking))
                 return
@@ -35,4 +41,5 @@ final class NetworkService: ServiceProtocol {
         }
         task.resume()
     }
+    
 }

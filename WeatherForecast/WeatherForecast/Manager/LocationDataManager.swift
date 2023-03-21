@@ -45,4 +45,5 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
         print(error.localizedDescription)
         locationUpdateCompletion = nil
     }
+    
 }
