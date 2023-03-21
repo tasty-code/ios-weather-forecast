@@ -142,8 +142,6 @@
 			children = (
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
-				F62203E629C0436E00A00108 /* MockWeather.json */,
-				F62203E929C0449600A00108 /* MockFiveDaysWeather.json */,
 				5BB7B34F29C04F8900A14093 /* API+KEY.plist */,
 				5BB7B35129C04FD800A14093 /* Extension+APIKEY.swift */,
 			);
@@ -277,6 +275,8 @@
 				F62203F729C05CC800A00108 /* MockForecastWeather */,
 				5BB7B35629C054DD00A14093 /* MockCurrentWeather */,
 				C79C8D0A25ADDDF400EEE3F1 /* WeatherForecastTests.swift */,
+				F62203E629C0436E00A00108 /* MockWeather.json */,
+				F62203E929C0449600A00108 /* MockFiveDaysWeather.json */,
 				C79C8D0C25ADDDF400EEE3F1 /* Info.plist */,
 			);
 			path = WeatherForecastTests;
