@@ -10,7 +10,11 @@ import UIKit
 typealias NetworkResult = Result<Decodable, NetworkError>
 
 final class NetworkModel {
-    private let session = URLSession.shared
+    private let session: URLSession
+    
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
     
     func task<DecodedData: Decodable>(urlRequest: URLRequest,
                                       to type: DecodedData.Type,
