@@ -30,11 +30,11 @@ enum URLPath: String {
         }
     }
     
-    static func configureURL(with coordintate: CLLocationCoordinate2D, getPath: URLPath) throws -> URL {
+    static func configureURL(of weatherCastType: URLPath, with coordintate: CLLocationCoordinate2D) throws -> URL {
         guard let weatherAPIKEY = Bundle.main.object(forInfoDictionaryKey: "WeatherAPIKEY") as? String else {
             fatalError("Weather API KEY is E.M.P.T.Y !!")
         }
-        guard var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(getPath.path)") else {
+        guard var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(weatherCastType.path)") else {
             throw URLComponentsError.invalidComponent
         }
 
@@ -44,7 +44,7 @@ enum URLPath: String {
         let unitsOfMeasurement = URLQueryItem(name: "units", value: "metric")
 
         components.queryItems = [latitude, longitude, appid, unitsOfMeasurement]
-        if getPath == .forecastWeather {
+        if weatherCastType == .forecastWeather {
             let countOfDay = URLQueryItem(name: "cnt", value: "5")
             components.queryItems?.append(countOfDay)
         }

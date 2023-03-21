@@ -10,8 +10,7 @@ import CoreLocation
 
 class Repository {
     func loadData(location: CLLocationCoordinate2D, path: URLPath) throws {
-        let url = try URLPath.configureURL(with: location, getPath: path)
-        
+        let url = try URLPath.configureURL(of: path, with: location)
         let session = URLSession.shared
         
         session.dataTask(with: url) { data, response, error in

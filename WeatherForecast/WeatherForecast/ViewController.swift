@@ -16,8 +16,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         do {
-            try repository.loadData(type: .currentWeather, location: location)
-            try repository.loadData(type: .forecastWeather, location: location)
+            try repository.loadData(location: location, path: .currentWeather)
+            try repository.loadData(location: location, path: .forecastWeather)
         } catch {
             print(error.localizedDescription)
         }
