@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         coreLocationManger.delegate = self
-        coreLocationManger.desiredAccuracy = kCLLocationAccuracyReduced
+        coreLocationManger.desiredAccuracy = kCLLocationAccuracyKilometer
         coreLocationManger.requestWhenInUseAuthorization()
     }
 }
@@ -24,9 +24,23 @@ class ViewController: UIViewController {
 extension ViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        let coordinate = Coordinate(longitude: location.coordinate.longitude, latitude: location.coordinate.latitude)
-        network.fetchWeatherInformation(of: .fiveDaysForecast, in: coordinate)
+        
+        guard let recentLocation = manager.location else {
+            return
+        }
+        
+        let geocoder = CLGeocoder()
+        let locale = Locale(identifier: "Ko-kr")
+        
+        geocoder.reverseGeocodeLocation(recentLocation, preferredLocale: locale) { placemark, error in
+            guard error == nil else {
+                return
+            }
+            
+            guard let firstLocation = placemark?.last else { return }
+            print(firstLocation)
+            
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
