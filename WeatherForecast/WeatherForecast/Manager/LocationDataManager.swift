@@ -12,7 +12,7 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
 
     // MARK: - Properties
 
-    private let locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
     private var locationUpdateCompletion: ((CLLocation) -> Void)?
 
     // MARK: - Lifecycle

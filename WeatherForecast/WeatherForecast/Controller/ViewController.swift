@@ -26,7 +26,11 @@ class ViewController: UIViewController {
         fetchWeather(coordinate: coordinate)
         fetchForecast(coordinate: coordinate)
 
-        locationDataManager.requestAuthorization()
+        guard locationDataManager.locationManager.authorizationStatus == .authorizedWhenInUse else {
+            locationDataManager.requestAuthorization()
+            return
+        }
+
         locationDataManager.requestLocation { location in
             print(location?.coordinate.latitude, location?.coordinate.longitude)
         }
