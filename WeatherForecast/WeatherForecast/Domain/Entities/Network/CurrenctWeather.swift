@@ -9,14 +9,14 @@ import Foundation
 
 struct CurrentWeather: WeatherModel {
     let coordinator: Coordinate
-    let weather: [Weather]
+    let weathers: [Weather]
     let main: Main
     let visibility: Double
     let wind: Wind
     let clouds: Clouds
     let rain: Rain?
     let snow: Snow?
-    let TimeOfDataCalculation: Double
+    let timeOfDataCalculation: Double
     let weatherSystem: WeatherSystem
     let timezone: Int
     let id: Int
@@ -24,14 +24,14 @@ struct CurrentWeather: WeatherModel {
     
     enum CodingKeys: String, CodingKey {
         case coordinator = "coord"
-        case weather
+        case weathers = "weather"
         case main
         case visibility
         case wind
         case clouds
         case rain
         case snow
-        case TimeOfDataCalculation = "dt"
+        case timeOfDataCalculation = "dt"
         case weatherSystem = "sys"
         case timezone
         case id
