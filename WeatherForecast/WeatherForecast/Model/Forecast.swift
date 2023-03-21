@@ -1,5 +1,5 @@
 //
-//  FiveDayWeather.swift
+//  Forecast.swift
 //  WeatherForecast
 //
 //  Created by 신동오 on 2023/03/15.
@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct FiveDayWeather: Codable {
+struct Forecast: Decodable {
     let cod: String
     let message, cnt: Int
     let list: [List]
     let city: City
 
     // MARK: - City
-    struct City: Codable {
+    struct City: Decodable {
         let id: Int
         let name: String
         let coord: Coord
@@ -23,12 +23,12 @@ struct FiveDayWeather: Codable {
     }
 
     // MARK: - Coord
-    struct Coord: Codable {
+    struct Coord: Decodable {
         let lat, lon: Double
     }
 
     // MARK: - List
-    struct List: Codable {
+    struct List: Decodable {
         let dt: Int
         let main: MainClass
         let weather: [Weather]
@@ -46,12 +46,12 @@ struct FiveDayWeather: Codable {
     }
 
     // MARK: - Clouds
-    struct Clouds: Codable {
+    struct Clouds: Decodable {
         let all: Int
     }
 
     // MARK: - MainClass
-    struct MainClass: Codable {
+    struct MainClass: Decodable {
         let temp, feelsLike, tempMin, tempMax: Double
         let pressure, seaLevel, grndLevel, humidity: Int
         let tempKf: Double
@@ -70,24 +70,24 @@ struct FiveDayWeather: Codable {
     }
 
     // MARK: - Sys
-    struct Sys: Codable {
+    struct Sys: Decodable {
         let pod: Pod
     }
 
-    enum Pod: String, Codable {
+    enum Pod: String, Decodable {
         case d = "d"
         case n = "n"
     }
 
     // MARK: - Weather
-    struct Weather: Codable {
+    struct Weather: Decodable {
         let id: Int
         let main: MainEnum
         let description: Description
         let icon: Icon
     }
 
-    enum Description: String, Codable {
+    enum Description: String, Decodable {
         case brokenClouds = "broken clouds"
         case clearSky = "clear sky"
         case fewClouds = "few clouds"
@@ -95,7 +95,7 @@ struct FiveDayWeather: Codable {
         case scatteredClouds = "scattered clouds"
     }
 
-    enum Icon: String, Codable {
+    enum Icon: String, Decodable {
         case the01D = "01d"
         case the01N = "01n"
         case the02N = "02n"
@@ -104,13 +104,13 @@ struct FiveDayWeather: Codable {
         case the04N = "04n"
     }
 
-    enum MainEnum: String, Codable {
+    enum MainEnum: String, Decodable {
         case clear = "Clear"
         case clouds = "Clouds"
     }
 
     // MARK: - Wind
-    struct Wind: Codable {
+    struct Wind: Decodable {
         let speed: Double
         let deg: Int
         let gust: Double

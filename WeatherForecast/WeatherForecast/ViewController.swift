@@ -6,13 +6,14 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
-    var currentWeather: CurrentWeather?
-    var fiveDayWeather: FiveDayWeather?
-    let appid = Bundle.main.apiKey
-    let currentWeatherKey = "https://api.openweathermap.org/data/2.5/weather?lat=37.533624&lon=126.963206&appid="
-    let fiveDayWeatherKey = "https://api.openweathermap.org/data/2.5/forecast?lat=37.533624&lon=126.963206&appid="
+class ViewController: UIViewController, NetworkTaskProtcol {
+    private var currentWeather: Weather?
+    private var fiveDayWeather: Forecast?
+    private var appid: String{
+        return Bundle.main.apiKey
+    }
+    lazy var weatherKey: String = "https://api.openweathermap.org/data/2.5/weather?lat=37.533624&lon=126.963206&appid=\(appid)"
+    lazy var forecastKey = "https://api.openweathermap.org/data/2.5/forecast?lat=37.533624&lon=126.963206&appid=\(appid)"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,35 +21,33 @@ class ViewController: UIViewController {
     }
 
     private func callAPI() {
-        let decoder = JSONDecoder()
-        guard let currentWeatherBaseURL = URL(string: currentWeatherKey + appid) else { return }
-        let weatherURLRequest = URLRequest(url: currentWeatherBaseURL)
-        let currentWeatherTask = URLSession.shared.dataTask(with: weatherURLRequest) { data, response, error in
-            if let data = data {
-                do {
-                    try self.currentWeather = decoder.decode(CurrentWeather.self, from: data)
-                    print("currentWeather: ",self.currentWeather)
-                } catch {
-                    print(error)
-                }
+        guard let weatherURL = URL(string: weatherKey) else {
+            print("invalid URL")
+            return
+        }
+        let weatherURLRequest = URLRequest(url: weatherURL)
+        dataTask(URLRequest: weatherURLRequest, myType: Weather.self) { result in
+            switch result {
+            case .success(let data):
+                self.currentWeather = data
+            case .failure(let error):
+                print("dataTask error: ", error)
             }
         }
-        currentWeatherTask.resume()
         
-        guard let fiveDayWeatherBaseURL = URL(string: fiveDayWeatherKey + appid) else { return }
-        let fiveDayURLRequest = URLRequest(url: fiveDayWeatherBaseURL)
-        let fiveDayWeatherTask = URLSession.shared.dataTask(with: fiveDayURLRequest) { data, response, error in
-            if let data = data {
-                do {
-                    try self.fiveDayWeather = decoder.decode(FiveDayWeather.self, from: data)
-                    print("fiveDayWeather: ",self.fiveDayWeather)
-                } catch {
-                    print(error)
-                }
+        guard let forecastURL = URL(string: forecastKey) else {
+            print("invalid URL")
+            return
+        }
+        let forecastURLRequest = URLRequest(url: forecastURL)
+        dataTask(URLRequest: forecastURLRequest, myType: Forecast.self) { result in
+            switch result {
+            case .success(let data):
+                self.fiveDayWeather = data
+            case .failure(let error):
+                print("dataTask error: ", error)
             }
         }
-        fiveDayWeatherTask.resume()
     }
-
 }
 
