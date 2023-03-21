@@ -31,13 +31,16 @@ enum URLPath: String {
     }
     
     static func configureURL(coordintate: CLLocationCoordinate2D, getPath: URLPath) throws -> URL {
+        guard let weatherAPIKEY = Bundle.main.object(forInfoDictionaryKey: "WeatherAPIKEY") as? String else {
+            fatalError("Weather API KEY is E.M.P.T.Y !!")
+        }
         guard var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(getPath.path)") else {
             throw URLComponentsError.invalidComponent
         }
-        
+
         let latitude = URLQueryItem(name: "lat", value: coordintate.latitude.description)
         let longitude = URLQueryItem(name: "lon", value: coordintate.longitude.description)
-        let appid = URLQueryItem(name: "appid", value: Bundle.main.APIKey)
+        let appid = URLQueryItem(name: "appid", value: weatherAPIKEY)
         let unitsOfMeasurement = URLQueryItem(name: "units", value: "metric")
 
         components.queryItems = [latitude, longitude, appid, unitsOfMeasurement]
