@@ -12,7 +12,7 @@ class ViewController: UIViewController {
 
     private let repository = OpenWeatherRepository(
         deserializer: JSONDesirializer(),
-        service: OpenWeatherService()
+        service: NetworkService()
     )
 
     private let locationDataManager = LocationDataManager()
@@ -59,3 +59,4 @@ class ViewController: UIViewController {
     }
     
 }
+
