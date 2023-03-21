@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5BB7B35029C04F8900A14093 /* API+KEY.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB7B34F29C04F8900A14093 /* API+KEY.plist */; };
 		5BB7B35229C04FD800A14093 /* Extension+APIKEY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35129C04FD800A14093 /* Extension+APIKEY.swift */; };
 		5BB7B35529C0546100A14093 /* MockCurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35429C0546100A14093 /* MockCurrentWeather.swift */; };
 		5BB7B35829C0550200A14093 /* MockCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7B35729C0550200A14093 /* MockCity.swift */; };
@@ -62,7 +61,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5BB7B34F29C04F8900A14093 /* API+KEY.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "API+KEY.plist"; sourceTree = "<group>"; };
 		5BB7B35129C04FD800A14093 /* Extension+APIKEY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+APIKEY.swift"; sourceTree = "<group>"; };
 		5BB7B35429C0546100A14093 /* MockCurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCurrentWeather.swift; sourceTree = "<group>"; };
 		5BB7B35729C0550200A14093 /* MockCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCity.swift; sourceTree = "<group>"; };
@@ -77,6 +75,7 @@
 		5BDE43FA29C31D5F00686034 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		5BDE43FE29C32A3800686034 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		5BDE440029C32A4700686034 /* URLPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLPath.swift; sourceTree = "<group>"; };
+		5BED90CA29C979ED006DB2A8 /* Weather+APIKEY.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Weather+APIKEY.xcconfig"; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -142,8 +141,8 @@
 			children = (
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
-				5BB7B34F29C04F8900A14093 /* API+KEY.plist */,
 				5BB7B35129C04FD800A14093 /* Extension+APIKEY.swift */,
+				5BED90CA29C979ED006DB2A8 /* Weather+APIKEY.xcconfig */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -421,7 +420,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F62203EA29C0449600A00108 /* MockFiveDaysWeather.json in Resources */,
-				5BB7B35029C04F8900A14093 /* API+KEY.plist in Resources */,
 				C79C8D0025ADDDF300EEE3F1 /* LaunchScreen.storyboard in Resources */,
 				C79C8CFD25ADDDF300EEE3F1 /* Assets.xcassets in Resources */,
 				F62203E729C0436E00A00108 /* MockWeather.json in Resources */,
