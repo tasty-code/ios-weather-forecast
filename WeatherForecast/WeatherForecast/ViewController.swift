@@ -6,14 +6,13 @@
 
 import UIKit
 
-class ViewController: UIViewController, NetworkTaskProtcol {
+class ViewController: UIViewController, NetworkProtocol {
+    private(set) var BaseURL: String = "https://api.openweathermap.org/data/2.5/"
+    private(set) var appid: String = Bundle.main.apiKey
+    private(set) var lat: Double = 37.533624
+    private(set) var lon: Double = 126.963206
     private var currentWeather: Weather?
     private var fiveDayWeather: Forecast?
-    private var appid: String{
-        return Bundle.main.apiKey
-    }
-    lazy var weatherKey: String = "https://api.openweathermap.org/data/2.5/weather?lat=37.533624&lon=126.963206&appid=\(appid)"
-    lazy var forecastKey = "https://api.openweathermap.org/data/2.5/forecast?lat=37.533624&lon=126.963206&appid=\(appid)"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +20,9 @@ class ViewController: UIViewController, NetworkTaskProtcol {
     }
 
     private func callAPI() {
-        guard let weatherURL = URL(string: weatherKey) else {
+        let weatherURLString = weatherURL(lat: lat, lon: lon)
+        print(weatherURLString)
+        guard let weatherURL = URL(string: weatherURLString) else {
             print("invalid URL")
             return
         }
@@ -35,11 +36,13 @@ class ViewController: UIViewController, NetworkTaskProtcol {
             }
         }
         
-        guard let forecastURL = URL(string: forecastKey) else {
+        let forecastURLString = forecastURL(lat: lat, lon: lon)
+        guard let forecastURL = URL(string: forecastURLString) else {
             print("invalid URL")
             return
         }
         let forecastURLRequest = URLRequest(url: forecastURL)
+        print(forecastURLString)
         dataTask(URLRequest: forecastURLRequest, myType: Forecast.self) { result in
             switch result {
             case .success(let data):
@@ -50,4 +53,3 @@ class ViewController: UIViewController, NetworkTaskProtcol {
         }
     }
 }
-

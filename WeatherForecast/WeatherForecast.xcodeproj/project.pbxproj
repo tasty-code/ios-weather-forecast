@@ -20,6 +20,8 @@
 		D9CEE42229C433880035AA8E /* WeatherForecast++Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9CEE42129C433880035AA8E /* WeatherForecast++Bundle.swift */; };
 		E770FBBE29C1AF4200977D51 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E770FBBD29C1AF4200977D51 /* Forecast.swift */; };
 		E77D5DBC29C950F4001F02A7 /* NetworkTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77D5DBB29C950F4001F02A7 /* NetworkTaskProtocol.swift */; };
+		E77D5DD429C976E6001F02A7 /* NetworkURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77D5DD329C976E6001F02A7 /* NetworkURLProtocol.swift */; };
+		E77D5DD629C976ED001F02A7 /* NetworkProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77D5DD529C976ED001F02A7 /* NetworkProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,8 @@
 		D9CEE42129C433880035AA8E /* WeatherForecast++Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeatherForecast++Bundle.swift"; sourceTree = "<group>"; };
 		E770FBBD29C1AF4200977D51 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
 		E77D5DBB29C950F4001F02A7 /* NetworkTaskProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTaskProtocol.swift; sourceTree = "<group>"; };
+		E77D5DD329C976E6001F02A7 /* NetworkURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkURLProtocol.swift; sourceTree = "<group>"; };
+		E77D5DD529C976ED001F02A7 /* NetworkProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +118,7 @@
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
 				D9CEE41F29C431A80035AA8E /* WeatherInfo.plist */,
 				D9CEE42129C433880035AA8E /* WeatherForecast++Bundle.swift */,
-				E77D5DBA29C950CC001F02A7 /* Protocol */,
+				E77D5DD729C97813001F02A7 /* Network */,
 				E770FBBC29C1AF2B00977D51 /* Model */,
 				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
@@ -154,9 +158,19 @@
 		E77D5DBA29C950CC001F02A7 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				E77D5DD529C976ED001F02A7 /* NetworkProtocol.swift */,
 				E77D5DBB29C950F4001F02A7 /* NetworkTaskProtocol.swift */,
+				E77D5DD329C976E6001F02A7 /* NetworkURLProtocol.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		E77D5DD729C97813001F02A7 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				E77D5DBA29C950CC001F02A7 /* Protocol */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,8 +306,10 @@
 			files = (
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
+				E77D5DD429C976E6001F02A7 /* NetworkURLProtocol.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				D9A6D84229C1ABD9003139A8 /* Weather.swift in Sources */,
+				E77D5DD629C976ED001F02A7 /* NetworkProtocol.swift in Sources */,
 				E77D5DBC29C950F4001F02A7 /* NetworkTaskProtocol.swift in Sources */,
 				E770FBBE29C1AF4200977D51 /* Forecast.swift in Sources */,
 				D9CEE42229C433880035AA8E /* WeatherForecast++Bundle.swift in Sources */,
