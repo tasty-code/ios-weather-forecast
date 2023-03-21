@@ -6,9 +6,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, NetworkProtocol {
-    private(set) var BaseURL: String = "https://api.openweathermap.org/data/2.5/"
-    private(set) var appid: String = Bundle.main.apiKey
+class ViewController: UIViewController, OpenWeatherURLProtocol, NetworkTaskProtcol {
     private(set) var lat: Double = 37.533624
     private(set) var lon: Double = 126.963206
     private var currentWeather: Weather?
@@ -53,3 +51,4 @@ class ViewController: UIViewController, NetworkProtocol {
         }
     }
 }
+

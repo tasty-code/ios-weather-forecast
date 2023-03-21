@@ -1,5 +1,5 @@
 //
-//  NetworkURLProtocol.swift
+//  OpenWeatherURLProtocol.swift
 //  WeatherForecast
 //
 //  Created by 신동오 on 2023/03/21.
@@ -18,6 +18,13 @@ protocol OpenWeatherURLProtocol {
 }
 
 extension OpenWeatherURLProtocol {
+    var BaseURL: String {
+        return "https://api.openweathermap.org/data/2.5/"
+    }
+    var appid: String {
+        return Bundle.main.apiKey
+    }
+    
     func weatherURL(lat: Double, lon: Double) -> String {
         return "\(BaseURL)weather?lat=\(lat)&lon=\(lon)&appid=\(appid)"
     }
