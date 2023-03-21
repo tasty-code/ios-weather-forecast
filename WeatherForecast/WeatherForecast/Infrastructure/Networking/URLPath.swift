@@ -23,7 +23,7 @@ enum URLPath: String {
     
     static func configureURL(coordintate: CLLocationCoordinate2D, getPath: URLPath) throws -> URL {
         guard var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(getPath.rawValue)") else {
-            throw URLError(.badURL)
+            throw URLComponentsError.invalidComponent
         }
         
         let latitude = URLQueryItem(name: "lat", value: coordintate.latitude.description)
@@ -38,7 +38,7 @@ enum URLPath: String {
         }
         
         guard let url = components.url else {
-            throw URLError(.badURL)
+            throw URLComponentsError.invalidComponent
         }
         
         return url
