@@ -11,6 +11,8 @@ class APIService {
 
     static let shared = APIService()
 
+    private let baseURL = "https://api.openweathermap.org/data/2.5"
+
     private init() { }
 
     func fetchCurrentWeather(lat: Double,
@@ -20,7 +22,7 @@ class APIService {
         let latString = doubleToString(lat)
         let lonString = doubleToString(lon)
 
-        let urlString = "\(WeatherType.currentWeather.urlString)?lat=\(latString)&lon=\(lonString)&appid=\(SecretKey.appId)"
+        let urlString =  "\(baseURL)/\(URLPath.weather)?lat=\(latString)&lon=\(lonString)&appid=\(SecretKey.appId)"
 
         guard let url = URL(string: urlString) else { return }
 
@@ -55,7 +57,7 @@ class APIService {
         let latString = doubleToString(lat)
         let lonString = doubleToString(lon)
 
-        let urlString = "\(WeatherType.fiveDayWeather.urlString)?lat=\(latString)&lon=\(lonString)&appid=\(SecretKey.appId)"
+        let urlString = "\(baseURL)/\(URLPath.forecast)?lat=\(latString)&lon=\(lonString)&appid=\(SecretKey.appId)"
 
         guard let url = URL(string: urlString) else { return }
 

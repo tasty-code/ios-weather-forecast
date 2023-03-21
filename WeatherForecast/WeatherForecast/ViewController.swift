@@ -25,8 +25,7 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
         let latitude = currentLocation.coordinate.latitude
         let longitude = currentLocation.coordinate.longitude
 
-        APIService.shared.fetchCurrentWeather(lat: latitude, lon: longitude) {
-            result in
+        APIService.shared.fetchCurrentWeather(lat: latitude, lon: longitude) { result in
             switch result {
             case .success(let currentWeather):
                 print(currentWeather)
