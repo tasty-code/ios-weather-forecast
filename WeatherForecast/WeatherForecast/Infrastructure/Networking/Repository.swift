@@ -9,8 +9,8 @@ import Foundation
 import CoreLocation
 
 class Repository {
-    func loadData(type: URLPath, location: CLLocationCoordinate2D) throws {
-        let url = try URLPath.configureURL(coordintate: location, getPath: type)
+    func loadData(location: CLLocationCoordinate2D, path: URLPath) throws {
+        let url = try URLPath.configureURL(with: location, getPath: path)
         
         let session = URLSession.shared
         
@@ -32,7 +32,7 @@ class Repository {
                 return
             }
             
-            guard let wishData = self.loadJSON(weatherType: type.weatherMetaType, weatherData: data) else {
+            guard let wishData = self.loadJSON(weatherType: path.weatherMetaType, weatherData: data) else {
                 return
             }
             print(wishData)

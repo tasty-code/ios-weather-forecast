@@ -30,7 +30,7 @@ enum URLPath: String {
         }
     }
     
-    static func configureURL(coordintate: CLLocationCoordinate2D, getPath: URLPath) throws -> URL {
+    static func configureURL(with coordintate: CLLocationCoordinate2D, getPath: URLPath) throws -> URL {
         guard let weatherAPIKEY = Bundle.main.object(forInfoDictionaryKey: "WeatherAPIKEY") as? String else {
             fatalError("Weather API KEY is E.M.P.T.Y !!")
         }
