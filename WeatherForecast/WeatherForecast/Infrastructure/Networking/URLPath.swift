@@ -9,8 +9,8 @@ import Foundation
 import CoreLocation
 
 enum URLPath: String {
-    case currentWeather = "currentWeather"
-    case forecastWeather = "forecastWeather"
+    case currentWeather = "weather"
+    case forecastWeather = "forecast"
     
     var getWeatherMetaType: WeatherModel.Type {
         switch self {
