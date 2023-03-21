@@ -23,21 +23,20 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let coordinate = Coordinate(longitude: 10.99, latitude: 44.34)
-        fetchWeather(coordinate: coordinate)
-        fetchForecast(coordinate: coordinate)
+        configureLocationDataManager()
+        fetchLocation()
+    }
 
+    // MARK: - Private
+
+    private func configureLocationDataManager() {
         locationDataManager.delegate = self
 
         guard locationDataManager.isAuthorized else {
             locationDataManager.requestAuthorization()
             return
         }
-
-        fetchLocation()
     }
-
-    // MARK: - Private
 
     private func fetchLocation() {
         locationDataManager.requestLocation()
@@ -46,8 +45,8 @@ class ViewController: UIViewController {
     private func fetchWeather(coordinate: Coordinate) {
         repository.fetchWeather(coordinate: coordinate) { result in
             switch result {
-            case .success(let data):
-//                print(data)
+            case .success(let currentWeather):
+                print(currentWeather.cityName)
                 break
             case .failure(let error):
                 print(error.localizedDescription)
@@ -58,8 +57,8 @@ class ViewController: UIViewController {
     private func fetchForecast(coordinate: Coordinate) {
         repository.fetchForecast(coordinate: coordinate) { result in
             switch result {
-            case .success(let data):
-//                print(data)
+            case .success(let forecast):
+                print(forecast.city.name)
                 break
             case .failure(let error):
                 print(error.localizedDescription)
@@ -75,6 +74,7 @@ extension ViewController: LocationDataManagerDelegate {
 
     func locationDataManager(_ locationDataManager: LocationDataManager, didUpdateCoordinate coordinate: Coordinate) {
         fetchWeather(coordinate: coordinate)
+        fetchForecast(coordinate: coordinate)
     }
 
     func locationDataManager(_ locationDataManager: LocationDataManager,
