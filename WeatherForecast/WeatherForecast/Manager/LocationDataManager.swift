@@ -12,9 +12,9 @@ import CoreLocation
 protocol LocationDataManagerDelegate: AnyObject {
 
     func locationDataManager(_ locationDataManager: LocationDataManager,
-                             didUpdateLocation location: CLLocation)
-    func locationDataManager(_ locationDataManager: LocationDataManager,
                              didAuthorized isAuthorized: Bool)
+    func locationDataManager(_ locationDataManager: LocationDataManager,
+                             didUpdateLocation location: CLLocation)
     func locationDataManager(_ locationDataManager: LocationDataManager,
                              didUpdateAddress placemark: CLPlacemark)
 
@@ -66,16 +66,15 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         delegate?.locationDataManager(self, didAuthorized: isAuthorized)
     }
+
+    // MARK: - Geocode
     
-    
-    
-    
-    func fetchAddress(of location: CLLocation) {
-        geocoder.reverseGeocodeLocation(location) { [self] placemarks, error in
-            guard error == nil else { return }
+    private func fetchAddress(of location: CLLocation) {
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            guard let self = self, error == nil else { return }
 
             guard let placemark = placemarks?.first else { return }
-            delegate?.locationDataManager(self, didUpdateAddress: placemark)
+            self.delegate?.locationDataManager(self, didUpdateAddress: placemark)
         }
        
     }

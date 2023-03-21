@@ -10,7 +10,7 @@ import Foundation
 struct ForecastData: Decodable {
     let timestamp: Int
     let weatherDetail: WeatherDetail
-    let weather: [Weather]
+    let weathers: [Weather]
     let clouds: Clouds
     let wind: Wind
     let visibility: Int?
@@ -22,7 +22,8 @@ struct ForecastData: Decodable {
     enum CodingKeys: String, CodingKey {
         case timestamp = "dt"
         case weatherDetail = "main"
-        case weather, clouds, wind, visibility, rain, snow
+        case weathers = "weather"
+        case clouds, wind, visibility, rain, snow
         case probabilityOfPrecipitation = "pop"
         case dateString = "dt_txt"
     }

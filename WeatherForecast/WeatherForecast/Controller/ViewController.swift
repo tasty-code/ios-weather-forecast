@@ -47,8 +47,7 @@ class ViewController: UIViewController {
         repository.fetchWeather(coordinate: coordinate) { result in
             switch result {
             case .success(let currentWeather):
-                print(currentWeather.cityName)
-                break
+                print(currentWeather.weathers.first?.description ?? "")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -59,8 +58,7 @@ class ViewController: UIViewController {
         repository.fetchForecast(coordinate: coordinate) { result in
             switch result {
             case .success(let forecast):
-                print(forecast.city.name)
-                break
+                print(forecast.forecastDatas.first?.weathers.first?.description ?? "")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -72,9 +70,11 @@ class ViewController: UIViewController {
 // MARK: - LocationDataManagerDelegate
 
 extension ViewController: LocationDataManagerDelegate {
-    
-    func locationDataManager(_ locationDataManager: LocationDataManager, didUpdateAddress placemark: CLPlacemark) {
-        print(placemark.country, placemark.administrativeArea, placemark.locality, placemark.name)
+
+    func locationDataManager(_ locationDataManager: LocationDataManager,
+                             didAuthorized isAuthorized: Bool) {
+        guard isAuthorized else { return }
+        fetchLocation()
     }
 
     func locationDataManager(_ locationDataManager: LocationDataManager,
@@ -86,10 +86,11 @@ extension ViewController: LocationDataManagerDelegate {
         fetchForecast(coordinate: coordinate)
     }
 
-    func locationDataManager(_ locationDataManager: LocationDataManager,
-                             didAuthorized isAuthorized: Bool) {
-        guard isAuthorized else { return }
-        fetchLocation()
+    func locationDataManager(_ locationDataManager: LocationDataManager, didUpdateAddress placemark: CLPlacemark) {
+        print(placemark.country ?? "",
+              placemark.administrativeArea ?? "",
+              placemark.locality ?? "",
+              placemark.name ?? "")
     }
 
 }
