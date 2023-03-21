@@ -14,7 +14,12 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        repository.loadData(type: .currentWeather, location: location)
-        repository.loadData(type: .forecastWeather, location: location)
+        
+        do {
+            try repository.loadData(type: .currentWeather, location: location)
+            try repository.loadData(type: .forecastWeather, location: location)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }

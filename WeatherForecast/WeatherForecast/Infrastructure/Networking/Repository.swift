@@ -9,10 +9,8 @@ import Foundation
 import CoreLocation
 
 class Repository {
-    func loadData(type: URLPath, location: CLLocationCoordinate2D) {
-        guard let url = try? URLPath.configureURL(coordintate: location, getPath: type) else {
-            return
-        }
+    func loadData(type: URLPath, location: CLLocationCoordinate2D) throws {
+        let url = try URLPath.configureURL(coordintate: location, getPath: type)
         
         let session = URLSession.shared
         
