@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ForecastWeatherData {
+struct MockForecastWeatherData {
     let dt: Int
     let main: Main
     let weather: [Weather]

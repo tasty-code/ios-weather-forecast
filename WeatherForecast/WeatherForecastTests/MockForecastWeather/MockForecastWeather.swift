@@ -10,5 +10,5 @@ import Foundation
 struct MockForecastWeather {
     let city: City
     let time: Int
-    let data: [ForecastWeatherData]
+    let data: [MockForecastWeatherData]
 }
