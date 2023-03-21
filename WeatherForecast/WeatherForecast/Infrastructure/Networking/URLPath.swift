@@ -9,8 +9,8 @@ import Foundation
 import CoreLocation
 
 enum URLPath: String {
-    case currentWeather = "weather"
-    case forecastWeather = "forecast"
+    case currentWeather
+    case forecastWeather
     
     var getWeatherMetaType: WeatherModel.Type {
         switch self {
@@ -20,9 +20,18 @@ enum URLPath: String {
             return ForecastWeather.self
         }
     }
+
+    var path: String {
+        switch self {
+        case .currentWeather:
+            return "weather"
+        case .forecastWeather:
+            return "forecast"
+        }
+    }
     
     static func configureURL(coordintate: CLLocationCoordinate2D, getPath: URLPath) throws -> URL {
-        guard var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(getPath.rawValue)") else {
+        guard var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(getPath.path)") else {
             throw URLComponentsError.invalidComponent
         }
         
