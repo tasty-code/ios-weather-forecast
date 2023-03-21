@@ -15,6 +15,8 @@ protocol LocationDataManagerDelegate: AnyObject {
                              didUpdateLocation location: CLLocation)
     func locationDataManager(_ locationDataManager: LocationDataManager,
                              didAuthorized isAuthorized: Bool)
+    func locationDataManager(_ locationDataManager: LocationDataManager,
+                             didUpdateAddress placemark: CLPlacemark)
 
 }
 
@@ -23,12 +25,13 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
     // MARK: - Properties
 
     private let locationManager = CLLocationManager()
+    private let geocoder = CLGeocoder()
+    
     weak var delegate: LocationDataManagerDelegate?
-
     var isAuthorized: Bool {
         locationManager.authorizationStatus == .authorizedWhenInUse
     }
-
+    
     // MARK: - Lifecycle
 
     override init() {
@@ -52,6 +55,7 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
                          didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         delegate?.locationDataManager(self, didUpdateLocation: location)
+        fetchAddress(of: location)
     }
 
     func locationManager(_ manager: CLLocationManager,
@@ -61,6 +65,19 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         delegate?.locationDataManager(self, didAuthorized: isAuthorized)
+    }
+    
+    
+    
+    
+    func fetchAddress(of location: CLLocation) {
+        geocoder.reverseGeocodeLocation(location) { [self] placemarks, error in
+            guard error == nil else { return }
+
+            guard let placemark = placemarks?.first else { return }
+            delegate?.locationDataManager(self, didUpdateAddress: placemark)
+        }
+       
     }
 
 }

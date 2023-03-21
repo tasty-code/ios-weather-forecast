@@ -17,7 +17,6 @@ class ViewController: UIViewController {
     )
 
     private let locationDataManager = LocationDataManager()
-    private let geocoder = CLGeocoder()
 
     // MARK: - Lifecycle
 
@@ -73,6 +72,10 @@ class ViewController: UIViewController {
 // MARK: - LocationDataManagerDelegate
 
 extension ViewController: LocationDataManagerDelegate {
+    
+    func locationDataManager(_ locationDataManager: LocationDataManager, didUpdateAddress placemark: CLPlacemark) {
+        print(placemark.country, placemark.administrativeArea, placemark.locality, placemark.name)
+    }
 
     func locationDataManager(_ locationDataManager: LocationDataManager,
                              didUpdateLocation location: CLLocation) {
@@ -81,21 +84,6 @@ extension ViewController: LocationDataManagerDelegate {
 
         fetchWeather(coordinate: coordinate)
         fetchForecast(coordinate: coordinate)
-
-        geocoder.reverseGeocodeLocation(location) { placemarks, error in
-            guard error == nil else { return }
-
-            guard let placemark = placemarks?.first,
-                  let administrativeArea = placemark.administrativeArea,
-                  let locality = placemark.locality,
-                  let thoroughfare = placemark.thoroughfare else { return }
-
-            print(administrativeArea)
-            if administrativeArea != locality {
-                print(locality)
-            }
-            print(thoroughfare)
-        }
     }
 
     func locationDataManager(_ locationDataManager: LocationDataManager,
