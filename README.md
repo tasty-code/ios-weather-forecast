@@ -1,5 +1,6 @@
-## iOS 커리어 스타터 캠프
+## 🌙 Team LuNna 🌙
+🏃🏻🏃🏻‍♂️💨 **프로젝트 기간:** `23.03.13` ~ `23.04.14`
 
-### 날씨정보 프로젝트 저장소
-
-- 이 저장소를 자신의 저장소로 fork하여 프로젝트를 진행합니다
+|<img src="https://avatars.githubusercontent.com/u/71758542?v=4" width=200>|<img src="https://avatars.githubusercontent.com/u/67406889?v=4" width=200>|
+|:---:|:---:|
+|[Blu](https://github.com/bomyuniverse)|[Jenna](https://github.com/ueunli)|
