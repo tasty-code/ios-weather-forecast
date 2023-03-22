@@ -54,7 +54,7 @@ extension ViewController: CLLocationManagerDelegate {
         case .denied, .restricted:
             print("ggod")
         case .notDetermined:
-            return
+            manager.requestWhenInUseAuthorization()
         default:
             return
         }
