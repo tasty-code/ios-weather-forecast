@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import OSLog
 
 final class NetworkService: ServiceProtocol {
 
@@ -15,30 +14,30 @@ final class NetworkService: ServiceProtocol {
                         completion: @escaping (Result<Data, NetworkError>) -> Void) {
         guard let url else {
             completion(.failure(.invalidURL))
-            log(with: .invalidURL)
+            log(.network, error: NetworkError.invalidURL)
             return
         }
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = httpMethodType.rawValue
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             guard error == nil else {
                 completion(.failure(.networking))
-                self?.log(with: .networking)
+                log(.network, error: NetworkError.networking)
                 return
             }
 
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
                 completion(.failure(.response))
-                self?.log(with: .response)
+                log(.network, error: NetworkError.response)
                 return
             }
 
             guard let data else {
                 completion(.failure(.invalidData))
-                self?.log(with: .invalidData)
+                log(.network, error: NetworkError.invalidData)
                 return
             }
 
@@ -46,9 +45,4 @@ final class NetworkService: ServiceProtocol {
         }
         task.resume()
     }
-    
-    private func log(with error: NetworkError) {
-        os_log(.error, log: .network, "%@", error.localizedDescription)
-    }
-    
 }

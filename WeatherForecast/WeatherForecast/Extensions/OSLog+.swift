@@ -14,5 +14,5 @@ extension OSLog {
     
     static let location = OSLog(subsystem: subsystem, category: "Location")
     static let network = OSLog(subsystem: subsystem, category: "Network")
-    
+
 }

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import OSLog
 import CoreLocation
 
 protocol LocationDataManagerDelegate: AnyObject {
@@ -60,7 +59,7 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager,
                          didFailWithError error: Error) {
-        os_log(.error, log: .location, "%@", error.localizedDescription)
+        log(.location, error: error)
     }
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B407E78129CADEE7003AD3BD /* LogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B407E78029CADEE7003AD3BD /* LogUtil.swift */; };
 		B43FAD9F29C0018600CF9E06 /* Bundle+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43FAD9E29C0018600CF9E06 /* Bundle+.swift */; };
 		B43FADA129C03E7400CF9E06 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43FADA029C03E7400CF9E06 /* NetworkError.swift */; };
 		B43FADA329C04C0300CF9E06 /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43FADA229C04C0300CF9E06 /* CLLocationCoordinate2D.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B407E78029CADEE7003AD3BD /* LogUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogUtil.swift; sourceTree = "<group>"; };
 		B43FAD9E29C0018600CF9E06 /* Bundle+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+.swift"; sourceTree = "<group>"; };
 		B43FADA029C03E7400CF9E06 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		B43FADA229C04C0300CF9E06 /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
@@ -119,6 +121,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B407E77F29CADE8B003AD3BD /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				B407E78029CADEE7003AD3BD /* LogUtil.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		B407E78229CAE0BA003AD3BD /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
+				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
 		B43FAD9D29C0017F00CF9E06 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,14 +292,14 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
-				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
-				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
+				B407E78229CAE0BA003AD3BD /* Application */,
 				B47DBD0929BF152D0006D8E2 /* Model */,
 				B47DBD0329BF0F290006D8E2 /* View */,
 				B47DBD0229BF0F250006D8E2 /* Controller */,
 				B4A728AE29C7F55900B589CE /* Networking */,
 				B4A728F129C854D600B589CE /* Manager */,
 				B43FAD9D29C0017F00CF9E06 /* Extensions */,
+				B407E77F29CADE8B003AD3BD /* Util */,
 				B47DBD0629BF0F3B0006D8E2 /* Resources */,
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
 			);
@@ -484,6 +503,7 @@
 				F159663729C8101A00EEB62F /* Clouds.swift in Sources */,
 				F1DA56EF29C2AE2100312C9F /* Deserializerable.swift in Sources */,
 				B43FAD9F29C0018600CF9E06 /* Bundle+.swift in Sources */,
+				B407E78129CADEE7003AD3BD /* LogUtil.swift in Sources */,
 				F1DA56F129C2B04700312C9F /* JSONDeserializer.swift in Sources */,
 				B4A728BA29C81F2600B589CE /* Snow.swift in Sources */,
 				F159663B29C8102800EEB62F /* Weather.swift in Sources */,
