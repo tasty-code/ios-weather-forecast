@@ -7,20 +7,20 @@
 
 import Foundation
 
-struct Forecast: Codable {
+struct Forecast: Decodable {
     let cod: String
     let message, cnt: Int
     let list: [List]
     let city: City
 }
 
-struct City: Codable {
+struct City: Decodable {
     let name, country: String
     let id, population, timezone, sunrise, sunset: Int
     let coord: Coordinate
 }
 
-struct List: Codable {
+struct List: Decodable {
     let dt, visibility: Int
     let pop: Double
     let dtTxt: String
@@ -37,7 +37,7 @@ struct List: Codable {
     }
 }
 
-struct ForecastRain: Codable {
+struct ForecastRain: Decodable {
     let the3H: Double
 
     enum CodingKeys: String, CodingKey {
@@ -45,6 +45,6 @@ struct ForecastRain: Codable {
     }
 }
 
-struct ForecastSys: Codable {
+struct ForecastSys: Decodable {
     let pod: String
 }
