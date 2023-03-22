@@ -17,7 +17,7 @@ struct Forecast: Codable {
 struct City: Codable {
     let name, country: String
     let id, population, timezone, sunrise, sunset: Int
-    let coord: Coord
+    let coord: Coordinate
 }
 
 struct List: Codable {

@@ -1,6 +1,6 @@
 excluded:
-- WeatherForecast/AppDelegate.swift
-- WeatherForecast/SceneDelegate.swift
+- WeatherForecast/Application/AppDelegate.swift
+- WeatherForecast/Application/SceneDelegate.swift
 - WeatherForecastUITests
 - WeatherForecastTests
 

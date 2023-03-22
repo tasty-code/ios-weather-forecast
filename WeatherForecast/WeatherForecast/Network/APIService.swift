@@ -7,7 +7,16 @@
 
 import Foundation
 
-class APIService {
+protocol APIServiceProtocol {
+    func fetchWeatherAPI(coordinate: Coordinate, completion: @escaping (Result<Weather, NetworkError>) -> Void)
+    func fetchForecastAPI(coordinate: Coordinate, completion: @escaping (Result<Forecast, NetworkError>) -> Void)
+}
+
+extension APIServiceProtocol {
+    
+}
+
+final class APIService: APIServiceProtocol {
 
     static let shared = APIService()
 
@@ -15,14 +24,12 @@ class APIService {
 
     private init() { }
 
-    func fetchCurrentWeather(lat: Double,
-                             lon: Double,
-                             completion: @escaping (Result<Weather, NetworkingError>) -> Void) {
+    func fetchWeatherAPI(coordinate: Coordinate, completion: @escaping (Result<Weather, NetworkError>) -> Void) {
 
-        let latString = doubleToString(lat)
-        let lonString = doubleToString(lon)
+        guard let lat = doubleToString(coordinate.lat),
+              let lon = doubleToString(coordinate.lon) else { return }
 
-        let urlString =  "\(baseURL)/\(URLPath.weather)?lat=\(latString)&lon=\(lonString)&appid=\(SecretKey.appId)"
+        let urlString =  "\(baseURL)/\(URLPath.weather)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)"
 
         guard let url = URL(string: urlString) else { return }
 
@@ -50,15 +57,13 @@ class APIService {
         }.resume()
     }
 
-    func fetchFiveDayWeather(lat: Double,
-                             lon: Double,
-                             completion: @escaping (Result<Forecast, NetworkingError>) -> Void) {
+    func fetchForecastAPI(coordinate: Coordinate, completion: @escaping (Result<Forecast, NetworkError>) -> Void) {
 
-        let latString = doubleToString(lat)
-        let lonString = doubleToString(lon)
+        guard let lat = doubleToString(coordinate.lat),
+              let lon = doubleToString(coordinate.lon) else { return }
 
-        let urlString = "\(baseURL)/\(URLPath.forecast)?lat=\(latString)&lon=\(lonString)&appid=\(SecretKey.appId)"
-
+        let urlString =  "\(baseURL)/\(URLPath.forecast)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)"
+        
         guard let url = URL(string: urlString) else { return }
 
         URLSession.shared.dataTask(with: url) { data, _, error in
@@ -82,8 +87,11 @@ class APIService {
             }
         }.resume()
     }
+}
 
-    func doubleToString(_ number: Double) -> String {
+extension APIService {
+    private func doubleToString(_ number: Double?) -> String? {
+        guard let number else { return nil }
         return String(number)
     }
 }

@@ -22,15 +22,15 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
 
-        let latitude = currentLocation.coordinate.latitude
-        let longitude = currentLocation.coordinate.longitude
+        let lon = currentLocation.coordinate.longitude
+        let lat = currentLocation.coordinate.latitude
 
-        APIService.shared.fetchCurrentWeather(lat: latitude, lon: longitude) { result in
+        APIService.shared.fetchWeatherAPI(coordinate: Coordinate(lon: lon, lat: lat)) { result in
             switch result {
             case .success(let currentWeather):
                 print(currentWeather)
             case .failure(let error):
-                print(error.errorDescription as Any)
+                print(error)
             }
         }
     }
