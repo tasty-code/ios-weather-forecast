@@ -9,5 +9,5 @@ import Foundation
 import OSLog
 
 func log(_ log: OSLog, error: Error) {
-    os_log(.error, log: .location, "%@", error.localizedDescription)
+    os_log(.error, log: log, "%@", error.localizedDescription)
 }
