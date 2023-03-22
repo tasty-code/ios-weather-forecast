@@ -29,7 +29,7 @@ final class APIService: APIServiceProtocol {
         guard let lat = doubleToString(coordinate.lat),
               let lon = doubleToString(coordinate.lon) else { return }
 
-        let urlString =  "\(baseURL)/\(URLPath.weather)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)"
+        let urlString =  "\(baseURL)/\(URLPath.weather)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)&lang=kr"
 
         guard let url = URL(string: urlString) else { return }
 
@@ -45,9 +45,9 @@ final class APIService: APIServiceProtocol {
             }
 
             do {
-                let currentWeatherData = try JSONDecoder().decode(Weather.self, from: safeData)
+                let decodedData = try JSONDecoder().decode(Weather.self, from: safeData)
 
-                completion(.success(currentWeatherData))
+                completion(.success(decodedData))
                 return
 
             } catch {
@@ -62,7 +62,7 @@ final class APIService: APIServiceProtocol {
         guard let lat = doubleToString(coordinate.lat),
               let lon = doubleToString(coordinate.lon) else { return }
 
-        let urlString =  "\(baseURL)/\(URLPath.forecast)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)"
+        let urlString =  "\(baseURL)/\(URLPath.forecast)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)&lang=kr"
         
         guard let url = URL(string: urlString) else { return }
 
@@ -78,8 +78,8 @@ final class APIService: APIServiceProtocol {
             }
 
             do {
-                let fiveDayWeatherData = try JSONDecoder().decode(Forecast.self, from: safeData)
-                completion(.success(fiveDayWeatherData))
+                let decodedData = try JSONDecoder().decode(Forecast.self, from: safeData)
+                completion(.success(decodedData))
                 return
             } catch {
                 completion(.failure(.parseError))
