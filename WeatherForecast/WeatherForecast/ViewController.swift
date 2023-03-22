@@ -8,55 +8,22 @@ import UIKit
 import CoreLocation
 
 class ViewController: UIViewController {
-
+    
     private let networkModel = NetworkModel()
     private lazy var network = WeatherAPIManager(networkModel: networkModel)
-    private let coreLocationManger = CLLocationManager()
+
+    private let locationDelegate = LocationManagerDelegate()
+    lazy var coreLocationManger: CLLocationManager = {
+        let manager = CLLocationManager()
+        manager.desiredAccuracy = kCLLocationAccuracyKilometer
+        manager.requestWhenInUseAuthorization()
+        return manager
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        coreLocationManger.delegate = self
-        coreLocationManger.desiredAccuracy = kCLLocationAccuracyKilometer
-        coreLocationManger.requestWhenInUseAuthorization()
+        
+        coreLocationManger.delegate = locationDelegate
     }
 }
 
-extension ViewController: CLLocationManagerDelegate {
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        guard let recentLocation = manager.location else {
-            return
-        }
-        
-        let geocoder = CLGeocoder()
-        let locale = Locale(identifier: "Ko-kr")
-        
-        geocoder.reverseGeocodeLocation(recentLocation, preferredLocale: locale) { placemark, error in
-            guard error == nil else {
-                return
-            }
-            
-            guard let firstLocation = placemark?.last else { return }
-            print(firstLocation)
-            
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error")
-    }
-    
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .authorizedWhenInUse:
-            manager.startUpdatingLocation()
-        case .denied, .restricted:
-            print("ggod")
-        case .notDetermined:
-            manager.requestWhenInUseAuthorization()
-        default:
-            return
-        }
-    }
-}
