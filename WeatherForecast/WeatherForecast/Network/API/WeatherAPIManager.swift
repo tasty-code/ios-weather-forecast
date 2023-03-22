@@ -18,7 +18,8 @@ final class WeatherAPIManager {
     func fetchWeatherInformation(of weatherAPI: WeatherAPI, in coordinate: Coordinate) {
         
         let url = weatherAPI.makeWeatherURL(coordinate: coordinate)
-        let urlRequest = URLRequest(url: url)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
         
         let task = networkModel.task(urlRequest: urlRequest, to: weatherAPI.decodingType) { result in
             
