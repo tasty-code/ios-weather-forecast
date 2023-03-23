@@ -1,5 +1,5 @@
 //
-//  APIService.swift
+//  NetworkService.swift
 //  WeatherForecast
 //
 //  Created by Bora Yang on 2023/03/20.
@@ -7,36 +7,36 @@
 
 import Foundation
 
-typealias APICompletion<T> = (Result<T, NetworkError>) -> Void
-
 // MARK: - Protocols
 
-protocol APIServiceProtocol {
+protocol NetworkServiceProtocol {
+    typealias APICompletion<T> = (Result<T, NetworkError>) -> Void
+    
     func fetchWeatherAPI(coordinate: Coordinate, completion: @escaping APICompletion<Weather>)
     func fetchForecastAPI(coordinate: Coordinate, completion: @escaping APICompletion<Forecast>)
 }
 
 // MARK: - APIService
 
-final class APIService: APIServiceProtocol {
+final class NetworkService: NetworkServiceProtocol {
 
-    static let shared = APIService()
+    static let shared = NetworkService()
 
     private init() { }
 
     func fetchWeatherAPI(coordinate: Coordinate, completion: @escaping APICompletion<Weather>) {
-        fetchAPI(coordinate: coordinate, path: NetworkConfig.URLPath.weather.rawValue, completion: completion)
+        request(coordinate: coordinate, path: NetworkConfig.URLPath.weather.rawValue, completion: completion)
     }
 
     func fetchForecastAPI(coordinate: Coordinate, completion: @escaping APICompletion<Forecast>) {
-        fetchAPI(coordinate: coordinate, path: NetworkConfig.URLPath.forecast.rawValue, completion: completion)
+        request(coordinate: coordinate, path: NetworkConfig.URLPath.forecast.rawValue, completion: completion)
     }
 }
 
 // MARK: - Methods
 
-extension APIService {
-    private func fetchAPI<T: Decodable>(coordinate: Coordinate, path: String, completion: @escaping APICompletion<T>) {
+extension NetworkService {
+    private func request<T: Decodable>(coordinate: Coordinate, path: String, completion: @escaping APICompletion<T>) {
         
         guard let url = makeURL(path: path, coordinate: coordinate) else { return }
         

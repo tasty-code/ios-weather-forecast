@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		768ADD1F29C81A4900C20B11 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768ADD1E29C81A4900C20B11 /* APIService.swift */; };
+		768ADD1F29C81A4900C20B11 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768ADD1E29C81A4900C20B11 /* NetworkService.swift */; };
 		8E09EA7C29CA950B003A7A6F /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E09EA7B29CA950B003A7A6F /* Coordinate.swift */; };
 		8E0CA2CB29CA997B00DD8FC6 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CA2CA29CA997B00DD8FC6 /* NetworkError.swift */; };
 		8E0CA2CD29CA998F00DD8FC6 /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CA2CC29CA998F00DD8FC6 /* NetworkConfig.swift */; };
@@ -43,7 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		768ADD1E29C81A4900C20B11 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		768ADD1E29C81A4900C20B11 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		8E09EA7B29CA950B003A7A6F /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		8E0CA2CA29CA997B00DD8FC6 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		8E0CA2CC29CA998F00DD8FC6 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 		768ADD1D29C81A2A00C20B11 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				768ADD1E29C81A4900C20B11 /* APIService.swift */,
+				768ADD1E29C81A4900C20B11 /* NetworkService.swift */,
 				8E0CA2CC29CA998F00DD8FC6 /* NetworkConfig.swift */,
 				8E0CA2CA29CA997B00DD8FC6 /* NetworkError.swift */,
 				8EE3296B29CA939A00F54F48 /* SecretKey.swift */,
@@ -339,7 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
-				768ADD1F29C81A4900C20B11 /* APIService.swift in Sources */,
+				768ADD1F29C81A4900C20B11 /* NetworkService.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				8EB2C5D829C9C8A500C8C928 /* Forecast.swift in Sources */,
 				8EE3296C29CA939A00F54F48 /* SecretKey.swift in Sources */,
