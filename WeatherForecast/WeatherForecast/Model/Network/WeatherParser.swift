@@ -9,9 +9,10 @@ import Foundation
 
 struct WeatherParser<T: WeatherComposable> {
     static func parse(at coordinate: CurrentCoordinate) async throws -> T {
-        guard let request = WeatherURL.request(for: T.weatherRange, at: coordinate) else {
+        guard var request = WeatherURL.request(for: T.weatherRange, at: coordinate) else {
             throw WeatherNetworkError.invalidRequest
         }
+        request.httpMethod = "GET"
 
         let (data, _) = try await URLSession.shared.data(for: request)
         let weatherData = try JSONDecoder().decode(T.self, from: data)
