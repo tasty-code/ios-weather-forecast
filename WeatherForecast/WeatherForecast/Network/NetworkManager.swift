@@ -8,8 +8,8 @@
 import Foundation
 
 final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
-    private(set) var lat: Double = 37.533624
-    private(set) var lon: Double = 126.963206
+    private(set) var latitude: Double = 37.533624
+    private(set) var longitude: Double = 126.963206
     var weatherData: Weather?
     var forecastData: Forecast?
 
@@ -19,7 +19,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     }
 
     private func callWeatherAPI() {
-        let weatherURLString = weatherURL(lat: lat, lon: lon)
+        let weatherURLString = weatherURL(lat: latitude, lon: longitude)
         print(weatherURLString)
         guard let weatherURL = URL(string: weatherURLString) else {
             print("invalid URL")
@@ -38,7 +38,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     }
 
     private func callForecastAPI() {
-        let forecastURLString = forecastURL(lat: lat, lon: lon)
+        let forecastURLString = forecastURL(lat: latitude, lon: longitude)
         guard let forecastURL = URL(string: forecastURLString) else {
             print("invalid URL")
             return
