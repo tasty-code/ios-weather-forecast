@@ -9,8 +9,8 @@ import Foundation
 
 // MARK: - Forecast
 struct Forecast: Decodable {
-    let statusCode: String
     let statusMessage, numberOfTimeStamps: Int
+    let statusCode: String
     let list: [List]
     let city: City
     
@@ -23,11 +23,10 @@ struct Forecast: Decodable {
     
     // MARK: - City
     struct City: Decodable {
-        let id: Int
-        let name: String
-        let coordinate: Coordinate
-        let country: String
         let population, timezone, sunrise, sunset: Int
+        let name, country: String
+        let id: Int
+        let coordinate: Coordinate
         
         enum CodingKeys: String, CodingKey {
             case id, name, country, population, timezone, sunrise, sunset
@@ -47,12 +46,11 @@ struct Forecast: Decodable {
     
     // MARK: - List
     struct List: Decodable {
-        let timeOfData: Int
+        let timeOfData, visibility: Int
         let main: Main
         let weather: [Weather]
         let clouds: Clouds
         let wind: Wind
-        let visibility: Int
         let pop: Double
         let sys: Sys
         let timeOfDataText: String
@@ -75,9 +73,8 @@ struct Forecast: Decodable {
         
         // MARK: - Main
         struct Main: Decodable {
-            let temp, feelsLike, tempMin, tempMax: Double
+            let temp, feelsLike, tempMin, tempMax, tempKf: Double
             let pressure, seaLevel, grndLevel, humidity: Int
-            let tempKf: Double
             
             enum CodingKeys: String, CodingKey {
                 case temp, pressure, humidity
@@ -134,9 +131,8 @@ struct Forecast: Decodable {
         
         // MARK: - Wind
         struct Wind: Decodable {
-            let speed: Double
+            let speed, gust: Double
             let degree: Int
-            let gust: Double
             
             enum CodingKeys: String, CodingKey {
                 case speed, gust
