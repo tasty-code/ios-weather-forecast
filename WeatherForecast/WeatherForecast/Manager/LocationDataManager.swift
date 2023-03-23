@@ -29,7 +29,9 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
         locationManager.authorizationStatus == .authorizedWhenInUse
     }
 
-    private(set) var location: CLLocation?
+    var location: CLLocation? {
+        locationManager.location
+    }
     
     // MARK: - Lifecycle
 
@@ -53,7 +55,6 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        self.location = location
         delegate?.locationDataManager(self, didUpdateLocation: location)
     }
 
