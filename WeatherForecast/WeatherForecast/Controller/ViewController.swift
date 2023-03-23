@@ -33,9 +33,8 @@ class ViewController: UIViewController {
     private func configureLocationDataManager() {
         locationDataManager.delegate = self
 
-        guard locationDataManager.isAuthorized else {
+        if !locationDataManager.isAuthorized {
             locationDataManager.requestAuthorization()
-            return
         }
     }
 
