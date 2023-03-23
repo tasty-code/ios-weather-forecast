@@ -14,8 +14,6 @@ protocol LocationDataManagerDelegate: AnyObject {
                              didAuthorized isAuthorized: Bool)
     func locationDataManager(_ locationDataManager: LocationDataManager,
                              didUpdateLocation location: CLLocation)
-    func locationDataManager(_ locationDataManager: LocationDataManager,
-                             didUpdateAddress placemark: CLPlacemark)
 
 }
 
@@ -24,12 +22,14 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
     // MARK: - Properties
 
     private let locationManager = CLLocationManager()
-    private let geocoder = CLGeocoder()
-    
+
     weak var delegate: LocationDataManagerDelegate?
+
     var isAuthorized: Bool {
         locationManager.authorizationStatus == .authorizedWhenInUse
     }
+
+    private(set) var location: CLLocation?
     
     // MARK: - Lifecycle
 
@@ -53,6 +53,7 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        self.location = location
         delegate?.locationDataManager(self, didUpdateLocation: location)
     }
 

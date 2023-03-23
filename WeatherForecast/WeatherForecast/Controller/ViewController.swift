@@ -80,15 +80,16 @@ extension ViewController: LocationDataManagerDelegate {
         let coordinate = Coordinate(longitude: location.coordinate.longitude,
                                     latitude: location.coordinate.latitude)
 
+        addressManager.fetchAddress(of: location) { placemark in
+            guard let placemark else { return }
+
+            print(placemark.country ?? "",
+                  placemark.administrativeArea ?? "",
+                  placemark.locality ?? "",
+                  placemark.name ?? "")
+        }
+
         fetchWeather(coordinate: coordinate)
         fetchForecast(coordinate: coordinate)
     }
-
-    func locationDataManager(_ locationDataManager: LocationDataManager, didUpdateAddress placemark: CLPlacemark) {
-        print(placemark.country ?? "",
-              placemark.administrativeArea ?? "",
-              placemark.locality ?? "",
-              placemark.name ?? "")
-    }
-
 }
