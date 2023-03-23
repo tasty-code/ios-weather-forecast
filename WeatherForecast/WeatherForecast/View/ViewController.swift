@@ -7,25 +7,57 @@
 import UIKit
 import CoreLocation
 
-final class ViewController: UIViewController, CLLocationManagerDelegate {
+final class ViewController: UIViewController {
 
-    let locationManager = CLLocationManager()
+    // MARK: - Properties
+
+    private let locationManager = CLLocationManager()
+
+    // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setLocationDelegate()
+        setUpLocationManager()
+    }
+}
+
+// MARK: - Methods
+
+extension ViewController {
+    private func setLocationDelegate() {
         locationManager.delegate = self
+    }
+
+    private func setUpLocationManager() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
+}
 
+// MARK: - CLLocationManagerDelegate
+
+extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
 
         let lon = currentLocation.coordinate.longitude
         let lat = currentLocation.coordinate.latitude
 
-        APIService.shared.fetchWeatherAPI(coordinate: Coordinate(lon: lon, lat: lat)) { result in
+        fetchCurrentWeatherAPI(with: Coordinate(lon: lon, lat: lat))
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Location update failed with error: \(error.localizedDescription)")
+    }
+}
+
+// MARK: - Network
+
+extension ViewController {
+    private func fetchCurrentWeatherAPI(with coordinate: Coordinate) {
+        APIService.shared.fetchWeatherAPI(coordinate: Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
             switch result {
             case .success(let currentWeather):
                 print(currentWeather)
@@ -34,9 +66,4 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Location update failed with error: \(error.localizedDescription)")
-    }
-
 }
