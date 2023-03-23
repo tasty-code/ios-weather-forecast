@@ -11,7 +11,9 @@ extension Bundle {
     var apiKey: String {
         guard let file = self.path(forResource: "Info", ofType: "plist"),
               let resource = NSDictionary(contentsOfFile: file),
-              let key = resource["WeatherApiKey"] as? String else { fatalError("invalid API KEY") }
+              let key = resource["WeatherApiKey"] as? String else {
+            fatalError("invalid API KEY")
+        }
         return key
     }
 }

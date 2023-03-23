@@ -25,7 +25,7 @@ class WeatherForecastTests: XCTestCase {
 
     func test_URL이_Query형식에_맞게_생성되는가() {
         // given
-        let yongsanCoordinate = CurrentCoordinate(longitude: 126.96, latitude: 37.53)
+        let yongsanCoordinate = CurrentCoordinate(latitude: 37.53, longitude: 126.96)
         let apiKey = Bundle.main.apiKey
 
         // when
@@ -41,7 +41,7 @@ class WeatherForecastTests: XCTestCase {
 
     func test_요청한_위경도와_호출된_데이터의_지역이_일치하는가() async {
         // given
-        let yongsanCoordinate = CurrentCoordinate(longitude: 126.96, latitude: 37.53)
+        let yongsanCoordinate = CurrentCoordinate(latitude: 37.53, longitude: 126.96)
 
         // when
         let cityOfRequestedCurrentWeather = try? await type(of: sutCurrent).parse(at: yongsanCoordinate).name
