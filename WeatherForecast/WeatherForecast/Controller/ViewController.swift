@@ -7,14 +7,16 @@
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController {
     private let locationManager = CLLocationManager()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
     }
-    
+}
+
+extension ViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:
@@ -25,8 +27,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locationManager.location?.coordinate else { return }
+        guard let location = locationManager.location?.coordinate else {
+            return
+        }
         let coordinate = CurrentCoordinate(latitude: location.latitude, longitude: location.longitude)
+        
         Task {
             let _ = try await WeatherParser<CurrentWeatherComponents>.parse(at: coordinate)
             let _ = try await WeatherParser<ForecastWeatherComponents>.parse(at: coordinate)
@@ -37,4 +42,3 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print(error.localizedDescription)
     }
 }
-

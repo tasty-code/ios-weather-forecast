@@ -23,7 +23,9 @@ enum WeatherURL {
             URLQueryItem(name: "appid", value: Bundle.main.apiKey)
         ]
         
-        guard let url = components?.url else { throw WeatherNetworkError.invalidURL }
+        guard let url = components?.url else {
+            throw WeatherNetworkError.invalidURL
+        }
         
         return url
     }
