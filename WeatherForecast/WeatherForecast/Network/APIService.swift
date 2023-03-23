@@ -16,6 +16,8 @@ extension APIServiceProtocol {
     
 }
 
+typealias APICompletion<T> = (Result<T, NetworkError>) -> Void
+
 final class APIService: APIServiceProtocol {
 
     static let shared = APIService()
@@ -24,72 +26,46 @@ final class APIService: APIServiceProtocol {
 
     private init() { }
 
-    func fetchWeatherAPI(coordinate: Coordinate, completion: @escaping (Result<Weather, NetworkError>) -> Void) {
+    func fetchWeatherAPI(coordinate: Coordinate, completion: @escaping APICompletion<Weather>) {
 
-        guard let lat = doubleToString(coordinate.lat),
-              let lon = doubleToString(coordinate.lon) else { return }
-
-        let urlString =  "\(baseURL)/\(URLPath.weather)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)&lang=kr"
-
-        guard let url = URL(string: urlString) else { return }
-
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if error != nil {
-                completion(.failure(.networkError))
-                return
-            }
-
-            guard let safeData = data else {
-                completion(.failure(.dataError))
-                return
-            }
-
-            do {
-                let decodedData = try JSONDecoder().decode(Weather.self, from: safeData)
-
-                completion(.success(decodedData))
-                return
-
-            } catch {
-                completion(.failure(.parseError))
-                return
-            }
-        }.resume()
+        fetchAPI(coordinate: coordinate, path: URLPath.weather.rawValue, completion: completion)
     }
 
-    func fetchForecastAPI(coordinate: Coordinate, completion: @escaping (Result<Forecast, NetworkError>) -> Void) {
+    func fetchForecastAPI(coordinate: Coordinate, completion: @escaping APICompletion<Forecast>) {
 
-        guard let lat = doubleToString(coordinate.lat),
-              let lon = doubleToString(coordinate.lon) else { return }
-
-        let urlString =  "\(baseURL)/\(URLPath.forecast)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)&lang=kr"
-        
-        guard let url = URL(string: urlString) else { return }
-
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if error != nil {
-                completion(.failure(.networkError))
-                return
-            }
-
-            guard let safeData = data else {
-                completion(.failure(.dataError))
-                return
-            }
-
-            do {
-                let decodedData = try JSONDecoder().decode(Forecast.self, from: safeData)
-                completion(.success(decodedData))
-                return
-            } catch {
-                completion(.failure(.parseError))
-                return
-            }
-        }.resume()
+        fetchAPI(coordinate: coordinate, path: URLPath.forecast.rawValue, completion: completion)
     }
 }
 
 extension APIService {
+    private func fetchAPI<T: Decodable>(coordinate: Coordinate, path: String, completion: @escaping APICompletion<T>) {
+
+        guard let url = makeURL(path: path, coordinate: coordinate) else { return }
+
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let safeData = data, error == nil else {
+                completion(.failure(.networkError))
+                return
+            }
+
+            do {
+                let decodedData = try JSONDecoder().decode(T.self, from: safeData)
+                completion(.success(decodedData))
+                return
+            } catch {
+                completion(.failure(.parseError))
+                return
+            }
+        }.resume()
+    }
+
+    private func makeURL(path: String, coordinate: Coordinate) -> URL? {
+        guard let lat = doubleToString(coordinate.lat),
+              let lon = doubleToString(coordinate.lon) else { return nil }
+
+        return URL(string: "\(baseURL)/\(path)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)&lang=kr")
+    }
+
     private func doubleToString(_ number: Double?) -> String? {
         guard let number else { return nil }
         return String(number)

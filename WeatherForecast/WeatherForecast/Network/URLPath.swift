@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum URLPath {
+enum URLPath: String {
     case weather
     case forecast
 }

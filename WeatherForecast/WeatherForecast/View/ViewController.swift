@@ -45,7 +45,7 @@ extension ViewController: CLLocationManagerDelegate {
         let lon = currentLocation.coordinate.longitude
         let lat = currentLocation.coordinate.latitude
 
-        fetchCurrentWeatherAPI(with: Coordinate(lon: lon, lat: lat))
+        fetchForecastAPI(with: Coordinate(lon: lon, lat: lat))
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -56,11 +56,22 @@ extension ViewController: CLLocationManagerDelegate {
 // MARK: - Network
 
 extension ViewController {
-    private func fetchCurrentWeatherAPI(with coordinate: Coordinate) {
+    private func fetchWeatherAPI(with coordinate: Coordinate) {
         APIService.shared.fetchWeatherAPI(coordinate: Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
             switch result {
-            case .success(let currentWeather):
-                print(currentWeather)
+            case .success(let weather):
+                print(weather)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
+    private func fetchForecastAPI(with coordinate: Coordinate) {
+        APIService.shared.fetchForecastAPI(coordinate: Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
+            switch result {
+            case .success(let forecast):
+                print(forecast)
             case .failure(let error):
                 print(error)
             }
