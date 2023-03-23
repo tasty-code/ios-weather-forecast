@@ -10,8 +10,8 @@ import Foundation
 final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     private(set) var lat: Double = 37.533624
     private(set) var lon: Double = 126.963206
-    private var currentWeather: Weather?
-    private var fiveDayWeather: Forecast?
+     var weatherData: Weather?
+     var forecastData: Forecast?
 
     func callAPI() {
         let weatherURLString = weatherURL(lat: lat, lon: lon)
@@ -24,8 +24,8 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
         dataTask(URLRequest: weatherURLRequest, myType: Weather.self) { result in
             switch result {
             case .success(let data):
-                self.currentWeather = data
-                print("currentWeather성공")
+                self.weatherData = data
+                print("weatherData성공")
             case .failure(let error):
                 print("dataTask error: ", error)
             }
@@ -41,8 +41,8 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
         dataTask(URLRequest: forecastURLRequest, myType: Forecast.self) { result in
             switch result {
             case .success(let data):
-                self.fiveDayWeather = data
-                print("fiveDayWeather성공")
+                self.forecastData = data
+                print("forecastData성공")
             case .failure(let error):
                 print("dataTask error: ", error)
             }

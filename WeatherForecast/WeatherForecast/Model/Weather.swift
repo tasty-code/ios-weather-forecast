@@ -7,28 +7,45 @@
 
 import Foundation
 
+// MARK: - Weather
 struct Weather: Decodable {
-    let coord: Coord
+    let coordinate: Coordinate
     let weather: [Weather]
     let base: String
     let main: Main
     let visibility: Int
     let wind: Wind
     let clouds: Clouds
-    let dt: Int
+    let timeOfData: Int
     let sys: Sys
     let timezone, id: Int
     let name: String
-    let cod: Int
+    let statusCode: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case weather, base, main, visibility, wind, clouds, sys, timezone, id, name
+        case coordinate = "coord"
+        case timeOfData = "dt"
+        case statusCode = "cod"
+    }
 
     // MARK: - Clouds
     struct Clouds: Decodable {
-        let all: Int
+        let cloudiness: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case cloudiness = "all"
+        }
     }
 
-    // MARK: - Coord
-    struct Coord: Decodable {
-        let lon, lat: Double
+    // MARK: - Coordinate
+    struct Coordinate: Decodable {
+        let latitude, longitude: Double
+        
+        enum CodingKeys: String, CodingKey {
+            case latitude = "lat"
+            case longitude = "lon"
+        }
     }
 
     // MARK: - Main
@@ -61,6 +78,11 @@ struct Weather: Decodable {
     // MARK: - Wind
     struct Wind: Decodable {
         let speed: Double
-        let deg: Int
+        let degree: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case speed
+            case degree = "deg"
+        }
     }
 }
