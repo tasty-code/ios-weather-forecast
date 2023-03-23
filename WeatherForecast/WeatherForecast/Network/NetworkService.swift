@@ -16,7 +16,7 @@ protocol NetworkServiceProtocol {
     func fetchForecastAPI(coordinate: Coordinate, completion: @escaping APICompletion<Forecast>)
 }
 
-// MARK: - APIService
+// MARK: - NetworkService
 
 final class NetworkService: NetworkServiceProtocol {
 
