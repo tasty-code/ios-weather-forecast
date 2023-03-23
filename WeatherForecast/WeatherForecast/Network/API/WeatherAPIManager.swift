@@ -26,6 +26,7 @@ final class WeatherAPIManager {
             switch result {
             case .success(let data):
                 print("Success- 모델 생성완료!")
+                print(data)
             case .failure(let error):
                 print(error.localizedDescription)
             }

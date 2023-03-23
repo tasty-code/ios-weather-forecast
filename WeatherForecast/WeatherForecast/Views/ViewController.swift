@@ -24,6 +24,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         coreLocationManger.delegate = locationDelegate
+        network.fetchWeatherInformation(of: .fiveDaysForecast, in: Coordinate(longitude: 126.96368972, latitude: 37.53361968))
+        
+//        126.96368972
+//        37.53361968
     }
 }
 

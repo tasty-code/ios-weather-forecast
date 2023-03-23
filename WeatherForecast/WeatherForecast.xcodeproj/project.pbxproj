@@ -124,6 +124,23 @@
 			path = API;
 			sourceTree = "<group>";
 		};
+		80254C8629CC333B0010C0B4 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				80BAF7F729CA93B100783EC6 /* LocationManagerDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		80BAF7FA29CA984D00783EC6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				80254C8629CC333B0010C0B4 /* Delegate */,
+				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		870E0EF929C3094600DF5695 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,12 +183,11 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				80BAF7FA29CA984D00783EC6 /* Views */,
 				870E0EF929C3094600DF5695 /* Extensions */,
 				4F2D796F29C04D8E00C30BE2 /* Network */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
-				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
-				80BAF7F729CA93B100783EC6 /* LocationManagerDelegate.swift */,
 				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
