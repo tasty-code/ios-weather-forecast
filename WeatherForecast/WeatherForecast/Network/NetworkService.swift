@@ -39,7 +39,10 @@ extension NetworkService {
     private func request<T: Decodable> (coordinate: Coordinate, path: String, completion: @escaping APICompletion<T>) {
         
         guard let url = makeURL(path: path, coordinate: coordinate) else { return }
-        
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard error == nil else {
                 completion(.failure(.transportError))
