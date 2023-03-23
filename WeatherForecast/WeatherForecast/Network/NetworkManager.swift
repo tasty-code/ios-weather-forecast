@@ -10,10 +10,15 @@ import Foundation
 final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     private(set) var lat: Double = 37.533624
     private(set) var lon: Double = 126.963206
-     var weatherData: Weather?
-     var forecastData: Forecast?
+    var weatherData: Weather?
+    var forecastData: Forecast?
 
     func callAPI() {
+        callWeatherAPI()
+        callForecastAPI()
+    }
+
+    private func callWeatherAPI() {
         let weatherURLString = weatherURL(lat: lat, lon: lon)
         print(weatherURLString)
         guard let weatherURL = URL(string: weatherURLString) else {
@@ -30,7 +35,9 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
                 print("dataTask error: ", error)
             }
         }
+    }
 
+    private func callForecastAPI() {
         let forecastURLString = forecastURL(lat: lat, lon: lon)
         guard let forecastURL = URL(string: forecastURLString) else {
             print("invalid URL")
