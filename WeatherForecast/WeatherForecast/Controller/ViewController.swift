@@ -27,14 +27,19 @@ extension ViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locationManager.location?.coordinate else {
+        guard let location = locations.first else {
             return
         }
-        let coordinate = CurrentCoordinate(latitude: location.latitude, longitude: location.longitude)
+
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        let coordinate = CurrentCoordinate(latitude: latitude, longitude: longitude)
+        let geocoder = CLGeocoder()
         
         Task {
             let _ = try await WeatherParser<CurrentWeatherComponents>.parse(at: coordinate)
             let _ = try await WeatherParser<ForecastWeatherComponents>.parse(at: coordinate)
+            let placemark = try await geocoder.reverseGeocodeLocation(location)
         }
     }
     
