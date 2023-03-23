@@ -8,6 +8,8 @@
 import Foundation
 
 enum NetworkError: String, Error {
-    case networkError = "네트워크 오류입니다"
-    case parseError = "파싱 오류입니다"
+    case transportError
+    case serverError
+    case missingData
+    case decodingError
 }

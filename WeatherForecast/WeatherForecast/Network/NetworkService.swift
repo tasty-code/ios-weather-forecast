@@ -36,22 +36,33 @@ final class NetworkService: NetworkServiceProtocol {
 // MARK: - Methods
 
 extension NetworkService {
-    private func request<T: Decodable>(coordinate: Coordinate, path: String, completion: @escaping APICompletion<T>) {
+    private func request<T: Decodable> (coordinate: Coordinate, path: String, completion: @escaping APICompletion<T>) {
         
         guard let url = makeURL(path: path, coordinate: coordinate) else { return }
         
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            guard let safeData = data, error == nil else {
-                completion(.failure(.networkError))
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard error == nil else {
+                completion(.failure(.transportError))
                 return
             }
-            
+
+            guard let response = response as? HTTPURLResponse,
+                  (200...299).contains(response.statusCode) else {
+                completion(.failure(.serverError))
+                return
+            }
+
+            guard let safeData = data else {
+                completion(.failure(.missingData))
+                return
+            }
+
             do {
                 let decodedData = try JSONDecoder().decode(T.self, from: safeData)
                 completion(.success(decodedData))
                 return
             } catch {
-                completion(.failure(.parseError))
+                completion(.failure(.decodingError))
                 return
             }
         }.resume()
