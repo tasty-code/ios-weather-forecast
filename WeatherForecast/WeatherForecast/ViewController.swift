@@ -14,7 +14,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        UserLocation.shard.authorize()
+
         do {
             try repository.loadData(location: location, path: .currentWeather)
             try repository.loadData(location: location, path: .forecastWeather)
