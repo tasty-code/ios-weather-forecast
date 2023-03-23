@@ -29,8 +29,17 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
         locationManager.authorizationStatus == .authorizedWhenInUse
     }
 
-    var location: CLLocation? {
+    var currentLocation: CLLocation? {
         locationManager.location
+    }
+
+    var currentCoordinate: Coordinate? {
+        guard let currentLocation else { return nil }
+
+        return Coordinate(
+            longitude: currentLocation.coordinate.longitude,
+            latitude: currentLocation.coordinate.latitude
+        )
     }
     
     // MARK: - Lifecycle

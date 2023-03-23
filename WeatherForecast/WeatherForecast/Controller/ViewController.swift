@@ -77,9 +77,6 @@ extension ViewController: LocationDataManagerDelegate {
 
     func locationDataManager(_ locationDataManager: LocationDataManager,
                              didUpdateLocation location: CLLocation) {
-        let coordinate = Coordinate(longitude: location.coordinate.longitude,
-                                    latitude: location.coordinate.latitude)
-
         addressManager.fetchAddress(of: location) { placemark in
             guard let placemark else { return }
 
@@ -88,6 +85,8 @@ extension ViewController: LocationDataManagerDelegate {
                   placemark.locality ?? "",
                   placemark.name ?? "")
         }
+
+        guard let coordinate = locationDataManager.currentCoordinate else { return }
 
         fetchWeather(coordinate: coordinate)
         fetchForecast(coordinate: coordinate)
