@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     )
 
     private let locationDataManager = LocationDataManager()
+    private let addressManager = AddressManager()
 
     // MARK: - Lifecycle
 
@@ -24,8 +25,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         configureLocationDataManager()
-        fetchLocation()
-
     }
 
     // MARK: - Private

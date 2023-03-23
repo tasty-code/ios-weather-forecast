@@ -54,7 +54,6 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
                          didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         delegate?.locationDataManager(self, didUpdateLocation: location)
-        fetchAddress(of: location)
     }
 
     func locationManager(_ manager: CLLocationManager,
@@ -64,18 +63,6 @@ final class LocationDataManager: NSObject, CLLocationManagerDelegate {
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         delegate?.locationDataManager(self, didAuthorized: isAuthorized)
-    }
-
-    // MARK: - Geocode
-    
-    private func fetchAddress(of location: CLLocation) {
-        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
-            guard let self = self, error == nil else { return }
-
-            guard let placemark = placemarks?.first else { return }
-            self.delegate?.locationDataManager(self, didUpdateAddress: placemark)
-        }
-       
     }
 
 }
