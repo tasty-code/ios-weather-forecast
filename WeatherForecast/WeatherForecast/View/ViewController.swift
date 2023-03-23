@@ -57,7 +57,7 @@ extension ViewController: CLLocationManagerDelegate {
 
 extension ViewController {
     private func fetchWeatherAPI(with coordinate: Coordinate) {
-        APIService.shared.fetchWeatherAPI(coordinate: Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
+        NetworkService.shared.fetchWeatherAPI(Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
             switch result {
             case .success(let weather):
                 print(weather)
@@ -68,7 +68,7 @@ extension ViewController {
     }
 
     private func fetchForecastAPI(with coordinate: Coordinate) {
-        APIService.shared.fetchForecastAPI(coordinate: Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
+        NetworkService.shared.fetchForecastAPI(Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
             switch result {
             case .success(let forecast):
                 print(forecast)

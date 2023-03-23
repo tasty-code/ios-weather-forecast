@@ -12,8 +12,8 @@ import Foundation
 protocol NetworkServiceProtocol {
     typealias APICompletion<T> = (Result<T, NetworkError>) -> Void
     
-    func fetchWeatherAPI(coordinate: Coordinate, completion: @escaping APICompletion<Weather>)
-    func fetchForecastAPI(coordinate: Coordinate, completion: @escaping APICompletion<Forecast>)
+    func fetchWeatherAPI(_ coordinate: Coordinate, completion: @escaping APICompletion<Weather>)
+    func fetchForecastAPI(_ coordinate: Coordinate, completion: @escaping APICompletion<Forecast>)
 }
 
 // MARK: - NetworkService
@@ -24,11 +24,11 @@ final class NetworkService: NetworkServiceProtocol {
 
     private init() { }
 
-    func fetchWeatherAPI(coordinate: Coordinate, completion: @escaping APICompletion<Weather>) {
+    func fetchWeatherAPI(_ coordinate: Coordinate, completion: @escaping APICompletion<Weather>) {
         request(coordinate: coordinate, path: NetworkConfig.URLPath.weather.rawValue, completion: completion)
     }
 
-    func fetchForecastAPI(coordinate: Coordinate, completion: @escaping APICompletion<Forecast>) {
+    func fetchForecastAPI(_ coordinate: Coordinate, completion: @escaping APICompletion<Forecast>) {
         request(coordinate: coordinate, path: NetworkConfig.URLPath.forecast.rawValue, completion: completion)
     }
 }
