@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class NetworkService: ServiceProtocol {
+final class NetworkService {
 
     func performRequest(with url: URL?,
                         httpMethodType: HTTPMethodType,

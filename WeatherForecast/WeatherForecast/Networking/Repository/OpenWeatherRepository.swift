@@ -12,13 +12,13 @@ final class OpenWeatherRepository {
     //MARK: - Property
     
     private let deserializer: Deserializerable
-    private let service: ServiceProtocol
+    private let service: NetworkService
     
     //MARK: - LifeCycle
 
     init(
         deserializer: Deserializerable,
-        service: ServiceProtocol
+        service: NetworkService
     ) {
         self.deserializer = deserializer
         self.service = service
