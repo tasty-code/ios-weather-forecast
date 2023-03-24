@@ -12,13 +12,13 @@ final class OpenWeatherRepository {
     //MARK: - Property
     
     private let deserializer: Deserializerable
-    private let service: ServiceProtocol
+    private let service: NetworkService
     
     //MARK: - LifeCycle
 
     init(
         deserializer: Deserializerable,
-        service: ServiceProtocol
+        service: NetworkService
     ) {
         self.deserializer = deserializer
         self.service = service
@@ -35,6 +35,8 @@ final class OpenWeatherRepository {
         static let latitudeQueryName = "lat"
         static let longitudeQueryName = "lon"
         static let appIdQueryName = "appid"
+        static let languageQueryName = "lang"
+        static let koreanLanguageQueryValue = "kr"
     }
 
     // MARK: - Public
@@ -46,7 +48,7 @@ final class OpenWeatherRepository {
             coordinate: coordinate
         )
 
-        service.performRequest(with: url) { result in
+        service.performRequest(with: url, httpMethodType: HTTPMethodType.get) { result in
             switch result {
             case .success(let data):
                 do {
@@ -68,7 +70,7 @@ final class OpenWeatherRepository {
             coordinate: coordinate
         )
 
-        service.performRequest(with: url) { result in
+        service.performRequest(with: url, httpMethodType: HTTPMethodType.get) { result in
             switch result {
             case .success(let data):
                 do {
@@ -101,7 +103,9 @@ final class OpenWeatherRepository {
         return [
             URLQueryItem(name: Constant.latitudeQueryName, value: "\(coordinate.latitude)"),
             URLQueryItem(name: Constant.longitudeQueryName, value: "\(coordinate.longitude)"),
-            URLQueryItem(name: Constant.appIdQueryName, value: "\(Bundle.main.apiKey)")
+            URLQueryItem(name: Constant.appIdQueryName, value: Bundle.main.apiKey),
+            URLQueryItem(name: Constant.languageQueryName, value: Constant.koreanLanguageQueryValue)
         ]
     }
+    
 }

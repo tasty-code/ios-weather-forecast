@@ -9,12 +9,12 @@ import Foundation
 
 struct Forecast: Decodable {
     let numberOfDays: Int
-    let forecastData: [ForecastData]
+    let forecastDatas: [ForecastData]
     let city: City
 
     enum CodingKeys: String, CodingKey {
         case numberOfDays = "cnt"
-        case forecastData = "list"
+        case forecastDatas = "list"
         case city
     }
 }

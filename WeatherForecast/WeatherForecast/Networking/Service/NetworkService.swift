@@ -7,27 +7,37 @@
 
 import Foundation
 
-final class NetworkService: ServiceProtocol {
-    func performRequest(with url: URL?, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+final class NetworkService {
+
+    func performRequest(with url: URL?,
+                        httpMethodType: HTTPMethodType,
+                        completion: @escaping (Result<Data, NetworkError>) -> Void) {
         guard let url else {
             completion(.failure(.invalidURL))
+            log(.network, error: NetworkError.invalidURL)
             return
         }
-
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = httpMethodType.rawValue
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             guard error == nil else {
                 completion(.failure(.networking))
+                log(.network, error: NetworkError.networking)
                 return
             }
 
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
                 completion(.failure(.response))
+                log(.network, error: NetworkError.response)
                 return
             }
 
             guard let data else {
                 completion(.failure(.invalidData))
+                log(.network, error: NetworkError.invalidData)
                 return
             }
 

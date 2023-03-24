@@ -16,5 +16,3 @@ struct Coordinate: Decodable {
         case latitude = "lat"
     }
 }
-
-
