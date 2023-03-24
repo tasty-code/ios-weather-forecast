@@ -7,7 +7,7 @@
 
 import UIKit
 
-typealias NetworkResult = Result<Decodable, NetworkError>
+typealias NetworkResult = Result<Data, NetworkError>
 
 final class NetworkModel {
     private let session: URLSession
@@ -16,9 +16,7 @@ final class NetworkModel {
         self.session = session
     }
     
-    func task<DecodedData: Decodable>(urlRequest: URLRequest,
-                                      to type: DecodedData.Type,
-              completionHandler: @escaping (NetworkResult) -> Void
+    func task(urlRequest: URLRequest, completionHandler: @escaping (NetworkResult) -> Void
     ) -> URLSessionDataTask {
         
         let task = session.dataTask(with: urlRequest) { data, response, error in
@@ -37,24 +35,17 @@ final class NetworkModel {
                 completionHandler(.failure(.emptyData))
                 return
             }
-            
-            guard let decodedData = self.decode(from: data, to: type) else { return completionHandler(.failure(.failedDecoding))}
-            
-            completionHandler(.success(decodedData))
+                        
+            completionHandler(.success(data))
         }
         
         return task
     }
     
-    func decode<DecodedData: Decodable>(from data: Data, to type: DecodedData.Type) -> DecodedData? {
+    func decode<DecodedData: Decodable>(from data: Data, to type: DecodedData.Type) throws -> DecodedData? {
         
         let decoder = JSONDecoder()
-        
-        do {
-            let data = try decoder.decode(type, from: data)
-            return data
-        } catch {
-            return nil
-        }
+        let data = try decoder.decode(type, from: data)
+        return data
     }
 }

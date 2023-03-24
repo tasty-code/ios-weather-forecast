@@ -15,23 +15,42 @@ final class WeatherAPIManager {
         self.networkModel = networkModel
     }
     
-    func fetchWeatherInformation(of weatherAPI: WeatherAPI, in coordinate: Coordinate) {
-        
+    func makeWeatherRequest(of weatherAPI: WeatherAPI, in coordinate: Coordinate) -> URLRequest {
         let url = weatherAPI.makeWeatherURL(coordinate: coordinate)
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
+        return urlRequest
+    }
+    
+    func fetchWeatherInformation(of weatherAPI: WeatherAPI, in coordinate: Coordinate) -> Decodable? {
         
-        let task = networkModel.task(urlRequest: urlRequest, to: weatherAPI.decodingType) { result in
+        let urlRequest = makeWeatherRequest(of: weatherAPI, in: coordinate)
+        let group = DispatchGroup()
+        var weatherInformation: Decodable?
+        
+        group.enter()
+        let task = networkModel.task(urlRequest: urlRequest) { result in
             
             switch result {
             case .success(let data):
-                print("Success- 모델 생성완료!")
-                print(data)
+                do {
+                    let decodedData = try self.networkModel.decode(from: data, to: weatherAPI.decodingType)
+                    weatherInformation = decodedData
+                } catch {
+                    print(error.localizedDescription)
+                    weatherInformation = nil
+                }
             case .failure(let error):
                 print(error.localizedDescription)
+                weatherInformation = nil
             }
+            group.leave()
         }
-        
+
         task.resume()
+        group.wait()
+
+        return weatherInformation
     }
 }
+ 
