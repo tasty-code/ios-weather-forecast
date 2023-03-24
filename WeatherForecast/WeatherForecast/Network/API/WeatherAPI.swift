@@ -12,7 +12,7 @@ enum WeatherAPI: String {
     case currentWeather
     case fiveDaysForecast
     
-    var decodingType: Codable.Type {
+    var decodingType: Decodable.Type {
         
         switch self {
         case .currentWeather:

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CurrentWeatherDTO: Codable {
+struct CurrentWeatherDTO: Decodable {
     
     let temperature: Temperature
     let weather: [Weather]
@@ -19,7 +19,7 @@ struct CurrentWeatherDTO: Codable {
     }
 }
 
-struct Coordinate: Codable {
+struct Coordinate: Decodable {
     
     let longitude: Double
     let latitude: Double

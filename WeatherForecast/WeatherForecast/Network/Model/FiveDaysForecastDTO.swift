@@ -7,12 +7,12 @@
 
 import UIKit
 
-struct FiveDaysForecastDTO: Codable {
+struct FiveDaysForecastDTO: Decodable {
     
     let list: [Day]
 }
 
-struct Day: Codable {
+struct Day: Decodable {
     
     let time: String
     let temperature: Temperature
@@ -26,7 +26,7 @@ struct Day: Codable {
     }
 }
 
-struct Temperature: Codable {
+struct Temperature: Decodable {
     
     let temperature, minimumTemperature, maximumTemperature: Double
     
@@ -38,7 +38,7 @@ struct Temperature: Codable {
     }
 }
 
-struct Weather: Codable {
+struct Weather: Decodable {
     let id: Double
     let main, description, icon: String
 }
