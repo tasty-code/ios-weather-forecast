@@ -22,6 +22,7 @@
 		E770FBBE29C1AF4200977D51 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E770FBBD29C1AF4200977D51 /* Forecast.swift */; };
 		E77D5DBC29C950F4001F02A7 /* NetworkTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77D5DBB29C950F4001F02A7 /* NetworkTaskProtocol.swift */; };
 		E77D5DD429C976E6001F02A7 /* OpenWeatherURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77D5DD329C976E6001F02A7 /* OpenWeatherURLProtocol.swift */; };
+		E7BD550829CC264A00EEF463 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BD550729CC264A00EEF463 /* NetworkError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		E770FBBD29C1AF4200977D51 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
 		E77D5DBB29C950F4001F02A7 /* NetworkTaskProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTaskProtocol.swift; sourceTree = "<group>"; };
 		E77D5DD329C976E6001F02A7 /* OpenWeatherURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherURLProtocol.swift; sourceTree = "<group>"; };
+		E7BD550729CC264A00EEF463 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +171,7 @@
 			children = (
 				D9FDB69B29C991A0005D9D76 /* NetworkManager.swift */,
 				E77D5DBA29C950CC001F02A7 /* Protocol */,
+				E7BD550729CC264A00EEF463 /* NetworkError.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				E77D5DBC29C950F4001F02A7 /* NetworkTaskProtocol.swift in Sources */,
 				E770FBBE29C1AF4200977D51 /* Forecast.swift in Sources */,
 				D9CEE42229C433880035AA8E /* WeatherForecast++Bundle.swift in Sources */,
+				E7BD550829CC264A00EEF463 /* NetworkError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

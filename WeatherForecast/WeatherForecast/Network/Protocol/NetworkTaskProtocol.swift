@@ -30,7 +30,7 @@ extension NetworkTaskProtcol {
             let data = try JSONDecoder().decode(type.self, from: jsonData)
             return data
         } catch {
-            print(type, "can not decode:", error)
+            print(NetworkError.decodeError.localizedDescription)
             return nil
         }
     }
