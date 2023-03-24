@@ -13,7 +13,6 @@ enum UserLocationError: Error {
 
 final class UserLocation: NSObject, CLLocationManagerDelegate {
     
-    //MARK: - Property
     static let shard = UserLocation()
     
     var location: CLLocation? {
@@ -26,7 +25,6 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
         return newLocationmanager
     }()
 
-    //MARK: - Authorization
     func authorize() {
         sharedLocationManager.requestWhenInUseAuthorization()
     }
@@ -53,7 +51,6 @@ private extension CLPlacemark {
     var formattedAddress: String? {
         guard let infomation = self.addressDictionary?["FormattedAddressLines"] as? [String],
               let value = infomation.first else {
-            // 바다입니다
             return nil
         }
 
