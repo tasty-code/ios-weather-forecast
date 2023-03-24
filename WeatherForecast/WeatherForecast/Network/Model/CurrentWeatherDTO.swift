@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct CurrentWeather: Codable {
+struct CurrentWeatherDTO: Codable {
     
-    let mainData: MainData
+    let temperature: Temperature
     let weather: [Weather]
     
     enum CodingKeys: String, CodingKey {
         
-        case mainData = "main"
+        case temperature = "main"
         case weather
     }
 }

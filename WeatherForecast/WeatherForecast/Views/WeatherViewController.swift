@@ -1,5 +1,5 @@
 //
-//  WeatherForecast - ViewController.swift
+//  WeatherForecast - WeatherViewController.swift
 //  Created by yagom. 
 //  Copyright © yagom. All rights reserved.
 // 
@@ -7,7 +7,7 @@
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController {
+class WeatherViewController: UIViewController {
     
     private let networkModel = NetworkModel()
     private lazy var network = WeatherAPIManager(networkModel: networkModel)
@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         coreLocationManger.delegate = locationDelegate
-        network.fetchWeatherInformation(of: .fiveDaysForecast, in: Coordinate(longitude: 126.96368972, latitude: 37.53361968))
+        network.fetchWeatherInformation(of: .currentWeather, in: Coordinate(longitude: 126.96368972, latitude: 37.53361968))
         
 //        126.96368972
 //        37.53361968

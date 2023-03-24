@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct FiveDaysForecast: Codable {
+struct FiveDaysForecastDTO: Codable {
     
     let list: [Day]
 }
@@ -15,18 +15,18 @@ struct FiveDaysForecast: Codable {
 struct Day: Codable {
     
     let time: String
-    let mainData: MainData
+    let temperature: Temperature
     let weather: [Weather]
     
     enum CodingKeys: String, CodingKey {
         
         case time = "dt_txt"
-        case mainData = "main"
+        case temperature = "main"
         case weather
     }
 }
 
-struct MainData: Codable {
+struct Temperature: Codable {
     
     let temperature, minimumTemperature, maximumTemperature: Double
     

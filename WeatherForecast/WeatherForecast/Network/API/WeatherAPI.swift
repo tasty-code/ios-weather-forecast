@@ -16,9 +16,9 @@ enum WeatherAPI: String {
         
         switch self {
         case .currentWeather:
-            return CurrentWeather.self
+            return CurrentWeatherDTO.self
         case .fiveDaysForecast:
-            return FiveDaysForecast.self
+            return FiveDaysForecastDTO.self
         }
     }
 }
