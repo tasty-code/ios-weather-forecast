@@ -53,10 +53,19 @@ private extension CLPlacemark {
     var formattedAddress: String? {
         guard let infomation = self.addressDictionary?["FormattedAddressLines"] as? [String],
               let value = infomation.first else {
-            // 우편번호가 없는 경우
+            // 바다입니다
             return nil
         }
 
-        return value.split(separator: " ")[1...2].joined(separator: " ")
+        let splitted = value.split(separator: " ")
+        guard splitted.first == "대한민국" else {
+            var address = String()
+            if let country = self.country { address = country }
+            if let locality = self.locality { address += " " + locality }
+            if let administrativeArea = self.administrativeArea { address += " " + administrativeArea }
+            return address
+        }
+
+        return splitted[1...2].joined(separator: " ")
     }
 }
