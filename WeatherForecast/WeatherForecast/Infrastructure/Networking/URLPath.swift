@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-enum URLPath: String {
+enum URLPath: String, CaseIterable {
     case currentWeather
     case forecastWeather
     

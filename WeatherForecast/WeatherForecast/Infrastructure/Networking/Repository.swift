@@ -17,7 +17,6 @@ class Repository {
     
     let session = URLSession.shared
 
-    //MARK: - URL Result Test
     func loadWeatherEntity(with location: CLLocationCoordinate2D, path: URLPath, then completion: @escaping Handler) throws {
         let url = try URLPath.configureURL(of: path, with: location)
         
@@ -49,7 +48,7 @@ class Repository {
     }
 }
 
-extension URLSession {
+private extension URLSession {
     func dataTask(with url: URL, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionDataTask {
         dataTask(with: url) { data, response, error in
             if let error = error {
