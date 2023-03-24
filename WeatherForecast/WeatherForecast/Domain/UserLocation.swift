@@ -22,6 +22,7 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
     lazy var sharedLocationManager: CLLocationManager = {
         let newLocationmanager = CLLocationManager()
         newLocationmanager.delegate = self
+
         return newLocationmanager
     }()
 
@@ -38,7 +39,10 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
         let geocoder = CLGeocoder()
 
         geocoder.reverseGeocodeLocation(newLocation) { (placemark, error) in
-            guard error == nil else { return }
+            guard error == nil else {
+                return
+            }
+
             if let placemark = placemark?.first,
                let address = placemark.formattedAddress {
                 completion(.success(address))
@@ -55,11 +59,21 @@ private extension CLPlacemark {
         }
 
         let splitted = value.split(separator: " ")
+
         guard splitted.first == "대한민국" else {
             var address = String()
-            if let country = self.country { address = country }
-            if let locality = self.locality { address += " " + locality }
-            if let administrativeArea = self.administrativeArea { address += " " + administrativeArea }
+            if let country = self.country {
+                address = country
+            }
+
+            if let locality = self.locality {
+                address += " " + locality
+            }
+
+            if let administrativeArea = self.administrativeArea {
+                address += " " + administrativeArea
+            }
+
             return address
         }
 
