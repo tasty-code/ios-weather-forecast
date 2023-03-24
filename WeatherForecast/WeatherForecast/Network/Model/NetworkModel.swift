@@ -42,7 +42,7 @@ final class NetworkModel {
         return task
     }
     
-    func decode<DecodedData: Decodable>(from data: Data, to type: DecodedData.Type) throws -> DecodedData? {
+    func decode(from data: Data, to type: Decodable.Type) throws -> Decodable? {
         
         let decoder = JSONDecoder()
         let data = try decoder.decode(type, from: data)
