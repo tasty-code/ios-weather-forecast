@@ -22,7 +22,8 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
         do {
             let weatherURLString = weatherURL(lat: latitude, lon: longitude)
             let weatherURL = try getURL(string: weatherURLString)
-            let weatherURLRequest = URLRequest(url: weatherURL)
+            var weatherURLRequest = URLRequest(url: weatherURL)
+            weatherURLRequest.httpMethod = "GET"
             dataTask(URLRequest: weatherURLRequest, myType: Weather.self) { result in
                 switch result {
                 case .success(let data):
@@ -48,7 +49,8 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
         do {
             let forecastURLString = forecastURL(lat: latitude, lon: longitude)
             let forecastURL = try getURL(string: forecastURLString)
-            let forecastURLRequest = URLRequest(url: forecastURL)
+            var forecastURLRequest = URLRequest(url: forecastURL)
+            forecastURLRequest.httpMethod = "GET"
             dataTask(URLRequest: forecastURLRequest, myType: Forecast.self) { result in
                 switch result {
                 case .success(let data):
