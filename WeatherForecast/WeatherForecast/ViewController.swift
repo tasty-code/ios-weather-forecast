@@ -13,6 +13,20 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UserLocation.shard.authorize()
+        //MARK: - 테스트용 출력
+    }
+    
+    @IBAction func printWeatherInformation(_ sender: UIButton) {
+        UserLocation.shard.address { (result) in
+          switch result {
+          case .success(let address):
+            print(address)
+          case .failure(let error):
+            print(error)
+          }
+        }
 
         do {
             guard let location = UserLocation.shard.location?.coordinate else {
