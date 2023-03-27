@@ -8,10 +8,12 @@ import UIKit
 
 class ViewController: UIViewController {
     let networkManager = NetworkManager()
+    let locationManager = LocationManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         networkManager.callAPI()
+        locationManager.setUpLocationManager()
     }
 }
 
