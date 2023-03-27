@@ -16,15 +16,15 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
-
         locationManager.startUpdatingLocation()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        print("latitude: ", location.coordinate.latitude)
-        print("longitude: ", location.coordinate.longitude)
-
+        guard let location = locations.first else {
+            print(LocationError.emptyLocation.localizedDescription)
+            return
+        }
+        print("(updated)location")
         geoCoder.reverseGeocodeLocation(location) { placemarks, error in
             guard let placemark = placemarks?.first else { return }
             var address = ""
@@ -39,7 +39,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
             if let subThoroughfare = placemark.subThoroughfare { address += " \(subThoroughfare)" }
 
-            print(placemark)
+            print("address: ", address)
         }
     }
 

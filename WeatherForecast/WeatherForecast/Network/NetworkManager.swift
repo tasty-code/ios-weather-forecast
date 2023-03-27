@@ -27,7 +27,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
                 switch result {
                 case .success(let data):
                     self.weatherData = data
-                    print("weatherData성공")
+                    print("(fetched)weatherData")
                 case .failure(let error):
                     print("dataTask error: ", error)
                 }
@@ -53,7 +53,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
                 switch result {
                 case .success(let data):
                     self.forecastData = data
-                    print("forecastData성공")
+                    print("(fetched)forecastData")
                 case .failure(let error):
                     print("dataTask error: ", error)
                 }
