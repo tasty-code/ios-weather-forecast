@@ -7,20 +7,6 @@
 
 import CoreLocation
 
-enum NetworkEntityLoadingError: Error {
-    case networkFailure
-    case invalidData
-}
-
-enum NetworkError: Error {
-    case notConnected
-}
-
-enum HTTPResponseError: Error {
-    case error(statusCode: Int, description: String)
-    
-}
-
 class Repository {
     typealias Handler = (Result<WeatherModel, NetworkEntityLoadingError>) -> Void
     
