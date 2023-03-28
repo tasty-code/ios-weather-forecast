@@ -30,53 +30,34 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
         sharedLocationManager.requestWhenInUseAuthorization()
     }
 
-    func address(completion: @escaping (Result<String, Error>) -> Void) {
+    func address() async throws -> String {
         guard let newLocation = location else {
-            completion(.failure(UserLocationError.withoutZipCode))
-            return
+            throw UserLocationError.withoutZipCode
         }
 
         let geocoder = CLGeocoder()
+        let placemarks = try await geocoder.reverseGeocodeLocation(newLocation)
 
-        geocoder.reverseGeocodeLocation(newLocation) { (placemark, error) in
-            guard error == nil else {
-                return
-            }
-
-            if let placemark = placemark?.first,
-               let address = placemark.formattedAddress {
-                completion(.success(address))
-            }
+        guard let placemark = placemarks.first,
+           let address = placemark.formattedAddress else {
+            throw UserLocationError.withoutZipCode
         }
+
+        return address
     }
 }
 
 private extension CLPlacemark {
     var formattedAddress: String? {
-        guard let infomation = self.addressDictionary?["FormattedAddressLines"] as? [String],
-              let value = infomation.first else {
+        var address = String()
+
+        guard let locality = self.locality,
+              let subLocality = self.subLocality else {
             return nil
         }
 
-        let splitted = value.split(separator: " ")
+        address += locality + " " + subLocality
 
-        guard splitted.first == "대한민국" else {
-            var address = String()
-            if let country = self.country {
-                address = country
-            }
-
-            if let locality = self.locality {
-                address += " " + locality
-            }
-
-            if let administrativeArea = self.administrativeArea {
-                address += " " + administrativeArea
-            }
-
-            return address
-        }
-
-        return splitted[1...2].joined(separator: " ")
+        return address
     }
 }

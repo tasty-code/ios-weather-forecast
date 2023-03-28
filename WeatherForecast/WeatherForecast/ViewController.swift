@@ -15,38 +15,33 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         UserLocation.shard.authorize()
-        //MARK: - 테스트용 출력
     }
     
     @IBAction func printWeatherInformation(_ sender: UIButton) {
-        UserLocation.shard.address { (result) in
-          switch result {
-          case .success(let address):
-            print(address)
-          case .failure(let error):
-            print(error)
-          }
-        }
+        Task {
+            do {
+                let address = try await UserLocation.shard.address()
+                print(address)
 
-        do {
-            guard let location = UserLocation.shard.location?.coordinate else {
-                return
-            }
+                guard let location = UserLocation.shard.location?.coordinate else {
+                    return
+                }
 
-            try URLPath.allCases.forEach { weatherType in
-                try repository.loadWeatherEntity(with: location, path: weatherType) { result in
-                    switch result {
-                    case .success(let data):
-                        print(data)
-                    case .failure(.invalidData):
-                        print("유효하지 않은 데이터")
-                    case .failure(.networkFailure(let error)):
-                        print("네트워크 실패, \(error)")
+                try URLPath.allCases.forEach { weatherType in
+                    try repository.loadWeatherEntity(with: location, path: weatherType) { result in
+                        switch result {
+                        case .success(let data):
+                            print(data)
+                        case .failure(.invalidData):
+                            print("유효하지 않은 데이터")
+                        case .failure(.networkFailure(let error)):
+                            print("네트워크 실패, \(error)")
+                        }
                     }
                 }
+            } catch {
+                print(error)
             }
-        } catch {
-            print(error)
         }
     }
 }
