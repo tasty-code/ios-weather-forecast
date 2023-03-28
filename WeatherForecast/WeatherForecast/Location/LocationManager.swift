@@ -8,14 +8,6 @@
 import Foundation
 import CoreLocation
 
-extension Notification.Name {
-    static let location = Notification.Name("Location")
-}
-
-enum NotificationKey {
-    case coordinate
-}
-
 final class LocationManager: NSObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager.init()
     private let geoCoder = CLGeocoder.init()
