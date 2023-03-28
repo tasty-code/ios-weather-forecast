@@ -12,15 +12,6 @@ enum NetworkEntityLoadingError: Error {
     case invalidData
 }
 
-enum HTTPMethodType: String {
-    case get     = "GET"
-    case head    = "HEAD"
-    case post    = "POST"
-    case put     = "PUT"
-    case patch   = "PATCH"
-    case delete  = "DELETE"
-}
-
 enum NetworkError: Error {
     case notConnected
 }
@@ -39,7 +30,7 @@ class Repository {
         let url = try URLPath.configureURL(of: path, with: location)
         var urlRequest = URLRequest(url: url)
         
-        urlRequest.httpMethod = HTTPMethodType.get.rawValue
+        urlRequest.httpMethod = "GET"
         session.dataTask(with: urlRequest) { data, response, error in
             guard error == nil else {
                 completion(NetworkError.notConnected)
