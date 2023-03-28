@@ -11,14 +11,7 @@ class ViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let collectionView: UICollectionView = {
-        let collectionViewFlowLayout = UICollectionViewFlowLayout()
-        collectionViewFlowLayout.scrollDirection = .vertical
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewFlowLayout)
-        collectionView.backgroundColor = .systemRed
-        return collectionView
-    }()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
     private let repository = OpenWeatherRepository(
         deserializer: JSONDesirializer(),
@@ -110,6 +103,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.backgroundColor = .systemRed
         collectionView.register(WeatherCell.self, forCellWithReuseIdentifier: WeatherCell.identifier)
     }
 
@@ -120,14 +114,18 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
 
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        30
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCell.identifier, for: indexPath) as? WeatherCell else { return UICollectionViewCell() }
 
-        cell.label.text = String(indexPath.row)
+        cell.dateLabel.text = String(indexPath.row)
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.size.width, height: view.frame.size.height/15)
     }
 
 }
