@@ -50,7 +50,7 @@ class Repository {
 
 private extension URLSession {
     func dataTask(with url: URL, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionDataTask {
-        dataTask(with: url) { data, response, error in
+        dataTask(with: url) { data, _, error in
             if let error = error {
                 completion(.failure(error))
             }
