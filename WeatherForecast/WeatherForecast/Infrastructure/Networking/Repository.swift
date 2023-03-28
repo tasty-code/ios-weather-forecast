@@ -8,31 +8,63 @@
 import CoreLocation
 
 enum NetworkEntityLoadingError: Error {
-    case networkFailure(Error)
+    case networkFailure
     case invalidData
+}
+
+enum HTTPMethodType: String {
+    case get     = "GET"
+    case head    = "HEAD"
+    case post    = "POST"
+    case put     = "PUT"
+    case patch   = "PATCH"
+    case delete  = "DELETE"
+}
+
+enum NetworkError: Error {
+    case notConnected
+}
+
+enum HTTPResponseError: Error {
+    case error(statusCode: Int, description: String)
+    
 }
 
 class Repository {
     typealias Handler = (Result<WeatherModel, NetworkEntityLoadingError>) -> Void
     
     private let session = URLSession.shared
-
-    func loadWeatherEntity(with location: CLLocationCoordinate2D, path: URLPath, then completion: @escaping Handler) throws {
+    
+    func loadData(with location: CLLocationCoordinate2D, path: URLPath, completion: @escaping (Error) -> Void) throws {
         let url = try URLPath.configureURL(of: path, with: location)
+        var urlRequest = URLRequest(url: url)
         
-        let task = session.dataTask(with: url) { [self] result in
-            switch result {
-            case .success(let data):
-                if let wishData = loadJSON(weatherType: path.weatherMetaType, weatherData: data) {
-                    completion(.success(wishData))
-                } else {
-                    completion(.failure(.invalidData))
-                }
-            case .failure(let error):
-                completion(.failure(.networkFailure(error)))
+        urlRequest.httpMethod = HTTPMethodType.get.rawValue
+        session.dataTask(with: urlRequest) { data, response, error in
+            guard error == nil else {
+                completion(NetworkError.notConnected)
+                return
             }
-        }
-        task.resume()
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                let responseError = HTTPResponseError.error(statusCode: (response as? HTTPURLResponse)?.statusCode ?? 404,
+                                                            description: response.debugDescription)
+                completion(responseError)
+                return
+            }
+            
+            guard let data = data else {
+                completion(NetworkEntityLoadingError.networkFailure)
+                return
+            }
+            
+            guard let wishData = self.loadJSON(weatherType: path.weatherMetaType, weatherData: data) else {
+                completion(NetworkEntityLoadingError.invalidData)
+                return
+            }
+            print(wishData)
+        }.resume()
     }
     
     private func loadJSON(weatherType: WeatherModel.Type, weatherData: Data) -> WeatherModel? {
@@ -44,20 +76,6 @@ class Repository {
         } catch {
             print("Unable to decode \(weatherData): (error)")
             return nil
-        }
-    }
-}
-
-private extension URLSession {
-    func dataTask(with url: URL, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionDataTask {
-        dataTask(with: url) { data, _, error in
-            if let error = error {
-                completion(.failure(error))
-            }
-
-            if let data = data {
-                completion(.success(data))
-            }
         }
     }
 }
