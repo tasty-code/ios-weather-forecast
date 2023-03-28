@@ -11,6 +11,15 @@ class ViewController: UIViewController {
 
     // MARK: - Properties
 
+    private let collectionView: UICollectionView = {
+        let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        collectionViewFlowLayout.scrollDirection = .vertical
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewFlowLayout)
+        collectionView.backgroundColor = .systemRed
+        return collectionView
+    }()
+
     private let repository = OpenWeatherRepository(
         deserializer: JSONDesirializer(),
         service: NetworkService()
@@ -26,6 +35,7 @@ class ViewController: UIViewController {
 
         view.backgroundColor = .systemBlue
         configureLocationDataManager()
+        setCollectionView()
     }
 
     // MARK: - Private
@@ -92,4 +102,32 @@ extension ViewController: LocationDataManagerDelegate {
         fetchWeather(coordinate: coordinate)
         fetchForecast(coordinate: coordinate)
     }
+}
+
+extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    private func setCollectionView() {
+        view.addSubview(collectionView)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(WeatherCell.self, forCellWithReuseIdentifier: WeatherCell.identifier)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.frame = view.bounds
+    }
+
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        10
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCell.identifier, for: indexPath) as? WeatherCell else { return UICollectionViewCell() }
+
+        cell.label.text = String(indexPath.row)
+        return cell
+    }
+
 }
