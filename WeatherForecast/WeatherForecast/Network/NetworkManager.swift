@@ -6,12 +6,24 @@
 //
 
 import Foundation
+import CoreLocation
 
 final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     private(set) var latitude: Double = 37.533624
     private(set) var longitude: Double = 126.963206
     var weatherData: Weather?
     var forecastData: Forecast?
+
+    init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(getCoordinate(notification:)), name: Notification.Name.location, object: nil)
+    }
+
+    @objc func getCoordinate(notification: Notification) {
+        guard let coordinate = notification.userInfo?[NotificationKey.coordinate] as? CLLocationCoordinate2D else { return }
+        latitude = coordinate.latitude
+        longitude = coordinate.longitude
+        callAPI()
+    }
     
     func callAPI() {
         callWeatherAPI()

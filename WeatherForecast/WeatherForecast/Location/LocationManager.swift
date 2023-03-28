@@ -8,6 +8,14 @@
 import Foundation
 import CoreLocation
 
+extension Notification.Name {
+    static let location = Notification.Name("Location")
+}
+
+enum NotificationKey {
+    case coordinate
+}
+
 final class LocationManager: NSObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager.init()
     private let geoCoder = CLGeocoder.init()
@@ -25,6 +33,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
             return
         }
         print("(updated)location")
+        NotificationCenter.default.post(name: Notification.Name.location, object: nil, userInfo: [NotificationKey.coordinate:location.coordinate])
         geoCoder.reverseGeocodeLocation(location) { placemarks, error in
             guard let placemark = placemarks?.first else { return }
             var address = ""
