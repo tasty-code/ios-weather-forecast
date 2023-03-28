@@ -9,10 +9,11 @@ import Foundation
 import CoreLocation
 
 final class LocationManager: NSObject, CLLocationManagerDelegate {
+    // MARK: - Private property
     private let locationManager = CLLocationManager.init()
     private let geoCoder = CLGeocoder.init()
 
-    // MARK: Function
+    // MARK: - Public
     func setUpLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -20,7 +21,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
     }
     
-    // MARK: Life Cycle
+    // MARK: - Lifecycle
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else {
             print(LocationError.emptyLocation.localizedDescription)
@@ -35,7 +36,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         print(error.localizedDescription)
     }
     
-    // MARK: Private function
+    // MARK: - Private
     private func reverseGeocodeLocation(_ location: CLLocation) {
         geoCoder.reverseGeocodeLocation(location) { placemarks, error in
             guard let placemark = placemarks?.first else { return }
