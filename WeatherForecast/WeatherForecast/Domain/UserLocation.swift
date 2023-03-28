@@ -13,7 +13,7 @@ enum UserLocationError: Error {
 
 final class UserLocation: NSObject, CLLocationManagerDelegate {
     
-    static let shard = UserLocation()
+    static let shared = UserLocation()
     
     var location: CLLocation? {
         sharedLocationManager.location

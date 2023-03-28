@@ -14,16 +14,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UserLocation.shard.authorize()
+        UserLocation.shared.authorize()
     }
     
     @IBAction func printWeatherInformation(_ sender: UIButton) {
         Task {
             do {
-                let address = try await UserLocation.shard.address()
+                let address = try await UserLocation.shared.address()
                 print(address)
 
-                guard let location = UserLocation.shard.location?.coordinate else {
+                guard let location = UserLocation.shared.location?.coordinate else {
                     return
                 }
 
