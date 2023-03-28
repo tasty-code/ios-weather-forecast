@@ -29,7 +29,14 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
     }()
 
     func authorize() {
-        sharedLocationManager.requestWhenInUseAuthorization()
+        switch CLLocationManager.authorizationStatus() {
+        case .denied:
+            print("위치 정보 권한이 필요합니다")
+        case .notDetermined, .restricted:
+            sharedLocationManager.requestWhenInUseAuthorization()
+        default:
+            return
+        }
     }
 
     func address(complition: @escaping (String?, Error?) -> Void) {
@@ -44,6 +51,7 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
                 complition(nil, error)
                 return
             }
+
             guard let placemark = placemarks?.first,
                let address = placemark.formattedAddress else {
                 complition(nil, UserLocationError.withoutZipCode)

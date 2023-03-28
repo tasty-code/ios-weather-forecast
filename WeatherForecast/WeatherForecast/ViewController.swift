@@ -23,6 +23,7 @@ class ViewController: UIViewController {
                 print(error)
                 return
             }
+
             if let address {
                 print(address)
             }
@@ -38,6 +39,7 @@ class ViewController: UIViewController {
                     print(error)
                     return
                 }
+
                 if let data {
                     print(data)
                 }
