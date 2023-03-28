@@ -8,7 +8,9 @@
 import CoreLocation
 
 enum UserLocationError: Error {
+    case withoutLocationInfomation
     case withoutZipCode
+    
 }
 
 final class UserLocation: NSObject, CLLocationManagerDelegate {
@@ -30,20 +32,25 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
         sharedLocationManager.requestWhenInUseAuthorization()
     }
 
-    func address() async throws -> String {
+    func address(complition: @escaping (String?, Error?) -> Void) {
         guard let newLocation = location else {
-            throw UserLocationError.withoutZipCode
+            complition(nil, UserLocationError.withoutLocationInfomation)
+            return
         }
 
         let geocoder = CLGeocoder()
-        let placemarks = try await geocoder.reverseGeocodeLocation(newLocation)
-
-        guard let placemark = placemarks.first,
-           let address = placemark.formattedAddress else {
-            throw UserLocationError.withoutZipCode
+        geocoder.reverseGeocodeLocation(newLocation) { (placemarks, error) in
+            guard error == nil else {
+                complition(nil, error)
+                return
+            }
+            guard let placemark = placemarks?.first,
+               let address = placemark.formattedAddress else {
+                complition(nil, UserLocationError.withoutZipCode)
+                return
+            }
+            complition(address, nil)
         }
-
-        return address
     }
 }
 
@@ -51,12 +58,13 @@ private extension CLPlacemark {
     var formattedAddress: String? {
         var address = String()
 
-        guard let locality = self.locality,
-              let subLocality = self.subLocality else {
-            return nil
+        if let locality = self.locality {
+            address = locality
         }
 
-        address += locality + " " + subLocality
+        if let subLocality = self.subLocality {
+            address += " " + subLocality
+        }
 
         return address
     }

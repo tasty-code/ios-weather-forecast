@@ -18,21 +18,35 @@ class ViewController: UIViewController {
     }
     
     @IBAction func printWeatherInformation(_ sender: UIButton) {
-        // let address = try await UserLocation.shared.address()
-        // print(address)
-        
-        guard let location = UserLocation.shared.location?.coordinate else {
-            return
-        }
-        
-        URLPath.allCases.forEach { weatherType in
-            do {
-                try repository.loadData(with: location, path: weatherType) { error in
+        do {
+            UserLocation.shared.address { (address, error) in
+                if let error {
                     print(error)
+                    return
                 }
-            } catch {
-                print("URL Fail")
+                if let address {
+                    print(address)
+                }
             }
+            
+            guard let location = UserLocation.shared.location?.coordinate else {
+                return
+            }
+
+            try URLPath.allCases.forEach { weatherType in
+                try repository.loadWeatherEntity(with: location, path: weatherType) { result in
+                    switch result {
+                    case .success(let data):
+                        print(data)
+                    case .failure(.invalidData):
+                        print("유효하지 않은 데이터")
+                    case .failure(.networkFailure(let error)):
+                        print("네트워크 실패, \(error)")
+                    }
+                }
+            }
+        } catch {
+            print(error)
         }
     }
 }
