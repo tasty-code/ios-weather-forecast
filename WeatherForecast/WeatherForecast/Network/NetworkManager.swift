@@ -31,7 +31,6 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     }
     
     // MARK: - Public
-    
     func callAPI() {
         callWeatherAPI()
         callForecastAPI()
