@@ -15,7 +15,7 @@ enum NetworkEntityLoadingError: Error {
 class Repository {
     typealias Handler = (Result<WeatherModel, NetworkEntityLoadingError>) -> Void
     
-    let session = URLSession.shared
+    private let session = URLSession.shared
 
     func loadWeatherEntity(with location: CLLocationCoordinate2D, path: URLPath, then completion: @escaping Handler) throws {
         let url = try URLPath.configureURL(of: path, with: location)
