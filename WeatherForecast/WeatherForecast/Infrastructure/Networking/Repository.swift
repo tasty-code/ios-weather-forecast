@@ -8,7 +8,6 @@
 import CoreLocation
 
 class Repository {
-    typealias Handler = (Result<WeatherModel, NetworkEntityLoadingError>) -> Void
     
     private let session = URLSession.shared
     
