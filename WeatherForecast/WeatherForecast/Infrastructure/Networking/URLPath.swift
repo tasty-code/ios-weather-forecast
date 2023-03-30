@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-enum URLPath: String {
+enum URLPath: String, CaseIterable {
     case currentWeather
     case forecastWeather
     
@@ -28,23 +28,26 @@ enum URLPath: String {
             return "forecast"
         }
     }
-    
+
     static func configureURL(of weatherCastType: URLPath, with coordintate: CLLocationCoordinate2D) throws -> URL {
+        let baseURL: String = "https://api.openweathermap.org/data/2.5/"
+        let latitude = URLQueryItem(name: OpenWeatherParameter.latitude, value: coordintate.latitude.description)
+        let longitude = URLQueryItem(name: OpenWeatherParameter.longitude, value: coordintate.longitude.description)
+        let unitsOfMeasurement = URLQueryItem(name: OpenWeatherParameter.measurement, value: Measurement.celsius)
+
         guard let weatherAPIKEY = Bundle.main.object(forInfoDictionaryKey: "WeatherAPIKEY") as? String else {
             fatalError("Weather API KEY is E.M.P.T.Y !!")
         }
-        guard var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(weatherCastType.path)") else {
+
+        guard var components = URLComponents(string: "\(baseURL)\(weatherCastType.path)") else {
             throw URLComponentsError.invalidComponent
         }
 
-        let latitude = URLQueryItem(name: "lat", value: coordintate.latitude.description)
-        let longitude = URLQueryItem(name: "lon", value: coordintate.longitude.description)
-        let appid = URLQueryItem(name: "appid", value: weatherAPIKEY)
-        let unitsOfMeasurement = URLQueryItem(name: "units", value: "metric")
-
+        let appid = URLQueryItem(name: OpenWeatherParameter.apiKey, value: weatherAPIKEY)
         components.queryItems = [latitude, longitude, appid, unitsOfMeasurement]
+
         if weatherCastType == .forecastWeather {
-            let countOfDay = URLQueryItem(name: "cnt", value: "5")
+            let countOfDay = URLQueryItem(name: OpenWeatherParameter.numberOfDays, value: OpenWeatherParameter.fiveDays)
             components.queryItems?.append(countOfDay)
         }
         
