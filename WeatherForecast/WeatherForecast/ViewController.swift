@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     
     private func setUp() {
         networkManager.callAPI()
-        locationManager.setUpLocationManager()
+        locationManager.startUpdatingLocation()
     }
 }
 

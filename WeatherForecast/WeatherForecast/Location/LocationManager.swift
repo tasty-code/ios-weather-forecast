@@ -14,11 +14,10 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     private let geoCoder = CLGeocoder()
 
     // MARK: - Public
-    func setUpLocationManager() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
+    func startUpdatingLocation() {
+        setUp()
+        requestAuthorization()
+        startUpdating()
     }
     
     // MARK: - Lifecycle
@@ -37,6 +36,19 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     // MARK: - Private
+    private func setUp() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    }
+    
+    private func requestAuthorization() {
+        locationManager.requestAlwaysAuthorization()
+    }
+    
+    private func startUpdating() {
+        locationManager.startUpdatingLocation()
+    }
+    
     private func reverseGeocodeLocation(_ location: CLLocation) {
         geoCoder.reverseGeocodeLocation(location) { placemarks, error in
             guard let placemark = placemarks?.first else { return }
