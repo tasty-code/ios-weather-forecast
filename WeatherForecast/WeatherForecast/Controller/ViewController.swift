@@ -126,7 +126,7 @@ extension ViewController: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCell.identifier, for: indexPath) as? WeatherCell else { return UICollectionViewCell() }
 
-        cell.dateLabel.text = String(indexPath.row)
+        cell.configure(with: String(indexPath.row))
         return cell
     }
 
