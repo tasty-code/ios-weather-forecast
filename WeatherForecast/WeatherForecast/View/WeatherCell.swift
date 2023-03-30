@@ -23,7 +23,7 @@ final class WeatherCell: UICollectionViewCell {
         return label
     }()
 
-    private let temperutuerLabel: UILabel = {
+    private let temperatuerLabel: UILabel = {
         let label = UILabel()
         label.text = "12.5"
         return label
@@ -38,7 +38,7 @@ final class WeatherCell: UICollectionViewCell {
 
     private lazy var rightStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            temperutuerLabel,
+            temperatuerLabel,
             iconImageView
         ])
         stackView.axis = .horizontal

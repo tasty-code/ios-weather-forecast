@@ -36,14 +36,14 @@ final class WeatherHeaderView: UICollectionReusableView {
         return label
     }()
 
-    private let temperutureLabel: UILabel = {
+    private let temperatureLabel: UILabel = {
         let label = UILabel()
         label.text = "6.8"
         label.font = UIFont.systemFont(ofSize: 30)
         return label
     }()
 
-    private let addressAndTemperutureRange: UIStackView = {
+    private let addressAndTemperatureRange: UIStackView = {
         let stackView = UIStackView()
         stackView.alignment = .leading
         stackView.contentMode = .scaleAspectFill
@@ -64,11 +64,11 @@ final class WeatherHeaderView: UICollectionReusableView {
     }()
 
     private func setUpStackViews() {
-        addressAndTemperutureRange.addArrangedSubview(addressLabel)
-        addressAndTemperutureRange.addArrangedSubview(temperutureRangeLabel)
+        addressAndTemperatureRange.addArrangedSubview(addressLabel)
+        addressAndTemperatureRange.addArrangedSubview(temperutureRangeLabel)
 
-        infoStackView.addArrangedSubview(addressAndTemperutureRange)
-        infoStackView.addArrangedSubview(temperutureLabel)
+        infoStackView.addArrangedSubview(addressAndTemperatureRange)
+        infoStackView.addArrangedSubview(temperatureLabel)
     }
 
     private func setLayoutSubviews() {
