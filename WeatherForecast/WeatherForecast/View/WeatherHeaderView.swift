@@ -24,7 +24,6 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     private let addressLabel: UILabel = {
         let label = UILabel()
-//        label.backgroundColor = .brown
         label.text = "서울특별시 용산새싹마을"
         label.font = UIFont.systemFont(ofSize: 13)
         return label
@@ -32,7 +31,6 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     private let temperutureRangeLabel: UILabel = {
         let label = UILabel()
-//        label.backgroundColor = .blue
         label.text = "최저 5.0, 최고 6.8"
         label.font = UIFont.systemFont(ofSize: 13)
         return label
@@ -40,7 +38,6 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     private let temperutureLabel: UILabel = {
         let label = UILabel()
-//        label.backgroundColor = .cyan
         label.text = "6.8"
         label.font = UIFont.systemFont(ofSize: 30)
         return label
@@ -61,7 +58,6 @@ final class WeatherHeaderView: UICollectionReusableView {
         stackView.alignment = .leading
         stackView.contentMode = .scaleAspectFill
         stackView.distribution = .fillProportionally
-//        stackView.spacing = 10
         stackView.axis = .vertical
 
         return stackView
