@@ -145,7 +145,7 @@ extension WeatherListViewController: UICollectionViewDataSource {
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
         let width = view.frame.width
-        let height = view.frame.height / 10
+        let height = view.frame.height / 7
         return CGSize(width: width, height: height)
     }
 
