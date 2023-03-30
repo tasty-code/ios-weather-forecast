@@ -10,8 +10,8 @@ import CoreLocation
 
 final class LocationManager: NSObject, CLLocationManagerDelegate {
     // MARK: - Private property
-    private let locationManager = CLLocationManager.init()
-    private let geoCoder = CLGeocoder.init()
+    private let locationManager = CLLocationManager()
+    private let geoCoder = CLGeocoder()
 
     // MARK: - Public
     func setUpLocationManager() {
@@ -52,6 +52,8 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
             if let subThoroughfare = placemark.subThoroughfare { address += " \(subThoroughfare)" }
 
+            print("placemark: ", placemark)
+            print("description: ", placemark.description)
             print("address: ", address)
         }
     }
