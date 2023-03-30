@@ -28,8 +28,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .systemBlue
+        setupViewBacground()
         setupLocationDataManager()
         setupCollectionView()
     }
@@ -79,8 +78,19 @@ class ViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = .systemRed
+        collectionView.backgroundColor = .clear
         collectionView.register(WeatherCell.self, forCellWithReuseIdentifier: WeatherCell.identifier)
+        collectionView.register(WeatherViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherViewHeader.identifier)
+    }
+
+    private func setupViewBacground() {
+        let backgroundIamgeView: UIImageView = .init(frame: view.frame)
+        backgroundIamgeView.image = UIImage(named: "WeatherBackgroundImage")
+        backgroundIamgeView.contentMode = .scaleAspectFill
+
+        view.addSubview(backgroundIamgeView)
+        view.sendSubviewToBack(backgroundIamgeView)
+
     }
     
 }
@@ -116,6 +126,17 @@ extension ViewController: LocationDataManagerDelegate {
 // MARK: - UICollectionViewDataSource
 
 extension ViewController: UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: WeatherViewHeader.identifier, for: indexPath) as? WeatherViewHeader else { return UICollectionReusableView() }
+
+        return header
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height/10)
+    }
 
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {

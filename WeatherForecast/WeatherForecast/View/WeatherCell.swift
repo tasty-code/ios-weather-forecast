@@ -19,7 +19,7 @@ final class WeatherCell: UICollectionViewCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.text = "12/44(천) 32시"
-        label.backgroundColor = .brown
+//        label.backgroundColor = .brown
         return label
     }()
 
