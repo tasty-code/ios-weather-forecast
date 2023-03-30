@@ -122,6 +122,7 @@
 		B407E77F29CADE8B003AD3BD /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				B43FAD9D29C0017F00CF9E06 /* Extensions */,
 				B407E78029CADEE7003AD3BD /* LogUtil.swift */,
 			);
 			path = Util;
@@ -163,6 +164,7 @@
 		B47DBD0329BF0F290006D8E2 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F163527B29D2A836007A155F /* WeatherCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -183,7 +185,6 @@
 				B47DBD0A29BF15330006D8E2 /* DTO */,
 				B43FADA029C03E7400CF9E06 /* NetworkError.swift */,
 				F1F5FFE829C948A900F9707C /* HTTPMethodType.swift */,
-				F163527B29D2A836007A155F /* WeatherCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -279,7 +280,6 @@
 				B47DBD0229BF0F250006D8E2 /* Controller */,
 				B4A728AE29C7F55900B589CE /* Networking */,
 				B4A728F129C854D600B589CE /* Manager */,
-				B43FAD9D29C0017F00CF9E06 /* Extensions */,
 				B407E77F29CADE8B003AD3BD /* Util */,
 				B47DBD0629BF0F3B0006D8E2 /* Resources */,
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,

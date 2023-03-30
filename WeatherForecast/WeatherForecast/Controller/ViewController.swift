@@ -11,7 +11,10 @@ class ViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    )
 
     private let repository = OpenWeatherRepository(
         deserializer: JSONDesirializer(),
@@ -27,13 +30,18 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBlue
-        configureLocationDataManager()
-        setCollectionView()
+        setupLocationDataManager()
+        setupCollectionView()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.frame = view.bounds
     }
 
     // MARK: - Private
 
-    private func configureLocationDataManager() {
+    private func setupLocationDataManager() {
         locationDataManager.delegate = self
 
         if !locationDataManager.isAuthorized {
@@ -66,6 +74,14 @@ class ViewController: UIViewController {
             }
         }
     }
+
+    private func setupCollectionView() {
+        view.addSubview(collectionView)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.backgroundColor = .systemRed
+        collectionView.register(WeatherCell.self, forCellWithReuseIdentifier: WeatherCell.identifier)
+    }
     
 }
 
@@ -97,35 +113,33 @@ extension ViewController: LocationDataManagerDelegate {
     }
 }
 
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+// MARK: - UICollectionViewDataSource
 
-    private func setCollectionView() {
-        view.addSubview(collectionView)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.backgroundColor = .systemRed
-        collectionView.register(WeatherCell.self, forCellWithReuseIdentifier: WeatherCell.identifier)
-    }
+extension ViewController: UICollectionViewDataSource {
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        collectionView.frame = view.bounds
-    }
-
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         30
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCell.identifier, for: indexPath) as? WeatherCell else { return UICollectionViewCell() }
 
         cell.dateLabel.text = String(indexPath.row)
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.size.width, height: view.frame.size.height/15)
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension ViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.size.width, height: view.frame.size.height / 15)
     }
 
 }
