@@ -47,6 +47,11 @@
 		8E09EA7B29CA950B003A7A6F /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		8E0CA2CA29CA997B00DD8FC6 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		8E0CA2CC29CA998F00DD8FC6 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
+		8E4503B129D50FA300A829A6 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		8E4503B629D50FD600A829A6 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		8E4503BC29D5103100A829A6 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		8E4503BE29D5103900A829A6 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		8E4503C029D5104300A829A6 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8E74771C29BF0E5900D6E202 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		8EB2C5D729C9C8A500C8C928 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
 		8EB2C5D929C9C8B800C8C928 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
@@ -92,33 +97,177 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7611B69F29C03B2300A6D8EC /* Model */ = {
+		768ADD1D29C81A2A00C20B11 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8EE3296B29CA939A00F54F48 /* SecretKey.swift */,
+				8E4503AE29D50F8000A829A6 /* API */,
+				8E4503B029D50F8900A829A6 /* Foundation */,
+				8E4503AF29D50F8300A829A6 /* Service */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		8E4503A629D50ED700A829A6 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503A929D50EF200A829A6 /* Resources */,
+				8E4503AC29D50F3400A829A6 /* Sources */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		8E4503A729D50EDE00A829A6 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				768ADD1D29C81A2A00C20B11 /* Network */,
+				8E4503AD29D50F6800A829A6 /* Repositories */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		8E4503A829D50EE200A829A6 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503B329D50FBA00A829A6 /* Entities */,
+				8E4503B829D50FE300A829A6 /* Usecases */,
+				8E4503B429D50FC000A829A6 /* Interfaces */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		8E4503A929D50EF200A829A6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503AA29D50EFF00A829A6 /* Assets */,
+				8E4503AB29D50F1E00A829A6 /* Base */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8E4503AA29D50EFF00A829A6 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		8E4503AB29D50F1E00A829A6 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		8E4503AC29D50F3400A829A6 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				8EE3296E29CA946000F54F48 /* Application */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		8E4503AD29D50F6800A829A6 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503C029D5104300A829A6 /* .gitkeep */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		8E4503AE29D50F8000A829A6 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503B129D50FA300A829A6 /* .gitkeep */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		8E4503AF29D50F8300A829A6 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				768ADD1E29C81A4900C20B11 /* NetworkService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		8E4503B029D50F8900A829A6 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				8E0CA2CA29CA997B00DD8FC6 /* NetworkError.swift */,
+				8E0CA2CC29CA998F00DD8FC6 /* NetworkConfig.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		8E4503B329D50FBA00A829A6 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
 				8EB2C5D929C9C8B800C8C928 /* Weather.swift */,
 				8EB2C5D729C9C8A500C8C928 /* Forecast.swift */,
 				8E09EA7B29CA950B003A7A6F /* Coordinate.swift */,
 			);
-			path = Model;
+			path = Entities;
 			sourceTree = "<group>";
 		};
-		768ADD1D29C81A2A00C20B11 /* Network */ = {
+		8E4503B429D50FC000A829A6 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				768ADD1E29C81A4900C20B11 /* NetworkService.swift */,
-				8E0CA2CC29CA998F00DD8FC6 /* NetworkConfig.swift */,
-				8E0CA2CA29CA997B00DD8FC6 /* NetworkError.swift */,
-				8EE3296B29CA939A00F54F48 /* SecretKey.swift */,
+				8E4503B529D50FC500A829A6 /* Repositories */,
 			);
-			path = Network;
+			path = Interfaces;
 			sourceTree = "<group>";
 		};
-		8EE3296D29CA944700F54F48 /* View */ = {
+		8E4503B529D50FC500A829A6 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503B629D50FD600A829A6 /* .gitkeep */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		8E4503B829D50FE300A829A6 /* Usecases */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503BE29D5103900A829A6 /* .gitkeep */,
+			);
+			path = Usecases;
+			sourceTree = "<group>";
+		};
+		8E4503B929D5100600A829A6 /* MainScene */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503BA29D5101A00A829A6 /* View */,
+				8E4503BB29D5101E00A829A6 /* ViewModel */,
+			);
+			path = MainScene;
+			sourceTree = "<group>";
+		};
+		8E4503BA29D5101A00A829A6 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		8E4503BB29D5101E00A829A6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503BC29D5103100A829A6 /* .gitkeep */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8EE3296D29CA944700F54F48 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				8E4503B929D5100600A829A6 /* MainScene */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		8EE3296E29CA946000F54F48 /* Application */ = {
@@ -154,13 +303,10 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
-				8EE3296E29CA946000F54F48 /* Application */,
-				768ADD1D29C81A2A00C20B11 /* Network */,
-				7611B69F29C03B2300A6D8EC /* Model */,
-				8EE3296D29CA944700F54F48 /* View */,
-				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
-				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
-				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
+				8E4503A629D50ED700A829A6 /* Core */,
+				8E4503A729D50EDE00A829A6 /* Data */,
+				8E4503A829D50EE200A829A6 /* Domain */,
+				8EE3296D29CA944700F54F48 /* Presentation */,
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
 			);
 			path = WeatherForecast;
