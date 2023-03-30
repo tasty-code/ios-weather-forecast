@@ -7,14 +7,9 @@
 import UIKit
 import CoreLocation
 
-class WeatherListViewController: UIViewController {
+final class WeatherListViewController: UIViewController {
 
     // MARK: - Properties
-
-    private let collectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: UICollectionViewFlowLayout()
-    )
 
     private let repository = OpenWeatherRepository(
         deserializer: JSONDesirializer(),
@@ -24,11 +19,18 @@ class WeatherListViewController: UIViewController {
     private let locationDataManager = LocationDataManager()
     private let addressManager = AddressManager()
 
+    // MARK: - UI Components
+
+    private let collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    )
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViewBacground()
+        setupViewBackground()
         setupLocationDataManager()
         setupCollectionView()
     }
@@ -80,17 +82,16 @@ class WeatherListViewController: UIViewController {
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
         collectionView.register(WeatherCell.self, forCellWithReuseIdentifier: WeatherCell.identifier)
-        collectionView.register(WeatherViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherViewHeader.identifier)
+        collectionView.register(WeatherHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.identifier)
     }
 
-    private func setupViewBacground() {
-        let backgroundIamgeView: UIImageView = .init(frame: view.frame)
+    private func setupViewBackground() {
+        let backgroundIamgeView = UIImageView(frame: view.frame)
         backgroundIamgeView.image = UIImage(named: "WeatherBackgroundImage")
         backgroundIamgeView.contentMode = .scaleAspectFill
 
         view.addSubview(backgroundIamgeView)
         view.sendSubviewToBack(backgroundIamgeView)
-
     }
     
 }
@@ -127,25 +128,39 @@ extension WeatherListViewController: LocationDataManagerDelegate {
 
 extension WeatherListViewController: UICollectionViewDataSource {
 
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: WeatherViewHeader.identifier, for: indexPath) as? WeatherViewHeader else { return UICollectionReusableView() }
+    func collectionView(_ collectionView: UICollectionView,
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: WeatherHeaderView.identifier,
+            for: indexPath) as? WeatherHeaderView else {
+            return UICollectionReusableView()
+        }
 
         return header
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height/10)
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let width = view.frame.width
+        let height = view.frame.height / 10
+        return CGSize(width: width, height: height)
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        30
+        return 30
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCell.identifier, for: indexPath) as? WeatherCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: WeatherCell.identifier,
+            for: indexPath) as? WeatherCell else {
+            return UICollectionViewCell()
+        }
 
         cell.configure(with: String(indexPath.row))
         return cell
@@ -160,7 +175,9 @@ extension WeatherListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.size.width, height: view.frame.size.height / 15)
+        let width = view.frame.width
+        let height = view.frame.height / 15
+        return CGSize(width: width, height: height)
     }
 
 }

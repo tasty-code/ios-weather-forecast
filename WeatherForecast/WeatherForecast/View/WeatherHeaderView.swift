@@ -1,5 +1,5 @@
 //
-//  WeatherViewHeader.swift
+//  WeatherHeaderView.swift
 //  WeatherForecast
 //
 //  Created by DONGWOOK SEO on 2023/03/30.
@@ -8,10 +8,15 @@
 import Foundation
 import UIKit
 
-final class WeatherViewHeader: UICollectionReusableView {
+final class WeatherHeaderView: UICollectionReusableView {
+
+    // MARK: - Properties
+
     static let identifier = "WeatherViewHeader"
 
-    private let weatherIcon : UIImage = {
+    // MARK: - UI Components
+
+    private let weatherIcon: UIImage = {
         let image = UIImage()
         return image
     }()
@@ -31,8 +36,11 @@ final class WeatherViewHeader: UICollectionReusableView {
         return label
     }()
 
+    // MARK: - LifeCycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .systemRed
     }
 
     required init?(coder: NSCoder) {
