@@ -21,10 +21,7 @@ final class WeatherListViewController: UIViewController {
 
     private var currentWeatherDetail: WeatherDetail? = nil {
         didSet {
-            DispatchQueue.main.async {
-                // TODO: header 업데이트 _ 전체 다 리로드... -> 헤더만 리로드
-                self.collectionView.reloadData()
-            }
+            updateHeaderView()
         }
     }
 
@@ -103,6 +100,18 @@ final class WeatherListViewController: UIViewController {
         view.addSubview(backgroundIamgeView)
         view.sendSubviewToBack(backgroundIamgeView)
     }
+
+    private func updateHeaderView() {
+        guard let currentWeatherDetail else { return }
+
+        DispatchQueue.main.async {
+            guard let headerView = self.collectionView.visibleSupplementaryViews(
+                ofKind: UICollectionView.elementKindSectionHeader
+            ).first as? WeatherHeaderView else { return }
+
+            headerView.configure(with: currentWeatherDetail)
+        }
+    }
     
 }
 
@@ -141,17 +150,13 @@ extension WeatherListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
+        print("header Index: \(indexPath)")
         guard let header = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: WeatherHeaderView.identifier,
             for: indexPath) as? WeatherHeaderView else {
             return UICollectionReusableView()
         }
-
-        if let currentWeatherDetail {
-            header.configure(with: currentWeatherDetail)
-        }
-
         return header
     }
 
@@ -170,6 +175,7 @@ extension WeatherListViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("cell Index: \(indexPath)")
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: WeatherCell.identifier,
             for: indexPath) as? WeatherCell else {
