@@ -37,6 +37,8 @@ final class OpenWeatherRepository {
         static let appIdQueryName = "appid"
         static let languageQueryName = "lang"
         static let koreanLanguageQueryValue = "kr"
+        static let unitsQueryName = "units"
+        static let celsiusUnitsQueryValue = "metric"
     }
 
     // MARK: - Public
@@ -104,7 +106,8 @@ final class OpenWeatherRepository {
             URLQueryItem(name: Constant.latitudeQueryName, value: "\(coordinate.latitude)"),
             URLQueryItem(name: Constant.longitudeQueryName, value: "\(coordinate.longitude)"),
             URLQueryItem(name: Constant.appIdQueryName, value: Bundle.main.apiKey),
-            URLQueryItem(name: Constant.languageQueryName, value: Constant.koreanLanguageQueryValue)
+            URLQueryItem(name: Constant.languageQueryName, value: Constant.koreanLanguageQueryValue),
+            URLQueryItem(name: Constant.unitsQueryName, value: Constant.celsiusUnitsQueryValue)
         ]
     }
     
