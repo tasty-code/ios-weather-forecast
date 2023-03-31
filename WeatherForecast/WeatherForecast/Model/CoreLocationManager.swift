@@ -8,7 +8,7 @@
 import UIKit
 import CoreLocation
 
-class CoreLocationManager: NSObject {
+final class CoreLocationManager: NSObject {
     
     weak var locationDelegate: LocationDelegate?
     var locationManager: CLLocationManager?
