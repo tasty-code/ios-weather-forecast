@@ -19,6 +19,15 @@ final class WeatherListViewController: UIViewController {
     private let locationDataManager = LocationDataManager()
     private let addressManager = AddressManager()
 
+    private var currentWeatherDetail: WeatherDetail? = nil {
+        didSet {
+            DispatchQueue.main.async {
+                // TODO: header 업데이트 _ 전체 다 리로드... -> 헤더만 리로드
+                self.collectionView.reloadData()
+            }
+        }
+    }
+
     // MARK: - UI Components
 
     private let collectionView = UICollectionView(
@@ -55,9 +64,10 @@ final class WeatherListViewController: UIViewController {
     }
 
     private func fetchWeather(coordinate: Coordinate) {
-        repository.fetchWeather(coordinate: coordinate) { result in
+        repository.fetchWeather(coordinate: coordinate) { [weak self] result in
             switch result {
             case .success(let currentWeather):
+                self?.currentWeatherDetail = currentWeather.weatherDetail
                 print(currentWeather.weathers.first?.description ?? "")
             case .failure(let error):
                 print(error.localizedDescription)
@@ -136,6 +146,10 @@ extension WeatherListViewController: UICollectionViewDataSource {
             withReuseIdentifier: WeatherHeaderView.identifier,
             for: indexPath) as? WeatherHeaderView else {
             return UICollectionReusableView()
+        }
+
+        if let currentWeatherDetail {
+            header.configure(with: currentWeatherDetail)
         }
 
         return header

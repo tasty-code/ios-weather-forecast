@@ -77,6 +77,13 @@ final class WeatherHeaderView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Public
+
+    func configure(with currentWeatherDetail: WeatherDetail) {
+        temperutureLabel.text = "\(currentWeatherDetail.temperature)"
+        temperutureRangeLabel.text = "최저 \(currentWeatherDetail.minimumTemperature) 최고 \(currentWeatherDetail.maximumTemperature)"
+    }
+
     // MARK: - Private
 
     private func setupLayout() {
