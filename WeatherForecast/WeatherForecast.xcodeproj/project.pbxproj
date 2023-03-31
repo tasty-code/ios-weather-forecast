@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B55603D29D66A89002AE1CC /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B55603C29D66A89002AE1CC /* String+.swift */; };
 		3B95C15E29BEE16A00C0D0ED /* FiveDaysWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B95C15C29BEE16A00C0D0ED /* FiveDaysWeather.json */; };
 		3B95C15F29BEE16A00C0D0ED /* CurrentWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B95C15D29BEE16A00C0D0ED /* CurrentWeather.json */; };
 		3B95C17429C1B0AE00C0D0ED /* WeatherComposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95C17329C1B0AE00C0D0ED /* WeatherComposable.swift */; };
@@ -18,8 +19,7 @@
 		C79C8D0025ADDDF300EEE3F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */; };
 		C79C8D0B25ADDDF400EEE3F1 /* WeatherForecastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8D0A25ADDDF400EEE3F1 /* WeatherForecastTests.swift */; };
 		C79C8D1625ADDDF400EEE3F1 /* WeatherForecastUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */; };
-		F007D31129D2AD7B00753475 /* CurrentWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F007D31029D2AD7B00753475 /* CurrentWeatherData.swift */; };
-		F007D31329D2ADA600753475 /* ForecastWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F007D31229D2ADA600753475 /* ForecastWeatherData.swift */; };
+		F007D31129D2AD7B00753475 /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F007D31029D2AD7B00753475 /* WeatherData.swift */; };
 		F09A34E829C062730080E296 /* WeatherNetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09A34E729C062730080E296 /* WeatherNetworkError.swift */; };
 		F09A34EF29C063010080E296 /* CommonWeatherComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09A34EC29C063010080E296 /* CommonWeatherComponents.swift */; };
 		F09A34F029C063010080E296 /* ForecastWeatherComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09A34ED29C063010080E296 /* ForecastWeatherComponents.swift */; };
@@ -48,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B55603C29D66A89002AE1CC /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		3B95C15C29BEE16A00C0D0ED /* FiveDaysWeather.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FiveDaysWeather.json; sourceTree = "<group>"; };
 		3B95C15D29BEE16A00C0D0ED /* CurrentWeather.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CurrentWeather.json; sourceTree = "<group>"; };
 		3B95C17329C1B0AE00C0D0ED /* WeatherComposable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherComposable.swift; sourceTree = "<group>"; };
@@ -66,8 +67,7 @@
 		C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastUITests.swift; sourceTree = "<group>"; };
 		C79C8D1725ADDDF400EEE3F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0069FB929C2D692002C549C /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
-		F007D31029D2AD7B00753475 /* CurrentWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherData.swift; sourceTree = "<group>"; };
-		F007D31229D2ADA600753475 /* ForecastWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastWeatherData.swift; sourceTree = "<group>"; };
+		F007D31029D2AD7B00753475 /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		F09A34E729C062730080E296 /* WeatherNetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherNetworkError.swift; sourceTree = "<group>"; };
 		F09A34EC29C063010080E296 /* CommonWeatherComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonWeatherComponents.swift; sourceTree = "<group>"; };
 		F09A34ED29C063010080E296 /* ForecastWeatherComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastWeatherComponents.swift; sourceTree = "<group>"; };
@@ -126,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				F0C4448529C40AAA00A583C4 /* Bundle+.swift */,
+				3B55603C29D66A89002AE1CC /* String+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -184,8 +185,7 @@
 		F007D30F29D2AD6B00753475 /* WeatherData */ = {
 			isa = PBXGroup;
 			children = (
-				F007D31029D2AD7B00753475 /* CurrentWeatherData.swift */,
-				F007D31229D2ADA600753475 /* ForecastWeatherData.swift */,
+				F007D31029D2AD7B00753475 /* WeatherData.swift */,
 			);
 			path = WeatherData;
 			sourceTree = "<group>";
@@ -391,12 +391,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B95C17429C1B0AE00C0D0ED /* WeatherComposable.swift in Sources */,
-				F007D31329D2ADA600753475 /* ForecastWeatherData.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
-				F007D31129D2AD7B00753475 /* CurrentWeatherData.swift in Sources */,
+				F007D31129D2AD7B00753475 /* WeatherData.swift in Sources */,
 				F09A34F129C063010080E296 /* CurrentWeatherComponents.swift in Sources */,
 				F0ADB03629C05D9600DE8331 /* WeatherRange.swift in Sources */,
+				3B55603D29D66A89002AE1CC /* String+.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				F0DD849929C1B38400AEFE91 /* WeatherParser.swift in Sources */,
 				F0ADB03829C05ED100DE8331 /* WeatherURL.swift in Sources */,
