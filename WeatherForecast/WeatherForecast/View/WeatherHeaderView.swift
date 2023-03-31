@@ -16,7 +16,7 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     // MARK: - UI Components
 
-    private let weatherIcon: UIImageView = {
+    private let weatherIconImageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(systemName: "moon.stars.fill")!
         return view
@@ -24,7 +24,6 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     private let addressLabel: UILabel = {
         let label = UILabel()
-//        label.backgroundColor = .brown
         label.text = "서울특별시 용산새싹마을"
         label.font = UIFont.systemFont(ofSize: 13)
         return label
@@ -32,7 +31,6 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     private let temperutureRangeLabel: UILabel = {
         let label = UILabel()
-//        label.backgroundColor = .blue
         label.text = "최저 5.0, 최고 6.8"
         label.font = UIFont.systemFont(ofSize: 13)
         return label
@@ -40,70 +38,65 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     private let temperutureLabel: UILabel = {
         let label = UILabel()
-//        label.backgroundColor = .cyan
         label.text = "6.8"
         label.font = UIFont.systemFont(ofSize: 30)
         return label
     }()
 
-    private let addressAndTemperutureRange: UIStackView = {
-        let stackView = UIStackView()
+    private lazy var addressAndTemperutureRange: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            addressLabel,
+            temperutureRangeLabel
+        ])
         stackView.alignment = .leading
-        stackView.contentMode = .scaleAspectFill
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
-
         return stackView
     }()
 
-    private let infoStackView: UIStackView =  {
-        let stackView = UIStackView()
+    private lazy var infoStackView: UIStackView =  {
+        let stackView = UIStackView(arrangedSubviews: [
+            addressAndTemperutureRange,
+            temperutureLabel
+        ])
         stackView.alignment = .leading
-        stackView.contentMode = .scaleAspectFill
         stackView.distribution = .fillProportionally
-//        stackView.spacing = 10
         stackView.axis = .vertical
-
         return stackView
     }()
-
-    private func setUpStackViews() {
-        addressAndTemperutureRange.addArrangedSubview(addressLabel)
-        addressAndTemperutureRange.addArrangedSubview(temperutureRangeLabel)
-
-        infoStackView.addArrangedSubview(addressAndTemperutureRange)
-        infoStackView.addArrangedSubview(temperutureLabel)
-    }
-
-    private func setLayoutSubviews() {
-        
-        weatherIcon.translatesAutoresizingMaskIntoConstraints = false
-        weatherIcon.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        weatherIcon.widthAnchor.constraint(equalTo: weatherIcon.heightAnchor, multiplier: 1).isActive = true
-        weatherIcon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        weatherIcon.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-
-        infoStackView.translatesAutoresizingMaskIntoConstraints = false
-        infoStackView.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
-        infoStackView.leadingAnchor.constraint(equalTo: weatherIcon.trailingAnchor, constant: 20).isActive = true
-        infoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 5).isActive = true
-        infoStackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-    }
-
 
     // MARK: - LifeCycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUpStackViews()
         backgroundColor = .systemRed
-        addSubview(weatherIcon)
-        addSubview(infoStackView)
-        setLayoutSubviews()
+        setupLayout()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    // MARK: - Private
+
+    private func setupLayout() {
+        addSubview(weatherIconImageView)
+        weatherIconImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            weatherIconImageView.heightAnchor.constraint(equalToConstant: 80),
+            weatherIconImageView.widthAnchor.constraint(equalTo: weatherIconImageView.heightAnchor, multiplier: 1),
+            weatherIconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            weatherIconImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+
+        addSubview(infoStackView)
+        infoStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            infoStackView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            infoStackView.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor, constant: 20),
+            infoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 5),
+            infoStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+
 }
