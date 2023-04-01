@@ -102,14 +102,18 @@ final class WeatherListViewController: UIViewController {
     }
 
     private func updateHeaderView() {
-        guard let currentWeatherDetail else { return }
+        guard let currentWeatherDetail,
+              let placemark = addressManager.placemark else { return }
 
         DispatchQueue.main.async {
             guard let headerView = self.collectionView.visibleSupplementaryViews(
                 ofKind: UICollectionView.elementKindSectionHeader
             ).first as? WeatherHeaderView else { return }
 
-            headerView.configure(with: currentWeatherDetail)
+            headerView.configure(
+                with: currentWeatherDetail,
+                address: "\(placemark.locality ?? "") \(placemark.name ?? "")"
+            )
         }
     }
     

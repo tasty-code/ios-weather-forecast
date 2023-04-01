@@ -79,9 +79,10 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     // MARK: - Public
 
-    func configure(with currentWeatherDetail: WeatherDetail) {
+    func configure(with currentWeatherDetail: WeatherDetail, address: String) {
         temperutureLabel.text = "\(currentWeatherDetail.temperature)"
         temperutureRangeLabel.text = "최저 \(currentWeatherDetail.minimumTemperature) 최고 \(currentWeatherDetail.maximumTemperature)"
+        addressLabel.text = address
     }
 
     // MARK: - Private
