@@ -94,6 +94,7 @@ final class WeatherHeaderView: UICollectionReusableView {
             weatherIconImageView.heightAnchor.constraint(equalToConstant: 80),
             weatherIconImageView.widthAnchor.constraint(equalTo: weatherIconImageView.heightAnchor, multiplier: 1),
             weatherIconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            weatherIconImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
         addSubview(infoStackView)
