@@ -9,43 +9,19 @@ import Foundation
 
 final class ForecastViewModel {
     
-    private let service = ForecastService()
+    private let usecase: ForecastUseCase
+    var loadEntity: ((ForecastEntity) -> Void)!
     
-    func requestFetchData() {
-        service.fetchForecast {
-            
-        }
+    init(usecase: ForecastUseCase) {
+        self.usecase = usecase
     }
-    
-    
-//    // MARK: - Inputs
-//
-//    struct Input {
-//
-//    }
-//
-//    // MARK: - Outputs
-//
-//    struct Output {
-//
-//    }
-//
-//    // MARK: - init
-//
-//    init(useCase: ForecastUseCase) {
-//        self.useCase = useCase
-//    }
 }
 
 extension ForecastViewModel {
-//    func transform(from input: Input) -> Output {
-//        let output = Output()
-//        self.bindOutput(output: output)
-//
-//        return output
-//    }
-//
-//    private func bindOutput(output: Output) {
-//
-//    }
+    
+    func requestFetchData(lon: Double, lat: Double) {
+        usecase.fetchForecast(lon: lon, lat: lat) { [weak self] forecastEntity in
+            self?.loadEntity(forecastEntity)
+        }
+    }
 }

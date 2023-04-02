@@ -7,32 +7,28 @@
 
 import Foundation
 
-//final class ForecastRepository {
-//
-//    private let networkService: NetworkService
-//
-//    init(service: NetworkService) {
-//        self.networkService = service
-//    }
-//}
-//
-//extension ForecastRepository: ForecastRepositoryInterface {
-//    func fetchForecast() {
-//
-//    }
-//}
-
 final class ForecastRepository {
-    func fetchForecast(completion: @escaping (ForecastEntity) -> Void) {
-        
-//        request(coordinate: coordinate, path: NetworkConfig.URLPath.weather.rawValue, completion: completion)
-        let url = "\(NetworkConfig.baseURL)/forecast?lat=\(37.53)&lon=\(126.96)&appid=\(SecretKey.appId)&lang=kr"
-        
-        URLSession.shared.dataTask(with: URL(string: url)!) { data, _, _ in
-            guard let data = data else { return }
-            guard let model = try? JSONDecoder().decode(ForecastEntity.self, from: data) else { return }
-            
-            completion(model)
-        }.resume()
+
+    private let service: NetworkService
+    
+    init(service: NetworkService) {
+        self.service = service
     }
+    
+    // dto -> entity toDomain 호출을 repository layer 에서 하겠음
+    func fetchForecast(lat: String, lon: String, completion: @escaping (ForecastEntity) -> Void) {
+
+        service.fetchForecast(lat: lat, lon: lon) { [weak self] result in
+            switch result {
+            case .success(let dto):
+                completion(dto.toDomain())
+//            case .success(let forecastDTO):
+//                let forecastEntity = forecastDTO.map { $0.toDomain() }
+//                completion(forecastEntity)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
 }

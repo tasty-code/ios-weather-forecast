@@ -8,5 +8,6 @@
 import Foundation
 
 protocol ForecastRepositoryInterface {
-    func fetchForecast()
+//    func fetchForecast() -> ForecastEntity
+    func fetchForecast(lat: String, lon: String, completion: @escaping (ForecastEntity) -> Void)
 }

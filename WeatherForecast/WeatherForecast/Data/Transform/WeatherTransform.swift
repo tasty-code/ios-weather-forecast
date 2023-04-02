@@ -7,9 +7,9 @@
 
 import Foundation
 
-extension WeatherEntitiy {
-    
-    func toDomain() -> WeatherModel {
-//        return WeatherModel.init(weatherInfo: [WeatherElement])
-    }
+extension WeatherResponseDTO {
+//    
+//    func toDomain() -> WeatherEntitiy {
+//        return .init(weather: <#T##[WeatherElementEntity]#>, main: <#T##MainWeatherEntity?#>)
+//    }
 }

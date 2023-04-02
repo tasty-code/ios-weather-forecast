@@ -1,11 +1,13 @@
 excluded:
-- WeatherForecast/Core/Sources/Application/AppDelegate.swift
-- WeatherForecast/Core/Sources/Application/SceneDelegate.swift
+- WeatherForecast/Application/AppDelegate.swift
+- WeatherForecast/Application/SceneDelegate.swift
 - WeatherForecastUITests
 - WeatherForecastTests
 
 disabled_rules:
 - trailing_whitespace
+- line_length
+- force_cast
 
 identifier_name:
   excluded:

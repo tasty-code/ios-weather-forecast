@@ -10,12 +10,19 @@ import Foundation
 final class ForecastUseCase {
   
     private let repository: ForecastRepositoryInterface
+    
+//    var loadEntity: ((ForecastEntity) -> Void)!
   
     init(repository: ForecastRepositoryInterface) {
         self.repository = repository
     }
+}
+
+extension ForecastUseCase {
     
-    func fetchForecast() {
-        self.repository.fetchForecast()
+    func fetchForecast(lon: Double, lat: Double, completion: @escaping(ForecastEntity) -> Void) {
+        let forecastEntity = self.repository.fetchForecast()
+        completion(forecastEntity)
+//        loadEntity(forecastEntity)
     }
 }
