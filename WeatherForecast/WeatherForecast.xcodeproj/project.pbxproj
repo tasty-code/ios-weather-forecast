@@ -33,6 +33,7 @@
 		F169CDFD29BF183E0022E007 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F169CDFC29BF183E0022E007 /* Forecast.swift */; };
 		F169CDFF29C00E800022E007 /* OpenWeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F169CDFE29C00E800022E007 /* OpenWeatherRepository.swift */; };
 		F1AA209529C9755400CA3178 /* OSLog+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AA209429C9755400CA3178 /* OSLog+.swift */; };
+		F1C60E9729D9519F006E4384 /* DateFormatter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C60E9629D9519F006E4384 /* DateFormatter+.swift */; };
 		F1DA56EF29C2AE2100312C9F /* Deserializerable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DA56EE29C2AE2100312C9F /* Deserializerable.swift */; };
 		F1DA56F129C2B04700312C9F /* JSONDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DA56F029C2B04700312C9F /* JSONDeserializer.swift */; };
 		F1F5FFE929C948A900F9707C /* HTTPMethodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5FFE829C948A900F9707C /* HTTPMethodType.swift */; };
@@ -90,6 +91,7 @@
 		F169CDFC29BF183E0022E007 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
 		F169CDFE29C00E800022E007 /* OpenWeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherRepository.swift; sourceTree = "<group>"; };
 		F1AA209429C9755400CA3178 /* OSLog+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+.swift"; sourceTree = "<group>"; };
+		F1C60E9629D9519F006E4384 /* DateFormatter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+.swift"; sourceTree = "<group>"; };
 		F1DA56EE29C2AE2100312C9F /* Deserializerable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deserializerable.swift; sourceTree = "<group>"; };
 		F1DA56F029C2B04700312C9F /* JSONDeserializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDeserializer.swift; sourceTree = "<group>"; };
 		F1F5FFE829C948A900F9707C /* HTTPMethodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethodType.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			children = (
 				B43FAD9E29C0018600CF9E06 /* Bundle+.swift */,
 				F1AA209429C9755400CA3178 /* OSLog+.swift */,
+				F1C60E9629D9519F006E4384 /* DateFormatter+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				F1DA56F129C2B04700312C9F /* JSONDeserializer.swift in Sources */,
 				B4A728BA29C81F2600B589CE /* Snow.swift in Sources */,
 				F159663B29C8102800EEB62F /* Weather.swift in Sources */,
+				F1C60E9729D9519F006E4384 /* DateFormatter+.swift in Sources */,
 				F1F5FFE929C948A900F9707C /* HTTPMethodType.swift in Sources */,
 				F1F87A1329CBEEA80045E27B /* AddressManager.swift in Sources */,
 				F163527C29D2A836007A155F /* WeatherCell.swift in Sources */,
