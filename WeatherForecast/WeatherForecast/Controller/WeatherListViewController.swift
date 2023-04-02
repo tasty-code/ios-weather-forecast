@@ -25,6 +25,12 @@ final class WeatherListViewController: UIViewController {
         }
     }
 
+    private var weatherForecast: [ForecastData]? = nil {
+        didSet {
+            updateForecastView()
+        }
+    }
+
     // MARK: - UI Components
 
     private let collectionView = UICollectionView(
@@ -73,10 +79,10 @@ final class WeatherListViewController: UIViewController {
     }
 
     private func fetchForecast(coordinate: Coordinate) {
-        repository.fetchForecast(coordinate: coordinate) { result in
+        repository.fetchForecast(coordinate: coordinate) { [weak self] result in
             switch result {
             case .success(let forecast):
-                print(forecast.forecastDatas.first?.weathers.first?.description ?? "")
+                self?.weatherForecast = forecast.forecastDatas
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -116,6 +122,12 @@ final class WeatherListViewController: UIViewController {
             )
         }
     }
+
+    private func updateForecastView() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
     
 }
 
@@ -145,6 +157,7 @@ extension WeatherListViewController: LocationDataManagerDelegate {
         fetchWeather(coordinate: coordinate)
         fetchForecast(coordinate: coordinate)
     }
+    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -174,19 +187,25 @@ extension WeatherListViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return weatherForecast?.count ?? 1
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("cell Index: \(indexPath)")
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: WeatherCell.identifier,
             for: indexPath) as? WeatherCell else {
             return UICollectionViewCell()
         }
 
-        cell.configure(with: String(indexPath.row))
+        guard let weatherForecast else { return cell }
+
+        let weather = weatherForecast[indexPath.row]
+        let date = DateFormatter().dateString(with: weather.dateString)
+        let temperature = String(weather.weatherDetail.temperature)
+        let iconCode = weather.weathers[0].icon
+
+        cell.configure(date: date, temperature: temperature, iconCode: iconCode)
         return cell
     }
 

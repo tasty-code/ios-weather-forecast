@@ -18,31 +18,33 @@ final class WeatherCell: UICollectionViewCell {
 
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "12/44(천) 32시"
-//        label.backgroundColor = .brown
+        label.text = "-/-(-) -시"
         return label
     }()
 
-    private let temperutuerLabel: UILabel = {
+    private let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.text = "12.5"
+        label.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        label.text = "- °C"
         return label
     }()
 
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .cyan
+        imageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         imageView.image = UIImage(systemName: "cloud.sun.fill")
         return imageView
     }()
 
     private lazy var rightStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            temperutuerLabel,
+            temperatureLabel,
             iconImageView
         ])
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         stackView.spacing = 8
         return stackView
     }()
@@ -66,8 +68,9 @@ final class WeatherCell: UICollectionViewCell {
 
     // MARK: - Public
 
-    func configure(with text: String) {
-        dateLabel.text = text
+    func configure(date: String, temperature: String, iconCode: String) {
+        dateLabel.text = date
+        temperatureLabel.text = temperature + " °C"
     }
 
     // MARK: - Private
