@@ -210,9 +210,8 @@ extension WeatherListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        guard let weatherForecast else { return cell }
-
-        let weather = weatherForecast[indexPath.row]
+        guard let weatherForecast,
+              let weather = weatherForecast[safe: indexPath.row] else { return cell }
         let date = DateFormatter().dateString(with: weather.dateString)
         let temperature = String(weather.weatherDetail.temperature)
         let iconCode = weather.weathers.first?.icon ?? ""
