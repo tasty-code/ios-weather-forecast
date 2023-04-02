@@ -9,6 +9,8 @@ import CoreLocation
 
 class WeatherViewController: UIViewController {
     
+    private var weatherViewModel = WeatherViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

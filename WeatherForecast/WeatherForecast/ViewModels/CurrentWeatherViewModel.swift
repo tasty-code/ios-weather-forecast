@@ -52,6 +52,8 @@ final class CurrentWeatherViewModel {
         weatherAPIManager?.fetchWeatherImage(icon: iconString) { weatherImage in
             
             let currentWeatherData = CurrentWeather(image: weatherImage, address: address, temperatures: weatherData.temperature)
+            
+            print(currentWeatherData)
         }
     }
 }
