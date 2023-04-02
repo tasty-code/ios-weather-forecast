@@ -40,7 +40,7 @@ extension WeatherForecastViewController {
 // MARK: - CLLocationManagerDelegate
 
 extension WeatherForecastViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager,   locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
 
         let lon = currentLocation.coordinate.longitude
