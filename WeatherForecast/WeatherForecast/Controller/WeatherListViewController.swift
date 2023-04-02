@@ -8,9 +8,15 @@ import UIKit
 import CoreLocation
 
 final class WeatherListViewController: UIViewController {
-
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let backgroundImageFileName = "WeatherBackgroundImage"
+    }
+    
     // MARK: - Properties
-
+    
     private let repository = OpenWeatherRepository(
         deserializer: JSONDesirializer(),
         service: NetworkService()
@@ -94,13 +100,20 @@ final class WeatherListViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
-        collectionView.register(WeatherCell.self, forCellWithReuseIdentifier: WeatherCell.identifier)
-        collectionView.register(WeatherHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.identifier)
+        collectionView.register(
+            WeatherCell.self,
+            forCellWithReuseIdentifier: WeatherCell.identifier
+        )
+        collectionView.register(
+            WeatherHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: WeatherHeaderView.identifier
+        )
     }
 
     private func setupViewBackground() {
         let backgroundIamgeView = UIImageView(frame: view.frame)
-        backgroundIamgeView.image = UIImage(named: "WeatherBackgroundImage")
+        backgroundIamgeView.image = UIImage(named: Constants.backgroundImageFileName)
         backgroundIamgeView.contentMode = .scaleAspectFill
 
         view.addSubview(backgroundIamgeView)
@@ -167,7 +180,6 @@ extension WeatherListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
-        print("header Index: \(indexPath)")
         guard let header = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: WeatherHeaderView.identifier,
@@ -203,7 +215,7 @@ extension WeatherListViewController: UICollectionViewDataSource {
         let weather = weatherForecast[indexPath.row]
         let date = DateFormatter().dateString(with: weather.dateString)
         let temperature = String(weather.weatherDetail.temperature)
-        let iconCode = weather.weathers[0].icon
+        let iconCode = weather.weathers.first?.icon ?? ""
 
         cell.configure(date: date, temperature: temperature, iconCode: iconCode)
         return cell
