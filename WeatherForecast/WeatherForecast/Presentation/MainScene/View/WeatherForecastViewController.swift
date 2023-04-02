@@ -1,5 +1,5 @@
 //
-//  WeatherForecast - ForecastViewController.swift
+//  WeatherForecast - WeatherForecastViewController.swift
 //  Created by yagom. 
 //  Copyright © yagom. All rights reserved.
 // 
@@ -7,7 +7,7 @@
 import UIKit
 import CoreLocation
 
-final class ForecastViewController: UIViewController {
+final class WeatherForecastViewController: UIViewController {
 
     // MARK: - Properties
 
@@ -26,7 +26,7 @@ final class ForecastViewController: UIViewController {
 
 // MARK: - Methods
 
-extension ForecastViewController {
+extension WeatherForecastViewController {
     private func setLocationDelegate() {
         locationManager.delegate = self
     }
@@ -39,7 +39,7 @@ extension ForecastViewController {
 
 // MARK: - CLLocationManagerDelegate
 
-extension ForecastViewController: CLLocationManagerDelegate {
+extension WeatherForecastViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager,   locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
 
@@ -57,7 +57,7 @@ extension ForecastViewController: CLLocationManagerDelegate {
 
 // MARK: - Network
 
-extension ForecastViewController {
+extension WeatherForecastViewController {
     private func fetchWeather(with coordinate: CoordinateEntity) {
 //        NetworkService.shared.fetchWeatherAPI(Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
 //            switch result {
