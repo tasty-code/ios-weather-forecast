@@ -1,13 +1,14 @@
 //
-//  Forecast.swift
+//  ForecastResponseDTO.swift
 //  WeatherForecast
 //
-//  Created by Bora Yang on 2023/03/14.
+//  Created by devxsby on 2023/03/30.
 //
 
 import Foundation
 
-struct Forecast: Decodable {
+
+struct ForecastResponseDTO: Decodable {
     let cod: String
     let message, cnt: Int
     let list: [List]
@@ -17,7 +18,7 @@ struct Forecast: Decodable {
 struct City: Decodable {
     let name, country: String
     let id, population, timezone, sunrise, sunset: Int
-    let coord: Coordinate
+    let coord: Coord
 }
 
 struct List: Decodable {
@@ -30,7 +31,7 @@ struct List: Decodable {
     let wind: Wind
     let rain: ForecastRain?
     let sys: ForecastSys
-
+    
     enum CodingKeys: String, CodingKey {
         case dt, main, weather, clouds, wind, visibility, pop, rain, sys
         case dtTxt = "dt_txt"
@@ -39,7 +40,7 @@ struct List: Decodable {
 
 struct ForecastRain: Decodable {
     let the3H: Double
-
+    
     enum CodingKeys: String, CodingKey {
         case the3H = "3h"
     }

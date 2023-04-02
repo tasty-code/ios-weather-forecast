@@ -11,6 +11,7 @@ final class ForecastViewController: UIViewController {
 
     // MARK: - Properties
 
+    private let viewModel = ForecastViewModel()
     private let locationManager = CLLocationManager()
 
     // MARK: - View Life Cycle
@@ -39,13 +40,14 @@ extension ForecastViewController {
 // MARK: - CLLocationManagerDelegate
 
 extension ForecastViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager,   locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
 
         let lon = currentLocation.coordinate.longitude
         let lat = currentLocation.coordinate.latitude
-
-        fetchForecastAPI(with: Coordinate(lon: lon, lat: lat))
+        viewModel.requestFetchData()
+//        fetchForecast(with: Coordinate(lon: lon, lat: lat))
+        // CoordniateEntity로 쓰기 🌟
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -56,25 +58,25 @@ extension ForecastViewController: CLLocationManagerDelegate {
 // MARK: - Network
 
 extension ForecastViewController {
-    private func fetchWeatherAPI(with coordinate: Coordinate) {
-        NetworkService.shared.fetchWeatherAPI(Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
-            switch result {
-            case .success(let weather):
-                print(weather)
-            case .failure(let error):
-                print(error)
-            }
-        }
+    private func fetchWeather(with coordinate: CoordinateEntity) {
+//        NetworkService.shared.fetchWeatherAPI(Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
+//            switch result {
+//            case .success(let weather):
+//                print(weather)
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
     }
 
-    private func fetchForecastAPI(with coordinate: Coordinate) {
-        NetworkService.shared.fetchForecastAPI(Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
-            switch result {
-            case .success(let forecast):
-                print(forecast)
-            case .failure(let error):
-                print(error)
-            }
-        }
+    private func fetchForecast(with coordinate: CoordinateEntity) {
+//        NetworkService.shared.fetchForecastAPI(Coordinate(lon: coordinate.lon, lat: coordinate.lat)) { result in
+//            switch result {
+//            case .success(let forecast):
+//                print(forecast)
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
     }
 }

@@ -1,22 +1,27 @@
 //
-//  Weather.swift
+//  WeatherResponseDTO.swift
 //  WeatherForecast
 //
-//  Created by Bora Yang on 2023/03/14.
+//  Created by devxsby on 2023/03/30.
 //
 
 import Foundation
 
-struct Weather: Decodable {
+struct WeatherResponseDTO: Decodable {
     let visibility, dt, timezone, id, cod: Int?
     let base, name: String?
-    let coord: Coordinate?
+    let coord: Coord?
     let weather: [WeatherElement]
     let main: Main?
     let wind: Wind?
     let rain: Rain?
     let clouds: Clouds?
     let sys: Sys?
+}
+
+struct Coord: Decodable {
+    let lon: Double?
+    let lat: Double?
 }
 
 struct Clouds: Decodable {
@@ -26,7 +31,7 @@ struct Clouds: Decodable {
 struct Main: Decodable {
     let temp, feelsLike, tempMin, tempMax: Double?
     let pressure, humidity, seaLevel, grndLevel: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case temp
         case feelsLike = "feels_like"
@@ -40,7 +45,7 @@ struct Main: Decodable {
 
 struct Rain: Decodable {
     let the1H: Double?
-
+    
     enum CodingKeys: String, CodingKey {
         case the1H = "1h"
     }
