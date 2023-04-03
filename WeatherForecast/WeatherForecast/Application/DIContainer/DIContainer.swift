@@ -11,15 +11,11 @@ final class DIContainer {
     
     func makeWeatherForecastVC() -> WeatherForecastViewController {
         let service = NetworkService()
-        let weatherRepository = WeatherRepository(service: service)
-        let forecastRepository = ForecastRepository(service: service)
-        let weatherUsecase = WeatherUseCase(repository: weatherRepository)
-        let forecastUsecase = ForecastUseCase(repository: forecastRepository)
-        let weatherViewModel = WeatherViewModel(usecase: weatherUsecase)
-        let forecastViewModel = ForecastViewModel(usecase: forecastUsecase)
+        let repository = WeatherForecastRepository(service: service)
+        let usecase = WeatherForecastUseCase(repository: repository)
+        let viewmodel = WeatherForecastViewModel(usecase: usecase)
         let weatherForecastVC = WeatherForecastViewController()
-        weatherForecastVC.forecastViewModel = forecastViewModel
-        weatherForecastVC.weatherViewModel = weatherViewModel
+        weatherForecastVC.viewModel = viewmodel
         return weatherForecastVC
     }
 }
