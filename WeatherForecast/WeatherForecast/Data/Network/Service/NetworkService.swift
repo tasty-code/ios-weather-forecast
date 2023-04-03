@@ -68,6 +68,14 @@ extension NetworkServiceProtocol {
     }
 
     func makeURL(path: String, lat: String, lon: String) -> URL? {
-        return URL(string: "\(NetworkConfig.baseURL)/\(path)?lat=\(lat)&lon=\(lon)&appid=\(SecretKey.appId)&lang=kr")
+        
+        var urlComponents = URLComponents(string: "\(NetworkConfig.baseURL)/\(path)")
+        
+        let latQuery = URLQueryItem(name: "lat", value: lat)
+        let lonQuery = URLQueryItem(name: "lon", value: lon)
+        let appIdQuery = URLQueryItem(name: "appid", value: SecretKey.appId)
+        let langQuery = URLQueryItem(name: "lang", value: "kr")
+        
+        return urlComponents?.url
     }
 }
