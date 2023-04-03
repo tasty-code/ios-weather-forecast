@@ -14,18 +14,18 @@ final class WeatherViewModel {
     private let currentWeatherViewModel = CurrentWeatherViewModel()
     
     private let coreLocationManager = CoreLocationManager()
-    private let weatherAPIManager: WeatherNetworkDispatcher?
+    private let weatherNetworkDispatcher: WeatherNetworkDispatcher
     
     var fiveDaysForecastWeather: [FiveDaysForecastWeatherViewModel.FiveDaysForecast] = []
     var currentWeather: CurrentWeatherViewModel.CurrentWeather?
     
     init(networkSession: NetworkSession = NetworkSession(session: URLSession.shared)) {
-        weatherAPIManager = WeatherNetworkDispatcher(networkSession: networkSession)
+        weatherNetworkDispatcher = WeatherNetworkDispatcher(networkSession: networkSession)
         
         coreLocationManager.delegate = self
     }
     
-    func makeCoordinate(from location: CLLocation) -> Coordinate {
+    private func makeCoordinate(from location: CLLocation) -> Coordinate {
         
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
@@ -33,24 +33,24 @@ final class WeatherViewModel {
         return Coordinate(longitude: longitude, latitude: latitude)
     }
     
-    func makeWeatherData(locationManager: CoreLocationManager, location: CLLocation, weatherAPIManager: WeatherNetworkDispatcher?) {
+    func execute(locationManager: CoreLocationManager, location: CLLocation, weatherNetworkDispatcher: WeatherNetworkDispatcher) {
         
         let coordinate = self.makeCoordinate(from: location)
         
-        currentWeatherViewModel.makeCurrentAddress(
+        currentWeatherViewModel.fetchCurrentAddress(
             locationManager: locationManager,
             location: location
         ) { [weak self] address in
             
-            self?.currentWeatherViewModel.makeCurrentInformation(
-                weatherAPIManager: weatherAPIManager,
+            self?.currentWeatherViewModel.fetchCurrentInformation(
+                weatherNetworkDispatcher: weatherNetworkDispatcher,
                 coordinate: coordinate,
                 location: location,
                 address: address
             ) { [weak self] iconString, weatherData in
                 
-                self?.currentWeatherViewModel.makeCurrentImage(
-                    weatherAPIManager: weatherAPIManager,
+                self?.currentWeatherViewModel.fetchCurrentImage(
+                    weatherNetworkDispatcher: weatherNetworkDispatcher,
                     iconString: iconString,
                     address: address,
                     weatherData: weatherData
@@ -58,14 +58,14 @@ final class WeatherViewModel {
             }
         }
         
-        self.fiveDaysForecastWeatherViewModel.makeForecastWeather(
-            weatherAPIManager: weatherAPIManager,
+        self.fiveDaysForecastWeatherViewModel.fetchForecastWeather(
+            weatherNetworkDispatcher: weatherNetworkDispatcher,
             coordinate: coordinate,
             location: location
         ) { [weak self] iconString, eachData in
             
-            self?.fiveDaysForecastWeatherViewModel.makeForecastImage(
-                weatherAPIManager: weatherAPIManager,
+            self?.fiveDaysForecastWeatherViewModel.fetchForecastImage(
+                weatherNetworkDispatcher: weatherNetworkDispatcher,
                 icon: iconString,
                 eachData: eachData
             )
@@ -75,10 +75,10 @@ final class WeatherViewModel {
 
 extension WeatherViewModel: CoreLocationManagerDelegate {
     func coreLocationManager(_ manager: CoreLocationManager, didUpdateLocation location: CLLocation) {
-        makeWeatherData(
+        execute(
             locationManager: manager,
             location: location,
-            weatherAPIManager: weatherAPIManager
+            weatherNetworkDispatcher: weatherNetworkDispatcher
         )
     }
 }
