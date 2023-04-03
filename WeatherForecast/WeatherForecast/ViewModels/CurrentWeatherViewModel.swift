@@ -29,7 +29,7 @@ final class CurrentWeatherViewModel {
         }
     }
     
-    func makeCurrentInformation(weatherAPIManager: NetworkDispatcher?,
+    func makeCurrentInformation(weatherAPIManager: WeatherNetworkDispatcher?,
                                 coordinate: Coordinate,
                                 location: CLLocation,
                                 address: String,
@@ -44,7 +44,7 @@ final class CurrentWeatherViewModel {
         }
     }
     
-    func makeCurrentImage(weatherAPIManager: NetworkDispatcher?,
+    func makeCurrentImage(weatherAPIManager: WeatherNetworkDispatcher?,
                           iconString: String,
                           address: String,
                           weatherData: CurrentWeatherDTO

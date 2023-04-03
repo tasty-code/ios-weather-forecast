@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NetworkDispatcher {
+final class WeatherNetworkDispatcher {
     
     private let networkSession: NetworkSession
     private let deserializer = JSONNetworkDeserializer(decoder: JSONDecoder())

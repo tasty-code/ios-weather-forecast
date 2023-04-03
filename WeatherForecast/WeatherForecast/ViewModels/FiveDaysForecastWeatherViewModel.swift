@@ -17,7 +17,7 @@ final class FiveDaysForecastWeatherViewModel {
             let temperature: Double
         }
     
-    func makeForecastWeather(weatherAPIManager: NetworkDispatcher?,
+    func makeForecastWeather(weatherAPIManager: WeatherNetworkDispatcher?,
                                  coordinate: Coordinate,
                                  location: CLLocation,
                                  completion: @escaping (String, Day) -> Void
@@ -31,7 +31,7 @@ final class FiveDaysForecastWeatherViewModel {
             }
         }
         
-        func makeForecastImage(weatherAPIManager: NetworkDispatcher?,
+        func makeForecastImage(weatherAPIManager: WeatherNetworkDispatcher?,
                                icon: String,
                                eachData: Day
         ) {
