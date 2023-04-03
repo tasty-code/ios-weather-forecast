@@ -21,7 +21,7 @@ final class WeatherForecastViewModel {
     }
     
     private func updateCurrentLocation() {
-        let coreLocationManager = CoreLocationManager.shared
+        let coreLocationManager = CoreLocationManager()
         coreLocationManager.delegate = self
     }
 }

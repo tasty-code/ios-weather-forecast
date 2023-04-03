@@ -16,14 +16,12 @@ protocol LocationUpdateProtocol: AnyObject {
 }
 
 final class CoreLocationManager: NSObject {
-    
-    static let shared = CoreLocationManager()
-    
+        
     private let locationManager = CLLocationManager()
     
     weak var delegate: LocationUpdateProtocol?
     
-    override private init() {
+    override init() {
         super.init()
         self.setUpLocationManager()
     }
