@@ -31,7 +31,7 @@ final class WeatherListViewController: UIViewController {
         }
     }
 
-    private var weatherForecast: [ForecastData]? = nil {
+    private var forecastDatas: [ForecastData] = [] {
         didSet {
             updateForecastView()
         }
@@ -77,9 +77,8 @@ final class WeatherListViewController: UIViewController {
             switch result {
             case .success(let currentWeather):
                 self?.currentWeatherDetail = currentWeather.weatherDetail
-                print(currentWeather.weathers.first?.description ?? "")
             case .failure(let error):
-                print(error.localizedDescription)
+                log(.network, error: error)
             }
         }
     }
@@ -88,9 +87,9 @@ final class WeatherListViewController: UIViewController {
         repository.fetchForecast(coordinate: coordinate) { [weak self] result in
             switch result {
             case .success(let forecast):
-                self?.weatherForecast = forecast.forecastDatas
+                self?.forecastDatas = forecast.forecastDatas
             case .failure(let error):
-                print(error.localizedDescription)
+                log(.network, error: error)
             }
         }
     }
@@ -156,14 +155,7 @@ extension WeatherListViewController: LocationDataManagerDelegate {
 
     func locationDataManager(_ locationDataManager: LocationDataManager,
                              didUpdateLocation location: CLLocation) {
-        addressManager.fetchAddress(of: location) { placemark in
-            guard let placemark else { return }
-
-            print(placemark.country ?? "",
-                  placemark.administrativeArea ?? "",
-                  placemark.locality ?? "",
-                  placemark.name ?? "")
-        }
+        addressManager.fetchAddress(of: location)
 
         guard let coordinate = locationDataManager.currentCoordinate else { return }
 
@@ -199,7 +191,7 @@ extension WeatherListViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return weatherForecast?.count ?? 1
+        return forecastDatas.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -210,8 +202,7 @@ extension WeatherListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        guard let weatherForecast,
-              let weather = weatherForecast[safe: indexPath.row] else { return cell }
+        guard let weather = forecastDatas[safe: indexPath.row] else { return cell }
         let date = DateFormatUtil.format(with: weather.dateString)
         let temperature = String(weather.weatherDetail.temperature)
         let iconCode = weather.weathers.first?.icon ?? ""

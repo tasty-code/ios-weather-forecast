@@ -17,13 +17,13 @@ final class AddressManager {
 
     // MARK: - Public
 
-    func fetchAddress(of location: CLLocation, completion: @escaping (CLPlacemark?) -> () ) {
+    func fetchAddress(of location: CLLocation, completion: ((CLPlacemark?) -> Void)? = nil) {
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             guard let self, error == nil else { return }
 
             guard let placemark = placemarks?.first else { return }
             self.placemark = placemark
-            completion(placemark)
+            completion?(placemark)
         }
     }
 
