@@ -8,7 +8,13 @@
 import Foundation
 
 extension Double {
+    
     func doubleToString() -> String? {
         return self.description
+    }
+    
+    func makeCelsius() -> String {
+        let argue = self - 273.15
+        return String(format: "%.0f", arguments: [argue])
     }
 }
