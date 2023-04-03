@@ -9,6 +9,14 @@ import Foundation
 import UIKit
 
 final class WeatherCell: UICollectionViewCell {
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let dateLabelSkeletonText = "-/-(-) -시"
+        static let temperatureSkeletonText = "- °C"
+        static let temperatureSuffixText = " °C"
+    }
 
     // MARK: - Properties
 
@@ -33,7 +41,6 @@ final class WeatherCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        imageView.image = UIImage(systemName: "cloud.sun.fill")
         return imageView
     }()
 
@@ -64,15 +71,20 @@ final class WeatherCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        resetData()
+    }
 
     // MARK: - Public
 
     func configure(date: String, temperature: String) {
         dateLabel.text = date
-        temperatureLabel.text = temperature + " °C"
+        temperatureLabel.text = temperature + Constants.temperatureSuffixText
     }
 
-    func setWeatherIcon(icon: UIImage) {
+    func configure(icon: UIImage) {
         iconImageView.image = icon
     }
 
@@ -102,6 +114,12 @@ final class WeatherCell: UICollectionViewCell {
             bottomLineView.heightAnchor.constraint(equalToConstant: 1)
         ])
 
+    }
+    
+    private func resetData() {
+        dateLabel.text = Constants.dateLabelSkeletonText
+        temperatureLabel.text = Constants.temperatureSkeletonText
+        iconImageView.image = nil
     }
 
 }

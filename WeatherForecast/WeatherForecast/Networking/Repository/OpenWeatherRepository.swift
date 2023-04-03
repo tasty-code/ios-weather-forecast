@@ -100,7 +100,10 @@ final class OpenWeatherRepository {
                     completion(.failure(.invalidImage))
                     return
                 }
-                completion(.success(icon))
+                // TODO: ❌😵‍💫네트워크 환경 테스트를 위한 지연 로직
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    completion(.success(icon))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
