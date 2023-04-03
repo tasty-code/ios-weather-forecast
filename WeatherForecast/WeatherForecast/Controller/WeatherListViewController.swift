@@ -205,9 +205,9 @@ extension WeatherListViewController: UICollectionViewDataSource {
         guard let weather = forecastDatas[safe: indexPath.row] else { return cell }
         let date = DateFormatUtil.format(with: weather.dateString)
         let temperature = String(weather.weatherDetail.temperature)
-        let iconCode = weather.weathers.first?.icon ?? ""
+        let iconID = weather.weathers.first?.icon ?? ""
 
-        repository.fetchWeatherIcon(iconCode: iconCode) { result  in
+        repository.fetchWeatherIconImage(withID: iconID) { result  in
             switch result {
             case .success(let image):
                 DispatchQueue.main.async {

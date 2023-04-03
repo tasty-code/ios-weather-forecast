@@ -11,6 +11,7 @@ enum NetworkError: LocalizedError {
     
     case invalidURL
     case invalidData
+    case invalidImage
     case networking
     case parse
     case response
@@ -21,6 +22,8 @@ enum NetworkError: LocalizedError {
             return "URL이 잘못되었습니다."
         case .invalidData:
             return "Data 형식이 잘못되었습니다."
+        case .invalidImage:
+            return "Image 데이터가 잘못되었습니다."
         case .networking:
             return "네트워킹에 실패했습니다."
         case .parse:

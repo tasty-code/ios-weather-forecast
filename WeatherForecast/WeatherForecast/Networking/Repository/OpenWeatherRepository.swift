@@ -33,7 +33,7 @@ final class OpenWeatherRepository {
 
         static let weatherPath = "/data/2.5/weather"
         static let forecastPath = "/data/2.5/forecast"
-        static let iconPath = "/img/wn/"
+        static func iconImagePath(withID id: String) -> String { "/img/wn/\(id)@2x.png" }
 
         static let latitudeQueryName = "lat"
         static let longitudeQueryName = "lon"
@@ -42,9 +42,6 @@ final class OpenWeatherRepository {
         static let koreanLanguageQueryValue = "kr"
         static let unitsQueryName = "units"
         static let celsiusUnitsQueryValue = "metric"
-
-        static let weatherIconImageSize = "@2x"
-        static let weatherIconImageFormat = ".png"
     }
 
     // MARK: - Public
@@ -93,15 +90,16 @@ final class OpenWeatherRepository {
         }
     }
 
-    func fetchWeatherIcon(iconCode: String, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
-
-        let icon: String = iconCode + Constant.weatherIconImageSize + Constant.weatherIconImageFormat
-        let url = generateImageURL(iconCode: icon)
+    func fetchWeatherIconImage(withID iconID: String, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
+        let url = generateIconImageURL(withID: iconID)
 
         service.performRequest(with: url, httpMethodType: .get) { result in
             switch result {
             case .success(let data):
-                guard let icon = UIImage(data: data) else { return }
+                guard let icon = UIImage(data: data) else {
+                    completion(.failure(.invalidImage))
+                    return
+                }
                 completion(.success(icon))
             case .failure(let error):
                 completion(.failure(error))
@@ -111,9 +109,11 @@ final class OpenWeatherRepository {
 
     // MARK: - Private
 
-    private func generateImageURL(iconCode: String) -> URL? {
-        guard var urlComponents = URLComponents(string: Constant.baseIconURL) else { return nil }
-        urlComponents.path = Constant.iconPath + iconCode
+    private func generateIconImageURL(withID iconID: String) -> URL? {
+        guard var urlComponents = URLComponents(string: Constant.baseIconURL) else {
+            return nil
+        }
+        urlComponents.path = Constant.iconImagePath(withID: iconID)
         return urlComponents.url
     }
 
