@@ -7,15 +7,25 @@
 
 import Foundation
 
-final class WeatherRepository {
-
-    private let networkService: NetworkService
-
+final class WeatherRepository: WeatherRepositoryInterface {
+    
+    private let service: NetworkService
+    
     init(service: NetworkService) {
-        self.networkService = service
+        self.service = service
     }
 }
 
 extension WeatherRepository {
-    
+    func fetchWeather(lat: String, lon: String, completion: @escaping (WeatherEntitiy) -> Void) {
+
+        service.fetchWeather(lat: lat, lon: lon) { result in
+            switch result {
+            case .success(let weatherDTO):
+                completion(weatherDTO.toDomain())
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }

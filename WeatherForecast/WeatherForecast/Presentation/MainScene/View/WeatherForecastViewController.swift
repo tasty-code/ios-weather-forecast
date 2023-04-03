@@ -11,6 +11,7 @@ final class WeatherForecastViewController: UIViewController {
 
     // MARK: - Properties
     
+    var weatherViewModel: WeatherViewModel!
     var forecastViewModel: ForecastViewModel!
     private let locationManager = CLLocationManager()
 
@@ -37,9 +38,15 @@ extension WeatherForecastViewController {
     }
     
     private func binding() {
+        
+        weatherViewModel.loadEntity = { [weak self] weatherEntity in
+            // ui 업데이트
+            print(weatherEntity)
+        }
+        
         forecastViewModel.loadEntity = { [weak self] forecastEnitity in
             // ui 업데이트
-            print(forecastEnitity)
+//            print(forecastEnitity)
         }
     }
 }
@@ -52,7 +59,8 @@ extension WeatherForecastViewController: CLLocationManagerDelegate {
 
         let lon = currentLocation.coordinate.longitude
         let lat = currentLocation.coordinate.latitude
-        forecastViewModel.requestFetchData(lon: lon, lat: lat)
+        weatherViewModel.requestFetchData(lat: lat, lon: lon)
+//        forecastViewModel.requestFetchData(lat: lat, lon: lon)
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

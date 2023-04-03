@@ -7,17 +7,19 @@
 
 import Foundation
 
-// 여기에 모든 의존성을 조립해서 뷰컨을 탄생시킨다 🌟
-
 final class DIContainer {
     
     func makeWeatherForecastVC() -> WeatherForecastViewController {
         let service = NetworkService()
+        let weatherRepository = WeatherRepository(service: service)
         let forecastRepository = ForecastRepository(service: service)
+        let weatherUsecase = WeatherUseCase(repository: weatherRepository)
         let forecastUsecase = ForecastUseCase(repository: forecastRepository)
+        let weatherViewModel = WeatherViewModel(usecase: weatherUsecase)
         let forecastViewModel = ForecastViewModel(usecase: forecastUsecase)
         let weatherForecastVC = WeatherForecastViewController()
         weatherForecastVC.forecastViewModel = forecastViewModel
+        weatherForecastVC.weatherViewModel = weatherViewModel
         return weatherForecastVC
     }
 }

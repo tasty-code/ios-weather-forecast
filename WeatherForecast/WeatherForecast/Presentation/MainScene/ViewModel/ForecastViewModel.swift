@@ -19,8 +19,8 @@ final class ForecastViewModel {
 
 extension ForecastViewModel {
     
-    func requestFetchData(lon: Double, lat: Double) {
-        usecase.fetchForecast(lon: lon, lat: lat) { [weak self] forecastEntity in
+    func requestFetchData(lat: Double, lon: Double) {
+        usecase.fetchForecast(lat: lat, lon: lon) { [weak self] forecastEntity in
             self?.loadEntity(forecastEntity)
         }
     }

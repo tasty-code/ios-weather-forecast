@@ -11,7 +11,7 @@ struct WeatherResponseDTO: Decodable {
     let visibility, dt, timezone, id, cod: Int?
     let base, name: String?
     let coord: Coord?
-    let weather: [FiveDaysWeatherElement]
+    let weather: [WeatherElement]
     let main: Main?
     let wind: Wind?
     let rain: Rain?
@@ -58,7 +58,7 @@ extension WeatherResponseDTO {
         let country: String?
     }
     
-    struct FiveDaysWeatherElement: Decodable {
+    struct WeatherElement: Decodable {
         let id: Int?
         let main, description, icon: String?
     }

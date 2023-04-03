@@ -8,5 +8,5 @@
 import Foundation
 
 protocol WeatherRepositoryInterface {
-    func fetchWeather()
+    func fetchWeather(lat: String, lon: String, completion: @escaping(WeatherEntitiy) -> Void)
 }

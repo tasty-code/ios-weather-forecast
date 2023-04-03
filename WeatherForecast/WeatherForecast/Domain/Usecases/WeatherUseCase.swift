@@ -14,8 +14,15 @@ final class WeatherUseCase {
     init(repository: WeatherRepositoryInterface) {
         self.repository = repository
     }
+}
+
+extension WeatherUseCase {
     
-    func fetchWeather() {
-        self.repository.fetchWeather()
+    func fetchWeather(lat: Double, lon: Double, completion: @escaping(WeatherEntitiy) -> Void) {
+        guard let lat = lat.doubleToString(),
+              let lon = lon.doubleToString() else { return }
+        self.repository.fetchWeather(lat: lat, lon: lon) { weatherEntity in
+            completion(weatherEntity)
+        }
     }
 }
