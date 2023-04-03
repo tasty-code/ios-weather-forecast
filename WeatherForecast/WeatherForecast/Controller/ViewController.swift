@@ -37,8 +37,8 @@ extension ViewController: CLLocationManagerDelegate {
         let geocoder = CLGeocoder()
         
         Task {
-            let _ = try await WeatherParser<CurrentWeatherComponents>.parse(at: coordinate)
-            let _ = try await WeatherParser<ForecastWeatherComponents>.parse(at: coordinate)
+            let _ = try await WeatherParser<CurrentWeatherComponents>.parseWeatherData(at: coordinate)
+            let _ = try await WeatherParser<ForecastWeatherComponents>.parseWeatherData(at: coordinate)
             let placemark = try await geocoder.reverseGeocodeLocation(location)
             let address = placemark.description.components(separatedBy: ", ")[1]
         }

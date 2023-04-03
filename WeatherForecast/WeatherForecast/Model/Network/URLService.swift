@@ -1,5 +1,5 @@
 //
-//  WeatherURL.swift
+//  URLService.swift
 //  WeatherForecast
 //
 //  Created by Blu on 2023/03/14.
@@ -7,13 +7,17 @@
 
 import Foundation
 
-enum WeatherURL {
-    private static let baseURL = "https://api.openweathermap.org/data/2.5/"
+enum URLService: String {
+    case data = "data/2.5/"
+    case icon = "img/wn/"
+
+    private static let baseURL = "https://api.openweathermap.org/"
     private static let measurementUnit = "metric"
     private static let language = "kr"
 
-    static func make(at coordinate: CurrentCoordinate, weatherRange: WeatherRange) throws -> URL {
+    static func makeDataURL(at coordinate: CurrentCoordinate, weatherRange: WeatherRange) throws -> URL {
         var components = URLComponents(string: baseURL)
+        components?.path.append(data.rawValue)
         components?.path.append(weatherRange.description)
         components?.queryItems = [
             URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
@@ -30,7 +34,15 @@ enum WeatherURL {
         return url
     }
 
-    static func request(for weather: WeatherRange, at coordinate: CurrentCoordinate) -> URLRequest? {
-        return try? URLRequest(url: make(at: coordinate, weatherRange: weather))
+    static func makeIconURL(with iconCode: String) throws -> URL {
+        var components = URLComponents(string: baseURL)
+        components?.path.append(icon.rawValue)
+        components?.path.append("\(iconCode).png")
+
+        guard let url = components?.url else {
+            throw WeatherNetworkError.invalidURL
+        }
+
+        return url
     }
 }
