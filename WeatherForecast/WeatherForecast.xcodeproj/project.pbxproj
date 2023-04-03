@@ -59,7 +59,6 @@
 		8E2C045C29DA6B90002FFB8F /* WeatherForecastRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastRepository.swift; sourceTree = "<group>"; };
 		8E2C045E29DA6CC9002FFB8F /* WeatherForecastUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastUseCase.swift; sourceTree = "<group>"; };
 		8E2C046029DA6CFF002FFB8F /* WeatherForecastRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastRepositoryInterface.swift; sourceTree = "<group>"; };
-		8E4503B129D50FA300A829A6 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8E4503D029D5159700A829A6 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		8E4503D829D517E300A829A6 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		8E4503DB29D51EDF00A829A6 /* WeatherResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResponseDTO.swift; sourceTree = "<group>"; };
@@ -115,7 +114,6 @@
 			isa = PBXGroup;
 			children = (
 				8EE3296B29CA939A00F54F48 /* SecretKey.swift */,
-				8E4503AE29D50F8000A829A6 /* API */,
 				8E4503B029D50F8900A829A6 /* Foundation */,
 				8E4503AF29D50F8300A829A6 /* Service */,
 			);
@@ -192,14 +190,6 @@
 				8E2C045C29DA6B90002FFB8F /* WeatherForecastRepository.swift */,
 			);
 			path = Repositories;
-			sourceTree = "<group>";
-		};
-		8E4503AE29D50F8000A829A6 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				8E4503B129D50FA300A829A6 /* .gitkeep */,
-			);
-			path = API;
 			sourceTree = "<group>";
 		};
 		8E4503AF29D50F8300A829A6 /* Service */ = {
