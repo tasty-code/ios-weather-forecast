@@ -14,7 +14,7 @@
 		876194CF29D6D345005AB06D /* CurrentWeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876194CE29D6D345005AB06D /* CurrentWeatherViewModel.swift */; };
 		876194D229D6D373005AB06D /* FiveDaysForecastWeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876194D129D6D373005AB06D /* FiveDaysForecastWeatherViewModel.swift */; };
 		876194D429D6D495005AB06D /* CoreLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876194D329D6D495005AB06D /* CoreLocationManager.swift */; };
-		876194D829D6D4EE005AB06D /* LocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876194D729D6D4EE005AB06D /* LocationDelegate.swift */; };
+		876194D829D6D4EE005AB06D /* CoreLocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876194D729D6D4EE005AB06D /* CoreLocationManagerDelegate.swift */; };
 		8797480B29C04D1100C5F3D5 /* CurrentWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8797480A29C04D1100C5F3D5 /* CurrentWeatherDTO.swift */; };
 		8797480D29C04E4600C5F3D5 /* APIKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8797480C29C04E4600C5F3D5 /* APIKeyManager.swift */; };
 		8797480F29C0668D00C5F3D5 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8797480E29C0668D00C5F3D5 /* WeatherAPI.swift */; };
@@ -56,7 +56,7 @@
 		876194CE29D6D345005AB06D /* CurrentWeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherViewModel.swift; sourceTree = "<group>"; };
 		876194D129D6D373005AB06D /* FiveDaysForecastWeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiveDaysForecastWeatherViewModel.swift; sourceTree = "<group>"; };
 		876194D329D6D495005AB06D /* CoreLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocationManager.swift; sourceTree = "<group>"; };
-		876194D729D6D4EE005AB06D /* LocationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDelegate.swift; sourceTree = "<group>"; };
+		876194D729D6D4EE005AB06D /* CoreLocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocationManagerDelegate.swift; sourceTree = "<group>"; };
 		8797480A29C04D1100C5F3D5 /* CurrentWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherDTO.swift; sourceTree = "<group>"; };
 		8797480C29C04E4600C5F3D5 /* APIKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyManager.swift; sourceTree = "<group>"; };
 		8797480E29C0668D00C5F3D5 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				876194D329D6D495005AB06D /* CoreLocationManager.swift */,
-				876194D729D6D4EE005AB06D /* LocationDelegate.swift */,
+				876194D729D6D4EE005AB06D /* CoreLocationManagerDelegate.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -384,7 +384,7 @@
 				4F2D797429C04DC500C30BE2 /* WeatherAPIManager.swift in Sources */,
 				876194D229D6D373005AB06D /* FiveDaysForecastWeatherViewModel.swift in Sources */,
 				876194D429D6D495005AB06D /* CoreLocationManager.swift in Sources */,
-				876194D829D6D4EE005AB06D /* LocationDelegate.swift in Sources */,
+				876194D829D6D4EE005AB06D /* CoreLocationManagerDelegate.swift in Sources */,
 				87B6EE5D29C2A70A00BB19BC /* FiveDaysForecastDTO.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* WeatherViewController.swift in Sources */,
 				80985D7C29D94E4F008BF073 /* APIKeys.swift in Sources */,

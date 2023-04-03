@@ -22,7 +22,7 @@ final class WeatherViewModel {
     init(networkModel: NetworkModel = NetworkModel(session: URLSession.shared)) {
         weatherAPIManager = WeatherAPIManager(networkModel: networkModel)
         
-        locationManager.locationDelegate = self
+        locationManager.delegate = self
     }
     
     func makeCoordinate(from location: CLLocation) -> Coordinate {
@@ -74,7 +74,7 @@ final class WeatherViewModel {
     }
 }
 
-extension WeatherViewModel: LocationDelegate {
+extension WeatherViewModel: CoreLocationManagerDelegate {
     func didUpdateLocation() {
         makeWeatherData(
             locationManager: locationManager,

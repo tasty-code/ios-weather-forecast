@@ -10,7 +10,7 @@ import CoreLocation
 
 final class CoreLocationManager: NSObject {
     
-    weak var locationDelegate: LocationDelegate?
+    weak var delegate: CoreLocationManagerDelegate?
     private var locationManager = CLLocationManager()
     
     override init() {
@@ -45,7 +45,7 @@ extension CoreLocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        locationDelegate?.didUpdateLocation()
+        delegate?.didUpdateLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

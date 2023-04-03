@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-protocol LocationDelegate: AnyObject {
+protocol CoreLocationManagerDelegate: AnyObject {
     func didUpdateLocation()
 }
 
