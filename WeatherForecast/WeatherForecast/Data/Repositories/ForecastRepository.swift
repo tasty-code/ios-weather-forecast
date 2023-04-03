@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ForecastRepository {
+final class ForecastRepository: ForecastRepositoryInterface {
 
     private let service: NetworkService
     

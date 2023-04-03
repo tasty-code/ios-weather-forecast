@@ -21,8 +21,11 @@ final class ForecastUseCase {
 extension ForecastUseCase {
     
     func fetchForecast(lon: Double, lat: Double, completion: @escaping(ForecastEntity) -> Void) {
-        let forecastEntity = self.repository.fetchForecast()
-        completion(forecastEntity)
+        guard let lat = lat.doubleToString(),
+              let lon = lon.doubleToString() else { return }
+        let forecastEntity = self.repository.fetchForecast(lat: lat, lon: lon) { [weak self] forecastEntity in
+            completion(forecastEntity)
+        }        
 //        loadEntity(forecastEntity)
     }
 }
