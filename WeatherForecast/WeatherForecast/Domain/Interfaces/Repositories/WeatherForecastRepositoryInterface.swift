@@ -10,7 +10,7 @@ import Foundation
 protocol WeatherForecastRepositoryInterface: WeatherRepositoryInterface, ForecastRepositoryInterface { }
 
 protocol WeatherRepositoryInterface {
-    func fetchWeather(lat: String, lon: String, completion: @escaping(WeatherEntitiy) -> Void)
+    func fetchWeather(lat: String, lon: String, completion: @escaping(WeatherEntity) -> Void)
 }
 
 protocol ForecastRepositoryInterface {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WeatherEntitiy {
+struct WeatherEntity {
     let weather: [WeatherElementEntity]
     let main: MainWeatherEntity?
 }

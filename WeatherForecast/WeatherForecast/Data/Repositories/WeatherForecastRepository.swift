@@ -18,7 +18,7 @@ final class WeatherForecastRepository: WeatherForecastRepositoryInterface {
 
 extension WeatherForecastRepository {
     
-    func fetchWeather(lat: String, lon: String, completion: @escaping (WeatherEntitiy) -> Void) {
+    func fetchWeather(lat: String, lon: String, completion: @escaping (WeatherEntity) -> Void) {
 
         service.fetchWeather(lat: lat, lon: lon) { result in
             switch result {

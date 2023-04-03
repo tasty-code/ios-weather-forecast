@@ -13,7 +13,7 @@ final class WeatherForecastViewModel {
     private let usecase: WeatherForecastUseCase
     private let coreLocationManager = CoreLocationManager()
     
-    var loadWeatherEntity: ((WeatherEntitiy) -> Void)!
+    var loadWeatherEntity: ((WeatherEntity) -> Void)!
     var loadForecastEntity: ((ForecastEntity) -> Void)!
     
     init(usecase: WeatherForecastUseCase) {
@@ -29,8 +29,8 @@ final class WeatherForecastViewModel {
 extension WeatherForecastViewModel {
     
     func requestWeatherData(lat: Double, lon: Double) {
-        usecase.fetchWeather(lat: lat, lon: lon) { weatherEntity in
-            self.loadWeatherEntity(weatherEntity)
+        usecase.fetchWeather(lat: lat, lon: lon) { [weak self] weatherEntity in
+            self?.loadWeatherEntity(weatherEntity)
         }
     }
     

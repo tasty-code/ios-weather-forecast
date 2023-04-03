@@ -18,7 +18,7 @@ final class WeatherForecastUseCase {
 
 extension WeatherForecastUseCase {
     
-    func fetchWeather(lat: Double, lon: Double, completion: @escaping(WeatherEntitiy) -> Void) {
+    func fetchWeather(lat: Double, lon: Double, completion: @escaping(WeatherEntity) -> Void) {
         guard let lat = lat.doubleToString(),
               let lon = lon.doubleToString() else { return }
         self.repository.fetchWeather(lat: lat, lon: lon) { weatherEntity in

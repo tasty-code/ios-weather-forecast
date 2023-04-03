@@ -9,7 +9,7 @@ import Foundation
 
 extension WeatherResponseDTO {
     
-    func toDomain() -> WeatherEntitiy {
+    func toDomain() -> WeatherEntity {
         return .init(weather: weather.map { $0.toDomain() }, main: main?.toDomain())
     }
 }
