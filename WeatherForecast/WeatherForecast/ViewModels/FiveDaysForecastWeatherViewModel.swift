@@ -37,8 +37,6 @@ final class FiveDaysForecastWeatherViewModel {
         ) {
             weatherAPIManager?.fetchWeatherImage(icon: icon) { image in
                 let fiveDaysForecast = FiveDaysForecast(image: image, date: eachData.time, temperature: eachData.temperature.temperature)
-                print(fiveDaysForecast)
-
             }
         }
 }
