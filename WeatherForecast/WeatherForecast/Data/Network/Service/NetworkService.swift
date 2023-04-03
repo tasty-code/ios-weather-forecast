@@ -76,6 +76,8 @@ extension NetworkServiceProtocol {
         let appIdQuery = URLQueryItem(name: "appid", value: SecretKey.appId)
         let langQuery = URLQueryItem(name: "lang", value: "kr")
         
+        urlComponents?.queryItems = [latQuery, lonQuery, appIdQuery, langQuery]
+        
         return urlComponents?.url
     }
 }
