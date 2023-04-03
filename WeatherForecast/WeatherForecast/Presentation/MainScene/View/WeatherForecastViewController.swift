@@ -12,14 +12,12 @@ final class WeatherForecastViewController: UIViewController {
     // MARK: - Properties
     
     var viewModel: WeatherForecastViewModel!
-    private let locationManager = CLLocationManager()
-
+    
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLocationDelegate()
-        setUpLocationManager()
+        updateCurrentLocation()
         binding()
     }
 }
@@ -27,13 +25,10 @@ final class WeatherForecastViewController: UIViewController {
 // MARK: - Methods
 
 extension WeatherForecastViewController {
-    private func setLocationDelegate() {
-        locationManager.delegate = self
-    }
-
-    private func setUpLocationManager() {
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+    
+    private func updateCurrentLocation() {
+        let myLocationManager = MyCoreLocationManager.shared
+        myLocationManager.delegate = self
     }
     
     private func binding() {
@@ -50,19 +45,13 @@ extension WeatherForecastViewController {
     }
 }
 
-// MARK: - CLLocationManagerDelegate
+// MARK: - LocationUpdateProtocol Implementation
 
-extension WeatherForecastViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let currentLocation = locations.last else { return }
-
-        let lon = currentLocation.coordinate.longitude
-        let lat = currentLocation.coordinate.latitude
+extension WeatherForecastViewController: LocationUpdateProtocol {
+    
+    func locationDidUpdateToLocation(location: CLLocation) {
+        let lat = location.coordinate.latitude
+        let lon = location.coordinate.longitude
         viewModel.requestWeatherData(lat: lat, lon: lon)
-        viewModel.requestFetchData(lat: lat, lon: lon)
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Location update failed with error: \(error.localizedDescription)")
     }
 }
