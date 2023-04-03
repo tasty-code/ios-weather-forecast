@@ -207,7 +207,18 @@ extension WeatherListViewController: UICollectionViewDataSource {
         let temperature = String(weather.weatherDetail.temperature)
         let iconCode = weather.weathers.first?.icon ?? ""
 
-        cell.configure(date: date, temperature: temperature, iconCode: iconCode)
+        repository.fetchWeatherIcon(iconCode: iconCode) { result  in
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async {
+                    cell.setWeatherIcon(icon: image)
+                }
+            case .failure(let error):
+                log(.network, error: error)
+            }
+        }
+
+        cell.configure(date: date, temperature: temperature)
         return cell
     }
 

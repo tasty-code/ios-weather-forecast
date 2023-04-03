@@ -32,7 +32,6 @@ final class WeatherCell: UICollectionViewCell {
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .cyan
         imageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         imageView.image = UIImage(systemName: "cloud.sun.fill")
         return imageView
@@ -68,9 +67,13 @@ final class WeatherCell: UICollectionViewCell {
 
     // MARK: - Public
 
-    func configure(date: String, temperature: String, iconCode: String) {
+    func configure(date: String, temperature: String) {
         dateLabel.text = date
         temperatureLabel.text = temperature + " °C"
+    }
+
+    func setWeatherIcon(icon: UIImage) {
+        iconImageView.image = icon
     }
 
     // MARK: - Private

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 final class OpenWeatherRepository {
     
@@ -28,9 +29,11 @@ final class OpenWeatherRepository {
     
     private enum Constant {
         static let baseURL = "https://api.openweathermap.org"
+        static let baseIconURL = "https://openweathermap.org"
 
         static let weatherPath = "/data/2.5/weather"
         static let forecastPath = "/data/2.5/forecast"
+        static let iconPath = "/img/wn/"
 
         static let latitudeQueryName = "lat"
         static let longitudeQueryName = "lon"
@@ -39,6 +42,9 @@ final class OpenWeatherRepository {
         static let koreanLanguageQueryValue = "kr"
         static let unitsQueryName = "units"
         static let celsiusUnitsQueryValue = "metric"
+
+        static let weatherIconImageSize = "@2x"
+        static let weatherIconImageFormat = ".png"
     }
 
     // MARK: - Public
@@ -87,7 +93,29 @@ final class OpenWeatherRepository {
         }
     }
 
+    func fetchWeatherIcon(iconCode: String, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
+
+        let icon: String = iconCode + Constant.weatherIconImageSize + Constant.weatherIconImageFormat
+        let url = generateImageURL(iconCode: icon)
+
+        service.performRequest(with: url, httpMethodType: .get) { result in
+            switch result {
+            case .success(let data):
+                guard let icon = UIImage(data: data) else { return }
+                completion(.success(icon))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     // MARK: - Private
+
+    private func generateImageURL(iconCode: String) -> URL? {
+        guard var urlComponents = URLComponents(string: Constant.baseIconURL) else { return nil }
+        urlComponents.path = Constant.iconPath + iconCode
+        return urlComponents.url
+    }
 
     private func generateURL(withPath path: String,
                              coordinate: Coordinate) -> URL? {
