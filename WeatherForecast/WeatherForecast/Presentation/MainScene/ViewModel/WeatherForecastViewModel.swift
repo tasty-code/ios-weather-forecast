@@ -11,6 +11,7 @@ import CoreLocation
 final class WeatherForecastViewModel {
     
     private let usecase: WeatherForecastUseCase
+    private let coreLocationManager = CoreLocationManager()
     
     var loadWeatherEntity: ((WeatherEntitiy) -> Void)!
     var loadForecastEntity: ((ForecastEntity) -> Void)!
@@ -21,7 +22,6 @@ final class WeatherForecastViewModel {
     }
     
     private func updateCurrentLocation() {
-        let coreLocationManager = CoreLocationManager()
         coreLocationManager.delegate = self
     }
 }
