@@ -35,7 +35,7 @@ final class WeatherViewModel {
     
     func makeWeatherData(locationManager: CoreLocationManager, weatherAPIManager: WeatherAPIManager?) {
         
-        guard let location = locationManager.locationManager?.location else { return }
+        guard let location = locationManager.fetchCurrentLocation() else { return }
         let coordinate = self.makeCoordinate(from: location)
         
         currentWeatherViewModel.makeCurrentAddress(

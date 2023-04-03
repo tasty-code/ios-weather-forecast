@@ -11,15 +11,13 @@ import CoreLocation
 final class CoreLocationManager: NSObject {
     
     weak var locationDelegate: LocationDelegate?
-    var locationManager: CLLocationManager?
+    private var locationManager = CLLocationManager()
     
     override init() {
         super.init()
-        locationManager = CLLocationManager()
-        
-        locationManager?.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager?.requestWhenInUseAuthorization()
-        locationManager?.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.delegate = self
     }
     
     func changeGeocoder(location: CLLocation, completion: @escaping (CLPlacemark?) -> Void) {
@@ -36,6 +34,10 @@ final class CoreLocationManager: NSObject {
             guard let firstLocation = placemark?.last else { return }
             completion(firstLocation)
         }
+    }
+    
+    func fetchCurrentLocation() -> CLLocation? {
+        return locationManager.location
     }
 }
 
