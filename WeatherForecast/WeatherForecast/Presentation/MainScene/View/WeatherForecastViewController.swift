@@ -10,8 +10,8 @@ import CoreLocation
 final class WeatherForecastViewController: UIViewController {
 
     // MARK: - Properties
-
-    var viewModel: ForecastViewModel!
+    
+    var forecastViewModel: ForecastViewModel!
     private let locationManager = CLLocationManager()
 
     // MARK: - View Life Cycle
@@ -37,7 +37,7 @@ extension WeatherForecastViewController {
     }
     
     private func binding() {
-        viewModel.loadEntity = { [weak self] forecastEnitity in
+        forecastViewModel.loadEntity = { [weak self] forecastEnitity in
             // ui 업데이트
             print(forecastEnitity)
         }
@@ -52,7 +52,7 @@ extension WeatherForecastViewController: CLLocationManagerDelegate {
 
         let lon = currentLocation.coordinate.longitude
         let lat = currentLocation.coordinate.latitude
-        viewModel.requestFetchData(lon: lon, lat: lat)
+        forecastViewModel.requestFetchData(lon: lon, lat: lat)
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

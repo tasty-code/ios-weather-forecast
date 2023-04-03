@@ -23,6 +23,6 @@ extension ForecastUseCase {
               let lon = lon.doubleToString() else { return }
         _ = self.repository.fetchForecast(lat: lat, lon: lon) { forecastEntity in
             completion(forecastEntity)
-        }        
+        }
     }
 }
