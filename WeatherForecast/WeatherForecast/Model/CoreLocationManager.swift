@@ -35,17 +35,14 @@ final class CoreLocationManager: NSObject {
             completion(firstLocation)
         }
     }
-    
-    func fetchCurrentLocation() -> CLLocation? {
-        return locationManager.location
-    }
 }
 
 extension CoreLocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        delegate?.didUpdateLocation()
+        guard let location = locations.last else { return }
+        delegate?.coreLocationManager(self, didUpdateLocation: location)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

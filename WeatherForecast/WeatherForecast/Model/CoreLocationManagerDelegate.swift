@@ -9,6 +9,6 @@ import Foundation
 import CoreLocation
 
 protocol CoreLocationManagerDelegate: AnyObject {
-    func didUpdateLocation()
+    func coreLocationManager(_ manager: CoreLocationManager, didUpdateLocation location: CLLocation)
 }
 
