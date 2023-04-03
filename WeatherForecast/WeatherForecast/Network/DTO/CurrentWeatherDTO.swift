@@ -7,28 +7,22 @@
 
 import Foundation
 
-struct CurrentWeather: Codable {
+struct CurrentWeatherDTO: Decodable {
     
-    let coordinate: Coordinate
-    let weatherData: WeatherData
+    let temperature: Temperature
+    let weather: [Weather]
     
     enum CodingKeys: String, CodingKey {
         
-        case coordinate = "coord"
-        case weatherData = "main"
+        case temperature = "main"
+        case weather
     }
 }
 
-struct Coordinate: Codable {
+struct Coordinate: Decodable {
     
     let longitude: Double
     let latitude: Double
-    
-    enum CodingKeys: String, CodingKey {
-        
-        case longitude = "lon"
-        case latitude = "lat"
-    }
 }
 
 extension Coordinate: CustomStringConvertible {

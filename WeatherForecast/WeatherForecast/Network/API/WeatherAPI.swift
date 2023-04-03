@@ -12,13 +12,13 @@ enum WeatherAPI: String {
     case currentWeather
     case fiveDaysForecast
     
-    var decodingType: Codable.Type {
+    var decodingType: Decodable.Type {
         
         switch self {
         case .currentWeather:
-            return CurrentWeather.self
+            return CurrentWeatherDTO.self
         case .fiveDaysForecast:
-            return FiveDaysForecast.self
+            return FiveDaysForecastDTO.self
         }
     }
 }
@@ -26,6 +26,7 @@ enum WeatherAPI: String {
 extension WeatherAPI {
     
     static let baseURL = "https://api.openweathermap.org"
+    static let baseImageURL = "https://openweathermap.org"
     
     var path: String {
         
@@ -43,5 +44,12 @@ extension WeatherAPI {
         let apiKey = APIKeyManager.openWeather.apiKey
         
         return URL(string: WeatherAPI.baseURL + self.path + queryItems + apiKey)!
+    }
+    
+    static func makeImageURL(icon: String) -> URL {
+        
+        let path = "/img/wn/\(icon)@2x.png"
+        
+        return URL(string: WeatherAPI.baseImageURL + path)!
     }
 }
