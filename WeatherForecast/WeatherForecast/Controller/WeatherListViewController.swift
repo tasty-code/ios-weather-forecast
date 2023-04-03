@@ -25,7 +25,7 @@ final class WeatherListViewController: UIViewController {
     private let locationDataManager = LocationDataManager()
     private let addressManager = AddressManager()
 
-    private var currentWeatherDetail: WeatherDetail? = nil {
+    private var currentWeather: CurrentWeather? = nil {
         didSet {
             updateHeaderView()
         }
@@ -76,7 +76,7 @@ final class WeatherListViewController: UIViewController {
         repository.fetchWeather(coordinate: coordinate) { [weak self] result in
             switch result {
             case .success(let currentWeather):
-                self?.currentWeatherDetail = currentWeather.weatherDetail
+                self?.currentWeather = currentWeather
             case .failure(let error):
                 log(.network, error: error)
             }
@@ -120,18 +120,25 @@ final class WeatherListViewController: UIViewController {
     }
 
     private func updateHeaderView() {
-        guard let currentWeatherDetail,
+        guard let currentWeather,
               let placemark = addressManager.placemark else { return }
 
-        DispatchQueue.main.async {
-            guard let headerView = self.collectionView.visibleSupplementaryViews(
-                ofKind: UICollectionView.elementKindSectionHeader
-            ).first as? WeatherHeaderView else { return }
-
-            headerView.configure(
-                with: currentWeatherDetail,
-                address: "\(placemark.locality ?? "") \(placemark.name ?? "")"
-            )
+        repository.fetchWeatherIconImage(withID: currentWeather.weathers.first?.icon ?? "") { result in
+            switch result {
+            case.success(let image):
+                DispatchQueue.main.async {
+                    guard let headerView = self.collectionView.visibleSupplementaryViews(
+                        ofKind: UICollectionView.elementKindSectionHeader
+                    ).first as? WeatherHeaderView else { return }
+                    headerView.configure(
+                        with: currentWeather.weatherDetail,
+                        address: "\(placemark.locality ?? "") \(placemark.name ?? "")",
+                        icon: image
+                    )
+                }
+            case.failure(let error):
+                log(.network, error: error)
+            }
         }
     }
 

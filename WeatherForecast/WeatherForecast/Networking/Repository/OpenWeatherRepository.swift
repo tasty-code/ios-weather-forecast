@@ -106,10 +106,7 @@ final class OpenWeatherRepository {
                     return
                 }
                 ImageCacheManager.shared.store(icon, for: iconID)
-                // TODO: ❌😵‍💫네트워크 환경 테스트를 위한 지연 로직
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    completion(.success(icon))
-                }
+                completion(.success(icon))
             case .failure(let error):
                 completion(.failure(error))
             }
