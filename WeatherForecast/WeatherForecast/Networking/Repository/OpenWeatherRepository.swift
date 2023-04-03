@@ -93,6 +93,11 @@ final class OpenWeatherRepository {
     func fetchWeatherIconImage(withID iconID: String, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
         let url = generateIconImageURL(withID: iconID)
 
+        if let iconImage = ImageCacheManager.shared.get(for: iconID) {
+            completion(.success(iconImage))
+            return
+        }
+
         service.performRequest(with: url, httpMethodType: .get) { result in
             switch result {
             case .success(let data):
@@ -100,6 +105,7 @@ final class OpenWeatherRepository {
                     completion(.failure(.invalidImage))
                     return
                 }
+                ImageCacheManager.shared.store(icon, for: iconID)
                 // TODO: ❌😵‍💫네트워크 환경 테스트를 위한 지연 로직
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     completion(.success(icon))

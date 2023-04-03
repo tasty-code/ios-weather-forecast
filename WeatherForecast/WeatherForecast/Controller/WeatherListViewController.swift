@@ -208,7 +208,6 @@ extension WeatherListViewController: UICollectionViewDataSource {
         let iconID = weather.weathers.first?.icon ?? ""
 
         repository.fetchWeatherIconImage(withID: iconID) { result in
-            // TODO: ✅ iconID 값을 캡쳐해서, guard로 비교하는 구문 처리 필요...
             switch result {
             case .success(let image):
                 DispatchQueue.main.async {
