@@ -1,5 +1,5 @@
 //
-//  MyCoreLocationManager.swift
+//  CoreLocationManager.swift
 //  WeatherForecast
 //
 //  Created by devxsby on 2023/04/03.
@@ -15,15 +15,15 @@ protocol LocationUpdateProtocol: AnyObject {
     func locationDidUpdateToLocation(location: CLLocation)
 }
 
-final class MyCoreLocationManager: NSObject {
+final class CoreLocationManager: NSObject {
     
-    static let shared = MyCoreLocationManager()
+    static let shared = CoreLocationManager()
     
     private let locationManager = CLLocationManager()
     
     weak var delegate: LocationUpdateProtocol?
     
-    override init() {
+    override private init() {
         super.init()
         self.setUpLocationManager()
     }
@@ -31,7 +31,7 @@ final class MyCoreLocationManager: NSObject {
 
 // MARK: - Methods
 
-extension MyCoreLocationManager {
+extension CoreLocationManager {
     private func setUpLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
@@ -42,7 +42,7 @@ extension MyCoreLocationManager {
 
 // MARK: - CLLocationManagerDelegate
 
-extension MyCoreLocationManager: CLLocationManagerDelegate {
+extension CoreLocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
         delegate?.locationDidUpdateToLocation(location: currentLocation)

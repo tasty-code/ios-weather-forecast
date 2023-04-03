@@ -5,7 +5,6 @@
 // 
 
 import UIKit
-import CoreLocation
 
 final class WeatherForecastViewController: UIViewController {
 
@@ -17,7 +16,6 @@ final class WeatherForecastViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateCurrentLocation()
         binding()
     }
 }
@@ -25,11 +23,6 @@ final class WeatherForecastViewController: UIViewController {
 // MARK: - Methods
 
 extension WeatherForecastViewController {
-    
-    private func updateCurrentLocation() {
-        let myLocationManager = MyCoreLocationManager.shared
-        myLocationManager.delegate = self
-    }
     
     private func binding() {
 
@@ -42,16 +35,5 @@ extension WeatherForecastViewController {
             // ui 업데이트
             print(forecastEnitity)
         }
-    }
-}
-
-// MARK: - LocationUpdateProtocol Implementation
-
-extension WeatherForecastViewController: LocationUpdateProtocol {
-    
-    func locationDidUpdateToLocation(location: CLLocation) {
-        let lat = location.coordinate.latitude
-        let lon = location.coordinate.longitude
-        viewModel.requestWeatherData(lat: lat, lon: lon)
     }
 }

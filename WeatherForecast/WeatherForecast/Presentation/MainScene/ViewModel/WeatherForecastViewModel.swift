@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 final class WeatherForecastViewModel {
     
@@ -16,6 +17,12 @@ final class WeatherForecastViewModel {
     
     init(usecase: WeatherForecastUseCase) {
         self.usecase = usecase
+        self.updateCurrentLocation()
+    }
+    
+    private func updateCurrentLocation() {
+        let coreLocationManager = CoreLocationManager.shared
+        coreLocationManager.delegate = self
     }
 }
 
@@ -31,5 +38,17 @@ extension WeatherForecastViewModel {
         usecase.fetchForecast(lat: lat, lon: lon) { [weak self] forecastEntity in
             self?.loadForecastEntity(forecastEntity)
         }
+    }
+}
+
+// MARK: - LocationUpdateProtocol Implementation
+
+extension WeatherForecastViewModel: LocationUpdateProtocol {
+    
+    func locationDidUpdateToLocation(location: CLLocation) {
+        let lat = location.coordinate.latitude
+        let lon = location.coordinate.longitude
+        self.requestWeatherData(lat: lat, lon: lon)
+        self.requestFetchData(lat: lat, lon: lon)
     }
 }
