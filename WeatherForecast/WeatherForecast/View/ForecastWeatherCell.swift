@@ -9,11 +9,18 @@ import UIKit
 
 final class ForecastWeatherCell: UICollectionViewCell {
     static let id = "forecast"
-    let label = UILabel()
+    let icon: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "rays"))
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    let timeLabel = UILabel()
+    let temperatureLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureLabel()
+        configureLayout()
+        temperatureLabel.textAlignment = .right
     }
     
     required init?(coder: NSCoder) {
@@ -22,14 +29,34 @@ final class ForecastWeatherCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        label.text = nil
+        timeLabel.text = nil
+        temperatureLabel.text = nil
     }
     
-    private func configureLabel() {
-        self.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        label.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        label.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+    private func configureLayout() {
+        self.addSubview(timeLabel)
+        self.addSubview(temperatureLabel)
+        self.addSubview(icon)
+
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            timeLabel.heightAnchor.constraint(equalTo: self.heightAnchor),
+            timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            timeLabel.trailingAnchor.constraint(equalTo: temperatureLabel.leadingAnchor)
+        ])
+
+        temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            temperatureLabel.heightAnchor.constraint(equalTo: self.heightAnchor),
+            temperatureLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor),
+            temperatureLabel.trailingAnchor.constraint(equalTo: icon.leadingAnchor, constant: -20)
+        ])
+
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            icon.heightAnchor.constraint(equalTo: self.heightAnchor),
+            icon.leadingAnchor.constraint(equalTo: temperatureLabel.trailingAnchor, constant: 20),
+            icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
+        ])
     }
 }

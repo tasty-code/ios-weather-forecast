@@ -8,17 +8,17 @@
 import UIKit
 
 final class HeaderView: UIView {
-    var image: UIImageView = {
+    let image: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "rays"))
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
-    var addressLabel = UILabel()
-    var minMaxTemperatureLabel = UILabel()
-    var temperatureLabel = UILabel()
+    let addressLabel = UILabel()
+    let minMaxTemperatureLabel = UILabel()
+    let temperatureLabel = UILabel()
     
-    var stackView: UIStackView = {
+    let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .leading
@@ -59,7 +59,7 @@ final class HeaderView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: self.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: image.trailingAnchor),
+            stackView.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 10),
             stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])

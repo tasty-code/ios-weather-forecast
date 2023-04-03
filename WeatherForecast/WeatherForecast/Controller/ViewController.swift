@@ -63,7 +63,8 @@ extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.id, for: indexPath) as! ForecastWeatherCell
         cell.backgroundColor = .blue
-        cell.label.text = forecastWeather?.city.country
+        cell.timeLabel.text = forecastWeather?.city.name
+        cell.temperatureLabel.text = forecastWeather?.city.country
         return cell
     }
     
