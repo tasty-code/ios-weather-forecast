@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		768ADD1F29C81A4900C20B11 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768ADD1E29C81A4900C20B11 /* NetworkService.swift */; };
-		8E09EA7C29CA950B003A7A6F /* CoordinateEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E09EA7B29CA950B003A7A6F /* CoordinateEntity.swift */; };
 		8E0CA2CB29CA997B00DD8FC6 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CA2CA29CA997B00DD8FC6 /* NetworkError.swift */; };
 		8E0CA2CD29CA998F00DD8FC6 /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0CA2CC29CA998F00DD8FC6 /* NetworkConfig.swift */; };
 		8E2C045B29DA6AA0002FFB8F /* WeatherForecastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2C045A29DA6AA0002FFB8F /* WeatherForecastViewModel.swift */; };
@@ -54,7 +53,6 @@
 
 /* Begin PBXFileReference section */
 		768ADD1E29C81A4900C20B11 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		8E09EA7B29CA950B003A7A6F /* CoordinateEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateEntity.swift; sourceTree = "<group>"; };
 		8E0CA2CA29CA997B00DD8FC6 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		8E0CA2CC29CA998F00DD8FC6 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
 		8E2C045A29DA6AA0002FFB8F /* WeatherForecastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastViewModel.swift; sourceTree = "<group>"; };
@@ -226,7 +224,6 @@
 			children = (
 				8EB2C5D929C9C8B800C8C928 /* WeatherEntity.swift */,
 				8EB2C5D729C9C8A500C8C928 /* ForecastEntity.swift */,
-				8E09EA7B29CA950B003A7A6F /* CoordinateEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -564,7 +561,6 @@
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				8E0CA2CD29CA998F00DD8FC6 /* NetworkConfig.swift in Sources */,
 				8E2C045B29DA6AA0002FFB8F /* WeatherForecastViewModel.swift in Sources */,
-				8E09EA7C29CA950B003A7A6F /* CoordinateEntity.swift in Sources */,
 				8E4503E929D5203C00A829A6 /* WeatherTransform.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
