@@ -29,13 +29,13 @@ final class CurrentWeatherViewModel {
         }
     }
     
-    func makeCurrentInformation(weatherAPIManager: WeatherAPIManager?,
+    func makeCurrentInformation(weatherAPIManager: NetworkDispatcher?,
                                 coordinate: Coordinate,
                                 location: CLLocation,
                                 address: String,
                                 completion: @escaping (String, CurrentWeatherDTO) -> Void
     ) {
-        weatherAPIManager?.fetchWeatherInformation(of: .currentWeather, in: coordinate) { data in
+        weatherAPIManager?.requestWeatherInformation(of: .currentWeather, in: coordinate) { data in
             
             guard let weatherData = data as? CurrentWeatherDTO else { return }
             guard let icon = weatherData.weather.first?.icon else { return }
@@ -44,12 +44,12 @@ final class CurrentWeatherViewModel {
         }
     }
     
-    func makeCurrentImage(weatherAPIManager: WeatherAPIManager?,
+    func makeCurrentImage(weatherAPIManager: NetworkDispatcher?,
                           iconString: String,
                           address: String,
                           weatherData: CurrentWeatherDTO
     ) {
-        weatherAPIManager?.fetchWeatherImage(icon: iconString) { weatherImage in
+        weatherAPIManager?.requestWeatherImage(icon: iconString) { weatherImage in
             
             let currentWeatherData = CurrentWeather(image: weatherImage, address: address, temperatures: weatherData.temperature)
             

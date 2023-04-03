@@ -7,12 +7,13 @@
 
 import UIKit
 
-final class WeatherAPIManager {
+final class NetworkDispatcher {
     
-    private let networkModel: NetworkModel
+    private let networkSession: NetworkSession
+    private let deserializer = JSONNetworkDeserializer(decoder: JSONDecoder())
     
-    init(networkModel: NetworkModel) {
-        self.networkModel = networkModel
+    init(networkSession: NetworkSession) {
+        self.networkSession = networkSession
     }
     
     func makeWeatherRequest(of weatherAPI: WeatherAPI, in coordinate: Coordinate) -> URLRequest {
@@ -29,16 +30,16 @@ final class WeatherAPIManager {
            return urlRequest
        }
     
-    func fetchWeatherInformation(of weatherAPI: WeatherAPI, in coordinate: Coordinate, completion: @escaping (Decodable?) -> Void) {
+    func requestWeatherInformation(of weatherAPI: WeatherAPI, in coordinate: Coordinate, completion: @escaping (Decodable?) -> Void) {
             
             let urlRequest = makeWeatherRequest(of: weatherAPI, in: coordinate)
             
-            let task = networkModel.task(urlRequest: urlRequest) { result in
+            let task = networkSession.task(urlRequest: urlRequest) { result in
                 
                 switch result {
                 case .success(let data):
                     do {
-                        let decodedData = try self.networkModel.decode(from: data, to: weatherAPI.decodingType)
+                        let decodedData = try self.deserializer.deserialize(data: data, to: weatherAPI.decodingType)
                         completion(decodedData)
                     } catch {
                         print(error.localizedDescription)
@@ -53,11 +54,11 @@ final class WeatherAPIManager {
             task.resume()
         }
     
-    func fetchWeatherImage(icon: String, completion: @escaping (UIImage?) -> Void) {
+    func requestWeatherImage(icon: String, completion: @escaping (UIImage?) -> Void) {
             
             let urlRequest = makeImageRequest(icon)
             
-            let task = networkModel.task(urlRequest: urlRequest) { result in
+            let task = networkSession.task(urlRequest: urlRequest) { result in
                 
                 switch result {
                 case .success(let data):

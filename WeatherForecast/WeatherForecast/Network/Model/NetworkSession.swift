@@ -9,7 +9,7 @@ import UIKit
 
 typealias NetworkResult = Result<Data, NetworkError>
 
-final class NetworkModel {
+final class NetworkSession {
     private let session: URLSession
     
     init(session: URLSession = .shared) {
@@ -40,12 +40,5 @@ final class NetworkModel {
         }
         
         return task
-    }
-    
-    func decode(from data: Data, to type: Decodable.Type) throws -> Decodable? {
-        
-        let decoder = JSONDecoder()
-        let data = try decoder.decode(type, from: data)
-        return data
     }
 }

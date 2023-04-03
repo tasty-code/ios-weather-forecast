@@ -14,13 +14,13 @@ final class WeatherViewModel {
     private let currentWeatherViewModel = CurrentWeatherViewModel()
     
     private let coreLocationManager = CoreLocationManager()
-    private let weatherAPIManager: WeatherAPIManager?
+    private let weatherAPIManager: NetworkDispatcher?
     
     var fiveDaysForecastWeather: [FiveDaysForecastWeatherViewModel.FiveDaysForecast] = []
     var currentWeather: CurrentWeatherViewModel.CurrentWeather?
     
-    init(networkModel: NetworkModel = NetworkModel(session: URLSession.shared)) {
-        weatherAPIManager = WeatherAPIManager(networkModel: networkModel)
+    init(networkSession: NetworkSession = NetworkSession(session: URLSession.shared)) {
+        weatherAPIManager = NetworkDispatcher(networkSession: networkSession)
         
         coreLocationManager.delegate = self
     }
@@ -33,7 +33,7 @@ final class WeatherViewModel {
         return Coordinate(longitude: longitude, latitude: latitude)
     }
     
-    func makeWeatherData(locationManager: CoreLocationManager, location: CLLocation, weatherAPIManager: WeatherAPIManager?) {
+    func makeWeatherData(locationManager: CoreLocationManager, location: CLLocation, weatherAPIManager: NetworkDispatcher?) {
         
         let coordinate = self.makeCoordinate(from: location)
         
