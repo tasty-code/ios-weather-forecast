@@ -39,9 +39,10 @@ final class WeatherListViewController: UIViewController {
 
     // MARK: - UI Components
 
-    private let collectionView = UICollectionView(
+    private lazy var collectionView = UICollectionView(
         frame: .zero,
-        collectionViewLayout: UICollectionViewFlowLayout()
+        // ✨ Compositional Layout 주입
+        collectionViewLayout: createCollectionViewLayout()
     )
 
     // MARK: - Lifecycle
@@ -97,7 +98,6 @@ final class WeatherListViewController: UIViewController {
     private func setupCollectionView() {
         view.addSubview(collectionView)
         collectionView.dataSource = self
-        collectionView.delegate = self
         collectionView.backgroundColor = .clear
         collectionView.register(
             WeatherCell.self,
@@ -108,6 +108,14 @@ final class WeatherListViewController: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: WeatherHeaderView.identifier
         )
+    }
+    
+    // ✨ CollectionView 리스트 레이아웃 생성
+    private func createCollectionViewLayout() -> UICollectionViewCompositionalLayout {
+        var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+        configuration.headerMode = .supplementary
+        
+        return UICollectionViewCompositionalLayout.list(using: configuration)
     }
 
     private func setupViewBackground() {
@@ -189,14 +197,6 @@ extension WeatherListViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let width = view.frame.width
-        let height = view.frame.height / 7
-        return CGSize(width: width, height: height)
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         return forecastDatas.count
     }
@@ -227,20 +227,6 @@ extension WeatherListViewController: UICollectionViewDataSource {
 
         cell.configure(date: date, temperature: temperature)
         return cell
-    }
-
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension WeatherListViewController: UICollectionViewDelegateFlowLayout {
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = view.frame.width
-        let height = view.frame.height / 15
-        return CGSize(width: width, height: height)
     }
 
 }

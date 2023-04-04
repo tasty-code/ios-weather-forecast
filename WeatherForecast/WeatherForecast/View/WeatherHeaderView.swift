@@ -89,6 +89,9 @@ final class WeatherHeaderView: UICollectionReusableView {
     // MARK: - Private
 
     private func setupLayout() {
+        // ✨ 헤더의 사이즈 지정
+        self.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        
         addSubview(weatherIconImageView)
         weatherIconImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
