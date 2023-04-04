@@ -11,7 +11,7 @@ import CoreLocation
 
 // MARK: - Protocols
 
-protocol LocationUpdateProtocol: AnyObject {
+protocol LocationUpdateDelegate: AnyObject {
     func locationDidUpdateToLocation(location: CLLocation)
 }
 
@@ -19,7 +19,7 @@ final class CoreLocationManager: NSObject {
         
     private let locationManager = CLLocationManager()
     
-    weak var delegate: LocationUpdateProtocol?
+    weak var delegate: LocationUpdateDelegate?
     
     override init() {
         super.init()

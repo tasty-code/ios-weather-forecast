@@ -41,9 +41,9 @@ extension WeatherForecastViewModel {
     }
 }
 
-// MARK: - LocationUpdateProtocol Implementation
+// MARK: - LocationUpdateDelegate Implementation
 
-extension WeatherForecastViewModel: LocationUpdateProtocol {
+extension WeatherForecastViewModel: LocationUpdateDelegate {
     
     func locationDidUpdateToLocation(location: CLLocation) {
         let lat = location.coordinate.latitude
