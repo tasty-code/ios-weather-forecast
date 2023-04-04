@@ -22,11 +22,11 @@ struct ListEntity {
     let weather: [FiveDaysWeatherElementEntity]
 }
 
-struct MainForecastEntity: Decodable {
+struct MainForecastEntity {
     let temp: Double?
 }
 
-struct FiveDaysWeatherElementEntity: Decodable {
+struct FiveDaysWeatherElementEntity {
     let id: Int?
     let main, description, icon: String?
 }
