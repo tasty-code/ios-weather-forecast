@@ -114,6 +114,7 @@ final class WeatherListViewController: UIViewController {
     private func createCollectionViewLayout() -> UICollectionViewCompositionalLayout {
         var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
         configuration.headerMode = .supplementary
+        configuration.backgroundColor = .clear
         
         return UICollectionViewCompositionalLayout.list(using: configuration)
     }
