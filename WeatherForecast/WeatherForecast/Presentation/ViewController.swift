@@ -12,12 +12,17 @@ class ViewController: UIViewController {
     private let repository = Repository()
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewLayout())
-        
+
+        collectionView.isScrollEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.clipsToBounds = true
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+
         collectionView.register(CurrentWeatherHeaderView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherHeaderView.identifier)
         collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.identifier)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
+
         self.view.addSubview(collectionView)
         return collectionView
     }()
