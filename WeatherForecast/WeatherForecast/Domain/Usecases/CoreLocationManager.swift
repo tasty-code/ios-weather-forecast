@@ -12,7 +12,7 @@ import CoreLocation
 // MARK: - Protocols
 
 protocol LocationUpdateDelegate: AnyObject {
-    func locationDidUpdateToLocation(location: CLLocation)
+    func locationDidUpdateToLocation(location: Location)
 }
 
 final class CoreLocationManager: NSObject {
@@ -43,7 +43,8 @@ extension CoreLocationManager {
 extension CoreLocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
-        delegate?.locationDidUpdateToLocation(location: currentLocation)
+        let location = Location(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+        delegate?.locationDidUpdateToLocation(location: location)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

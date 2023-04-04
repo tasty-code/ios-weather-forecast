@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreLocation
 
 final class WeatherForecastViewModel {
     
@@ -45,9 +44,9 @@ extension WeatherForecastViewModel {
 
 extension WeatherForecastViewModel: LocationUpdateDelegate {
     
-    func locationDidUpdateToLocation(location: CLLocation) {
-        let lat = location.coordinate.latitude
-        let lon = location.coordinate.longitude
+    func locationDidUpdateToLocation(location: Location) {
+        let lat = location.latitude
+        let lon = location.longitude
         self.requestWeatherData(lat: lat, lon: lon)
         self.requestFetchData(lat: lat, lon: lon)
     }
