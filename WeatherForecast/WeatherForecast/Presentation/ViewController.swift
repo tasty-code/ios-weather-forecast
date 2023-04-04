@@ -10,6 +10,11 @@ import CoreLocation
 class ViewController: UIViewController {
     
     private let repository = Repository()
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewLayout())
+        self.view.addSubview(collectionView)
+        return collectionView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
