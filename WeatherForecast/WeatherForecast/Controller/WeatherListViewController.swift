@@ -33,7 +33,7 @@ final class WeatherListViewController: UIViewController {
 
     private var forecastDatas: [ForecastData] = [] {
         didSet {
-            updateForecastView()
+            updateListView()
         }
     }
 
@@ -142,7 +142,7 @@ final class WeatherListViewController: UIViewController {
         }
     }
 
-    private func updateForecastView() {
+    private func updateListView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
