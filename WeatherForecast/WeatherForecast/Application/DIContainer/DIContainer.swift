@@ -14,8 +14,7 @@ final class DIContainer {
         let repository = WeatherForecastRepository(service: service)
         let usecase = WeatherForecastUseCase(repository: repository)
         let viewmodel = WeatherForecastViewModel(usecase: usecase)
-        let weatherForecastVC = WeatherForecastViewController()
-        weatherForecastVC.viewModel = viewmodel
+        let weatherForecastVC = WeatherForecastViewController(viewModel: viewmodel)
         return weatherForecastVC
     }
 }

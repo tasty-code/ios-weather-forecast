@@ -10,7 +10,18 @@ final class WeatherForecastViewController: UIViewController {
 
     // MARK: - Properties
     
-    var viewModel: WeatherForecastViewModel!
+    var viewModel: WeatherForecastViewModel
+    
+    // MARK: - Initialization
+    
+    init(viewModel: WeatherForecastViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - View Life Cycle
 
