@@ -12,6 +12,12 @@ class ViewController: UIViewController {
     private let repository = Repository()
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewLayout())
+        
+        collectionView.register(CurrentWeatherHeaderView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherHeaderView.identifier)
+        collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.identifier)
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
         self.view.addSubview(collectionView)
         return collectionView
     }()
