@@ -33,36 +33,6 @@ class ViewController: UIViewController {
         collectionView.dataSource = self
         UserLocation.shared.authorize()
     }
-    
-    @IBAction func printWeatherInformation(_ sender: UIButton) {
-        UserLocation.shared.address { (address, error) in
-            if let error {
-                print(error)
-                return
-            }
-            
-            if let address {
-                print(address)
-            }
-        }
-        
-        guard let location = UserLocation.shared.location?.coordinate else {
-            return
-        }
-        
-        URLPath.allCases.forEach { weatherType in
-            repository.loadData(with: location, path: weatherType) { data, error in
-                if let error {
-                    print(error)
-                    return
-                }
-                
-                if let data {
-                    print(data)
-                }
-            }
-        }
-    }
 }
 
 extension ViewController {
