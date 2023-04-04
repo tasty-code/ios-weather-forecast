@@ -13,14 +13,14 @@ extension WeatherResponseDTO {
     }
 }
 
-extension WeatherElementDTO {
-    func toDomain() -> WeatherElementEntity {
+extension WeatherInformationDTO {
+    func toDomain() -> WeatherInformationEntity {
         return .init(id: id, main: main, description: description, icon: icon)
     }
 }
 
-extension MainDTO {
-    func toDomain() -> MainWeatherEntity {
+extension TemperatureInformationDTO {
+    func toDomain() -> TempEntity {
         return .init(temp: temp)
     }
 }

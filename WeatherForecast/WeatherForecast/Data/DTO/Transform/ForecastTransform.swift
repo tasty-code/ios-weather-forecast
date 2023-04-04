@@ -13,27 +13,15 @@ extension ForecastResponseDTO {
     }
 }
 
-extension ListDTO {
-    func toDomain() -> ListEntity {
+extension ForecastListDTO {
+    func toDomain() -> ForecastListEntity {
         return .init(dtTxt: dtTxt,
                      main: main.toDomain(), weather: weather.map { $0.toDomain() })
     }
 }
 
-extension CityDTO {
+extension CityInformationDTO {
     func toDomain() -> CityEntity {
         return .init(name: name, country: country)
-    }
-}
-
-extension MainDTO {
-    func toDomain() -> MainForecastEntity {
-        return .init(temp: temp)
-    }
-}
-
-extension WeatherElementDTO {
-    func toDomain() -> FiveDaysWeatherElementEntity {
-        return .init(id: id, main: main, description: description, icon: icon)
     }
 }

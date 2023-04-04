@@ -8,15 +8,6 @@
 import Foundation
 
 struct WeatherEntity {
-    let weather: [WeatherElementEntity]
-    let main: MainWeatherEntity?
-}
-
-struct MainWeatherEntity {
-    let temp: Double?
-}
-
-struct WeatherElementEntity {
-    let id: Int?
-    let main, description, icon: String?
+    let weather: [WeatherInformationEntity]
+    let main: TempEntity?
 }
