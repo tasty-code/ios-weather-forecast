@@ -12,6 +12,7 @@ final class ForecastWeatherCell: UICollectionViewCell {
 
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
+        label.text = "OO/OO(월) OO시"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return label
