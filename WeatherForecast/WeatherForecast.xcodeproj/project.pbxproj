@@ -145,6 +145,15 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
+		5B189C1629DC096F00DDFB4A /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+				5B3BD38129BEB20900A0EC83 /* View */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
 		5B3BD37F29BEB1D700A0EC83 /* AppEnvironment */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,11 +287,10 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
-				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+				5B189C1629DC096F00DDFB4A /* Presentation */,
 				5BDE43FC29C31DE000686034 /* Infrastructure */,
 				5BDE43F729C31D3200686034 /* Domain */,
 				5B3BD37F29BEB1D700A0EC83 /* AppEnvironment */,
-				5B3BD38129BEB20900A0EC83 /* View */,
 				5B3BD38029BEB1F900A0EC83 /* Configuration */,
 			);
 			path = WeatherForecast;
