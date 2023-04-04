@@ -1,5 +1,5 @@
 //
-//  ForcastWeatherCell.swift
+//  ForecastWeatherCell.swift
 //  WeatherForecast
 //
 //  Created by 박재우 on 2023/04/04.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ForcastWeatherCell: UICollectionViewCell {
+final class ForecastWeatherCell: UICollectionViewCell {
     static let identifier = "ForcastWeatherCell"
 
     private lazy var dateLabel: UILabel = {
