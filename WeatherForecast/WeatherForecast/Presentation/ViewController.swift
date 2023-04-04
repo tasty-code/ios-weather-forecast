@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.identifier)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
+        collectionView.backgroundColor = .red
         self.view.addSubview(collectionView)
         return collectionView
     }()
@@ -37,7 +38,7 @@ class ViewController: UIViewController {
 
 extension ViewController {
     private func configureCollectionView() -> UICollectionViewLayout {
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50.0))
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(30))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
                                                                  elementKind: UICollectionView.elementKindSectionHeader,

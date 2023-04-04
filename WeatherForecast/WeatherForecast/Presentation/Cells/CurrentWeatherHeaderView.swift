@@ -18,6 +18,7 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configuration()
+        self.backgroundColor = .orange
     }
     
     required init?(coder: NSCoder) {
@@ -28,8 +29,9 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     
     private var currentWeatherEmoji: UIImageView = {
         let currentWeatherEmoji = UIImageView()
-        currentWeatherEmoji.image = UIImage(named: "star.pill")
-        
+        currentWeatherEmoji.image = UIImage(systemName: "cloud.sun.fill")
+        currentWeatherEmoji.setContentHuggingPriority(.defaultHigh,
+                                                      for: .horizontal)
         return currentWeatherEmoji
     }()
     
@@ -40,18 +42,11 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
         return currentLocation
     }()
     
-    private var lowestTemperature: UILabel = {
-        let lowestTemperature = UILabel()
-        lowestTemperature.text = "최저 1.0˚"
+    private var lowestAndHighestTemperature: UILabel = {
+        let lowestAndHighestTemperature = UILabel()
+        lowestAndHighestTemperature.text = "최저 1.0˚ 최고 11.0˚"
         
-        return lowestTemperature
-    }()
-
-    private var highestTemperature: UILabel = {
-        let highestTemperature = UILabel()
-        highestTemperature.text = "최고 11.0˚"
-        
-        return highestTemperature
+        return lowestAndHighestTemperature
     }()
     
     private var currentTemperature: UILabel = {
@@ -65,13 +60,14 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     
     private var addressInformationView: UIStackView = {
         let addressInformationView = UIStackView()
-        
+        addressInformationView.axis = .vertical
+        addressInformationView.spacing = 3
         return addressInformationView
     }()
     
     private var currentInformationView: UIStackView = {
         let currentInformationView = UIStackView()
-        
+        currentInformationView.spacing = 10
         return currentInformationView
     }()
     
@@ -79,7 +75,7 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     func configuration() {
         self.addSubview(currentInformationView)
         
-        [currentLocation, lowestTemperature, highestTemperature, currentTemperature].forEach { label in
+        [currentLocation, lowestAndHighestTemperature, currentTemperature].forEach { label in
             self.addressInformationView.addArrangedSubview(label)
         }
         
@@ -89,10 +85,15 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
         
         currentInformationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            currentInformationView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            currentInformationView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            currentInformationView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 30),
+            currentInformationView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: 20),
             currentInformationView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            currentInformationView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+            currentInformationView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -30)
+        ])
+        
+        addressInformationView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            addressInformationView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: 100)
         ])
     }
 }
