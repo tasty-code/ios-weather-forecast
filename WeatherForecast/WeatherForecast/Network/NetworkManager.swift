@@ -42,7 +42,9 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
             let weatherURLString = weatherURL(lat: latitude, lon: longitude)
             let weatherURL = try getURL(string: weatherURLString)
             var weatherURLRequest = URLRequest(url: weatherURL)
+            
             weatherURLRequest.httpMethod = "GET"
+            
             dataTask(URLRequest: weatherURLRequest, myType: Weather.self) { result in
                 switch result {
                 case .success(let data):
@@ -88,9 +90,12 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     }
     private func hasDataChanged(from: Forecast) -> Bool {
         if from.city.name == self.forecastData?.city.name &&
-            from.list.first?.timeOfDataText == self.forecastData?.list.first?.timeOfDataText {
+            from.list.first?.timeOfDataText == self.forecastData?.list.first?.timeOfDataText &&
+            from.list.first?.weather.description == self.forecastData?.list.first?.weather.description
+        {
             return false
         }
+        
         return true
     }
 }
