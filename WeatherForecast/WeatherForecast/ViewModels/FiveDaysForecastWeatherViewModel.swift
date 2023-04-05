@@ -10,6 +10,8 @@ import CoreLocation
 
 final class FiveDaysForecastWeatherViewModel {
     
+    weak var delegate: FiveDaysForecastWeatherViewModelDelegate?
+    
     struct FiveDaysForecast {
         var image: UIImage?
         let date: String
@@ -36,6 +38,7 @@ final class FiveDaysForecastWeatherViewModel {
     ) {
         weatherNetworkDispatcher.requestWeatherImage(icon: icon) { image in
             let fiveDaysForecast = FiveDaysForecast(image: image, date: eachData.time, temperature: eachData.temperature.temperature)
+            self.delegate?.fiveDaysForecastWeatherViewModel(self, didCreateModelObject: fiveDaysForecast)
         }
     }
 }

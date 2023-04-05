@@ -24,6 +24,10 @@ class WeatherViewController: UIViewController {
         configureHierarchy()
         register()
         collectionViewDelegate()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.weatherCollectionView.reloadData()
+        }
     }
 }
 

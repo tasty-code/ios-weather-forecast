@@ -20,6 +20,7 @@ class FiveDaysForecastCell: UICollectionViewCell {
     var dateLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -27,6 +28,7 @@ class FiveDaysForecastCell: UICollectionViewCell {
     var temperatureLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

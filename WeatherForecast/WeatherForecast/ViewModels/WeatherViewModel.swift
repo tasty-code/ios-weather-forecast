@@ -23,6 +23,8 @@ final class WeatherViewModel {
         weatherNetworkDispatcher = WeatherNetworkDispatcher(networkSession: networkSession)
         
         coreLocationManager.delegate = self
+        currentWeatherViewModel.delegate = self
+        fiveDaysForecastWeatherViewModel.delegate = self
     }
     
     private func makeCoordinate(from location: CLLocation) -> Coordinate {
@@ -80,5 +82,17 @@ extension WeatherViewModel: CoreLocationManagerDelegate {
             location: location,
             weatherNetworkDispatcher: weatherNetworkDispatcher
         )
+    }
+}
+
+extension WeatherViewModel: CurrentWeatherViewModelDelegate {
+    func currentWeatherViewModel(_ viewModel: CurrentWeatherViewModel, didCreateModelObject currentWeather: CurrentWeatherViewModel.CurrentWeather) {
+        self.currentWeather = currentWeather
+    }
+}
+
+extension WeatherViewModel: FiveDaysForecastWeatherViewModelDelegate {
+    func fiveDaysForecastWeatherViewModel(_ viewModel: FiveDaysForecastWeatherViewModel, didCreateModelObject fiveDaysForecastWeather: FiveDaysForecastWeatherViewModel.FiveDaysForecast) {
+        self.fiveDaysForecastWeather.append(fiveDaysForecastWeather)
     }
 }

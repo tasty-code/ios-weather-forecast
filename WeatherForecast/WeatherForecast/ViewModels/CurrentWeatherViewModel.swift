@@ -10,6 +10,8 @@ import CoreLocation
 
 final class CurrentWeatherViewModel {
     
+    weak var delegate: CurrentWeatherViewModelDelegate?
+    
     struct CurrentWeather {
         let image: UIImage?
         let address: String
@@ -50,9 +52,8 @@ final class CurrentWeatherViewModel {
     ) {
         weatherNetworkDispatcher.requestWeatherImage(icon: iconString) { weatherImage in
             
-            let currentWeatherData = CurrentWeather(image: weatherImage, address: address, temperatures: weatherData.temperature)
-            
-            print(currentWeatherData)
+            let currentWeather = CurrentWeather(image: weatherImage, address: address, temperatures: weatherData.temperature)
+            self.delegate?.currentWeatherViewModel(self, didCreateModelObject: currentWeather)
         }
     }
 }
