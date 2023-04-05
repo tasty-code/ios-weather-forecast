@@ -48,6 +48,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
             dataTask(URLRequest: weatherURLRequest, myType: Weather.self) { result in
                 switch result {
                 case .success(let data):
+                    guard self.hasWeatherDataChanged(from: data) else { return }
                     self.weatherData = data
                     print("[NetworkManager](fetched)weatherData")
                 case .failure(let error):
@@ -77,7 +78,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
             dataTask(URLRequest: forecastURLRequest, myType: Forecast.self) { result in
                 switch result {
                 case .success(let data):
-                    guard self.hasDataChanged(from: data) else { return }
+                    guard self.hasForecastDataChanged(from: data) else { return }
                     self.forecastData = data
                     print("[NetworkManager](fetched)forecastData")
                 case .failure(let error):
@@ -88,10 +89,21 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
             print(error.localizedDescription)
         }
     }
-    private func hasDataChanged(from: Forecast) -> Bool {
+    
+    private func hasForecastDataChanged(from: Forecast) -> Bool {
         if from.city.name == self.forecastData?.city.name &&
             from.list.first?.timeOfDataText == self.forecastData?.list.first?.timeOfDataText &&
             from.list.first?.weather.description == self.forecastData?.list.first?.weather.description
+        {
+            return false
+        }
+        
+        return true
+    }
+    
+    private func hasWeatherDataChanged(from: Weather) -> Bool {
+        if from.name == self.weatherData?.name &&
+            from.main.temp == self.weatherData?.main.temp
         {
             return false
         }
