@@ -5,6 +5,7 @@
 // 
 
 import UIKit
+import CoreLocation
 
 class ViewController: UIViewController {
     let networkManager = NetworkManager()
@@ -12,6 +13,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
         setUp()
     }
     
@@ -20,3 +22,9 @@ class ViewController: UIViewController {
     }
 }
 
+extension ViewController: LocationManagerDelegate {
+    func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation) {
+        networkManager.updateLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        networkManager.callAPI()
+    }
+}

@@ -8,10 +8,16 @@
 import Foundation
 import CoreLocation
 
+protocol LocationManagerDelegate: AnyObject {
+    func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation)
+}
+
 final class LocationManager: NSObject, CLLocationManagerDelegate {
     // MARK: - Private property
     private let locationManager = CLLocationManager()
     private let geoCoder = CLGeocoder()
+
+    weak var delegate: LocationManagerDelegate?
 
     // MARK: - Public
     func startUpdatingLocation() {
@@ -27,7 +33,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
             return
         }
         print("[LocationManager](updated)location")
-        NotificationCenter.default.post(name: Notification.Name.location, object: nil, userInfo: [NotificationKey.coordinate:location.coordinate])
+        delegate?.locationManager(self, didUpdateLocation: location)
         reverseGeocodeLocation(location)
     }
 
