@@ -37,3 +37,26 @@ extension WeatherViewController {
     }
 }
 
+extension WeatherViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        weatherViewModel.fiveDaysForecastWeather.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = weatherCollectionView.dequeueReusableCell(withReuseIdentifier: "FiveDaysForecastCell", for: indexPath) as! FiveDaysForecastCell
+        let fiveDaysForecasts = weatherViewModel.fiveDaysForecastWeather
+        
+        let temperature = fiveDaysForecasts[indexPath.row].temperature
+        cell.temperatureLabel.text = "\(temperature)°"
+        
+        let date = fiveDaysForecasts[indexPath.row].date
+        let transformedDate = date.changeDateFormat()
+        cell.dateLabel.text = transformedDate
+        
+        let weatherIconImage = fiveDaysForecasts[indexPath.row].image
+        cell.weatherIconImage.image = weatherIconImage
+        
+        return cell
+    }
+}
+
