@@ -10,23 +10,21 @@ import CoreLocation
 
 extension String {
     init(utcTime: Int) {
-        let date = Date(timeIntervalSinceReferenceDate: TimeInterval(utcTime))
+        let date = Date(timeIntervalSince1970: TimeInterval(utcTime))
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
         formatter.dateFormat = "MM/dd(EE) HH시"
         self = formatter.string(from: date)
     }
     
-    init(place: CLLocation) {
-        var address = ""
-        CLGeocoder().reverseGeocodeLocation(place) { places, error in
-            guard let place = places?.first else { return }
-            address = place.administrativeArea! + " " + place.thoroughfare!
-        }
-        self = address
+    init?(place: CLPlacemark) {
+        guard let administrativeArea = place.administrativeArea,
+              let thoroughfare = place.thoroughfare else { return nil }
+        self = administrativeArea + " " + thoroughfare
     }
     
     init(temperature: Double) {
-        self = "\(temperature)°"
+        let formattedTemperature = String(format: "%.1f", temperature)
+        self = formattedTemperature + "°"
     }
 }

@@ -11,6 +11,7 @@ class ViewController: UIViewController {
     private let locationManager = CLLocationManager()
     private var currentWeather: WeatherData?
     private var forecastWeather: [WeatherData]?
+    private var userAddress: String?
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -75,7 +76,7 @@ extension ViewController: UICollectionViewDataSource {
         header.view.image.image = currentWeather?.iconImage
         header.view.temperatureLabel.text = currentWeather?.temperature ?? "-"
         header.view.minMaxTemperatureLabel.text = currentWeather?.temperatureString() ?? "-"
-        header.view.addressLabel.text = currentWeather?.dataTime ?? "-"
+        header.view.addressLabel.text = userAddress ?? "-"
         return header
     }
 }
@@ -101,11 +102,9 @@ extension ViewController: CLLocationManagerDelegate {
         let coordinate = CurrentCoordinate(of: location)
         
         Task {
+            updateAddress(to: location) { String(place: $0) }
             try await updateCurrentWeather(for: coordinate)
             try await updateForecastWeather(for: coordinate)
-            
-            let placemark = try await CLGeocoder().reverseGeocodeLocation(location)
-            let address = placemark.description.components(separatedBy: ", ")[1]
             collectionView.reloadData()
         }
     }
@@ -128,6 +127,13 @@ extension ViewController: CLLocationManagerDelegate {
             var image: UIImage?
             try await weatherData.convertToImage { image = $0 }
             self.forecastWeather?[index].iconImage = image
+        }
+    }
+
+    private func updateAddress(to location: CLLocation, _ completion: @escaping (CLPlacemark) -> String?) {
+        CLGeocoder().reverseGeocodeLocation(location) { places, _ in
+            guard let place = places?.first else { return }
+            self.userAddress = completion(place)
         }
     }
 }
