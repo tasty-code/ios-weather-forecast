@@ -37,7 +37,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     }
     
     // MARK: - Private
-    private func callWeatherAPI()  {
+    private func callWeatherAPI() {
         do {
             let weatherURLString = weatherURL(lat: latitude, lon: longitude)
             let weatherURL = try getURL(string: weatherURLString)
@@ -47,9 +47,9 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
                 switch result {
                 case .success(let data):
                     self.weatherData = data
-                    print("(fetched)weatherData")
+                    print("[NetworkManager](fetched)weatherData")
                 case .failure(let error):
-                    print("dataTask error: ", error)
+                    print("[NetworkManager]dataTask error: ", error)
                 }
             }
         } catch {
@@ -74,9 +74,9 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
                 switch result {
                 case .success(let data):
                     self.forecastData = data
-                    print("(fetched)forecastData")
+                    print("[NetworkManager](fetched)forecastData")
                 case .failure(let error):
-                    print("dataTask error: ", error)
+                    print("[NetworkManager]dataTask error: ", error)
                 }
             }
         } catch {

@@ -26,7 +26,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
             print(LocationError.emptyLocation.localizedDescription)
             return
         }
-        print("(updated)location")
+        print("[LocationManager](updated)location")
         NotificationCenter.default.post(name: Notification.Name.location, object: nil, userInfo: [NotificationKey.coordinate:location.coordinate])
         reverseGeocodeLocation(location)
     }
@@ -64,9 +64,6 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
             if let subThoroughfare = placemark.subThoroughfare { address += " \(subThoroughfare)" }
 
-            print("placemark: ", placemark)
-            print("description: ", placemark.description)
-            print("address: ", address)
         }
     }
 }
