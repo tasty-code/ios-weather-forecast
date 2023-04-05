@@ -10,8 +10,7 @@ import CoreLocation
 
 final class FiveDaysForecastWeatherViewModel {
     
-    struct FiveDaysForecast: Identifiable {
-        let id = UUID()
+    struct FiveDaysForecast {
         var image: UIImage?
         let date: String
         let temperature: Double

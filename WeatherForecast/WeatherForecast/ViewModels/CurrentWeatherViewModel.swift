@@ -10,8 +10,7 @@ import CoreLocation
 
 final class CurrentWeatherViewModel {
     
-    struct CurrentWeather: Identifiable {
-        let id = UUID()
+    struct CurrentWeather {
         let image: UIImage?
         let address: String
         let temperatures: Temperature
