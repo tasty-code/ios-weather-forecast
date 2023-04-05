@@ -9,7 +9,7 @@ import UIKit
 
 final class HeaderView: UIView {
     let image: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "rays"))
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()

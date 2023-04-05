@@ -9,8 +9,8 @@ import CoreLocation
 
 class ViewController: UIViewController {
     private let locationManager = CLLocationManager()
-    private var currentWeather: CurrentWeatherComponents?
-    private var forecastWeather: ForecastWeatherComponents?
+    private var currentWeather: WeatherData?
+    private var forecastWeather: [WeatherData]?
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -63,17 +63,19 @@ extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.id, for: indexPath) as! ForecastWeatherCell
         cell.backgroundColor = .blue
-        cell.timeLabel.text = forecastWeather?.city.name
-        cell.temperatureLabel.text = forecastWeather?.city.country
+        cell.icon.image = forecastWeather?[indexPath.row].iconImage
+        cell.timeLabel.text = forecastWeather?[indexPath.row].dataTime
+        cell.temperatureLabel.text = forecastWeather?[indexPath.row].temperature
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CurrentWeatherCell.id, for: indexPath) as! CurrentWeatherCell
         header.backgroundColor = .green
-        header.view.temperatureLabel.text = currentWeather?.name ?? "-"
-        header.view.minMaxTemperatureLabel.text = currentWeather?.name ?? "-"
-        header.view.addressLabel.text = currentWeather?.name ?? "-"
+        header.view.image.image = currentWeather?.iconImage
+        header.view.temperatureLabel.text = currentWeather?.temperature ?? "-"
+        header.view.minMaxTemperatureLabel.text = currentWeather?.temperatureString() ?? "-"
+        header.view.addressLabel.text = currentWeather?.dataTime ?? "-"
         return header
     }
 }
@@ -96,16 +98,13 @@ extension ViewController: CLLocationManagerDelegate {
         guard let location = locations.first else {
             return
         }
-
-        let latitude = location.coordinate.latitude
-        let longitude = location.coordinate.longitude
-        let coordinate = CurrentCoordinate(latitude: latitude, longitude: longitude)
-        let geocoder = CLGeocoder()
+        let coordinate = CurrentCoordinate(of: location)
         
         Task {
-            currentWeather = try await WeatherParser<CurrentWeatherComponents>.parseWeatherData(at: coordinate)
-            forecastWeather = try await WeatherParser<ForecastWeatherComponents>.parseWeatherData(at: coordinate)
-            let placemark = try await geocoder.reverseGeocodeLocation(location)
+            try await updateCurrentWeather(for: coordinate)
+            try await updateForecastWeather(for: coordinate)
+            
+            let placemark = try await CLGeocoder().reverseGeocodeLocation(location)
             let address = placemark.description.components(separatedBy: ", ")[1]
             collectionView.reloadData()
         }
@@ -113,5 +112,22 @@ extension ViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error.localizedDescription)
+    }
+    
+    private func updateCurrentWeather(for location: CurrentCoordinate) async throws {
+        let current = try await WeatherParser<CurrentWeatherComponents>.parseWeatherData(at: location)
+        currentWeather = WeatherData(current: current)
+        try await currentWeather?.convertToImage { self.currentWeather?.iconImage = $0 }
+    }
+    
+    private func updateForecastWeather(for location: CurrentCoordinate) async throws {
+        let forecast = try await WeatherParser<ForecastWeatherComponents>.parseWeatherData(at: location)
+        forecastWeather = forecast.list.map { WeatherData(forecast: $0) }
+        guard let forecastWeather else { return }
+        for (index, weatherData) in forecastWeather.enumerated() {
+            var image: UIImage?
+            try await weatherData.convertToImage { image = $0 }
+            self.forecastWeather?[index].iconImage = image
+        }
     }
 }

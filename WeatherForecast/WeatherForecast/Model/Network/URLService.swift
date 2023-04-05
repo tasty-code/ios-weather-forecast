@@ -11,12 +11,13 @@ enum URLService: String {
     case data = "data/2.5/"
     case icon = "img/wn/"
 
-    private static let baseURL = "https://api.openweathermap.org/"
+    private static let dataBaseURL = "https://api.openweathermap.org/"
+    private static let iconBaseURL = "https://openweathermap.org/"
     private static let measurementUnit = "metric"
     private static let language = "kr"
 
     static func makeDataURL(at coordinate: CurrentCoordinate, weatherRange: WeatherRange) throws -> URL {
-        var components = URLComponents(string: baseURL)
+        var components = URLComponents(string: dataBaseURL)
         components?.path.append(data.rawValue)
         components?.path.append(weatherRange.description)
         components?.queryItems = [
@@ -35,9 +36,9 @@ enum URLService: String {
     }
 
     static func makeIconURL(with iconCode: String) throws -> URL {
-        var components = URLComponents(string: baseURL)
+        var components = URLComponents(string: iconBaseURL)
         components?.path.append(icon.rawValue)
-        components?.path.append("\(iconCode).png")
+        components?.path.append("\(iconCode)@2x.png")
 
         guard let url = components?.url else {
             throw WeatherNetworkError.invalidURL
