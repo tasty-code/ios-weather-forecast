@@ -102,6 +102,9 @@ final class WeatherListViewController: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: WeatherHeaderView.identifier
         )
+
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(refresh:)), for: .valueChanged)
     }
     
     // MARK: - Layout
@@ -161,6 +164,12 @@ final class WeatherListViewController: UIViewController {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
+    }
+
+    @objc
+    private func pullToRefresh(refresh: UIRefreshControl) {
+        fetchLocation()
+        refresh.endRefreshing()
     }
     
 }
