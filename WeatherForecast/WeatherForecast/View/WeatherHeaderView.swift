@@ -69,7 +69,6 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemRed
         setupLayout()
     }
 
@@ -89,8 +88,9 @@ final class WeatherHeaderView: UICollectionReusableView {
     // MARK: - Private
 
     private func setupLayout() {
-        // ✨ 헤더의 사이즈 지정
-        self.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        let heightLayout = self.heightAnchor.constraint(equalToConstant: 100)
+        heightLayout.priority = .defaultHigh
+        heightLayout.isActive = true
         
         addSubview(weatherIconImageView)
         weatherIconImageView.translatesAutoresizingMaskIntoConstraints = false

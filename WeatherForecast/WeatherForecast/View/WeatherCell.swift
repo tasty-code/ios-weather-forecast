@@ -55,12 +55,6 @@ final class WeatherCell: UICollectionViewCell {
         return stackView
     }()
 
-    private let bottomLineView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .separator
-        return view
-    }()
-
     // MARK: - LifeCycle
 
     override init(frame: CGRect) {
@@ -103,15 +97,6 @@ final class WeatherCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             rightStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             rightStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
-
-        addSubview(bottomLineView)
-        bottomLineView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            bottomLineView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            bottomLineView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            bottomLineView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            bottomLineView.heightAnchor.constraint(equalToConstant: 1)
         ])
 
     }

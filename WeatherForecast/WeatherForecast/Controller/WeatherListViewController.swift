@@ -41,7 +41,6 @@ final class WeatherListViewController: UIViewController {
 
     private lazy var collectionView = UICollectionView(
         frame: .zero,
-        // ✨ Compositional Layout 주입
         collectionViewLayout: createCollectionViewLayout()
     )
 
@@ -49,14 +48,10 @@ final class WeatherListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupLayout()
         setupViewBackground()
         setupLocationDataManager()
         setupCollectionView()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        collectionView.frame = view.bounds
     }
 
     // MARK: - Private
@@ -94,9 +89,8 @@ final class WeatherListViewController: UIViewController {
             }
         }
     }
-
+    
     private func setupCollectionView() {
-        view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
         collectionView.register(
@@ -110,9 +104,21 @@ final class WeatherListViewController: UIViewController {
         )
     }
     
-    // ✨ CollectionView 리스트 레이아웃 생성
+    // MARK: - Layout
+    
+    private func setupLayout() {
+        view.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+
     private func createCollectionViewLayout() -> UICollectionViewCompositionalLayout {
-        var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+        var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
         configuration.headerMode = .supplementary
         configuration.backgroundColor = .clear
         
