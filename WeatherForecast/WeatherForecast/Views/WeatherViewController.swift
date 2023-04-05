@@ -16,17 +16,23 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         configureHierarchy()
         register()
+        collectionViewDelegate()
     }
 }
 
 extension WeatherViewController {
     private func configureHierarchy() {
         weatherCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        view.addSubview(weatherCollectionView)
     }
     
     private func register() {
         weatherCollectionView.register(cell: FiveDaysForecastCell.self)
         weatherCollectionView.register(header: CurrentWeatherCell.self)
+    }
+    
+    private func collectionViewDelegate() {
+        weatherCollectionView.dataSource = self
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -57,6 +63,17 @@ extension WeatherViewController: UICollectionViewDataSource {
         cell.weatherIconImage.image = weatherIconImage
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            let headerView = weatherCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CurrentWeatherCell", for: indexPath) as! CurrentWeatherCell
+            headerView.currentWeather = weatherViewModel.currentWeather
+            return headerView
+        default:
+            return UICollectionReusableView()
+        }
     }
 }
 
