@@ -13,15 +13,20 @@ protocol NetworkTaskProtcol {
 }
 
 extension NetworkTaskProtcol {
+    
     func dataTask<T: Decodable>(URLRequest: URLRequest, myType: T.Type, completion: @escaping (Result<T,Error>)->()) {
+        
         let myTask = URLSession.shared.dataTask(with: URLRequest) { data, response, error in
+            
             if let data = data {
                 guard let decodedData = self.decode(jsonData: data, type: myType) else { return }
                 completion(.success(decodedData))
+                
             } else if let error = error {
                 completion(.failure(error))
             }
         }
+        
         myTask.resume()
     }
     
