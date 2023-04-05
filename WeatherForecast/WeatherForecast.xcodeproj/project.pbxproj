@@ -127,15 +127,11 @@
 			children = (
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
-				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
-				E7D8D8E829DD670200E23C20 /* ViewController+Extensions.swift */,
-				E7D8D8EA29DD678000E23C20 /* WeatherCollectionView.swift */,
-				E7D8D8EC29DD689200E23C20 /* WeatherCollectionViewCell.swift */,
+				E770FBBC29C1AF2B00977D51 /* Model */,
+				E7D8D8EE29DD6B3D00E23C20 /* View */,
+				E7D8D8EF29DD6BEA00E23C20 /* Controller */,
 				D9CEE41F29C431A80035AA8E /* WeatherInfo.plist */,
 				D9CEE42129C433880035AA8E /* WeatherForecast++Bundle.swift */,
-				E72CF6B929D1582900143B84 /* Location */,
-				E77D5DD729C97813001F02A7 /* Network */,
-				E770FBBC29C1AF2B00977D51 /* Model */,
 				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
@@ -190,8 +186,9 @@
 		E770FBBC29C1AF2B00977D51 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D9A6D84129C1ABD9003139A8 /* Weather.swift */,
-				E770FBBD29C1AF4200977D51 /* Forecast.swift */,
+				E7D8D8F029DD6C1B00E23C20 /* Entity */,
+				E72CF6B929D1582900143B84 /* Location */,
+				E77D5DD729C97813001F02A7 /* Network */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -213,6 +210,33 @@
 				E77D5DBA29C950CC001F02A7 /* Protocol */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		E7D8D8EE29DD6B3D00E23C20 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E7D8D8EA29DD678000E23C20 /* WeatherCollectionView.swift */,
+				E7D8D8EC29DD689200E23C20 /* WeatherCollectionViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E7D8D8EF29DD6BEA00E23C20 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+				E7D8D8E829DD670200E23C20 /* ViewController+Extensions.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E7D8D8F029DD6C1B00E23C20 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				E770FBBD29C1AF4200977D51 /* Forecast.swift */,
+				D9A6D84129C1ABD9003139A8 /* Weather.swift */,
+			);
+			path = Entity;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
