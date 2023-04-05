@@ -28,12 +28,14 @@ final class WeatherListViewController: UIViewController {
     private var currentWeather: CurrentWeather? = nil {
         didSet {
             updateHeaderView()
+            endRefreshing()
         }
     }
 
     private var forecastDatas: [ForecastData] = [] {
         didSet {
             updateListView()
+            endRefreshing()
         }
     }
 
@@ -43,6 +45,8 @@ final class WeatherListViewController: UIViewController {
         frame: .zero,
         collectionViewLayout: createCollectionViewLayout()
     )
+
+    private let refreshControl = UIRefreshControl()
 
     // MARK: - Lifecycle
 
@@ -103,8 +107,22 @@ final class WeatherListViewController: UIViewController {
             withReuseIdentifier: WeatherHeaderView.identifier
         )
 
-        collectionView.refreshControl = UIRefreshControl()
-        collectionView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(refresh:)), for: .valueChanged)
+        setupRefreshControl()
+    }
+
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+    }
+
+    @objc private func pullToRefresh(_ refreshControl: UIRefreshControl) {
+        fetchLocation()
+    }
+
+    private func endRefreshing() {
+        DispatchQueue.main.async {
+            self.refreshControl.endRefreshing()
+        }
     }
     
     // MARK: - Layout
@@ -148,6 +166,7 @@ final class WeatherListViewController: UIViewController {
                     guard let headerView = self.collectionView.visibleSupplementaryViews(
                         ofKind: UICollectionView.elementKindSectionHeader
                     ).first as? WeatherHeaderView else { return }
+
                     headerView.configure(
                         with: currentWeather.weatherDetail,
                         address: "\(placemark.locality ?? "") \(placemark.name ?? "")",
@@ -164,12 +183,6 @@ final class WeatherListViewController: UIViewController {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
-    }
-
-    @objc
-    private func pullToRefresh(refresh: UIRefreshControl) {
-        fetchLocation()
-        refresh.endRefreshing()
     }
     
 }
