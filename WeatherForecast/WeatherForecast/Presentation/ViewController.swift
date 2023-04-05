@@ -57,7 +57,6 @@ extension ViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.identifier, for: indexPath) as? ForecastWeatherCell else {
             return UICollectionViewCell()
         }
-
         return cell
     }
 
@@ -73,3 +72,9 @@ extension ViewController: UICollectionViewDataSource {
         }
     }
 }
+
+//extension ViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: self.view.frame.width, height: 500)
+//    }
+//}
