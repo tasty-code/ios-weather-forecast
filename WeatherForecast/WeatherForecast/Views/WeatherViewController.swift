@@ -15,12 +15,18 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureHierarchy()
+        register()
     }
 }
 
 extension WeatherViewController {
     private func configureHierarchy() {
         weatherCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+    }
+    
+    private func register() {
+        weatherCollectionView.register(cell: FiveDaysForecastCell.self)
+        weatherCollectionView.register(header: CurrentWeatherCell.self)
     }
     
     private func createLayout() -> UICollectionViewLayout {
