@@ -11,6 +11,13 @@ class WeatherViewController: UIViewController {
     
     private var weatherViewModel = WeatherViewModel()
     private var weatherCollectionView: UICollectionView!
+    private var backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "backgroundImage")
+        imageView.contentMode = .scaleAspectFill
+        
+        return imageView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +30,7 @@ class WeatherViewController: UIViewController {
 extension WeatherViewController {
     private func configureHierarchy() {
         weatherCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        weatherCollectionView.backgroundView = backgroundImageView
         view.addSubview(weatherCollectionView)
     }
     
@@ -38,6 +46,7 @@ extension WeatherViewController {
     private func createLayout() -> UICollectionViewLayout {
         var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
         configuration.headerMode = .supplementary
+        configuration.backgroundColor = .clear
         let layout = UICollectionViewCompositionalLayout.list(using: configuration)
         return layout
     }
