@@ -24,17 +24,16 @@ final class WeatherHeaderView: UICollectionReusableView {
     private enum Metric {
         static let headerViewHeight: CGFloat = 100
         static let weatherIconImageViewHeightSize: CGFloat = 80
-        static let weatherIconImageViewWidthAnchorInset: CGFloat = 1
-        static let weatherIconImageViewLeadingAnchorInset: CGFloat = 16
+        static let weatherIconImageViewWidthMultiplier: CGFloat = 1
+        static let weatherIconImageViewLeadingInset: CGFloat = 16
 
-        static let infoStackViewTopAnchorInset: CGFloat = 5
-        static let infoStackViewLeadingAnchorInset: CGFloat = 20
-        static let infoStackViewBottomAnchorInset: CGFloat = 5
+        static let infoStackViewTopInset: CGFloat = 5
+        static let infoStackViewLeadingInset: CGFloat = 20
+        static let infoStackViewBottomInset: CGFloat = 5
 
         static let addressLabelFontSize: CGFloat = 13
         static let temperatureRangeLabelFontSize: CGFloat = 13
         static let temperatureLabelFontSize: CGFloat = 30
-
     }
 
     // MARK: - Properties
@@ -125,17 +124,17 @@ final class WeatherHeaderView: UICollectionReusableView {
         weatherIconImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             weatherIconImageView.heightAnchor.constraint(equalToConstant: Metric.weatherIconImageViewHeightSize),
-            weatherIconImageView.widthAnchor.constraint(equalTo: weatherIconImageView.heightAnchor, multiplier: Metric.weatherIconImageViewWidthAnchorInset),
-            weatherIconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metric.weatherIconImageViewLeadingAnchorInset),
+            weatherIconImageView.widthAnchor.constraint(equalTo: weatherIconImageView.heightAnchor, multiplier: Metric.weatherIconImageViewWidthMultiplier),
+            weatherIconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metric.weatherIconImageViewLeadingInset),
             weatherIconImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
         addSubview(infoStackView)
         infoStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            infoStackView.topAnchor.constraint(equalTo: topAnchor, constant: Metric.infoStackViewTopAnchorInset),
-            infoStackView.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor, constant: Metric.infoStackViewLeadingAnchorInset),
-            infoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Metric.infoStackViewBottomAnchorInset),
+            infoStackView.topAnchor.constraint(equalTo: topAnchor, constant: Metric.infoStackViewTopInset),
+            infoStackView.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor, constant: Metric.infoStackViewLeadingInset),
+            infoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Metric.infoStackViewBottomInset),
         ])
     }
 
