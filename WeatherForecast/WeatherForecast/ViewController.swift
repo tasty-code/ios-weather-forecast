@@ -8,18 +8,14 @@ import UIKit
 import CoreLocation
 
 class ViewController: UIViewController {
+    
+    // MARK: - Public property
     let networkManager = NetworkManager()
     let locationManager = LocationManager()
 
-    var collectionView: UICollectionView = {
-        var layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+    var collectionView = WeatherCollectionView(frame: .zero)
 
-        var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-
-        return collectionView
-    }()
-
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
@@ -32,6 +28,7 @@ class ViewController: UIViewController {
         setUp()
     }
     
+    // MARK: - Private function
     private func setUp() {
         locationManager.startUpdatingLocation()
     }
@@ -48,37 +45,3 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: LocationManagerDelegate {
-    func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation) {
-        networkManager.updateLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        networkManager.callAPI()
-    }
-}
-
-class WeatherCollectionViewCell: UICollectionViewCell {
-    static let cellIdentifier = "WeatherCollectionViewCell"
-
-    var indexpathLabel = UILabel()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        addSubview(indexpathLabel)
-        configureLabelConstraint()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
-    func configureLabelConstraint() {
-        indexpathLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            indexpathLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            indexpathLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            indexpathLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            indexpathLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        ])
-    }
-}

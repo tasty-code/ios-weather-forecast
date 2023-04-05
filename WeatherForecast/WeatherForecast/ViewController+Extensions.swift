@@ -6,12 +6,23 @@
 //
 
 import UIKit
+import CoreLocation
 
-extension ViewController: UICollectionViewDelegateFlowLayout {
-
+// MARK: - LocationManagerDelegate
+extension ViewController: LocationManagerDelegate {
+    
+    func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation) {
+        networkManager.updateLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        networkManager.callAPI()
+    }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
+extension ViewController: UICollectionViewDelegateFlowLayout {}
+
+// MARK: - UICollectionViewDataSource
 extension ViewController: UICollectionViewDataSource {
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 10
     }
