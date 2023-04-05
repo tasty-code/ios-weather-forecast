@@ -33,8 +33,8 @@ final class FiveDaysForecastWeatherViewModel {
     }
     
     func fetchForecastImage(weatherNetworkDispatcher: WeatherNetworkDispatcher,
-                           icon: String,
-                           eachData: Day
+                            icon: String,
+                            eachData: Day
     ) {
         weatherNetworkDispatcher.requestWeatherImage(icon: icon) { image in
             let fiveDaysForecast = FiveDaysForecast(image: image, date: eachData.time, temperature: eachData.temperature.temperature)

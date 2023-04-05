@@ -16,6 +16,8 @@ final class WeatherViewModel {
     private let coreLocationManager = CoreLocationManager()
     private let weatherNetworkDispatcher: WeatherNetworkDispatcher
     
+    weak var delegate: WeatherViewModelDelegate?
+    
     var fiveDaysForecastWeather: [FiveDaysForecastWeatherViewModel.FiveDaysForecast] = []
     var currentWeather: CurrentWeatherViewModel.CurrentWeather?
     
@@ -39,24 +41,27 @@ final class WeatherViewModel {
         
         let coordinate = self.makeCoordinate(from: location)
         
+        let group = DispatchGroup()
+        
+        group.enter()
         currentWeatherViewModel.fetchCurrentAddress(
             locationManager: locationManager,
             location: location
         ) { [weak self] address in
-            
             self?.currentWeatherViewModel.fetchCurrentInformation(
                 weatherNetworkDispatcher: weatherNetworkDispatcher,
                 coordinate: coordinate,
                 location: location,
                 address: address
             ) { [weak self] iconString, weatherData in
-                
                 self?.currentWeatherViewModel.fetchCurrentImage(
                     weatherNetworkDispatcher: weatherNetworkDispatcher,
                     iconString: iconString,
                     address: address,
                     weatherData: weatherData
-                )
+                ) {
+                    group.leave()
+                }
             }
         }
         
@@ -71,6 +76,10 @@ final class WeatherViewModel {
                 icon: iconString,
                 eachData: eachData
             )
+        }
+        
+        group.notify(queue: .main) {
+            self.delegate?.weatherViewModelDidFinishSetUp(self)
         }
     }
 }

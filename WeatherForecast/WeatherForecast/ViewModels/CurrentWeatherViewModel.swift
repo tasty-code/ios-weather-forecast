@@ -46,14 +46,16 @@ final class CurrentWeatherViewModel {
     }
     
     func fetchCurrentImage(weatherNetworkDispatcher: WeatherNetworkDispatcher,
-                          iconString: String,
-                          address: String,
-                          weatherData: CurrentWeatherDTO
+                           iconString: String,
+                           address: String,
+                           weatherData: CurrentWeatherDTO,
+                           completion: @escaping () -> ()
     ) {
         weatherNetworkDispatcher.requestWeatherImage(icon: iconString) { weatherImage in
             
             let currentWeather = CurrentWeather(image: weatherImage, address: address, temperatures: weatherData.temperature)
             self.delegate?.currentWeatherViewModel(self, didCreateModelObject: currentWeather)
+            completion()
         }
     }
 }

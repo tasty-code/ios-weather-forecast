@@ -24,10 +24,6 @@ class WeatherViewController: UIViewController {
         configureHierarchy()
         register()
         collectionViewDelegate()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.weatherCollectionView.reloadData()
-        }
     }
 }
 
@@ -45,6 +41,7 @@ extension WeatherViewController {
     
     private func collectionViewDelegate() {
         weatherCollectionView.dataSource = self
+        weatherViewModel.delegate = self
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -90,3 +87,8 @@ extension WeatherViewController: UICollectionViewDataSource {
     }
 }
 
+extension WeatherViewController: WeatherViewModelDelegate {
+    func weatherViewModelDidFinishSetUp(_ viewModel: WeatherViewModel) {
+        self.weatherCollectionView.reloadData()
+    }
+}
