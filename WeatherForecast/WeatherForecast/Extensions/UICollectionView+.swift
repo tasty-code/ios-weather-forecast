@@ -17,4 +17,12 @@ extension UICollectionView {
         register(T.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: T.reuseIdentifier)
     }
     
+    func dequeue<T: UICollectionViewCell>(cell: T.Type, for indexPath: IndexPath) -> T {
+        return dequeueReusableCell(withReuseIdentifier: cell.reuseIdentifier, for: indexPath) as! T
+    }
+    
+    func dequeue<T: UICollectionReusableView>(header: T.Type, for indexPath: IndexPath) -> T {
+        return dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: header.reuseIdentifier, for: indexPath) as! T
+    }
+    
 }

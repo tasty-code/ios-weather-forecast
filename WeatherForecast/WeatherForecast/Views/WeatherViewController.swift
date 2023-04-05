@@ -49,7 +49,7 @@ extension WeatherViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = weatherCollectionView.dequeueReusableCell(withReuseIdentifier: "FiveDaysForecastCell", for: indexPath) as! FiveDaysForecastCell
+        let cell = weatherCollectionView.dequeue(cell: FiveDaysForecastCell.self, for: indexPath)
         let fiveDaysForecasts = weatherViewModel.fiveDaysForecastWeather
         
         let temperature = fiveDaysForecasts[indexPath.row].temperature
@@ -68,9 +68,9 @@ extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            let headerView = weatherCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CurrentWeatherCell", for: indexPath) as! CurrentWeatherCell
-            headerView.currentWeather = weatherViewModel.currentWeather
-            return headerView
+            let headerCell = weatherCollectionView.dequeue(header: CurrentWeatherCell.self, for: indexPath)
+            headerCell.currentWeather = weatherViewModel.currentWeather
+            return headerCell
         default:
             return UICollectionReusableView()
         }
