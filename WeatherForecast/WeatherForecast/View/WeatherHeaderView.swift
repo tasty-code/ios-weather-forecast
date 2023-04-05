@@ -10,6 +10,30 @@ import UIKit
 
 final class WeatherHeaderView: UICollectionReusableView {
 
+    //MARK: - Constants
+
+    private enum Constants {
+        static let addressLabelString: String = "서울특별시 용산새싹마을"
+        static let temperatureRangeLabelString: String = "최저 - °C, 최고 - °C"
+        static let temperatureLabelString: String = "- °C"
+    }
+
+    private enum Metric {
+        static let headerViewHeight: CGFloat = 100
+        static let weatherIconImageViewHeightSize: CGFloat = 80
+        static let weatherIconImageViewWidthAnchorInset: CGFloat = 1
+        static let weatherIconImageViewLeadingAnchorInset: CGFloat = 16
+
+        static let infoStackViewTopAnchorInset: CGFloat = 5
+        static let infoStackViewLeadingAnchorInset: CGFloat = 20
+        static let infoStackViewBottomAnchorInset: CGFloat = 5
+
+        static let addressLabelFontSize: CGFloat = 13
+        static let temperatureRangeLabelFontSize: CGFloat = 13
+        static let temperatureLabelFontSize: CGFloat = 30
+
+    }
+
     // MARK: - Properties
 
     static let identifier = "WeatherViewHeader"
@@ -24,22 +48,22 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     private let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = "서울특별시 용산새싹마을"
-        label.font = UIFont.systemFont(ofSize: 13)
+        label.text = Constants.addressLabelString
+        label.font = UIFont.systemFont(ofSize: Metric.addressLabelFontSize)
         return label
     }()
 
     private let temperutureRangeLabel: UILabel = {
         let label = UILabel()
-        label.text = "최저 5.0, 최고 6.8"
-        label.font = UIFont.systemFont(ofSize: 13)
+        label.text = Constants.temperatureRangeLabelString
+        label.font = UIFont.systemFont(ofSize: Metric.temperatureRangeLabelFontSize)
         return label
     }()
 
     private let temperutureLabel: UILabel = {
         let label = UILabel()
-        label.text = "6.8"
-        label.font = UIFont.systemFont(ofSize: 30)
+        label.text = Constants.temperatureLabelString
+        label.font = UIFont.systemFont(ofSize: Metric.temperatureLabelFontSize)
         return label
     }()
 
@@ -88,25 +112,25 @@ final class WeatherHeaderView: UICollectionReusableView {
     // MARK: - Private
 
     private func setupLayout() {
-        let heightLayout = self.heightAnchor.constraint(equalToConstant: 100)
+        let heightLayout = self.heightAnchor.constraint(equalToConstant: Metric.headerViewHeight)
         heightLayout.priority = .defaultHigh
         heightLayout.isActive = true
         
         addSubview(weatherIconImageView)
         weatherIconImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            weatherIconImageView.heightAnchor.constraint(equalToConstant: 80),
-            weatherIconImageView.widthAnchor.constraint(equalTo: weatherIconImageView.heightAnchor, multiplier: 1),
-            weatherIconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            weatherIconImageView.heightAnchor.constraint(equalToConstant: Metric.weatherIconImageViewHeightSize),
+            weatherIconImageView.widthAnchor.constraint(equalTo: weatherIconImageView.heightAnchor, multiplier: Metric.weatherIconImageViewWidthAnchorInset),
+            weatherIconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metric.weatherIconImageViewLeadingAnchorInset),
             weatherIconImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
         addSubview(infoStackView)
         infoStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            infoStackView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            infoStackView.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor, constant: 20),
-            infoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 5),
+            infoStackView.topAnchor.constraint(equalTo: topAnchor, constant: Metric.infoStackViewTopAnchorInset),
+            infoStackView.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor, constant: Metric.infoStackViewLeadingAnchorInset),
+            infoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Metric.infoStackViewBottomAnchorInset),
         ])
     }
 
