@@ -50,4 +50,8 @@ extension WeatherForecastViewModel: LocationUpdateDelegate {
         self.requestWeatherData(lat: lat, lon: lon)
         self.requestFetchData(lat: lat, lon: lon)
     }
+    
+    func locationDidFailWithError(error: Error) {
+        print("Location update failed with error: \(error.localizedDescription)")
+    }
 }
