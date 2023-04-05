@@ -13,9 +13,12 @@ final class WeatherHeaderView: UICollectionReusableView {
     //MARK: - Constants
 
     private enum Constants {
-        static let addressLabelString: String = "서울특별시 용산새싹마을"
-        static let temperatureRangeLabelString: String = "최저 - °C, 최고 - °C"
-        static let temperatureLabelString: String = "- °C"
+        static let addressLabelSkeletonText: String = "서울특별시 용산새싹마을"
+        static let temperatureRangeLabelSkeletonText: String = "최저 - °C, 최고 - °C"
+        static func temperatureRangeLabelText(minimunTemperature: Double, maximumTemperature: Double) -> String {
+            "최저 \(minimunTemperature) 최고 \(maximumTemperature)"
+        }
+        static let temperatureLabelSkeletonText: String = "- °C"
     }
 
     private enum Metric {
@@ -42,27 +45,26 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     private let weatherIconImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "moon.stars.fill")!
         return view
     }()
 
     private let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.addressLabelString
+        label.text = Constants.addressLabelSkeletonText
         label.font = UIFont.systemFont(ofSize: Metric.addressLabelFontSize)
         return label
     }()
 
     private let temperutureRangeLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.temperatureRangeLabelString
+        label.text = Constants.temperatureRangeLabelSkeletonText
         label.font = UIFont.systemFont(ofSize: Metric.temperatureRangeLabelFontSize)
         return label
     }()
 
     private let temperutureLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.temperatureLabelString
+        label.text = Constants.temperatureLabelSkeletonText
         label.font = UIFont.systemFont(ofSize: Metric.temperatureLabelFontSize)
         return label
     }()
@@ -104,7 +106,10 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     func configure(with currentWeatherDetail: WeatherDetail, address: String, icon: UIImage) {
         temperutureLabel.text = "\(currentWeatherDetail.temperature)"
-        temperutureRangeLabel.text = "최저 \(currentWeatherDetail.minimumTemperature) 최고 \(currentWeatherDetail.maximumTemperature)"
+        temperutureRangeLabel.text = Constants.temperatureRangeLabelText(
+            minimunTemperature: currentWeatherDetail.minimumTemperature,
+            maximumTemperature: currentWeatherDetail.maximumTemperature
+        )
         addressLabel.text = address
         weatherIconImageView.image = icon
     }
