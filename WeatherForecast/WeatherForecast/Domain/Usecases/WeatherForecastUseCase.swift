@@ -7,7 +7,12 @@
 
 import Foundation
 
-final class WeatherForecastUseCase {
+protocol WeatherForecastUsecaseInterface {
+    func fetchWeather(lat: Double, lon: Double, completion: @escaping(WeatherEntity) -> Void)
+    func fetchForecast(lat: Double, lon: Double, completion: @escaping(ForecastEntity) -> Void)
+}
+
+final class WeatherForecastUseCase: WeatherForecastUsecaseInterface {
   
     private let repository: WeatherForecastRepositoryInterface
   
