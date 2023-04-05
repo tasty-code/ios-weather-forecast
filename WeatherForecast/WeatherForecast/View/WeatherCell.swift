@@ -13,9 +13,19 @@ final class WeatherCell: UICollectionViewCell {
     // MARK: - Constants
     
     private enum Constants {
-        static let dateLabelSkeletonText = "-/-(-) -시"
-        static let temperatureSkeletonText = "- °C"
-        static let temperatureSuffixText = " °C"
+        static let dateLabelSkeletonText: String = "-/-(-) -시"
+        static let temperatureSkeletonText: String = "- °C"
+        static let temperatureSuffixText: String = " °C"
+    }
+    
+    private enum Metric {
+        static let temperatureLabelWidth: CGFloat = 70
+        static let iconImageViewWidth: CGFloat = 50
+        
+        static let dateLabelLeadingInset: CGFloat = 16
+        
+        static let rightStackViewTrailingInset: CGFloat = 16
+        static let rightStackViewSpacing: CGFloat = 8
     }
 
     // MARK: - Properties
@@ -26,21 +36,21 @@ final class WeatherCell: UICollectionViewCell {
 
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "-/-(-) -시"
+        label.text = Constants.dateLabelSkeletonText
         return label
     }()
 
     private let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        label.text = "- °C"
+        label.widthAnchor.constraint(equalToConstant: Metric.temperatureLabelWidth).isActive = true
+        label.text = Constants.temperatureSkeletonText
         return label
     }()
 
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: Metric.iconImageViewWidth).isActive = true
         return imageView
     }()
 
@@ -51,7 +61,7 @@ final class WeatherCell: UICollectionViewCell {
         ])
         stackView.axis = .horizontal
         stackView.distribution = .fillProportionally
-        stackView.spacing = 8
+        stackView.spacing = Metric.rightStackViewSpacing
         return stackView
     }()
 
@@ -88,14 +98,16 @@ final class WeatherCell: UICollectionViewCell {
         addSubview(dateLabel)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                               constant: Metric.dateLabelLeadingInset),
             dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
         addSubview(rightStackView)
         rightStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            rightStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            trailingAnchor.constraint(equalTo: rightStackView.trailingAnchor,
+                                      constant: Metric.rightStackViewTrailingInset),
             rightStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
