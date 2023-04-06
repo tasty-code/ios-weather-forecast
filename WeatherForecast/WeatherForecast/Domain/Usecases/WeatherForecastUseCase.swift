@@ -8,8 +8,8 @@
 import Foundation
 
 protocol WeatherForecastUsecaseInterface {
-    func fetchWeather(lat: Double, lon: Double, completion: @escaping(WeatherEntity) -> Void)
-    func fetchForecast(lat: Double, lon: Double, completion: @escaping(ForecastEntity) -> Void)
+    func fetchWeather(lat: Double, lon: Double, completion: @escaping(Result<WeatherEntity, Error>) -> Void)
+    func fetchForecast(lat: Double, lon: Double, completion: @escaping(Result<ForecastEntity, Error>) -> Void)
 }
 
 final class WeatherForecastUseCase: WeatherForecastUsecaseInterface {
@@ -23,19 +23,31 @@ final class WeatherForecastUseCase: WeatherForecastUsecaseInterface {
 
 extension WeatherForecastUseCase {
     
-    func fetchWeather(lat: Double, lon: Double, completion: @escaping(WeatherEntity) -> Void) {
+    func fetchWeather(lat: Double, lon: Double, completion: @escaping(Result<WeatherEntity, Error>) -> Void) {
         guard let lat = lat.doubleToString(),
               let lon = lon.doubleToString() else { return }
-        self.repository.fetchWeather(lat: lat, lon: lon) { weatherEntity in
-            completion(weatherEntity)
+        self.repository.fetchWeather(lat: lat, lon: lon) { result in
+            switch result {
+            case .success(let weatherDTO):
+                let weatherEntity = weatherDTO.toDomain()
+                completion(.success(weatherEntity))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
     
-    func fetchForecast(lat: Double, lon: Double, completion: @escaping(ForecastEntity) -> Void) {
+    func fetchForecast(lat: Double, lon: Double, completion: @escaping(Result<ForecastEntity, Error>) -> Void) {
         guard let lat = lat.doubleToString(),
               let lon = lon.doubleToString() else { return }
-        self.repository.fetchForecast(lat: lat, lon: lon) { forecastEntity in
-            completion(forecastEntity)
+        self.repository.fetchForecast(lat: lat, lon: lon) { result in
+            switch result {
+            case .success(let forecastDTO):
+                let forecastEntity = forecastDTO.toDomain()
+                completion(.success(forecastEntity))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 }

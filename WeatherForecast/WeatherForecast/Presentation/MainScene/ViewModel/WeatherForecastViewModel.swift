@@ -28,14 +28,24 @@ final class WeatherForecastViewModel {
 extension WeatherForecastViewModel {
     
     func requestWeatherData(lat: Double, lon: Double) {
-        usecase.fetchWeather(lat: lat, lon: lon) { [weak self] weatherEntity in
-            self?.loadWeatherEntity?(weatherEntity)
+        usecase.fetchWeather(lat: lat, lon: lon) { [weak self] result in
+            switch result {
+            case .success(let weatherEntity):
+                self?.loadWeatherEntity?(weatherEntity)
+            case .failure(let error):
+                print("Error fetching weather data: \(error.localizedDescription)")
+            }
         }
     }
     
     func requestFetchData(lat: Double, lon: Double) {
-        usecase.fetchForecast(lat: lat, lon: lon) { [weak self] forecastEntity in
-            self?.loadForecastEntity?(forecastEntity)
+        usecase.fetchForecast(lat: lat, lon: lon) { [weak self] result in
+            switch result {
+            case .success(let forecastEntity):
+                self?.loadForecastEntity?(forecastEntity)
+            case .failure(let error):
+                print("Error fetching weather data: \(error.localizedDescription)")
+            }
         }
     }
 }
