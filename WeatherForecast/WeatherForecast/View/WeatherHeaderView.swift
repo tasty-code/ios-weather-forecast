@@ -54,14 +54,14 @@ final class WeatherHeaderView: UICollectionReusableView {
         return label
     }()
 
-    private let temperutureRangeLabel: UILabel = {
+    private let temperatureRangeLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.temperatureRangeLabelSkeletonText
         label.font = UIFont.systemFont(ofSize: Metric.temperatureRangeLabelFontSize)
         return label
     }()
 
-    private let temperutureLabel: UILabel = {
+    private let temperatureLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.temperatureLabelSkeletonText
         label.font = UIFont.systemFont(ofSize: Metric.temperatureLabelFontSize)
@@ -71,7 +71,7 @@ final class WeatherHeaderView: UICollectionReusableView {
     private lazy var addressAndTemperutureRange: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             addressLabel,
-            temperutureRangeLabel
+            temperatureRangeLabel
         ])
         stackView.alignment = .leading
         stackView.distribution = .fillEqually
@@ -82,7 +82,7 @@ final class WeatherHeaderView: UICollectionReusableView {
     private lazy var infoStackView: UIStackView =  {
         let stackView = UIStackView(arrangedSubviews: [
             addressAndTemperutureRange,
-            temperutureLabel
+            temperatureLabel
         ])
         stackView.alignment = .leading
         stackView.distribution = .fillProportionally
@@ -104,8 +104,8 @@ final class WeatherHeaderView: UICollectionReusableView {
     // MARK: - Public
 
     func configure(with currentWeatherDetail: WeatherDetail, address: String, icon: UIImage) {
-        temperutureLabel.text = "\(currentWeatherDetail.temperature)"
-        temperutureRangeLabel.text = Constants.temperatureRangeLabelText(
+        temperatureLabel.text = "\(currentWeatherDetail.temperature)"
+        temperatureRangeLabel.text = Constants.temperatureRangeLabelText(
             minimunTemperature: currentWeatherDetail.minimumTemperature,
             maximumTemperature: currentWeatherDetail.maximumTemperature
         )
