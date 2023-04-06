@@ -13,12 +13,18 @@ extension ViewController: LocationManagerDelegate {
     
     func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation) {
         networkManager.updateLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        networkManager.callAPI()
+        networkManager.callAPI() {
+            self.collectionView.reloadData()
+        }
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension ViewController: UICollectionViewDelegateFlowLayout {}
+extension ViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 50)
+    }
+}
 
 // MARK: - UICollectionViewDataSource
 extension ViewController: UICollectionViewDataSource {
@@ -36,7 +42,7 @@ extension ViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        cell.indexpathLabel.text = "\(indexPath.section + 1)"
+        cell.indexpathLabel.text = networkManager.forecastData?.list[indexPath.section].timeOfDataText
 
         return cell
     }
