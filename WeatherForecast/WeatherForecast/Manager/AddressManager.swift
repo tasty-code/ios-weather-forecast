@@ -14,6 +14,7 @@ final class AddressManager {
 
     private let geocoder = CLGeocoder()
     private(set) var placemark: CLPlacemark?
+    var address: String { "\(placemark?.locality ?? "") \(placemark?.name ?? "")" }
 
     // MARK: - Public
 

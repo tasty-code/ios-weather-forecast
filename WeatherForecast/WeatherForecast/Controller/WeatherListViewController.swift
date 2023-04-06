@@ -156,8 +156,7 @@ final class WeatherListViewController: UIViewController {
     }
 
     private func updateHeaderView() {
-        guard let currentWeather,
-              let placemark = addressManager.placemark else { return }
+        guard let currentWeather else { return }
 
         repository.fetchWeatherIconImage(withID: currentWeather.weathers.first?.icon ?? "") { result in
             switch result {
@@ -169,7 +168,7 @@ final class WeatherListViewController: UIViewController {
 
                     headerView.configure(
                         with: currentWeather.weatherDetail,
-                        address: "\(placemark.locality ?? "") \(placemark.name ?? "")",
+                        address: self.addressManager.address,
                         icon: image
                     )
                 }
