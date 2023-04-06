@@ -17,7 +17,6 @@ class ViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .yellow
         return collectionView
     }()
     
@@ -63,7 +62,6 @@ extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.id, for: indexPath) as! ForecastWeatherCell
-        cell.backgroundColor = .blue
         cell.icon.image = forecastWeather?[indexPath.row].iconImage
         cell.timeLabel.text = forecastWeather?[indexPath.row].dataTime
         cell.temperatureLabel.text = forecastWeather?[indexPath.row].temperature
@@ -72,7 +70,6 @@ extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CurrentWeatherCell.id, for: indexPath) as! CurrentWeatherCell
-        header.backgroundColor = .green
         header.view.image.image = currentWeather?.iconImage
         header.view.temperatureLabel.text = currentWeather?.temperature ?? "-"
         header.view.minMaxTemperatureLabel.text = currentWeather?.temperatureString() ?? "-"

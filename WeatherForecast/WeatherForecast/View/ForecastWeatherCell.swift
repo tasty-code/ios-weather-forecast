@@ -55,7 +55,6 @@ final class ForecastWeatherCell: UICollectionViewCell {
         icon.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             icon.heightAnchor.constraint(equalTo: self.heightAnchor),
-            icon.leadingAnchor.constraint(equalTo: temperatureLabel.trailingAnchor, constant: 20),
             icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             icon.widthAnchor.constraint(equalTo: icon.heightAnchor)
         ])
