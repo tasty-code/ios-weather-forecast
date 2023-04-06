@@ -14,13 +14,29 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     private(set) var longitude: Double = 126.963206
 
     // MARK: - Public property
+    let callAPIGroup = DispatchGroup()
     var weatherData: Weather?
     var forecastData: Forecast?
     
     // MARK: - Public
-    func callAPI() {
-        callWeatherAPI()
-        callForecastAPI()
+    func callAPI(completion: @escaping () -> Void) {
+        callAPIGroup.enter()
+        callWeatherAPI() { resultData in
+            self.weatherData = resultData
+
+            self.callAPIGroup.leave()
+        }
+
+        callAPIGroup.enter()
+        callForecastAPI() { resultData in
+            self.forecastData = resultData
+
+            self.callAPIGroup.leave()
+        }
+
+        callAPIGroup.notify(queue: .main) {
+            completion()
+        }
     }
 
     func updateLocation(latitude: Double, longitude: Double) {
@@ -29,7 +45,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     }
     
     // MARK: - Private
-    private func callWeatherAPI() {
+    private func callWeatherAPI(completion: @escaping (Weather?) -> Void) {
         do {
             let weatherURLString = weatherURL(lat: latitude, lon: longitude)
             let weatherURL = try getURL(string: weatherURLString)
@@ -41,7 +57,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
                 switch result {
                 case .success(let data):
                     guard self.hasWeatherDataChanged(from: data) else { return }
-                    self.weatherData = data
+                    completion(data)
                     print("[NetworkManager](fetched)weatherData")
                 case .failure(let error):
                     print("[NetworkManager]dataTask error: ", error)
@@ -59,7 +75,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
         return weatherURL
     }
     
-    private func callForecastAPI() {
+    private func callForecastAPI(completion: @escaping (Forecast?) -> Void) {
         do {
             let forecastURLString = forecastURL(lat: latitude, lon: longitude)
             let forecastURL = try getURL(string: forecastURLString)
@@ -71,7 +87,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
                 switch result {
                 case .success(let data):
                     guard self.hasForecastDataChanged(from: data) else { return }
-                    self.forecastData = data
+                    completion(data)
                     print("[NetworkManager](fetched)forecastData")
                 case .failure(let error):
                     print("[NetworkManager]dataTask error: ", error)
