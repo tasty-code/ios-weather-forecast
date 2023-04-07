@@ -45,11 +45,6 @@ enum URLPath: String, CaseIterable {
 
         let appid = URLQueryItem(name: OpenWeatherParameter.apiKey, value: weatherAPIKEY)
         components.queryItems = [latitude, longitude, appid, unitsOfMeasurement]
-
-        if weatherCastType == .forecastWeather {
-            let countOfDay = URLQueryItem(name: OpenWeatherParameter.numberOfDays, value: OpenWeatherParameter.fiveDays)
-            components.queryItems?.append(countOfDay)
-        }
         
         guard let url = components.url else {
             throw URLComponentsError.invalidComponent
