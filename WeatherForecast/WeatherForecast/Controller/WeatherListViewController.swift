@@ -52,10 +52,10 @@ final class WeatherListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupLayout()
-        setupViewBackground()
         setupLocationDataManager()
         setupCollectionView()
+        setupViewBackground()
+        setupLayout()
     }
 
     // MARK: - Private
@@ -126,7 +126,16 @@ final class WeatherListViewController: UIViewController {
     }
     
     // MARK: - Layout
-    
+
+    private func setupViewBackground() {
+        let backgroundIamgeView = UIImageView(frame: view.frame)
+        backgroundIamgeView.image = UIImage(named: Constants.backgroundImageFileName)
+        backgroundIamgeView.contentMode = .scaleAspectFill
+
+        view.addSubview(backgroundIamgeView)
+        view.sendSubviewToBack(backgroundIamgeView)
+    }
+
     private func setupLayout() {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -144,15 +153,6 @@ final class WeatherListViewController: UIViewController {
         configuration.backgroundColor = .clear
         
         return UICollectionViewCompositionalLayout.list(using: configuration)
-    }
-
-    private func setupViewBackground() {
-        let backgroundIamgeView = UIImageView(frame: view.frame)
-        backgroundIamgeView.image = UIImage(named: Constants.backgroundImageFileName)
-        backgroundIamgeView.contentMode = .scaleAspectFill
-
-        view.addSubview(backgroundIamgeView)
-        view.sendSubviewToBack(backgroundIamgeView)
     }
 
     private func updateHeaderView() {
