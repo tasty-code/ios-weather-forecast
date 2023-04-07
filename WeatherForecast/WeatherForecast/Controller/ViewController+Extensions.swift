@@ -41,14 +41,12 @@ extension ViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCollectionViewCell.cellIdentifier, for: indexPath) as? WeatherCollectionViewCell else {
             return UICollectionViewCell()
         }
-        
-        var tempratureString = "0"
-        if let temperature = networkManager.forecastData?.list[indexPath.section].main.temp {
-            let Ctemperature = temperature - 273.15
-            tempratureString = String(format: "%.1f", Ctemperature) + "°"
+
+        if let temperatureData = networkManager.forecastData?.list[indexPath.section].main.temp {
+            cell.temperatureLabel.text = String(format: "%.1f", temperatureData) + "°"
         }
-        cell.temperatureLabel.text = tempratureString
-        cell.indexpathLabel.text = networkManager.forecastData?.list[indexPath.section].timeOfDataText
+
+        cell.timeLabel.text = networkManager.forecastData?.list[indexPath.section].timeOfDataText
         cell.tempImage.text = networkManager.forecastData?.list[indexPath.section].weather.first?.icon
 
         return cell
