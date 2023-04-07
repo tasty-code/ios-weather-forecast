@@ -41,10 +41,7 @@ final class WeatherHeaderView: UICollectionReusableView {
 
     // MARK: - UI Components
 
-    private let weatherIconImageView: UIImageView = {
-        let view = UIImageView()
-        return view
-    }()
+    private let weatherIconImageView = UIImageView()
 
     private let addressLabel: UILabel = {
         let label = UILabel()
