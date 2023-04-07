@@ -41,6 +41,7 @@ class ViewController: UIViewController {
         collectionView.backgroundView = collectionViewBackground
 
         view.addSubview(collectionView)
+        collectionView.register(WeatherCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherCollectionViewHeader.headerIdentifier)
         collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: WeatherCollectionViewCell.cellIdentifier)
         configureCollectionViewRestraint()
     }
