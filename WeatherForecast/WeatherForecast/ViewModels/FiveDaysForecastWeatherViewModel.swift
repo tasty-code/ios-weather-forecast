@@ -62,8 +62,8 @@ final class FiveDaysForecastWeatherViewModel {
             let fiveDaysForecastWeather = FiveDaysForecast(image: images[index], date: date, temperature: temeperature)
             
             fiveDaysForecast.append(fiveDaysForecastWeather)
-            
         }
+        
         return fiveDaysForecast
     }
 }

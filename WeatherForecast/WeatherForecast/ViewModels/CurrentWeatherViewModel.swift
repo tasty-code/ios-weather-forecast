@@ -51,10 +51,10 @@ final class CurrentWeatherViewModel {
             throw NetworkError.failedTypeCasting
         }
         let image = try await weatherNetworkDispatcher.requestWeatherImage(icon: iconString)
-        
         guard let image = image else {
             throw NetworkError.failedTypeCasting
         }
+        
         return image
     }
     

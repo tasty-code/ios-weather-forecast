@@ -10,6 +10,7 @@ import UIKit
 typealias NetworkResult = Result<Data, NetworkError>
 
 final class NetworkSession {
+    
     private let session: URLSession
     
     init(session: URLSession = .shared) {
@@ -17,6 +18,7 @@ final class NetworkSession {
     }
     
     func fetchData(from urlRequest: URLRequest) async throws -> NetworkResult {
+        
         let (data, response) = try await session.data(for: urlRequest)
         
         guard response.checkResponse else {

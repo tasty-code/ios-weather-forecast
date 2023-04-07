@@ -20,6 +20,7 @@ class WeatherViewController: UIViewController {
     }()
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         configureHierarchy()
         register()
@@ -29,6 +30,7 @@ class WeatherViewController: UIViewController {
 
 extension WeatherViewController {
     private func configureHierarchy() {
+        
         weatherCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         weatherCollectionView.backgroundView = backgroundImageView
         configureRefreshControl(in: weatherCollectionView)
@@ -36,29 +38,37 @@ extension WeatherViewController {
     }
     
     private func collectionViewDelegate() {
+        
         weatherCollectionView.dataSource = self
         weatherViewModel.delegate = self
     }
     
     private func register() {
+        
         weatherCollectionView.register(cell: FiveDaysForecastCell.self)
         weatherCollectionView.register(header: CurrentWeatherCell.self)
     }
     
     private func createLayout() -> UICollectionViewLayout {
+        
         var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
+        
         configuration.headerMode = .supplementary
         configuration.backgroundColor = .clear
+        
         let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        
         return layout
     }
     
     private func configureRefreshControl(in collectionView: UICollectionView) {
+        
         collectionView.refreshControl = UIRefreshControl()
         collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
     @objc func handleRefreshControl() {
+        
         self.weatherCollectionView.reloadData()
         
         DispatchQueue.main.async {
@@ -69,10 +79,13 @@ extension WeatherViewController {
 
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         weatherViewModel.fiveDaysForecastWeather.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = weatherCollectionView.dequeue(cell: FiveDaysForecastCell.self, for: indexPath)
         let fiveDaysForecasts = weatherViewModel.fiveDaysForecastWeather
         
@@ -90,12 +103,17 @@ extension WeatherViewController: UICollectionViewDataSource {
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView,
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
+        
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let headerCell = weatherCollectionView.dequeue(header: CurrentWeatherCell.self, for: indexPath)
             headerCell.currentWeather = weatherViewModel.currentWeather
+            
             return headerCell
+            
         default:
             return UICollectionReusableView()
         }
@@ -104,6 +122,7 @@ extension WeatherViewController: UICollectionViewDataSource {
 
 extension WeatherViewController: WeatherViewModelDelegate {
     func weatherViewModelDidFinishSetUp(_ viewModel: WeatherViewModel) {
+        
         self.weatherCollectionView.reloadData()
     }
 }

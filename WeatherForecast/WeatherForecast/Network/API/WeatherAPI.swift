@@ -17,6 +17,7 @@ enum WeatherAPI: String {
         switch self {
         case .currentWeather:
             return CurrentWeatherDTO.self
+            
         case .fiveDaysForecast:
             return FiveDaysForecastDTO.self
         }
@@ -33,6 +34,7 @@ extension WeatherAPI {
         switch self {
         case .currentWeather:
             return "/data/2.5/weather?"
+            
         case .fiveDaysForecast:
             return "/data/2.5/forecast?"
         }

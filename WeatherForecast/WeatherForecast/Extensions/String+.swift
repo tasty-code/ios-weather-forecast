@@ -9,6 +9,7 @@ import Foundation
 
 extension String {
     func changeDateFormat() -> String {
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let date = dateFormatter.date(from: self)!
@@ -18,6 +19,7 @@ extension String {
         changedDateFormatter.locale = Locale(identifier: "ko_KR")
         
         let changedDate = changedDateFormatter.string(from: date)
+        
         return changedDate
     }
 }

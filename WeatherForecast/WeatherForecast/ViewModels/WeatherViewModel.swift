@@ -23,7 +23,6 @@ final class WeatherViewModel {
     
     init(networkSession: NetworkSession = NetworkSession(session: URLSession.shared)) {
         weatherNetworkDispatcher = WeatherNetworkDispatcher(networkSession: networkSession)
-        
         coreLocationManager.delegate = self
         currentWeatherViewModel.delegate = self
         fiveDaysForecastWeatherViewModel.delegate = self
@@ -37,7 +36,7 @@ final class WeatherViewModel {
         return Coordinate(longitude: longitude, latitude: latitude)
     }
     
-    func execute(locationManager: CoreLocationManager,
+    private func execute(locationManager: CoreLocationManager,
                  location: CLLocation,
                  weatherNetworkDispatcher: WeatherNetworkDispatcher) {
         
@@ -87,12 +86,13 @@ final class WeatherViewModel {
                 self.delegate?.weatherViewModelDidFinishSetUp(self)
             }
         }
-        
     }
 }
 
 extension WeatherViewModel: CoreLocationManagerDelegate {
-    func coreLocationManager(_ manager: CoreLocationManager, didUpdateLocation location: CLLocation) {
+    
+    func coreLocationManager(_ manager: CoreLocationManager,
+                             didUpdateLocation location: CLLocation) {
         execute(
             locationManager: manager,
             location: location,
@@ -102,13 +102,15 @@ extension WeatherViewModel: CoreLocationManagerDelegate {
 }
 
 extension WeatherViewModel: CurrentWeatherViewModelDelegate {
-    func currentWeatherViewModel(_ viewModel: CurrentWeatherViewModel, didCreateModelObject currentWeather: CurrentWeatherViewModel.CurrentWeather) {
+    func currentWeatherViewModel(_ viewModel: CurrentWeatherViewModel,
+                                 didCreateModelObject currentWeather: CurrentWeatherViewModel.CurrentWeather) {
         self.currentWeather = currentWeather
     }
 }
 
 extension WeatherViewModel: FiveDaysForecastWeatherViewModelDelegate {
-    func fiveDaysForecastWeatherViewModel(_ viewModel: FiveDaysForecastWeatherViewModel, didCreateModelObject fiveDaysForecastWeather: FiveDaysForecastWeatherViewModel.FiveDaysForecast) {
+    func fiveDaysForecastWeatherViewModel(_ viewModel: FiveDaysForecastWeatherViewModel,
+                                          didCreateModelObject fiveDaysForecastWeather: FiveDaysForecastWeatherViewModel.FiveDaysForecast) {
         self.fiveDaysForecastWeather.append(fiveDaysForecastWeather)
     }
 }

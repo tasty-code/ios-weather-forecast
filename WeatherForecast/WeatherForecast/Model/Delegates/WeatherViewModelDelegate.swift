@@ -8,5 +8,6 @@
 import Foundation
 
 protocol WeatherViewModelDelegate: AnyObject {
+    
     func weatherViewModelDidFinishSetUp(_ viewModel: WeatherViewModel)
 }

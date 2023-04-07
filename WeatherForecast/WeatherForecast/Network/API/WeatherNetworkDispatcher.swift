@@ -17,6 +17,7 @@ final class WeatherNetworkDispatcher {
     }
     
     func makeWeatherRequest(of weatherAPI: WeatherAPI, in coordinate: Coordinate) -> URLRequest {
+        
         let url = weatherAPI.makeWeatherURL(coordinate: coordinate)
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
@@ -25,6 +26,7 @@ final class WeatherNetworkDispatcher {
     }
     
     func makeImageRequest(_ icon: String) -> URLRequest {
+        
         let url = WeatherAPI.makeImageURL(icon: icon)
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
@@ -52,15 +54,13 @@ final class WeatherNetworkDispatcher {
     func requestWeatherImage(icon: String) async throws -> UIImage? {
         
         let urlRequest = makeImageRequest(icon)
-        
         let result = try await networkSession.fetchData(from: urlRequest)
         
         switch result {
-            
         case .success(let data):
             guard let image = UIImage(data: data) else { throw NetworkError.inappropriateData }
             return image
-            
+
         case .failure(let error):
             print(error.errorDescription)
             return nil
