@@ -28,16 +28,18 @@ final class WeatherListViewController: UIViewController {
     private var currentWeather: CurrentWeather? = nil {
         didSet {
             updateHeaderView()
-            endRefreshing()
+//            endRefreshing()
         }
     }
 
     private var forecastDatas: [ForecastData] = [] {
         didSet {
             updateListView()
-            endRefreshing()
+//            endRefreshing()
         }
     }
+
+    private let endRefreshingDispatchGroup = DispatchGroup()
 
     // MARK: - UI Components
 
@@ -73,24 +75,32 @@ final class WeatherListViewController: UIViewController {
     }
 
     private func fetchWeather(coordinate: Coordinate) {
+        endRefreshingDispatchGroup.enter()
         repository.fetchWeather(coordinate: coordinate) { [weak self] result in
+            guard let self else { return }
+            print("fetchWeather 끝남")
             switch result {
             case .success(let currentWeather):
-                self?.currentWeather = currentWeather
+                self.currentWeather = currentWeather
             case .failure(let error):
                 log(.network, error: error)
             }
+            self.endRefreshingDispatchGroup.leave()
         }
     }
 
     private func fetchForecast(coordinate: Coordinate) {
+        endRefreshingDispatchGroup.enter()
         repository.fetchForecast(coordinate: coordinate) { [weak self] result in
+            guard let self else { return }
+            print("fetchForecast 끝남")
             switch result {
             case .success(let forecast):
-                self?.forecastDatas = forecast.forecastDatas
+                self.forecastDatas = forecast.forecastDatas
             case .failure(let error):
                 log(.network, error: error)
             }
+            self.endRefreshingDispatchGroup.leave()
         }
     }
     
@@ -120,8 +130,15 @@ final class WeatherListViewController: UIViewController {
     }
 
     private func endRefreshing() {
-        DispatchQueue.main.async {
-            self.refreshControl.endRefreshing()
+        guard refreshControl.isRefreshing else { return }
+
+        self.refreshControl.endRefreshing()
+    }
+
+    private func setNotifyEndRefreshingToDispatchGroup() {
+        endRefreshingDispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in
+            print("DispatchGroup notify : 끝남")
+            self?.endRefreshing()
         }
     }
     
@@ -204,6 +221,7 @@ extension WeatherListViewController: LocationDataManagerDelegate {
 
         fetchWeather(coordinate: coordinate)
         fetchForecast(coordinate: coordinate)
+        setNotifyEndRefreshingToDispatchGroup()
     }
     
 }
