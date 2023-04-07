@@ -27,34 +27,13 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     
     //MARK: - Private Property
     
-    private var currentWeatherEmoji: UIImageView = {
-        let currentWeatherEmoji = UIImageView()
-        currentWeatherEmoji.image = UIImage(systemName: "cloud.sun.fill")
-        currentWeatherEmoji.setContentHuggingPriority(.defaultHigh,
-                                                      for: .horizontal)
-        return currentWeatherEmoji
-    }()
+    private var currentWeatherEmoji = UIImageView()
     
-    private var currentLocation: UILabel = {
-        let currentLocation = UILabel()
-        currentLocation.text = "서울특별시 용산구"
-        
-        return currentLocation
-    }()
+    private var currentLocation = UILabel()
     
-    private var lowestAndHighestTemperature: UILabel = {
-        let lowestAndHighestTemperature = UILabel()
-        lowestAndHighestTemperature.text = "최저 1.0˚ 최고 11.0˚"
-        
-        return lowestAndHighestTemperature
-    }()
+    private var lowestAndHighestTemperature = UILabel()
     
-    private var currentTemperature: UILabel = {
-        let currentTemperature = UILabel()
-        currentTemperature.text = "11.0˚"
-        
-        return currentTemperature
-    }()
+    private var currentTemperature = UILabel()
     
     //MARK: - StackView
     
@@ -85,10 +64,10 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
         
         currentInformationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            currentInformationView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 30),
+            currentInformationView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             currentInformationView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             currentInformationView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            currentInformationView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -30)
+            currentInformationView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         addressInformationView.translatesAutoresizingMaskIntoConstraints = false
