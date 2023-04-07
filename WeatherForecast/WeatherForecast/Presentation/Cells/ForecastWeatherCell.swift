@@ -8,7 +8,23 @@
 import UIKit
 
 final class ForecastWeatherCell: UICollectionViewCell {
+    
+    //MARK: - Property
+    
     static let identifier = "ForcastWeatherCell"
+    
+    //MARK: - Initializer
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configuration()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Private Property
 
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
@@ -45,19 +61,15 @@ final class ForecastWeatherCell: UICollectionViewCell {
         addSubview(stackView)
         return stackView
     }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    //MARK: - Configure Of Layout
+    private func configuration() {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
             stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
             stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15)
         ])
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     func prepare(text: String) {
