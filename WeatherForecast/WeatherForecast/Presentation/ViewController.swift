@@ -23,8 +23,12 @@ class ViewController: UIViewController {
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherHeaderView.identifier)
         collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.identifier)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        collectionView.backgroundColor = .red
+
+        let backgroundImageView = UIImageView()
+        backgroundImageView.image = UIImage(named: "WeatherBackground")
+        backgroundImageView.contentMode = .scaleAspectFill
+
+        collectionView.backgroundView = backgroundImageView
         self.view.addSubview(collectionView)
         return collectionView
     }()
@@ -46,8 +50,9 @@ class ViewController: UIViewController {
 
 extension ViewController {
     private func configureCollectionView() -> UICollectionViewLayout {
-        var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+        var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
         configuration.headerMode = .supplementary
+        configuration.backgroundColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 0.6)
         return UICollectionViewCompositionalLayout.list(using: configuration)
     }
 }
