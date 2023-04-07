@@ -30,16 +30,14 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
         let imageView = UIImageView()
         imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         imageView.contentMode = .scaleAspectFill
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 1.0).isActive = true
         return imageView
     }()
     
-    private var currentLocation = UILabel()
+    private var currentLocationLabel = UILabel()
     
-    private var lowestAndHighestTemperature = UILabel()
+    private var lowestAndHighestTemperatureLabel = UILabel()
     
-    private var currentTemperature = UILabel()
+    private var currentTemperatureLabel = UILabel()
     
     //MARK: - StackView
     
@@ -61,13 +59,13 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     func configuration() {
         self.addSubview(currentInformationView)
         
-        [currentLocation, lowestAndHighestTemperature, currentTemperature].forEach { label in
+        [currentLocationLabel, lowestAndHighestTemperatureLabel, currentTemperatureLabel].forEach { label in
             label.textColor = .white
             label.font = .systemFont(ofSize: 18)
             self.addressInformationView.addArrangedSubview(label)
         }
 
-        currentTemperature.font = .systemFont(ofSize: 30)
+        currentTemperatureLabel.font = .systemFont(ofSize: 30)
         
         [currentWeatherEmoji, addressInformationView].forEach { view in
             self.currentInformationView.addArrangedSubview(view)
@@ -84,10 +82,13 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     
     //MARK: - Method
     func prepare(model: CurrentViewModel) {
+        let lowestTemperature = String(format: "%.1f", Float(model.temperature.lowestTemperature) ?? 0)
+        let highestTemperature = String(format: "%.1f", Float(model.temperature.highestTemperature) ?? 0)
+        let currentTemperature = String(format: "%.1f", Float(model.temperature.currentTemperature) ?? 0)
+
         currentWeatherEmoji.image = UIImage(named: model.currentWeatherIcon)
-        currentLocation.text = "서울특별시 용산구"
-        lowestAndHighestTemperature.text = "최저 \(model.temperature.lowestTemperature)˚" + "최고 \(model.temperature.highestTemperature)˚ "
-        currentTemperature.text = model.temperature.currentTemperature + "˚"
+        currentLocationLabel.text = "서울특별시 용산구"
+        lowestAndHighestTemperatureLabel.text = "최저 \(lowestTemperature)˚ 최고 \(highestTemperature)˚"
+        currentTemperatureLabel.text = currentTemperature + "˚"
     }
 }
-
