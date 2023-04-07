@@ -75,5 +75,13 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
             addressInformationView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
+    
+    //MARK: - Method
+    func prepare(model: CurrentViewModel) {
+        currentWeatherEmoji.image = UIImage(named: model.currentWeatherIcon)
+        currentLocation.text = "서울특별시 용산구"
+        lowestAndHighestTemperature.text = "최저 \(model.temperature.lowestTemperature)˚" + "최고 \(model.temperature.highestTemperature)˚ "
+        currentTemperature.text = model.temperature.currentTemperature
+    }
 }
 
