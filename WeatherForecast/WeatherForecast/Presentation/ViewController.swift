@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     }()
     
     private var currentWeather: CurrentViewModel?
-    private var forecastWeather: ForecastViewModel?
+    private var forecastWeathers: [ForecastViewModel]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,12 +58,15 @@ extension ViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        forecastWeathers?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.identifier, for: indexPath) as? ForecastWeatherCell else {
             return UICollectionViewCell()
+        }
+        if let model = forecastWeathers?[indexPath.row] {
+            cell.prepare(model: model)
         }
         return cell
     }
@@ -87,8 +90,8 @@ extension ViewController: WeatherModelDelegate {
         self.collectionView.reloadData()
     }
 
-    func loadForecastWeather(of model: ForecastViewModel) {
-        forecastWeather = model
+    func loadForecastWeather(of model: [ForecastViewModel]) {
+        forecastWeathers = model
         self.collectionView.reloadData()
     }
 }

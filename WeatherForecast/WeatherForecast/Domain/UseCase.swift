@@ -69,27 +69,30 @@ final class UseCase {
         return CurrentViewModel(currentWeatherIcon: iconName, temperature: temperature)
     }
 
-    private func makeForecastWeather(with data: ForecastWeather) -> ForecastViewModel {
-        var forecastDate: String = ""
-        var forecastIcon: String = ""
-        var forecastTemperature: Double = 0
-        let forecastInformation = ForecastInformation(forecastDate: forecastDate, forecastDegree: String(forecastTemperature))
+    private func makeForecastWeather(with data: ForecastWeather) -> [ForecastViewModel] {
 
-        if let weatherInfomation = data.list.first {
-            forecastDate = weatherInfomation.date
-            forecastTemperature = weatherInfomation.main.temperature
+        var forecastViewModels = [ForecastViewModel]()
 
-            if let element = weatherInfomation.weather.first {
-                forecastIcon = element.icon
+        data.list.forEach { element in
+            let forecastDate: String = element.date
+            let forecastTemperature: Double = element.main.temperature
+            let forecastInformation = ForecastInformation(forecastDate: forecastDate, forecastDegree: String(forecastTemperature))
+            var forecastIcon: String = ""
+
+            if let icon = element.weather.first?.icon {
+                forecastIcon = icon
             }
+
+            let forecastViewModel = ForecastViewModel(forecastEmogi: forecastIcon, forecastInformation: forecastInformation)
+            forecastViewModels.append(forecastViewModel)
         }
 
-        return ForecastViewModel(forecastEmogi: forecastIcon, forecastInformation: forecastInformation)
+        return forecastViewModels
     }
 }
 
 protocol WeatherModelDelegate: NSObject {
     func loadCurrentWeather(of model: CurrentViewModel)
-    func loadForecastWeather(of model: ForecastViewModel)
+    func loadForecastWeather(of model: [ForecastViewModel])
 }
 
