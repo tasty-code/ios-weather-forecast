@@ -26,7 +26,6 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         addSubview(temperatureLabel)
         addSubview(tempImage)
         configureLabelConstraint()
-        temperatureLabel.textAlignment = .right
     }
 
     required init?(coder: NSCoder) {
@@ -42,18 +41,21 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             timeLabel.topAnchor.constraint(equalTo: self.topAnchor),
             timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            timeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: self.frame.width * 7 / 10 ),
             timeLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            timeLabel.widthAnchor.constraint(equalToConstant: self.frame.width * 0.7),
+            timeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             temperatureLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            temperatureLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.frame.width * 7 / 10),
-            temperatureLabel.trailingAnchor.constraint(equalTo: self.tempImage.leadingAnchor, constant: -10),
+            temperatureLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor),
             temperatureLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            temperatureLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             tempImage.topAnchor.constraint(equalTo: self.topAnchor),
-            tempImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.frame.width * 9 / 10),
+            tempImage.leadingAnchor.constraint(equalTo: temperatureLabel.trailingAnchor),
             tempImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            tempImage.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            tempImage.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            tempImage.widthAnchor.constraint(equalToConstant: self.frame.width * 0.1),
+            tempImage.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
 }
