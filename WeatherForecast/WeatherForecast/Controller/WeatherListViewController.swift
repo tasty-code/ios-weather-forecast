@@ -28,14 +28,12 @@ final class WeatherListViewController: UIViewController {
     private var currentWeather: CurrentWeather? = nil {
         didSet {
             updateHeaderView()
-            //            endRefreshing()
         }
     }
 
     private var forecastDatas: [ForecastData] = [] {
         didSet {
             updateListView()
-            //            endRefreshing()
         }
     }
 

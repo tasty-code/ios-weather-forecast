@@ -12,7 +12,7 @@ final class WeatherHeaderView: UICollectionReusableView {
     //MARK: - Constants
 
     private enum Constants {
-        static let addressLabelSkeletonText: String = "서울특별시 용산새싹마을"
+        static let addressLabelSkeletonText: String = "지역정보 받아오는 중..."
         static let temperatureRangeLabelSkeletonText: String = "최저 - °C, 최고 - °C"
         static func temperatureRangeLabelText(minimunTemperature: Double, maximumTemperature: Double) -> String {
             "최저 \(minimunTemperature) 최고 \(maximumTemperature)"
