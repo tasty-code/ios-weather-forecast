@@ -5,7 +5,6 @@
 //  Created by DONGWOOK SEO on 2023/04/03.
 //
 
-import Foundation
 import UIKit
 
 final class ImageCacheManager {

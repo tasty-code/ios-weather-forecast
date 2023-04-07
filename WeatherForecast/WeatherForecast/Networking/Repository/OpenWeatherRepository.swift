@@ -5,7 +5,6 @@
 //  Created by DONGWOOK SEO on 2023/03/14.
 //
 
-import Foundation
 import UIKit
 
 final class OpenWeatherRepository {

@@ -28,14 +28,14 @@ final class WeatherListViewController: UIViewController {
     private var currentWeather: CurrentWeather? = nil {
         didSet {
             updateHeaderView()
-//            endRefreshing()
+            //            endRefreshing()
         }
     }
 
     private var forecastDatas: [ForecastData] = [] {
         didSet {
             updateListView()
-//            endRefreshing()
+            //            endRefreshing()
         }
     }
 
@@ -251,11 +251,11 @@ extension WeatherListViewController: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: WeatherCell.identifier,
-            for: indexPath) as? WeatherCell else {
+            for: indexPath) as? WeatherCell,
+              let weather = forecastDatas[safe: indexPath.row] else {
             return UICollectionViewCell()
         }
 
-        guard let weather = forecastDatas[safe: indexPath.row] else { return cell }
         let date = DateFormatUtil.format(with: weather.dateString)
         let temperature = String(weather.weatherDetail.temperature)
         let iconID = weather.weathers.first?.icon ?? ""
