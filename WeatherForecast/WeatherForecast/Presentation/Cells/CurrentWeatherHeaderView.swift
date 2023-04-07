@@ -18,7 +18,6 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configuration()
-        self.backgroundColor = .orange
     }
     
     required init?(coder: NSCoder) {
@@ -27,7 +26,14 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     
     //MARK: - Private Property
     
-    private var currentWeatherEmoji = UIImageView()
+    private var currentWeatherEmoji: UIImageView = {
+        let imageView = UIImageView()
+        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        imageView.contentMode = .scaleAspectFill
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 1.0).isActive = true
+        return imageView
+    }()
     
     private var currentLocation = UILabel()
     
@@ -46,7 +52,8 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     
     private var currentInformationView: UIStackView = {
         let currentInformationView = UIStackView()
-        currentInformationView.spacing = 10
+        currentInformationView.axis = .horizontal
+        currentInformationView.spacing = 30
         return currentInformationView
     }()
     
@@ -55,8 +62,12 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
         self.addSubview(currentInformationView)
         
         [currentLocation, lowestAndHighestTemperature, currentTemperature].forEach { label in
+            label.textColor = .white
+            label.font = .systemFont(ofSize: 18)
             self.addressInformationView.addArrangedSubview(label)
         }
+
+        currentTemperature.font = .systemFont(ofSize: 30)
         
         [currentWeatherEmoji, addressInformationView].forEach { view in
             self.currentInformationView.addArrangedSubview(view)
@@ -68,11 +79,6 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
             currentInformationView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             currentInformationView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             currentInformationView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
-        ])
-        
-        addressInformationView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            addressInformationView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
     

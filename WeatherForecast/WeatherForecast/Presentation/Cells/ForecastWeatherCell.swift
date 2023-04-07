@@ -26,11 +26,28 @@ final class ForecastWeatherCell: UICollectionViewCell {
     
     //MARK: - Private Property
 
-    private lazy var dateLabel = UILabel()
+    private lazy var dateLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18)
+        label.textColor = .white
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        return label
+    }()
 
-    private lazy var atmosphericTemperatureLabel = UILabel()
+    private lazy var atmosphericTemperatureLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18)
+        label.textColor = .white
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        return label
+    }()
 
-    private lazy var weatherImage =  UIImageView()
+    private lazy var weatherImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
 
     //MARK: - StackView
 
@@ -47,10 +64,10 @@ final class ForecastWeatherCell: UICollectionViewCell {
     //MARK: - Configure Of Layout
     private func configuration() {
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
-            stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
-            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15)
+            stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 18),
+            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -18),
+            stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
+            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -18)
         ])
     }
 
