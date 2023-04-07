@@ -27,6 +27,7 @@ final class WeatherForecastViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.requestFetchData()
         binding()
     }
 }

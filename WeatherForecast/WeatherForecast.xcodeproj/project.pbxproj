@@ -152,6 +152,14 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		8E21E52629DFFCFF00E68DAB /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				8E2C046229DA90F7002FFB8F /* CoreLocationManager.swift */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
 		8E4503A629D50ED700A829A6 /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,7 +281,6 @@
 			isa = PBXGroup;
 			children = (
 				8E2C045E29DA6CC9002FFB8F /* WeatherForecastUseCase.swift */,
-				8E2C046229DA90F7002FFB8F /* CoreLocationManager.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -396,6 +403,7 @@
 				8E4503A729D50EDE00A829A6 /* Data */,
 				8E4503A829D50EE200A829A6 /* Domain */,
 				8EE3296D29CA944700F54F48 /* Presentation */,
+				8E21E52629DFFCFF00E68DAB /* Infrastructure */,
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
 			);
 			path = WeatherForecast;

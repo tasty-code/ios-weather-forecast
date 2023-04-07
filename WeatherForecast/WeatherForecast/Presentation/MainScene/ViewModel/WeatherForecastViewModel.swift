@@ -17,7 +17,6 @@ final class WeatherForecastViewModel {
     
     init(usecase: WeatherForecastUseCase) {
         self.usecase = usecase
-        self.updateCurrentLocation()
     }
     
     private func updateCurrentLocation() {
@@ -27,7 +26,11 @@ final class WeatherForecastViewModel {
 
 extension WeatherForecastViewModel {
     
-    func requestWeatherData(lat: Double, lon: Double) {
+    func requestFetchData() {
+        updateCurrentLocation()
+    }
+    
+    private func requestWeatherData(lat: Double, lon: Double) {
         usecase.fetchWeather(lat: lat, lon: lon) { [weak self] result in
             switch result {
             case .success(let weatherEntity):
@@ -38,7 +41,7 @@ extension WeatherForecastViewModel {
         }
     }
     
-    func requestFetchData(lat: Double, lon: Double) {
+    private func requestForecastData(lat: Double, lon: Double) {
         usecase.fetchForecast(lat: lat, lon: lon) { [weak self] result in
             switch result {
             case .success(let forecastEntity):
@@ -58,7 +61,7 @@ extension WeatherForecastViewModel: LocationUpdateDelegate {
         let lat = location.latitude
         let lon = location.longitude
         self.requestWeatherData(lat: lat, lon: lon)
-        self.requestFetchData(lat: lat, lon: lon)
+        self.requestForecastData(lat: lat, lon: lon)
     }
     
     func locationDidFailWithError(error: Error) {
