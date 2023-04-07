@@ -89,7 +89,7 @@ final class UseCase {
 }
 
 protocol WeatherModelDelegate: NSObject {
-    func loadCurrentWeather(of: CurrentViewModel)
-    func loadForecastWeather(of: ForecastViewModel)
+    func loadCurrentWeather(of model: CurrentViewModel)
+    func loadForecastWeather(of model: ForecastViewModel)
 }
 
