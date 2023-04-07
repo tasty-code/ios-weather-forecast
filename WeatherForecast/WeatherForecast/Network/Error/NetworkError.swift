@@ -13,7 +13,7 @@ enum NetworkError: LocalizedError {
     case failedRequest
     case failedDecoding
     case failedTypeCasting
-    case emptyData
+    case inappropriateData
     
     var errorDescription: String? {
         
@@ -26,9 +26,8 @@ enum NetworkError: LocalizedError {
             return "디코딩에 실패하였습니다."
         case .failedTypeCasting:
             return "타입 캐스팅에 실패했습니다."
-        case .emptyData:
-            return "빈 데이터 입니다."
-
+        case .inappropriateData:
+            return "알맞은 데이터가 아닙니다."
         }
     }
 }

@@ -16,29 +16,13 @@ final class NetworkSession {
         self.session = session
     }
     
-    func task(urlRequest: URLRequest, completionHandler: @escaping (NetworkResult) -> Void
-    ) -> URLSessionDataTask {
+    func fetchData(from urlRequest: URLRequest) async throws -> NetworkResult {
+        let (data, response) = try await session.data(for: urlRequest)
         
-        let task = session.dataTask(with: urlRequest) { data, response, error in
-            
-            guard error == nil else {
-                completionHandler(.failure(.failedRequest))
-                return
-            }
-            
-            guard let response = response, response.checkResponse else {
-                completionHandler(.failure(.outOfReponseCode))
-                return
-            }
-            
-            guard let data = data else {
-                completionHandler(.failure(.emptyData))
-                return
-            }
-                        
-            completionHandler(.success(data))
+        guard response.checkResponse else {
+            return .failure(.outOfReponseCode)
         }
         
-        return task
+        return .success(data)
     }
 }
