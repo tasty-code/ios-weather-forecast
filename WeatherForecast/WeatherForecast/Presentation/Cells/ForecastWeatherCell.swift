@@ -26,31 +26,13 @@ final class ForecastWeatherCell: UICollectionViewCell {
     
     //MARK: - Private Property
 
-    private lazy var dateLabel: UILabel = {
-        let label = UILabel()
-        label.text = "04/10(월) 13시"
-        label.font = .systemFont(ofSize: 25)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        return label
-    }()
+    private lazy var dateLabel = UILabel()
 
-    private lazy var atmosphericTemperatureLabel: UILabel = {
-        let label = UILabel()
-        label.text = "13˚"
-        label.font = .systemFont(ofSize: 25)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        return label
-    }()
+    private lazy var atmosphericTemperatureLabel = UILabel()
 
-    private lazy var weatherImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "cloud.sun.fill")
-        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
+    private lazy var weatherImage =  UIImageView()
+
+    //MARK: - StackView
 
     lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [dateLabel, atmosphericTemperatureLabel, weatherImage])
@@ -72,7 +54,24 @@ final class ForecastWeatherCell: UICollectionViewCell {
         ])
     }
 
-    func prepare(text: String) {
-        dateLabel.text = text
+    func prepare(model: ForecastViewModel) {
+        dateLabel.text = DateFormatter().transWeahterDateForm(from: model.forecastInformation.forecastDate)
+        atmosphericTemperatureLabel.text = model.forecastInformation.forecastDegree + "˚"
+        weatherImage.image = UIImage(named: model.forecastEmogi)
+    }
+}
+
+private extension DateFormatter {
+    func transWeahterDateForm(from date: String) -> String {
+        guard let temp = stringToDate(from: date) else { return "" }
+        self.dateFormat = "MM/dd(E) HH시"
+        self.locale = Locale(identifier:"ko_KR")
+        return self.string(from: temp)
+    }
+
+    private func stringToDate(from date: String) -> Date? {
+        self.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let data = self.date(from: date)
+        return data
     }
 }
