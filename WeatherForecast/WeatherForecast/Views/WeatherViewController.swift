@@ -31,17 +31,18 @@ extension WeatherViewController {
     private func configureHierarchy() {
         weatherCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         weatherCollectionView.backgroundView = backgroundImageView
+        configureRefreshControl(in: weatherCollectionView)
         view.addSubview(weatherCollectionView)
-    }
-    
-    private func register() {
-        weatherCollectionView.register(cell: FiveDaysForecastCell.self)
-        weatherCollectionView.register(header: CurrentWeatherCell.self)
     }
     
     private func collectionViewDelegate() {
         weatherCollectionView.dataSource = self
         weatherViewModel.delegate = self
+    }
+    
+    private func register() {
+        weatherCollectionView.register(cell: FiveDaysForecastCell.self)
+        weatherCollectionView.register(header: CurrentWeatherCell.self)
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -50,6 +51,19 @@ extension WeatherViewController {
         configuration.backgroundColor = .clear
         let layout = UICollectionViewCompositionalLayout.list(using: configuration)
         return layout
+    }
+    
+    private func configureRefreshControl(in collectionView: UICollectionView) {
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+    }
+    
+    @objc func handleRefreshControl() {
+        self.weatherCollectionView.reloadData()
+        
+        DispatchQueue.main.async {
+            self.weatherCollectionView.refreshControl?.endRefreshing()
+        }
     }
 }
 
