@@ -62,8 +62,8 @@ final class UseCase {
                                       highestTemperature: String(maxTemperature),
                                       currentTemperature: String(currentTemperature))
 
-        data.weathers.forEach { element in
-            iconName = element.icon
+        if let weather = data.weathers.first {
+            iconName = weather.icon
         }
 
         return CurrentViewModel(currentWeatherIcon: iconName, temperature: temperature)
@@ -75,11 +75,11 @@ final class UseCase {
         var forecastTemperature: Double = 0
         let forecastInformation = ForecastInformation(forecastDate: forecastDate, forecastDegree: String(forecastTemperature))
 
-        data.list.forEach { element in
-            forecastDate = element.date
-            forecastTemperature = element.main.temperature
+        if let weatherInfomation = data.list.first {
+            forecastDate = weatherInfomation.date
+            forecastTemperature = weatherInfomation.main.temperature
 
-            element.weather.forEach { element in
+            if let element = weatherInfomation.weather.first {
                 forecastIcon = element.icon
             }
         }
