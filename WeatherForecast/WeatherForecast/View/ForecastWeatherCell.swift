@@ -10,7 +10,7 @@ import UIKit
 final class ForecastWeatherCell: UICollectionViewCell {
     static let id = "forecast"
     let icon: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "rays"))
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
