@@ -13,7 +13,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     static let cellIdentifier = "WeatherCollectionViewCell"
 
     // MARK: - Public property
-    var indexpathLabel = UILabel()
+    var timeLabel = UILabel()
     var temperatureLabel = UILabel()
     var tempImage = UILabel()
 
@@ -22,7 +22,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         
         super.init(frame: frame)
 
-        addSubview(indexpathLabel)
+        addSubview(timeLabel)
         addSubview(temperatureLabel)
         addSubview(tempImage)
         configureLabelConstraint()
@@ -35,15 +35,15 @@ class WeatherCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private function
     private func configureLabelConstraint() {
-        indexpathLabel.translatesAutoresizingMaskIntoConstraints = false
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         tempImage.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            indexpathLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            indexpathLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            indexpathLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: self.frame.width * 7 / 10 ),
-            indexpathLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            timeLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            timeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: self.frame.width * 7 / 10 ),
+            timeLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
             temperatureLabel.topAnchor.constraint(equalTo: self.topAnchor),
             temperatureLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.frame.width * 7 / 10),
