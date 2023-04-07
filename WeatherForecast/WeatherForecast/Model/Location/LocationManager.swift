@@ -22,8 +22,6 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     // MARK: - Public
     func startUpdatingLocation() {
         setUp()
-        requestAuthorization()
-        startUpdating()
     }
     
     // MARK: - Lifecycle
@@ -44,16 +42,16 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     // MARK: - Private
     private func setUp() {
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
-    
-    private func requestAuthorization() {
-        locationManager.requestAlwaysAuthorization()
-    }
-    
-    private func startUpdating() {
-        locationManager.startUpdatingLocation()
-    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+            switch manager.authorizationStatus {
+            case .authorizedWhenInUse, .authorizedAlways:
+                manager.requestLocation()
+            default:
+                manager.requestWhenInUseAuthorization()
+            }
+        }
     
     private func reverseGeocodeLocation(_ location: CLLocation) {
         geoCoder.reverseGeocodeLocation(location) { placemarks, error in

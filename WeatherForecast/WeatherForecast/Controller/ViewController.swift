@@ -25,11 +25,11 @@ class ViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: WeatherCollectionViewCell.cellIdentifier)
         configureCollectionViewRestraint()
-        setUp()
+        setUpLocationManager()
     }
     
     // MARK: - Private function
-    private func setUp() {
+    private func setUpLocationManager() {
         locationManager.startUpdatingLocation()
     }
 
