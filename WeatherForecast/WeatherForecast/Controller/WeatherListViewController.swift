@@ -76,7 +76,6 @@ final class WeatherListViewController: UIViewController {
         endRefreshingDispatchGroup.enter()
         repository.fetchWeather(coordinate: coordinate) { [weak self] result in
             guard let self else { return }
-            print("fetchWeather 끝남")
             switch result {
             case .success(let currentWeather):
                 self.currentWeather = currentWeather
@@ -91,7 +90,6 @@ final class WeatherListViewController: UIViewController {
         endRefreshingDispatchGroup.enter()
         repository.fetchForecast(coordinate: coordinate) { [weak self] result in
             guard let self else { return }
-            print("fetchForecast 끝남")
             switch result {
             case .success(let forecast):
                 self.forecastDatas = forecast.forecastDatas
@@ -135,7 +133,6 @@ final class WeatherListViewController: UIViewController {
 
     private func setNotifyEndRefreshingToDispatchGroup() {
         endRefreshingDispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in
-            print("DispatchGroup notify : 끝남")
             self?.endRefreshing()
         }
     }
