@@ -44,10 +44,13 @@ extension ViewController: UICollectionViewDataSource {
 
         if let temperatureData = networkManager.forecastData?.list[indexPath.section].main.temp {
             cell.temperatureLabel.text = String(format: "%.1f", temperatureData) + "°"
+            cell.temperatureLabel.textColor = .white
         }
 
         cell.timeLabel.text = networkManager.forecastData?.list[indexPath.section].timeOfDataText
+        cell.timeLabel.textColor = .white
         cell.tempImage.text = networkManager.forecastData?.list[indexPath.section].weather.first?.icon
+        cell.tempImage.textColor = .white
 
         return cell
     }

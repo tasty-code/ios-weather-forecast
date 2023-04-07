@@ -14,23 +14,35 @@ class ViewController: UIViewController {
     let locationManager = LocationManager()
 
     var collectionView = WeatherCollectionView(frame: .zero)
+    var collectionViewBackground: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "weather_wallpaper")
+
+        return imageView
+    }()
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
 
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        view.addSubview(collectionView)
-        collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: WeatherCollectionViewCell.cellIdentifier)
-        configureCollectionViewRestraint()
+        setUpCollectionView()
         setUpLocationManager()
     }
     
     // MARK: - Private function
     private func setUpLocationManager() {
         locationManager.startUpdatingLocation()
+    }
+
+    private func setUpCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundView = collectionViewBackground
+
+        view.addSubview(collectionView)
+        collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: WeatherCollectionViewCell.cellIdentifier)
+        configureCollectionViewRestraint()
     }
 
     private func configureCollectionViewRestraint() {
