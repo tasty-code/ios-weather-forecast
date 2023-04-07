@@ -65,9 +65,11 @@ extension ViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.identifier, for: indexPath) as? ForecastWeatherCell else {
             return UICollectionViewCell()
         }
-        if let model = forecastWeathers?[indexPath.row] {
-            cell.prepare(model: model)
+        
+        if let certifiedModel = forecastWeathers?[indexPath.row] {
+            cell.prepare(model: certifiedModel)
         }
+        
         return cell
     }
 
@@ -77,6 +79,11 @@ extension ViewController: UICollectionViewDataSource {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CurrentWeatherHeaderView.identifier, for: indexPath) as? CurrentWeatherHeaderView else {
                 return UICollectionReusableView()
             }
+            
+            if let certifiedModel = currentWeather {
+                headerView.prepare(model: certifiedModel)
+            }
+            
             return headerView
         default:
             return UICollectionReusableView()
