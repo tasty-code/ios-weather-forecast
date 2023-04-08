@@ -40,7 +40,6 @@ extension CoreLocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        
         print("locationManager-didFailWithError")
     }
     

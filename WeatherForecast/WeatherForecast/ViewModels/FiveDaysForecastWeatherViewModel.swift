@@ -9,9 +9,7 @@ import UIKit
 import CoreLocation
 
 final class FiveDaysForecastWeatherViewModel {
-    
-    weak var delegate: FiveDaysForecastWeatherViewModelDelegate?
-    
+        
     struct FiveDaysForecast {
         var image: UIImage?
         let date: String
