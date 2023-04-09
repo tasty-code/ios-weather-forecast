@@ -8,24 +8,32 @@
 import Foundation
 
 protocol WeatherForecastUsecaseInterface {
-    func fetchWeather(lat: Double, lon: Double, completion: @escaping(Result<WeatherEntity, Error>) -> Void)
-    func fetchForecast(lat: Double, lon: Double, completion: @escaping(Result<ForecastEntity, Error>) -> Void)
+    func fetchWeather(completion: @escaping(Result<WeatherEntity, Error>) -> Void)
+    func fetchForecast(completion: @escaping(Result<ForecastEntity, Error>) -> Void)
 }
 
 final class WeatherForecastUseCase: WeatherForecastUsecaseInterface {
-  
+    
     private let repository: WeatherForecastRepositoryInterface
-  
+    private let coreLocationManager = CoreLocationManager()
+    
+    private var currentLocation: Location?
+    
     init(repository: WeatherForecastRepositoryInterface) {
         self.repository = repository
+        coreLocationManager.delegate = self
     }
 }
 
 extension WeatherForecastUseCase {
     
-    func fetchWeather(lat: Double, lon: Double, completion: @escaping(Result<WeatherEntity, Error>) -> Void) {
-        guard let lat = lat.doubleToString(),
-              let lon = lon.doubleToString() else { return }
+    func fetchWeather(completion: @escaping(Result<WeatherEntity, Error>) -> Void) {
+        guard let lat = currentLocation?.latitude.doubleToString(),
+              let lon = currentLocation?.longitude.doubleToString() else {
+            print("Error: unable to get current location.")
+            return
+        }
+        
         self.repository.fetchWeather(lat: lat, lon: lon) { result in
             switch result {
             case .success(let weatherDTO):
@@ -37,9 +45,13 @@ extension WeatherForecastUseCase {
         }
     }
     
-    func fetchForecast(lat: Double, lon: Double, completion: @escaping(Result<ForecastEntity, Error>) -> Void) {
-        guard let lat = lat.doubleToString(),
-              let lon = lon.doubleToString() else { return }
+    func fetchForecast(completion: @escaping(Result<ForecastEntity, Error>) -> Void) {
+        guard let lat = currentLocation?.latitude.doubleToString(),
+              let lon = currentLocation?.longitude.doubleToString() else {
+            print("Error: unable to get current location.")
+            return
+        }
+        
         self.repository.fetchForecast(lat: lat, lon: lon) { result in
             switch result {
             case .success(let forecastDTO):
@@ -49,5 +61,20 @@ extension WeatherForecastUseCase {
                 completion(.failure(error))
             }
         }
+    }
+}
+
+// MARK: - LocationUpdateDelegate Implementation
+
+extension WeatherForecastUseCase: LocationUpdateDelegate {
+    
+    func locationDidUpdateToLocation(location: Location) {
+        currentLocation = location
+        self.fetchWeather { _ in }
+        self.fetchForecast { _ in }
+    }
+    
+    func locationDidFailWithError(error: Error) {
+        print("Location update failed with error: \(error.localizedDescription)")
     }
 }

@@ -10,61 +10,27 @@ import Foundation
 final class WeatherForecastViewModel {
     
     private let usecase: WeatherForecastUseCase
-    private let coreLocationManager = CoreLocationManager()
     
-    var loadWeatherEntity: ((WeatherEntity) -> Void)?
-    var loadForecastEntity: ((ForecastEntity) -> Void)?
+    var loadWeatherEntity: ((Result<WeatherEntity, Error>) -> Void)?
+    var loadForecastEntity: ((Result<ForecastEntity, Error>) -> Void)?
     
     init(usecase: WeatherForecastUseCase) {
         self.usecase = usecase
-    }
-    
-    private func updateCurrentLocation() {
-        coreLocationManager.delegate = self
     }
 }
 
 extension WeatherForecastViewModel {
     
-    func requestFetchData() {
-        updateCurrentLocation()
-    }
-    
-    private func requestWeatherData(lat: Double, lon: Double) {
-        usecase.fetchWeather(lat: lat, lon: lon) { [weak self] result in
-            switch result {
-            case .success(let weatherEntity):
-                self?.loadWeatherEntity?(weatherEntity)
-            case .failure(let error):
-                print("Error fetching weather data: \(error.localizedDescription)")
-            }
+    func requestWeatherData() {
+        usecase.fetchWeather { [weak self] result in
+            self?.loadWeatherEntity?(result)
         }
     }
     
-    private func requestForecastData(lat: Double, lon: Double) {
-        usecase.fetchForecast(lat: lat, lon: lon) { [weak self] result in
-            switch result {
-            case .success(let forecastEntity):
-                self?.loadForecastEntity?(forecastEntity)
-            case .failure(let error):
-                print("Error fetching weather data: \(error.localizedDescription)")
-            }
+    func requestForecastData() {
+        usecase.fetchForecast { [weak self] result in
+            self?.loadForecastEntity?(result)
         }
     }
-}
 
-// MARK: - LocationUpdateDelegate Implementation
-
-extension WeatherForecastViewModel: LocationUpdateDelegate {
-    
-    func locationDidUpdateToLocation(location: Location) {
-        let lat = location.latitude
-        let lon = location.longitude
-        self.requestWeatherData(lat: lat, lon: lon)
-        self.requestForecastData(lat: lat, lon: lon)
-    }
-    
-    func locationDidFailWithError(error: Error) {
-        print("Location update failed with error: \(error.localizedDescription)")
-    }
 }

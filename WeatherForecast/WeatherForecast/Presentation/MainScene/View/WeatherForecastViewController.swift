@@ -27,7 +27,8 @@ final class WeatherForecastViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.requestFetchData()
+        viewModel.requestWeatherData()
+        viewModel.requestForecastData()
         binding()
     }
 }
@@ -37,15 +38,25 @@ final class WeatherForecastViewController: UIViewController {
 extension WeatherForecastViewController {
     
     private func binding() {
-
-        viewModel.loadWeatherEntity = { [weak self] weatherEntity in
-            // ui 업데이트
-            print(weatherEntity)
+        
+        viewModel.loadWeatherEntity = { [weak self] result in
+            switch result {
+            case .success(let weatherEntity):
+                // ui 업데이트
+                print(weatherEntity)
+            case .failure(let error):
+                print("Error fetching weather data: \(error.localizedDescription)")
+            }
         }
-
-        viewModel.loadForecastEntity = { [weak self] forecastEnitity in
-            // ui 업데이트
-            print(forecastEnitity)
+        
+        viewModel.loadForecastEntity = { [weak self] result in
+            switch result {
+            case .success(let forecastEnitity):
+                // ui 업데이트
+                print(forecastEnitity)
+            case .failure(let error):
+                print("Error fetching forecast data: \(error.localizedDescription)")
+            }
         }
     }
 }

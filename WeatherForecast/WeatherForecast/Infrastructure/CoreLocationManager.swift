@@ -31,18 +31,31 @@ final class CoreLocationManager: NSObject {
 // MARK: - Methods
 
 extension CoreLocationManager {
+    
     private func setUpLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
+    
+    func requestLocation() {
+        locationManager.requestLocation()
+    }
 }
 
 // MARK: - CLLocationManagerDelegate
 
 extension CoreLocationManager: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        locationManager.stopUpdatingLocation()
         guard let currentLocation = locations.last else { return }
         let location = Location(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
         delegate?.locationDidUpdateToLocation(location: location)
