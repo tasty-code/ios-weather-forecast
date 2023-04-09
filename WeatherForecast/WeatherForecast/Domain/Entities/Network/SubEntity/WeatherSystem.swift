@@ -9,7 +9,7 @@ import Foundation
 
 struct WeatherSystem: Decodable {
     let pod : String?
-    let country: String
-    let sunrise: Double
-    let sunset: Double
+    let country: String?
+    let sunrise: Double?
+    let sunset: Double?
 }

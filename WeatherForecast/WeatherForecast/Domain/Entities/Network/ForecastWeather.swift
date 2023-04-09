@@ -9,7 +9,7 @@ import Foundation
 
 struct ForecastWeather: WeatherModel {
     let list: [WeatherData]
-    let city: City
+    let city: City?
 
     enum CodingKeys: String, CodingKey {
         case list

@@ -45,6 +45,7 @@ class ViewController: UIViewController {
         
         let location = useCase.receiveCurrentLocation()
         useCase.determine(with: location)
+        useCase.loadIconImage()
     }
 }
 

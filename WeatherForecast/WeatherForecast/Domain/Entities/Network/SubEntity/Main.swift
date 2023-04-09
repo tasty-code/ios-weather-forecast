@@ -9,11 +9,11 @@ import Foundation
 
 struct Main: Decodable {
     let temperature: Double
-    let feelsLike: Double
+    let feelsLike: Double?
     let temperatureMin: Double
     let temperatureMax: Double
-    let pressure: Int
-    let humidity: Int
+    let pressure: Int?
+    let humidity: Int?
     let seaLevel: Int?
     let groundLevel: Int?
     

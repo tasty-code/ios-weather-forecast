@@ -8,8 +8,8 @@
 import Foundation
 
 struct Rain: Decodable {
-    let oneHours: Double
-    let threeHours: Double
+    let oneHours: Double?
+    let threeHours: Double?
 
     private enum CodingKeys: String, CodingKey {
         case oneHours = "1h"

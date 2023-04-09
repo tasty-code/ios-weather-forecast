@@ -8,19 +8,19 @@
 import Foundation
 
 struct CurrentWeather: WeatherModel {
-    let coordinator: Coordinate
+    let coordinator: Coordinate?
     let weathers: [Weather]
     let main: Main
-    let visibility: Double
-    let wind: Wind
-    let clouds: Clouds
+    let visibility: Double?
+    let wind: Wind?
+    let clouds: Clouds?
     let rain: Rain?
     let snow: Snow?
-    let timeOfDataCalculation: Double
-    let weatherSystem: WeatherSystem
-    let timezone: Int
-    let id: Int
-    let name: String
+    let timeOfDataCalculation: Double?
+    let weatherSystem: WeatherSystem?
+    let timezone: Int?
+    let id: Int?
+    let name: String?
     
     enum CodingKeys: String, CodingKey {
         case coordinator = "coord"

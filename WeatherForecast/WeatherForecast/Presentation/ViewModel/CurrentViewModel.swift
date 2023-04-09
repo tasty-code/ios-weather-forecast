@@ -8,7 +8,7 @@
 import Foundation
 
 struct CurrentViewModel: Hashable, WeatherViewModel {
-    let currentWeatherIcon: String
+    let currentWeatherIcon: Data
     let temperature: Temperature
 }
 

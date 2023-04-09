@@ -86,7 +86,7 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
         let highestTemperature = String(format: "%.1f", Float(model.temperature.highestTemperature) ?? 0)
         let currentTemperature = String(format: "%.1f", Float(model.temperature.currentTemperature) ?? 0)
 
-        currentWeatherEmoji.image = UIImage(named: model.currentWeatherIcon)
+        currentWeatherEmoji.image = UIImage(data: model.currentWeatherIcon)
         currentLocationLabel.text = "서울특별시 용산구"
         lowestAndHighestTemperatureLabel.text = "최저 \(lowestTemperature)˚ 최고 \(highestTemperature)˚"
         currentTemperatureLabel.text = currentTemperature + "˚"

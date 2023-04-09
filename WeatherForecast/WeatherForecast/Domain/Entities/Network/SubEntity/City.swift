@@ -8,12 +8,12 @@
 import Foundation
 
 struct City: Decodable {
-    let id: Int
-    let name: String
-    let coordinator: Coordinate
-    let country: String
-    let sunrise: Double
-    let sunset: Double
+    let id: Int?
+    let name: String?
+    let coordinator: Coordinate?
+    let country: String?
+    let sunrise: Double?
+    let sunset: Double?
 
     enum CodingKeys: String, CodingKey {
         case id
