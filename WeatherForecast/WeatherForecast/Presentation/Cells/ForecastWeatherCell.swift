@@ -75,7 +75,7 @@ final class ForecastWeatherCell: UICollectionViewCell {
         dateLabel.text = DateFormatter().transWeahterDateForm(from: model.forecastInformation.forecastDate)
         let forecastDegree = String(format: "%.1f", Float(model.forecastInformation.forecastDegree) ?? 0)
         atmosphericTemperatureLabel.text = forecastDegree + "˚"
-        weatherImage.image = UIImage(named: model.forecastEmogi)
+        weatherImage.image = UIImage(data: model.forecastEmogi)
     }
 }
 

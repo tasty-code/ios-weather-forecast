@@ -8,7 +8,7 @@
 import Foundation
 
 struct ForecastViewModel: Hashable, WeatherViewModel {
-    let forecastEmogi: String
+    let forecastEmogi: Data
     let forecastInformation: ForecastInformation
 }
 
