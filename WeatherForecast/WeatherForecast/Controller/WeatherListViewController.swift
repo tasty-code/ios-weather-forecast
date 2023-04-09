@@ -251,7 +251,7 @@ extension WeatherListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        let date = DateFormatUtil.format(with: weather.dateString)
+        let date = DateFormatUtil.format(with: weather.timestamp)
         let temperature = String(weather.weatherDetail.temperature)
         let iconID = weather.weathers.first?.icon ?? ""
 
