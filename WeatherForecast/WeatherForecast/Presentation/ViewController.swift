@@ -40,10 +40,8 @@ class ViewController: UIViewController {
 
         useCase.delegate = self
         collectionView.dataSource = self
+        UserLocation.shared.delegate = self
         UserLocation.shared.authorize()
-        
-        let location = useCase.receiveCurrentLocation()
-        useCase.determine(with: location)
         useCase.loadIconImage()
     }
 }
@@ -105,5 +103,12 @@ extension ViewController: WeatherModelDelegate {
     func loadForecastWeather(of model: [ForecastViewModel]) {
         forecastWeathers = model
         self.collectionView.reloadData()
+    }
+}
+
+extension ViewController: UserLocationDelegate {
+    func changedAuthorization() {
+        let location = useCase.receiveCurrentLocation()
+        useCase.determine(with: location)
     }
 }

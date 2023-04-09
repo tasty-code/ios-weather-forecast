@@ -14,9 +14,10 @@ enum UserLocationError: Error {
 }
 
 final class UserLocation: NSObject, CLLocationManagerDelegate {
-    
+
     static let shared = UserLocation()
-    
+
+    var delegate: UserLocationDelegate?
     var location: CLLocation? {
         sharedLocationManager.location
     }
@@ -30,6 +31,8 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
 
     func authorize() {
         switch sharedLocationManager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
+            self.delegate?.changedAuthorization()
         case .denied:
             print("위치 정보 권한이 필요합니다")
         case .notDetermined, .restricted:
@@ -37,6 +40,15 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
             sharedLocationManager.startUpdatingLocation()
         default:
             sharedLocationManager.startUpdatingLocation()
+        }
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
+            self.delegate?.changedAuthorization()
+        default:
+            return
         }
     }
 
@@ -77,4 +89,8 @@ private extension CLPlacemark {
 
         return address
     }
+}
+
+protocol UserLocationDelegate {
+    func changedAuthorization()
 }
