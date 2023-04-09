@@ -8,8 +8,13 @@
 import Foundation
 
 struct CurrentViewModel: Hashable, WeatherViewModel {
-    let currentWeatherIcon: Data
+    let currentInformation: CurrentInformation
     let temperature: Temperature
+}
+
+internal struct CurrentInformation: Hashable {
+    let currentWeatherIcon: Data
+    let currentLocationAddress: String
 }
 
 internal struct Temperature: Hashable {
