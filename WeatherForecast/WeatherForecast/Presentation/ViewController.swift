@@ -9,7 +9,6 @@ import CoreLocation
 
 class ViewController: UIViewController {
     
-//    private let repository = Repository()
     private let useCase = UseCase()
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: configureCollectionView())
