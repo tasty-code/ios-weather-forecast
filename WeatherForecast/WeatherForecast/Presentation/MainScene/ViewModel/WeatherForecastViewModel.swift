@@ -22,15 +22,14 @@ final class WeatherForecastViewModel {
 extension WeatherForecastViewModel {
     
     func requestWeatherData() {
-        usecase.fetchWeather { [weak self] result in
+        usecase.getWeather { [weak self] result in
             self?.loadWeatherEntity?(result)
         }
     }
     
     func requestForecastData() {
-        usecase.fetchForecast { [weak self] result in
+        usecase.getForecast { [weak self] result in
             self?.loadForecastEntity?(result)
         }
     }
-
 }
