@@ -35,7 +35,7 @@ class ViewController: UIViewController {
     private lazy var refresh: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
 
-        refreshControl.addTarget(self, action: #selector(refreshPlease) , for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl) , for: .valueChanged)
 
         return refreshControl
     }()
@@ -55,7 +55,7 @@ class ViewController: UIViewController {
         useCase.loadIconImage()
     }
 
-    @objc func refreshPlease() {
+    @objc func handleRefreshControl() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
             self.changedAuthorization()
             self.refresh.endRefreshing()
