@@ -28,24 +28,42 @@ final class UseCase {
     
     func determine(with location: CLLocationCoordinate2D) {
         URLPath.allCases.forEach { path in
-            switch path {
-            case .currentWeather:
-                repository.loadData(with: location,
-                                    path: path) { weatherModel, error in
-                    DispatchQueue.main.async {
-                        if let currentWeatherModel = weatherModel as? CurrentWeather {
-                            let result = self.makeCurrentWeather(with: currentWeatherModel)
-                            self.delegate?.loadCurrentWeather(of: result)
+            
+            DispatchQueue.main.async { [self] in
+                let myGroup = DispatchGroup()
+                var currentLocation = ""
+                
+                switch path {
+                case .currentWeather:
+                    repository.loadData(with: location,
+                                        path: path) { weatherModel, error in
+                        
+                        myGroup.enter()
+                        UserLocation.shared.address { address, error in
+                            if let swapLocation = address {
+                                currentLocation = swapLocation
+                            }
+                            myGroup.leave()
                         }
+                        
+                        let loadCurrentWeather = DispatchWorkItem {
+                            if let currentWeatherModel = weatherModel as? CurrentWeather {
+                                let result = self.makeCurrentWeather(with: currentWeatherModel, address: currentLocation)
+                                self.delegate?.loadCurrentWeather(of: result)
+                            }
+                        }
+                        myGroup.notify(queue: .main, work: loadCurrentWeather)
                     }
-                }
-            case .forecastWeather:
-                repository.loadData(with: location,
-                                    path: path) { weatherModel, error in
-                    DispatchQueue.main.async {
-                        if let forecastWeatherModel = weatherModel as? ForecastWeather {
-                            self.delegate?.loadForecastWeather(of: self.makeForecastWeather(with: forecastWeatherModel))
+                case .forecastWeather:
+                    repository.loadData(with: location,
+                                        path: path) { weatherModel, error in
+                        
+                        let loadForecastWeather = DispatchWorkItem {
+                            if let forecastWeatherModel = weatherModel as? ForecastWeather {
+                                self.delegate?.loadForecastWeather(of: self.makeForecastWeather(with: forecastWeatherModel))
+                            }
                         }
+                        myGroup.notify(queue: .main, work: loadForecastWeather)
                     }
                 }
             }
@@ -68,8 +86,9 @@ final class UseCase {
     
     //MARK: - Private Method
     
-    private func makeCurrentWeather(with data: CurrentWeather) -> CurrentViewModel {
+    private func makeCurrentWeather(with data: CurrentWeather, address: String) -> CurrentViewModel {
         var iconData: Data = Data()
+        
         let minTemperature = data.main.temperatureMin
         let maxTemperature = data.main.temperatureMax
         let currentTemperature = data.main.temperature
@@ -80,8 +99,9 @@ final class UseCase {
         if let weather = data.weathers.first, let data = storage[weather.icon] {
             iconData = data
         }
+        let currentInformation = CurrentInformation(currentWeatherIcon: iconData, currentLocationAddress: address)
         
-        return CurrentViewModel(currentWeatherIcon: iconData, temperature: temperature)
+        return CurrentViewModel(currentInformation: currentInformation, temperature: temperature)
     }
     
     private func makeForecastWeather(with data: ForecastWeather) -> [ForecastViewModel] {
