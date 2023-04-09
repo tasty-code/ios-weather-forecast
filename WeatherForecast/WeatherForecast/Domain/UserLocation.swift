@@ -29,7 +29,7 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
     }()
 
     func authorize() {
-        switch CLLocationManager.authorizationStatus() {
+        switch sharedLocationManager.authorizationStatus {
         case .denied:
             print("위치 정보 권한이 필요합니다")
         case .notDetermined, .restricted:
