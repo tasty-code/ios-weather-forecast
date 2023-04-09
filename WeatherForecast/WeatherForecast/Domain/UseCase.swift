@@ -63,7 +63,7 @@ final class UseCase {
                                 self.delegate?.loadForecastWeather(of: self.makeForecastWeather(with: forecastWeatherModel))
                             }
                         }
-                        myGroup.notify(queue: .main, work: loadForecastWeather)
+                        DispatchQueue.main.async(group: myGroup, execute: loadForecastWeather)
                     }
                 }
             }
