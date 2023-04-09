@@ -45,6 +45,10 @@ final class ForecastWeatherCell: UICollectionViewCell {
     private lazy var weatherImage: UIImageView = {
         let imageView = UIImageView()
         imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        let imageViewHeight = imageView.heightAnchor.constraint(equalToConstant: 40)
+        imageViewHeight.priority = UILayoutPriority(900)
+        imageViewHeight.isActive = true
+        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 1).isActive = true
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
