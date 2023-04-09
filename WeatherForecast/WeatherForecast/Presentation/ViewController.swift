@@ -22,6 +22,7 @@ class ViewController: UIViewController {
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherHeaderView.identifier)
         collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.identifier)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.refreshControl = refresh
 
         let backgroundImageView = UIImageView()
         backgroundImageView.image = UIImage(named: "WeatherBackground")
@@ -31,6 +32,15 @@ class ViewController: UIViewController {
         self.view.addSubview(collectionView)
         return collectionView
     }()
+    private lazy var refresh: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+
+        refreshControl.addTarget(self, action: #selector(refreshPlease) , for: .valueChanged)
+
+        return refreshControl
+    }()
+
+
     
     private var currentWeather: CurrentViewModel?
     private var forecastWeathers: [ForecastViewModel]?
@@ -43,6 +53,13 @@ class ViewController: UIViewController {
         UserLocation.shared.delegate = self
         UserLocation.shared.authorize()
         useCase.loadIconImage()
+    }
+
+    @objc func refreshPlease() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            self.changedAuthorization()
+            self.refresh.endRefreshing()
+        }
     }
 }
 
