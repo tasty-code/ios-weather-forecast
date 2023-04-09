@@ -59,4 +59,42 @@ class Repository {
             return nil
         }
     }
+
+    func loadIcon(completion: @escaping (Data?, Error?) -> Void) {
+
+        certifiedMakeURL { [self] url in
+            var urlRequest = URLRequest(url: url)
+
+            urlRequest.httpMethod = "GET"
+            session.dataTask(with: urlRequest) { (data, response, error) in
+                guard error == nil else {
+                    completion(nil, error)
+                    return
+                }
+
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    let responseError = HTTPResponseError.error(statusCode: (response as? HTTPURLResponse)?.statusCode ?? 404,
+                                                                description: response.debugDescription)
+                    completion(nil, responseError)
+                    return
+                }
+
+                guard let data = data else {
+                    completion(nil, NetworkEntityLoadingError.networkFailure)
+                    return
+                }
+                completion(data, nil)
+            }.resume()
+        }
+    }
+}
+
+//MARK: - Load Icon Image
+extension Repository {
+    private func certifiedMakeURL(completion: @escaping (URL) -> Void) {
+        URLPath.iconList.forEach { iConElement in
+            try? completion(URLPath.configureIconURL(of: iConElement))
+        }
+    }
 }
