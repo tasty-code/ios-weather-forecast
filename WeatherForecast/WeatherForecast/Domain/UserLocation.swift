@@ -34,8 +34,9 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
             print("위치 정보 권한이 필요합니다")
         case .notDetermined, .restricted:
             sharedLocationManager.requestWhenInUseAuthorization()
+            sharedLocationManager.startUpdatingLocation()
         default:
-            return
+            sharedLocationManager.startUpdatingLocation()
         }
     }
 
