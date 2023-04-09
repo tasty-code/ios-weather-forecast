@@ -89,7 +89,7 @@ final class UseCase {
         var forecastViewModels = [ForecastViewModel]()
         
         data.list.forEach { element in
-            let forecastDate: String = element.date
+            let forecastDate: Double = element.timeOfDataCalculation
             let forecastTemperature: Double = element.main.temperature
             let forecastInformation = ForecastInformation(forecastDate: forecastDate, forecastDegree: String(forecastTemperature))
             var forecastIcon: Data = Data()

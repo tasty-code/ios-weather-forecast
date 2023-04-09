@@ -8,7 +8,7 @@
 import Foundation
 
 struct WeatherData: Decodable {
-    let timeOfDataCalculation: Double?
+    let timeOfDataCalculation: Double
     let main: Main
     let weather: [Weather]
     let clouds: Clouds?
