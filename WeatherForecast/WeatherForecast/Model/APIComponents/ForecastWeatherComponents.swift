@@ -23,10 +23,10 @@ struct WeatherInformation: Decodable {
     let system: System
     let visibility: Int
     let precipitationProbability: Double
-    let dataTime: String
+    let dataTime: Int
 
     enum CodingKeys: String, CodingKey {
-        case dataTime = "dt_txt"
+        case dataTime = "dt"
         case numericalInformation = "main"
         case weather, clouds, wind, visibility, rain
         case precipitationProbability = "pop"

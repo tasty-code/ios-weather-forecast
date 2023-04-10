@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct CurrentCoordinate: Decodable {
     let latitude, longitude: Double
@@ -13,6 +14,11 @@ struct CurrentCoordinate: Decodable {
     enum CodingKeys: String, CodingKey {
         case latitude = "lat"
         case longitude = "lon"
+    }
+    
+    init(of location: CLLocation) {
+        self.latitude = location.coordinate.latitude
+        self.longitude = location.coordinate.longitude
     }
 }
 

@@ -29,8 +29,8 @@ class WeatherForecastTests: XCTestCase {
         let apiKey = Bundle.main.apiKey
 
         // when
-        let yonsanCurrentURL = try? WeatherURL.make(at: yongsanCoordinate, weatherRange: CurrentWeatherComponents.weatherRange)
-        let yonsanForecastURL = try? WeatherURL.make(at: yongsanCoordinate, weatherRange: ForecastWeatherComponents.weatherRange)
+        let yonsanCurrentURL = try? URLService.makeDataURL(at: yongsanCoordinate, weatherRange: CurrentWeatherComponents.weatherRange)
+        let yonsanForecastURL = try? URLService.makeDataURL(at: yongsanCoordinate, weatherRange: ForecastWeatherComponents.weatherRange)
         let resultCurrentURL = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=37.53&lon=126.96&units=metric&lang=kr&appid=\(apiKey)")
         let resultForecastURL = URL(string: "https://api.openweathermap.org/data/2.5/forecast?lat=37.53&lon=126.96&units=metric&lang=kr&appid=\(apiKey)")
 
@@ -44,8 +44,8 @@ class WeatherForecastTests: XCTestCase {
         let yongsanCoordinate = CurrentCoordinate(latitude: 37.53, longitude: 126.96)
 
         // when
-        let cityOfRequestedCurrentWeather = try? await type(of: sutCurrent).parse(at: yongsanCoordinate).name
-        let cityOfRequestedForecastWeather = try? await type(of: sutForecast).parse(at: yongsanCoordinate).city.name
+        let cityOfRequestedCurrentWeather = try? await type(of: sutCurrent).parseWeatherData(at: yongsanCoordinate).name
+        let cityOfRequestedForecastWeather = try? await type(of: sutForecast).parseWeatherData(at: yongsanCoordinate).city.name
         let resultCityName = "Yongsan"
 
         // then
