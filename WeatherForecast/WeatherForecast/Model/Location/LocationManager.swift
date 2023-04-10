@@ -64,6 +64,8 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
     private func reverseGeocodeLocation(_ location: CLLocation) {
         geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+            self.address = ""
+
             guard let placemark = placemarks?.first else { return }
 
             if let administrativeArea = placemark.administrativeArea { self.address += administrativeArea }
