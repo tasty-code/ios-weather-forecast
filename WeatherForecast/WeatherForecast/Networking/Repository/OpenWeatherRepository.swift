@@ -65,25 +65,24 @@ final class OpenWeatherRepository {
         }
     }
 
-    func fetchWeatherIconImage(withID iconID: String, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
-        let url = generateIconImageURL(withID: iconID)
-
+    func fetchWeatherIconImage(withID iconID: String, completion: @escaping (UIImage?) -> Void) {
         if let iconImage = ImageCacheManager.shared.get(for: iconID) {
-            completion(.success(iconImage))
+            completion(iconImage)
             return
         }
 
-        service.performRequest(with: url, httpMethodType: .get) { result in
+        let urlRequest = OpenWeatherAPIEndpoints.iconImage(id: iconID).urlRequest
+
+        service.performRequest(with: urlRequest) { result in
             switch result {
             case .success(let data):
-                guard let icon = UIImage(data: data) else {
-                    completion(.failure(.invalidImage))
-                    return
+                if let icon = UIImage(data: data) {
+                    ImageCacheManager.shared.store(icon, for: iconID)
+                    completion(icon)
                 }
-                ImageCacheManager.shared.store(icon, for: iconID)
-                completion(.success(icon))
-            case .failure(let error):
-                completion(.failure(error))
+                completion(nil)
+            case .failure:
+                completion(nil)
             }
         }
     }

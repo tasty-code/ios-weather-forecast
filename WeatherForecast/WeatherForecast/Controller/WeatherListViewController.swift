@@ -172,22 +172,19 @@ final class WeatherListViewController: UIViewController {
     private func updateHeaderView() {
         guard let currentWeather else { return }
 
-        repository.fetchWeatherIconImage(withID: currentWeather.weathers.first?.icon ?? "") { result in
-            switch result {
-            case.success(let image):
-                DispatchQueue.main.async {
-                    guard let headerView = self.collectionView.visibleSupplementaryViews(
-                        ofKind: UICollectionView.elementKindSectionHeader
-                    ).first as? WeatherHeaderView else { return }
+        repository.fetchWeatherIconImage(withID: currentWeather.weathers.first?.icon ?? "") { iconImage in
+            guard let iconImage else { return }
 
-                    headerView.configure(
-                        with: currentWeather.weatherDetail,
-                        address: self.addressManager.address,
-                        icon: image
-                    )
-                }
-            case.failure(let error):
-                log(.network, error: error)
+            DispatchQueue.main.async {
+                guard let headerView = self.collectionView.visibleSupplementaryViews(
+                    ofKind: UICollectionView.elementKindSectionHeader
+                ).first as? WeatherHeaderView else { return }
+
+                headerView.configure(
+                    with: currentWeather.weatherDetail,
+                    address: self.addressManager.address,
+                    icon: iconImage
+                )
             }
         }
     }
@@ -257,14 +254,11 @@ extension WeatherListViewController: UICollectionViewDataSource {
         let temperature = String(weather.weatherDetail.temperature)
         let iconID = weather.weathers.first?.icon ?? ""
 
-        repository.fetchWeatherIconImage(withID: iconID) { result in
-            switch result {
-            case .success(let image):
-                DispatchQueue.main.async {
-                    cell.configure(icon: image)
-                }
-            case .failure(let error):
-                log(.network, error: error)
+        repository.fetchWeatherIconImage(withID: iconID) { iconImage in
+            guard let iconImage else { return }
+
+            DispatchQueue.main.async {
+                cell.configure(icon: iconImage)
             }
         }
 
