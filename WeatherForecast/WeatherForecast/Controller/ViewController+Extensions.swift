@@ -12,11 +12,8 @@ extension ViewController: LocationManagerDelegate {
     func fetchData() {
         guard let coordinate = locationManager.getCoordinate() else { return }
         Task {
-            let weatherData = try await networkManager.callWeatherAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            let forecastData = try await networkManager.callForecastAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
-
-            weather = weatherData
-            forecast = forecastData
+            weather = try await networkManager.callWeatherAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            forecast = try await networkManager.callForecastAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
 
             guard let weatherIconString = weather?.weather.first?.icon else { return }
             weatherIcon = try await networkManager.getWeatherIconCuncurrency(weatherStatus: weatherIconString)
