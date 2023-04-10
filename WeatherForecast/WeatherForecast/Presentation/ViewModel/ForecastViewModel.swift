@@ -5,10 +5,10 @@
 //  Created by 박재우 on 2023/04/07.
 //
 
-import Foundation
+import UIKit
 
-struct ForecastViewModel: Hashable, WeatherViewModel {
-    let forecastEmogi: Data
+struct ForecastViewModel: WeatherViewModel {
+    let forecastEmogi: UIImage
     let forecastInformation: ForecastInformation
 }
 

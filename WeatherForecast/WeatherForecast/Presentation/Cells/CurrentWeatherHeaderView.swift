@@ -100,7 +100,7 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
         let highestTemperature = String().convertWeatherForm(from: model.temperature.highestTemperature)
         let currentTemperature = String().convertWeatherForm(from: model.temperature.currentTemperature)
 
-        weatherImageView.image = UIImage(data: model.currentInformation.currentWeatherIcon)
+        weatherImageView.image = model.currentInformation.currentWeatherIcon
         currentLocationLabel.text = model.currentInformation.currentLocationAddress
         lowestAndHighestTemperatureLabel.text = "최저 \(lowestTemperature) 최고 \(highestTemperature)"
         currentTemperatureLabel.text = currentTemperature

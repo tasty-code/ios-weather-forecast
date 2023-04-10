@@ -5,15 +5,15 @@
 //  Created by 박재우 on 2023/04/07.
 //
 
-import Foundation
+import UIKit
 
-struct CurrentViewModel: Hashable, WeatherViewModel {
+struct CurrentViewModel: WeatherViewModel {
     let currentInformation: CurrentInformation
     let temperature: Temperature
 }
 
-internal struct CurrentInformation: Hashable {
-    let currentWeatherIcon: Data
+internal struct CurrentInformation {
+    let currentWeatherIcon: UIImage
     let currentLocationAddress: String
 }
 

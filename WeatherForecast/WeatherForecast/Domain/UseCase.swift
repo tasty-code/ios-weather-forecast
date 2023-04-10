@@ -6,13 +6,14 @@
 //
 
 import CoreLocation
+import UIKit
 
 final class UseCase {
     
     weak var delegate: WeatherModelDelegate?
     
     private let repository: Repository
-    private var storage = [String:Data]()
+    private var cashedImage = NSCache<NSString, UIImage>()
     
     init() {
         self.repository = Repository()
@@ -75,11 +76,12 @@ final class UseCase {
             DispatchQueue.main.async {
                 let element = URLPath.iconList.removeFirst()
                 
-                guard let certifiedData = data else {
+                guard let certifiedData = data,
+                      let iconImage = UIImage(data: certifiedData) else {
                     return
                 }
                 
-                self.storage[element] = certifiedData
+                self.cashedImage.setObject(iconImage, forKey: element as NSString)
             }
         }
     }
@@ -87,7 +89,7 @@ final class UseCase {
     //MARK: - Private Method
     
     private func makeCurrentWeather(with data: CurrentWeather, address: String) -> CurrentViewModel {
-        var iconData: Data = Data()
+        var iconData: UIImage = UIImage()
         
         let minTemperature = data.main.temperatureMin
         let maxTemperature = data.main.temperatureMax
@@ -96,7 +98,7 @@ final class UseCase {
                                       highestTemperature: maxTemperature,
                                       currentTemperature: currentTemperature)
         
-        if let weather = data.weathers.first, let data = storage[weather.icon] {
+        if let weather = data.weathers.first, let data = cashedImage.object(forKey: weather.icon as NSString) {
             iconData = data
         }
         let currentInformation = CurrentInformation(currentWeatherIcon: iconData, currentLocationAddress: address)
@@ -112,13 +114,13 @@ final class UseCase {
             let forecastDate: Double = element.timeOfDataCalculation
             let forecastTemperature: Double = element.main.temperature
             let forecastInformation = ForecastInformation(forecastDate: forecastDate, forecastDegree: forecastTemperature)
-            var forecastIcon: Data = Data()
+            var forecastIcon: UIImage = UIImage()
             
             if let icon = element.weather.first?.icon {
-                guard let iconData = storage[icon] else {
+                guard let icon = cashedImage.object(forKey: icon as NSString) else {
                     return
                 }
-                forecastIcon = iconData
+                forecastIcon = icon
             }
             
             let forecastViewModel = ForecastViewModel(forecastEmogi: forecastIcon, forecastInformation: forecastInformation)
