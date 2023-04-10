@@ -94,16 +94,16 @@ final class UseCase {
         let minTemperature = data.main.temperatureMin
         let maxTemperature = data.main.temperatureMax
         let currentTemperature = data.main.temperature
-        let temperature = Temperature(lowestTemperature: minTemperature,
-                                      highestTemperature: maxTemperature,
-                                      currentTemperature: currentTemperature)
+        let temperature = Temperature(lowest: minTemperature,
+                                      highest: maxTemperature,
+                                      current: currentTemperature)
         
         if let weather = data.weathers.first, let data = cashedImage.object(forKey: weather.icon as NSString) {
             iconData = data
         }
-        let currentInformation = CurrentInformation(currentWeatherIcon: iconData, currentLocationAddress: address)
+        let currentInformation = CurrentInformation(weatherImage: iconData, locationAddress: address)
         
-        return CurrentViewModel(currentInformation: currentInformation, temperature: temperature)
+        return CurrentViewModel(information: currentInformation, temperature: temperature)
     }
     
     private func makeForecastWeather(with data: ForecastWeather) -> [ForecastViewModel] {
@@ -113,7 +113,7 @@ final class UseCase {
         data.list.forEach { element in
             let forecastDate: Double = element.timeOfDataCalculation
             let forecastTemperature: Double = element.main.temperature
-            let forecastInformation = ForecastInformation(forecastDate: forecastDate, forecastDegree: forecastTemperature)
+            let forecastInformation = ForecastInformation(date: forecastDate, degree: forecastTemperature)
             var forecastIcon: UIImage = UIImage()
             
             if let icon = element.weather.first?.icon {
@@ -123,7 +123,7 @@ final class UseCase {
                 forecastIcon = icon
             }
             
-            let forecastViewModel = ForecastViewModel(forecastEmogi: forecastIcon, forecastInformation: forecastInformation)
+            let forecastViewModel = ForecastViewModel(weatherImage: forecastIcon, information: forecastInformation)
             forecastViewModels.append(forecastViewModel)
         }
         

@@ -8,11 +8,11 @@
 import UIKit
 
 struct ForecastViewModel: WeatherViewModel {
-    let forecastEmogi: UIImage
-    let forecastInformation: ForecastInformation
+    let weatherImage: UIImage
+    let information: ForecastInformation
 }
 
 internal struct ForecastInformation: Hashable {
-    let forecastDate: Double
-    let forecastDegree: Double
+    let date: Double
+    let degree: Double
 }

@@ -8,17 +8,17 @@
 import UIKit
 
 struct CurrentViewModel: WeatherViewModel {
-    let currentInformation: CurrentInformation
+    let information: CurrentInformation
     let temperature: Temperature
 }
 
 internal struct CurrentInformation {
-    let currentWeatherIcon: UIImage
-    let currentLocationAddress: String
+    let weatherImage: UIImage
+    let locationAddress: String
 }
 
 internal struct Temperature: Hashable {
-    let lowestTemperature: Double
-    let highestTemperature: Double
-    let currentTemperature: Double
+    let lowest: Double
+    let highest: Double
+    let current: Double
 }

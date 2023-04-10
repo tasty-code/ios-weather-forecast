@@ -96,12 +96,12 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     //MARK: - Method
 
     func prepare(model: CurrentViewModel) {
-        let lowestTemperature = String().convertWeatherForm(from: model.temperature.lowestTemperature)
-        let highestTemperature = String().convertWeatherForm(from: model.temperature.highestTemperature)
-        let currentTemperature = String().convertWeatherForm(from: model.temperature.currentTemperature)
+        let lowestTemperature = String().convertWeatherForm(from: model.temperature.lowest)
+        let highestTemperature = String().convertWeatherForm(from: model.temperature.highest)
+        let currentTemperature = String().convertWeatherForm(from: model.temperature.current)
 
-        weatherImageView.image = model.currentInformation.currentWeatherIcon
-        currentLocationLabel.text = model.currentInformation.currentLocationAddress
+        weatherImageView.image = model.information.weatherImage
+        currentLocationLabel.text = model.information.locationAddress
         lowestAndHighestTemperatureLabel.text = "최저 \(lowestTemperature) 최고 \(highestTemperature)"
         currentTemperatureLabel.text = currentTemperature
     }

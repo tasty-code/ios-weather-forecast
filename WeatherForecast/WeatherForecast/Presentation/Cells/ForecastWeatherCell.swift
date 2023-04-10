@@ -74,9 +74,9 @@ final class ForecastWeatherCell: UICollectionViewCell {
     }
 
     func prepare(model: ForecastViewModel) {
-        dateLabel.text = DateFormatter().convertWeatherForm(from: model.forecastInformation.forecastDate)
-        atmosphericTemperatureLabel.text = String().convertWeatherForm(from: model.forecastInformation.forecastDegree)
-        weatherImageView.image = model.forecastEmogi
+        dateLabel.text = DateFormatter().convertWeatherForm(from: model.information.date)
+        atmosphericTemperatureLabel.text = String().convertWeatherForm(from: model.information.degree)
+        weatherImageView.image = model.weatherImage
     }
 }
 
