@@ -13,14 +13,20 @@ class WeatherCollectionViewHeader: UICollectionReusableView {
     static let headerIdentifier = "WeatherCollectionViewHeader"
 
     // MARK: - Public property
-    var headerLabel = UILabel()
+    var weatherImage = UIImageView()
+    var locationLabel = UILabel()
+    var tempMinAndMaxLabel = UILabel()
+    var tempLabel = UILabel()
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
 
         super.init(frame: frame)
 
-        addSubview(headerLabel)
+        addSubview(weatherImage)
+        addSubview(locationLabel)
+        addSubview(tempMinAndMaxLabel)
+        addSubview(tempLabel)
         configureHeaderSubViewConstraints()
     }
 
@@ -30,13 +36,30 @@ class WeatherCollectionViewHeader: UICollectionReusableView {
 
     // MARK: - Private function
     private func configureHeaderSubViewConstraints() {
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        weatherImage.translatesAutoresizingMaskIntoConstraints = false
+        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        tempMinAndMaxLabel.translatesAutoresizingMaskIntoConstraints = false
+        tempLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            headerLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            headerLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            headerLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            weatherImage.topAnchor.constraint(equalTo: self.topAnchor),
+            weatherImage.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            weatherImage.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            weatherImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            weatherImage.widthAnchor.constraint(equalToConstant: self.frame.width * 0.25),
+
+            locationLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            locationLabel.leadingAnchor.constraint(equalTo: weatherImage.trailingAnchor),
+            locationLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+
+            tempMinAndMaxLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor),
+            tempMinAndMaxLabel.leadingAnchor.constraint(equalTo: weatherImage.trailingAnchor),
+            tempMinAndMaxLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+
+            tempLabel.topAnchor.constraint(equalTo: tempMinAndMaxLabel.bottomAnchor),
+            tempLabel.leadingAnchor.constraint(equalTo: weatherImage.trailingAnchor),
+            tempLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            tempLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

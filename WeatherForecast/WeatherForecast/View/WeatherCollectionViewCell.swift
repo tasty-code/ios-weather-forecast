@@ -15,7 +15,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     // MARK: - Public property
     var timeLabel = UILabel()
     var temperatureLabel = UILabel()
-    var tempImage = UILabel()
+    var tempImage = UIImageView()
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
