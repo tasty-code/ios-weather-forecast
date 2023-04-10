@@ -13,7 +13,6 @@ enum OpenWeatherAPIEndpoints {
     case iconImage(id: String)
 }
 
-
 extension OpenWeatherAPIEndpoints {
     var endpoint: Endpoint {
         switch self {
