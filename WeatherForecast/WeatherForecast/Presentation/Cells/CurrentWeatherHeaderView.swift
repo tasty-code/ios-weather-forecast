@@ -26,19 +26,34 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     
     //MARK: - Private Property
     
-    private var currentWeatherEmoji: UIImageView = {
+    private var weatherImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
-    private var currentLocationLabel = UILabel()
+    private var currentLocationLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18)
+        label.textColor = .white
+        return label
+    }()
     
-    private var lowestAndHighestTemperatureLabel = UILabel()
+    private var lowestAndHighestTemperatureLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18)
+        label.textColor = .white
+        return label
+    }()
     
-    private var currentTemperatureLabel = UILabel()
-    
+    private var currentTemperatureLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 30)
+        label.textColor = .white
+        return label
+    }()
+
     //MARK: - StackView
     
     private var addressInformationView: UIStackView = {
@@ -54,23 +69,21 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
         currentInformationView.spacing = 30
         return currentInformationView
     }()
-    
+
     //MARK: - Configure Of Layout
+
     func configuration() {
         self.addSubview(currentInformationView)
-        
+
         [currentLocationLabel, lowestAndHighestTemperatureLabel, currentTemperatureLabel].forEach { label in
-            label.textColor = .white
-            label.font = .systemFont(ofSize: 18)
             self.addressInformationView.addArrangedSubview(label)
         }
 
-        currentTemperatureLabel.font = .systemFont(ofSize: 30)
-        
-        [currentWeatherEmoji, addressInformationView].forEach { view in
+
+        [weatherImageView, addressInformationView].forEach { view in
             self.currentInformationView.addArrangedSubview(view)
         }
-        
+
         currentInformationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             currentInformationView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15).withPriority(.defaultHigh),
@@ -81,12 +94,13 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     }
     
     //MARK: - Method
+
     func prepare(model: CurrentViewModel) {
         let lowestTemperature = String().convertWeatherForm(from: model.temperature.lowestTemperature)
         let highestTemperature = String().convertWeatherForm(from: model.temperature.highestTemperature)
         let currentTemperature = String().convertWeatherForm(from: model.temperature.currentTemperature)
 
-        currentWeatherEmoji.image = UIImage(data: model.currentInformation.currentWeatherIcon)
+        weatherImageView.image = UIImage(data: model.currentInformation.currentWeatherIcon)
         currentLocationLabel.text = model.currentInformation.currentLocationAddress
         lowestAndHighestTemperatureLabel.text = "최저 \(lowestTemperature) 최고 \(highestTemperature)"
         currentTemperatureLabel.text = currentTemperature

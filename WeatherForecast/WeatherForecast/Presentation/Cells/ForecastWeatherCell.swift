@@ -38,13 +38,11 @@ final class ForecastWeatherCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18)
         label.textColor = .white
-        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return label
     }()
 
-    private lazy var weatherImage: UIImageView = {
+    private lazy var weatherImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: 40).withPriority(.defaultHigh),
             imageView.widthAnchor.constraint(equalToConstant: 40)
@@ -56,16 +54,16 @@ final class ForecastWeatherCell: UICollectionViewCell {
     //MARK: - StackView
 
     lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [dateLabel, atmosphericTemperatureLabel, weatherImage])
+        let stackView = UIStackView(arrangedSubviews: [dateLabel, atmosphericTemperatureLabel, weatherImageView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fill
         stackView.spacing = 20
         addSubview(stackView)
         return stackView
     }()
     
     //MARK: - Configure Of Layout
+
     private func configuration() {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 18),
@@ -78,7 +76,7 @@ final class ForecastWeatherCell: UICollectionViewCell {
     func prepare(model: ForecastViewModel) {
         dateLabel.text = DateFormatter().convertWeatherForm(from: model.forecastInformation.forecastDate)
         atmosphericTemperatureLabel.text = String().convertWeatherForm(from: model.forecastInformation.forecastDegree)
-        weatherImage.image = UIImage(data: model.forecastEmogi)
+        weatherImageView.image = UIImage(data: model.forecastEmogi)
     }
 }
 
