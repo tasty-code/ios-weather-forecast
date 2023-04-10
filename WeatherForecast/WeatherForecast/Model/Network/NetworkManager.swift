@@ -5,117 +5,76 @@
 //  Created by 이상윤 on 2023/03/21.
 //
 
-import Foundation
+import UIKit
 import CoreLocation
 
 final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
-    // MARK: - Private property
-    private(set) var latitude: Double = 37.533624
-    private(set) var longitude: Double = 126.963206
-
-    // MARK: - Public property
-    let callAPIGroup = DispatchGroup()
-    var weatherData: Weather?
-    var forecastData: Forecast?
     
     // MARK: - Public
-    func callAPI(completion: @escaping () -> Void) {
-        callAPIGroup.enter()
-        callWeatherAPI() { resultData in
-            self.weatherData = resultData
+    func callWeatherAPIConcurrency(latitude: Double, longitude: Double) async throws -> Weather? {
+        let weatherURLString = weatherURL(lat: latitude, lon: longitude)
+        let weatherURL = try getURL(string: weatherURLString)
+        var weatherURLRequest = URLRequest(url: weatherURL)
 
-            self.callAPIGroup.leave()
-        }
+        weatherURLRequest.httpMethod = "GET"
 
-        callAPIGroup.enter()
-        callForecastAPI() { resultData in
-            self.forecastData = resultData
-
-            self.callAPIGroup.leave()
-        }
-
-        callAPIGroup.notify(queue: .main) {
-            completion()
-        }
+        let (data, _) = try await URLSession.shared.data(for: weatherURLRequest)
+        let weather = try JSONDecoder().decode(Weather.self, from: data)
+        print("[NetworkManager](fetched)weather")
+        return weather
     }
 
-    func updateLocation(latitude: Double, longitude: Double) {
-        self.latitude = latitude
-        self.longitude = longitude
+    func callForecastAPIConcurrency(latitude: Double, longitude: Double) async throws -> Forecast? {
+        let forecastURLString = forecastURL(lat: latitude, lon: longitude)
+        let forecastURL = try getURL(string: forecastURLString)
+        var forecastURLRequest = URLRequest(url: forecastURL)
+        
+        forecastURLRequest.httpMethod = "GET"
+        
+        let (data, _) = try await URLSession.shared.data(for: forecastURLRequest)
+        let forecast = try JSONDecoder().decode(Forecast.self, from: data)
+        print("[NetworkManager](fetched)forecast")
+        return forecast
     }
-    
-    // MARK: - Private
-    private func callWeatherAPI(completion: @escaping (Weather?) -> Void) {
-        do {
-            let weatherURLString = weatherURL(lat: latitude, lon: longitude)
-            let weatherURL = try getURL(string: weatherURLString)
-            var weatherURLRequest = URLRequest(url: weatherURL)
-            
-            weatherURLRequest.httpMethod = "GET"
-            
-            dataTask(URLRequest: weatherURLRequest, myType: Weather.self) { result in
-                switch result {
-                case .success(let data):
-                    guard self.hasWeatherDataChanged(from: data) else { return }
-                    completion(data)
-                    print("[NetworkManager](fetched)weatherData")
-                case .failure(let error):
-                    print("[NetworkManager]dataTask error: ", error)
-                }
+
+    func getWeatherIconCuncurrency(weatherStatus: String) async throws -> UIImage? {
+        let weatherIconURL = try getURL(string: "https://openweathermap.org/img/wn/\(weatherStatus)@2x.png")
+        var weatherIconURLRequest = URLRequest(url: weatherIconURL)
+
+        weatherIconURLRequest.httpMethod = "GET"
+
+        let (data, _) = try await URLSession.shared.data(for: weatherIconURLRequest)
+        let weatherIconImage = UIImage(data: data)
+        print("[NetworkManager](fetched)WeatherIcon")
+        return weatherIconImage
+    }
+
+    func getForecastIconCuncurrency(forecastList: [Forecast.List]) async throws -> [String: UIImage]? {
+        let a = forecastList.first?.weather.first?.icon
+        var imageSet: [String: UIImage] = [:]
+
+        for forecastCase in forecastList {
+            if let forecastStatus = forecastCase.weather.first?.icon {
+                let forecastIconURL = try getURL(string: "https://openweathermap.org/img/wn/\(forecastStatus)@2x.png")
+                var forecastIconURLRequest = URLRequest(url: forecastIconURL)
+
+                forecastIconURLRequest.httpMethod = "GET"
+
+                let (data, _) = try await URLSession.shared.data(for: forecastIconURLRequest)
+
+                imageSet[forecastStatus] = UIImage(data: data)
             }
-        } catch {
-            print(error.localizedDescription)
         }
+
+        print("[NetworkManager](fetched)ForecastIcon")
+        return imageSet
     }
-    
+
+    // MARK: - Private
     private func getURL(string: String) throws -> URL {
         guard let weatherURL = URL(string: string) else {
             throw NetworkError.invalidURL
         }
         return weatherURL
-    }
-    
-    private func callForecastAPI(completion: @escaping (Forecast?) -> Void) {
-        do {
-            let forecastURLString = forecastURL(lat: latitude, lon: longitude)
-            let forecastURL = try getURL(string: forecastURLString)
-            var forecastURLRequest = URLRequest(url: forecastURL)
-            
-            forecastURLRequest.httpMethod = "GET"
-            
-            dataTask(URLRequest: forecastURLRequest, myType: Forecast.self) { result in
-                switch result {
-                case .success(let data):
-                    guard self.hasForecastDataChanged(from: data) else { return }
-                    completion(data)
-                    print("[NetworkManager](fetched)forecastData")
-                case .failure(let error):
-                    print("[NetworkManager]dataTask error: ", error)
-                }
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    private func hasForecastDataChanged(from: Forecast) -> Bool {
-        if from.city.name == self.forecastData?.city.name &&
-            from.list.first?.timeOfDataText == self.forecastData?.list.first?.timeOfDataText &&
-            from.list.first?.weather.description == self.forecastData?.list.first?.weather.description
-        {
-            return false
-        }
-        
-        return true
-    }
-    
-    private func hasWeatherDataChanged(from: Weather) -> Bool {
-        if from.name == self.weatherData?.name &&
-            from.main.temp == self.weatherData?.main.temp
-        {
-            return false
-        }
-        
-        return true
     }
 }
