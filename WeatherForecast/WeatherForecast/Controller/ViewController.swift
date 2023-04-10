@@ -22,12 +22,19 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureLocationManager()
+        configureCollectionView()
+        configureAutoLayout()
+    }
+
+    private func configureLocationManager() {
         locationManager.delegate = self
+    }
+
+    private func configureCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
-        view.addSubview(collectionView)
         registerCollectionViewCell()
-        configureAutoLayout()
     }
     
     private func registerCollectionViewCell() {
@@ -36,6 +43,7 @@ class ViewController: UIViewController {
     }
     
     private func configureAutoLayout() {
+        view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
