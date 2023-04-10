@@ -14,5 +14,5 @@ struct ForecastViewModel: Hashable, WeatherViewModel {
 
 internal struct ForecastInformation: Hashable {
     let forecastDate: Double
-    let forecastDegree: String
+    let forecastDegree: Double
 }

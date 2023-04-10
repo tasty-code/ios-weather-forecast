@@ -82,14 +82,14 @@ class CurrentWeatherHeaderView: UICollectionReusableView {
     
     //MARK: - Method
     func prepare(model: CurrentViewModel) {
-        let lowestTemperature = String(format: "%.1f", Float(model.temperature.lowestTemperature) ?? 0)
-        let highestTemperature = String(format: "%.1f", Float(model.temperature.highestTemperature) ?? 0)
-        let currentTemperature = String(format: "%.1f", Float(model.temperature.currentTemperature) ?? 0)
+        let lowestTemperature = String().convertWeatherForm(from: model.temperature.lowestTemperature)
+        let highestTemperature = String().convertWeatherForm(from: model.temperature.highestTemperature)
+        let currentTemperature = String().convertWeatherForm(from: model.temperature.currentTemperature)
 
         currentWeatherEmoji.image = UIImage(data: model.currentInformation.currentWeatherIcon)
         currentLocationLabel.text = model.currentInformation.currentLocationAddress
-        lowestAndHighestTemperatureLabel.text = "최저 \(lowestTemperature)˚ 최고 \(highestTemperature)˚"
-        currentTemperatureLabel.text = currentTemperature + "˚"
+        lowestAndHighestTemperatureLabel.text = "최저 \(lowestTemperature) 최고 \(highestTemperature)"
+        currentTemperatureLabel.text = currentTemperature
     }
 }
 

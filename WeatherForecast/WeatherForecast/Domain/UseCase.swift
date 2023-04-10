@@ -92,9 +92,9 @@ final class UseCase {
         let minTemperature = data.main.temperatureMin
         let maxTemperature = data.main.temperatureMax
         let currentTemperature = data.main.temperature
-        let temperature = Temperature(lowestTemperature: String(minTemperature),
-                                      highestTemperature: String(maxTemperature),
-                                      currentTemperature: String(currentTemperature))
+        let temperature = Temperature(lowestTemperature: minTemperature,
+                                      highestTemperature: maxTemperature,
+                                      currentTemperature: currentTemperature)
         
         if let weather = data.weathers.first, let data = storage[weather.icon] {
             iconData = data
@@ -111,7 +111,7 @@ final class UseCase {
         data.list.forEach { element in
             let forecastDate: Double = element.timeOfDataCalculation
             let forecastTemperature: Double = element.main.temperature
-            let forecastInformation = ForecastInformation(forecastDate: forecastDate, forecastDegree: String(forecastTemperature))
+            let forecastInformation = ForecastInformation(forecastDate: forecastDate, forecastDegree: forecastTemperature)
             var forecastIcon: Data = Data()
             
             if let icon = element.weather.first?.icon {

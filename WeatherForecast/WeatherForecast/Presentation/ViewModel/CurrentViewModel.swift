@@ -18,7 +18,7 @@ internal struct CurrentInformation: Hashable {
 }
 
 internal struct Temperature: Hashable {
-    let lowestTemperature: String
-    let highestTemperature: String
-    let currentTemperature: String
+    let lowestTemperature: Double
+    let highestTemperature: Double
+    let currentTemperature: Double
 }
