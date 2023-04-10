@@ -17,7 +17,7 @@ internal struct CurrentInformation {
     let locationAddress: String
 }
 
-internal struct Temperature: Hashable {
+internal struct Temperature {
     let lowest: Double
     let highest: Double
     let current: Double

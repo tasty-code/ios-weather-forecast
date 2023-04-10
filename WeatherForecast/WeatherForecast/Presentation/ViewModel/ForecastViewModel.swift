@@ -12,7 +12,7 @@ struct ForecastViewModel: WeatherViewModel {
     let information: ForecastInformation
 }
 
-internal struct ForecastInformation: Hashable {
+internal struct ForecastInformation {
     let date: Double
     let degree: Double
 }
