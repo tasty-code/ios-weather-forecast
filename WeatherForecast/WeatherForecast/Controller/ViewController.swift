@@ -13,6 +13,31 @@ class ViewController: UIViewController {
     let networkManager = NetworkManager()
     let locationManager = LocationManager()
 
+    var weather: Weather? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+
+    var forecast: Forecast? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+
+    var weatherIcon: UIImage? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    var forecastIcons: [String: UIImage]? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+
+    let dateFormatter = DateFormatter()
+
     var collectionView = WeatherCollectionView(frame: .zero)
     var collectionViewBackground: UIImageView = {
         let imageView = UIImageView()
@@ -24,10 +49,11 @@ class ViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager.delegate = self
-
-        setUpCollectionView()
+        dateFormatter.dateFormat = "MM/dd(E) HH시"
+        
         setUpLocationManager()
+        locationManager.delegate = self
+        setUpCollectionView()
     }
     
     // MARK: - Private function

@@ -8,13 +8,21 @@
 import UIKit
 import CoreLocation
 
-// MARK: - LocationManagerDelegate
 extension ViewController: LocationManagerDelegate {
-    
-    func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation) {
-        networkManager.updateLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        networkManager.callAPI() {
-            self.collectionView.reloadData()
+    func fetchData() {
+        guard let coordinate = locationManager.getCoordinate() else { return }
+        Task {
+            let weatherData = try await networkManager.callWeatherAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            let forecastData = try await networkManager.callForecastAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
+
+            weather = weatherData
+            forecast = forecastData
+
+            guard let weatherIconString = weather?.weather.first?.icon else { return }
+            weatherIcon = try await networkManager.getWeatherIconCuncurrency(weatherStatus: weatherIconString)
+
+            guard let forecastList = forecast?.list else { return }
+            forecastIcons = try await networkManager.getForecastIconCuncurrency(forecastList: forecastList)
         }
     }
 }
@@ -34,7 +42,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
 extension ViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return networkManager.forecastData?.list.count ?? 0
+        return forecast?.list.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -42,8 +50,23 @@ extension ViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         }
 
-        header.headerLabel.text = "This is CollectionView Header"
-        header.headerLabel.textColor = .white
+        header.weatherImage.image = weatherIcon
+
+        header.locationLabel.text = locationManager.getAddress()
+        header.locationLabel.textColor = .white
+        header.locationLabel.font = UIFont.systemFont(ofSize: 15)
+
+        if let tempMin = weather?.main.tempMin, let tempMax = weather?.main.tempMax {
+            header.tempMinAndMaxLabel.text = "최저 \(String(format: "%.1f", tempMin))° 최대 \(String(format: "%.1f", tempMax))°"
+            header.tempMinAndMaxLabel.textColor = .white
+            header.tempMinAndMaxLabel.font = UIFont.systemFont(ofSize: 15)
+        }
+
+        if let temp = weather?.main.temp {
+            header.tempLabel.text = "\(String(format: "%.1f", temp))°"
+            header.tempLabel.textColor = .white
+            header.tempLabel.font = UIFont.systemFont(ofSize: 30)
+        }
 
         return header
     }
@@ -53,18 +76,22 @@ extension ViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        cell.timeLabel.text = networkManager.forecastData?.list[indexPath.section].timeOfDataText
-        cell.timeLabel.textColor = .white
+        if let forecastData = forecast?.list[indexPath.row] {
+            let conversionTimeDataToDate = Date(timeIntervalSinceReferenceDate: TimeInterval(forecastData.timeOfData))
 
-        if let temperatureData = networkManager.forecastData?.list[indexPath.section].main.temp {
-            cell.temperatureLabel.text = String(format: "%.1f", temperatureData) + "°"
+            cell.timeLabel.text = dateFormatter.string(from: conversionTimeDataToDate)
+            cell.timeLabel.textColor = .white
+
+            cell.temperatureLabel.text = String(format: "%.1f", forecastData.main.temp) + "°"
             cell.temperatureLabel.textColor = .white
             cell.temperatureLabel.textAlignment = .center
-        }
 
-        cell.tempImage.text = networkManager.forecastData?.list[indexPath.section].weather.first?.icon
-        cell.tempImage.textColor = .white
-        cell.tempImage.textAlignment = .center
+            if let forecastIconData = forecastIcons {
+                if let forecastStatus = forecastData.weather.first?.icon {
+                    cell.tempImage.image = forecastIconData[forecastStatus]
+                }
+            }
+        }
 
         return cell
     }
