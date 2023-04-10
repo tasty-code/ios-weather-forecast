@@ -11,7 +11,7 @@ import UIKit
 struct WeatherParser<T: WeatherComposable> {
     static func parseWeatherData(at coordinate: CurrentCoordinate) async throws -> T {
         guard var request = requestData(for: T.weatherRange, at: coordinate) else {
-            throw WeatherNetworkError.invalidRequest
+            throw WeatherNetworkError.requestFailed(T.weatherRange.description)
         }
         
         request.httpMethod = "GET"
@@ -24,7 +24,7 @@ struct WeatherParser<T: WeatherComposable> {
 
     static func parseWeatherIcon(with iconCode: String) async throws -> UIImage? {
         guard var request = requestIcon(with: iconCode) else {
-            throw WeatherNetworkError.invalidRequest
+            throw WeatherNetworkError.requestFailed("\(iconCode)번 아이콘")
         }
 
         request.httpMethod = "GET"

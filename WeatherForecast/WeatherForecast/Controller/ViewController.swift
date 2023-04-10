@@ -107,7 +107,7 @@ extension ViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
+        print(WeatherNetworkError.requestFailed("위치").description)
     }
     
     private func updateCurrentWeather(for location: CurrentCoordinate) async throws {
