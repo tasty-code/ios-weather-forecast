@@ -39,8 +39,6 @@ class ViewController: UIViewController {
 
         return refreshControl
     }()
-
-
     
     private var currentWeather: CurrentViewModel?
     private var forecastWeathers: [ForecastViewModel]?
