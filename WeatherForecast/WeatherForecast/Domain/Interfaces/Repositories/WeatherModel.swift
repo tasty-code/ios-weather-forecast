@@ -7,6 +7,4 @@
 
 import Foundation
 
-protocol WeatherModel: Decodable {
-    
-}
+protocol WeatherModel: Decodable { }

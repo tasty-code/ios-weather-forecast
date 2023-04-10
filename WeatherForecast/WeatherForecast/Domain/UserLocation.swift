@@ -10,7 +10,6 @@ import CoreLocation
 enum UserLocationError: Error {
     case withoutLocationInfomation
     case withoutZipCode
-    
 }
 
 final class UserLocation: NSObject, CLLocationManagerDelegate {
@@ -70,6 +69,7 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
                 complition(nil, UserLocationError.withoutZipCode)
                 return
             }
+
             complition(address, nil)
         }
     }
