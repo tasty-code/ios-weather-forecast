@@ -39,8 +39,6 @@ class ViewController: UIViewController {
     }
 
     // MARK: - Private property
-    private var refreshControl = UIRefreshControl()
-    
     private var collectionView = WeatherCollectionView(frame: .zero)
     
     private var backgroundView: UIImageView = {
@@ -83,13 +81,13 @@ class ViewController: UIViewController {
         collectionView.register(WeatherCollectionViewCell.self,
                                 forCellWithReuseIdentifier: WeatherCollectionViewCell.cellIdentifier)
         
-        collectionView.addSubview(refreshControl)
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
     }
     
     @objc func refreshData() {
         locationManager.startUpdatingLocation()
-        refreshControl.endRefreshing()
+        collectionView.refreshControl?.endRefreshing()
     }
 
     private func collectionViewConfiguration() {
