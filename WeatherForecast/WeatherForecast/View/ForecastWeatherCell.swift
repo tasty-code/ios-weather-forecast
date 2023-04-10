@@ -24,13 +24,18 @@ final class ForecastWeatherCell: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Expected \(Self.self) initialization did fail")
+        super.init(coder: coder)
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        timeLabel.text = nil
-        temperatureLabel.text = nil
+        clearLabels()
+    }
+    
+    private func clearLabels() {
+        self.subviews.forEach {
+            ($0 as? UILabel)?.text = nil
+        }
     }
     
     private func configureLayout() {
@@ -58,5 +63,11 @@ final class ForecastWeatherCell: UICollectionViewCell {
             icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             icon.widthAnchor.constraint(equalTo: icon.heightAnchor)
         ])
+    }
+    
+    func updateWeather(_ data: WeatherData?) {
+        self.icon.image = data?.iconImage
+        self.timeLabel.text = data?.dataTime
+        self.temperatureLabel.text = data?.temperature
     }
 }

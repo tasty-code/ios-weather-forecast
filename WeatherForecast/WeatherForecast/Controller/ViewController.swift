@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     }
     
     private func registerCollectionViewCell() {
-        collectionView.register(CurrentWeatherCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherCell.id)
+        collectionView.register(WeatherHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.id)
         collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.id)
     }
     
@@ -62,18 +62,14 @@ extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.id, for: indexPath) as! ForecastWeatherCell
-        cell.icon.image = forecastWeather?[indexPath.row].iconImage
-        cell.timeLabel.text = forecastWeather?[indexPath.row].dataTime
-        cell.temperatureLabel.text = forecastWeather?[indexPath.row].temperature
+        let data = forecastWeather?[indexPath.row]
+        cell.updateWeather(data)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CurrentWeatherCell.id, for: indexPath) as! CurrentWeatherCell
-        header.view.image.image = currentWeather?.iconImage
-        header.view.temperatureLabel.text = currentWeather?.temperature ?? "-"
-        header.view.minMaxTemperatureLabel.text = currentWeather?.temperatureString() ?? "-"
-        header.view.addressLabel.text = userAddress ?? "-"
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: WeatherHeaderView.id, for: indexPath) as! WeatherHeaderView
+        header.updateWeather(currentWeather, in: userAddress)
         return header
     }
 }

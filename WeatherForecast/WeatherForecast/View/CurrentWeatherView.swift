@@ -1,5 +1,5 @@
 //
-//  HeaderView.swift
+//  CurrentWeatherView.swift
 //  WeatherForecast
 //
 //  Created by J.E on 2023/04/03.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class HeaderView: UIView {
+final class CurrentWeatherView: UIView {
     let image: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
