@@ -76,8 +76,7 @@ final class ForecastWeatherCell: UICollectionViewCell {
     }
 
     func prepare(model: ForecastViewModel) {
-        let date = Date(timeIntervalSince1970: model.forecastInformation.forecastDate)
-        dateLabel.text = DateFormatter().transWeahterDateForm(from: date)
+        dateLabel.text = DateFormatter().convertWeatherForm(from: model.forecastInformation.forecastDate)
         let forecastDegree = String(format: "%.1f", Float(model.forecastInformation.forecastDegree) ?? 0)
         atmosphericTemperatureLabel.text = forecastDegree + "˚"
         weatherImage.image = UIImage(data: model.forecastEmogi)
@@ -85,7 +84,8 @@ final class ForecastWeatherCell: UICollectionViewCell {
 }
 
 private extension DateFormatter {
-    func transWeahterDateForm(from date: Date) -> String {
+    func convertWeatherForm(from numbericDate: Double) -> String {
+        let date = Date(timeIntervalSince1970: numbericDate)
         self.dateFormat = "MM/dd(E) HH시"
         self.locale = Locale(identifier:"ko_KR")
         return self.string(from: date)
