@@ -74,7 +74,8 @@ final class WeatherListViewController: UIViewController {
 
     private func fetchWeather(coordinate: Coordinate) {
         endRefreshingDispatchGroup.enter()
-        repository.fetchWeather(coordinate: coordinate) { [weak self] result in
+        repository.fetchData(type: CurrentWeather.self,
+                             endpoint: .weather(coordinate: coordinate)) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let currentWeather):
@@ -88,7 +89,8 @@ final class WeatherListViewController: UIViewController {
 
     private func fetchForecast(coordinate: Coordinate) {
         endRefreshingDispatchGroup.enter()
-        repository.fetchForecast(coordinate: coordinate) { [weak self] result in
+        repository.fetchData(type: Forecast.self,
+                             endpoint: .forecast(coordinate: coordinate)) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let forecast):
