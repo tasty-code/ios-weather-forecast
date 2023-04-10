@@ -13,6 +13,7 @@ class WeatherCollectionView: UICollectionView {
     private var flowLayout: UICollectionViewFlowLayout = {
         
         let layout = UICollectionViewFlowLayout()
+//        layout.sectionInset = UIEdgeInsets(top: 200, left: 200, bottom: 200, right: 200) // 각 섹션의 마진
         
         layout.scrollDirection = .vertical
         
