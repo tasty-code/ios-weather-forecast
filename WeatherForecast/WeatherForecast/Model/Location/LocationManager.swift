@@ -8,20 +8,36 @@
 import Foundation
 import CoreLocation
 
-protocol LocationManagerDelegate: AnyObject {
-    func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation)
-}
-
 final class LocationManager: NSObject, CLLocationManagerDelegate {
     // MARK: - Private property
     private let locationManager = CLLocationManager()
     private let geoCoder = CLGeocoder()
+    private var address = ""
+    private var coordinate: CLLocationCoordinate2D?
 
     weak var delegate: LocationManagerDelegate?
 
     // MARK: - Public
     func startUpdatingLocation() {
         setUp()
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            manager.requestLocation()
+        default:
+            manager.requestWhenInUseAuthorization()
+        }
+    }
+
+    func getAddress() -> String {
+        return address
+    }
+
+    func getCoordinate() -> CLLocationCoordinate2D? {
+        guard let coordinateData = coordinate else { return nil }
+        return coordinateData
     }
     
     // MARK: - Lifecycle
@@ -31,7 +47,8 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
             return
         }
         print("[LocationManager](updated)location")
-        delegate?.locationManager(self, didUpdateLocation: location)
+        coordinate = location.coordinate
+        delegate?.fetchData()
         reverseGeocodeLocation(location)
     }
 
@@ -42,32 +59,17 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     // MARK: - Private
     private func setUp() {
         locationManager.delegate = self
+        locationManager.requestLocation()
     }
 
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-            switch manager.authorizationStatus {
-            case .authorizedWhenInUse, .authorizedAlways:
-                manager.requestLocation()
-            default:
-                manager.requestWhenInUseAuthorization()
-            }
-        }
-    
     private func reverseGeocodeLocation(_ location: CLLocation) {
         geoCoder.reverseGeocodeLocation(location) { placemarks, error in
             guard let placemark = placemarks?.first else { return }
-            var address = ""
 
-            if let administrativeArea = placemark.administrativeArea { address += administrativeArea }
+            if let administrativeArea = placemark.administrativeArea { self.address += administrativeArea }
 
-            if let locality = placemark.locality { address += " \(locality)" }
-
-            if let subLocality = placemark.subLocality { address += " \(subLocality)" }
-
-            if let thoroughfare = placemark.thoroughfare { address += " \(thoroughfare)" }
-
-            if let subThoroughfare = placemark.subThoroughfare { address += " \(subThoroughfare)" }
-
+            if let locality = placemark.locality { self.address += " \(locality)" }
+            
         }
     }
 }
