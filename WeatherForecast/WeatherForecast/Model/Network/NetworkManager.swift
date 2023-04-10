@@ -50,7 +50,6 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     }
 
     func getForecastIconCuncurrency(forecastList: [Forecast.List]) async throws -> [String: UIImage]? {
-        let a = forecastList.first?.weather.first?.icon
         var imageSet: [String: UIImage] = [:]
 
         for forecastCase in forecastList {

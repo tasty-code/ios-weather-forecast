@@ -32,6 +32,7 @@ class ViewController: UIViewController {
             collectionView.reloadData()
         }
     }
+    
     var forecastIcons: [String: UIImage]? {
         didSet {
             collectionView.reloadData()
