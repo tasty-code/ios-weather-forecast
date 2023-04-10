@@ -25,7 +25,7 @@ final class OpenWeatherRepository {
     }
 
     // MARK: - Constant
-    
+
     private enum Constant {
         static let baseURL = "https://api.openweathermap.org"
         static let baseIconURL = "https://openweathermap.org"
@@ -44,6 +44,52 @@ final class OpenWeatherRepository {
     }
 
     // MARK: - Public
+
+    func fetchData<T: Decodable>(endpoint: OpenWeatherAPIEndpoints,
+                   completion: @escaping (Result<T, NetworkError>) -> Void) {
+        guard let urlRequest = endpoint.urlRequest else { return }
+
+        service.performRequest(with: urlRequest) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    switch endpoint {
+                    case .weather:
+                        let weatherData = try self.deserializer.deserialize(CurrentWeather.self, data: data)
+                        if let result = weatherData as? T {
+                            completion(.success(result))
+                        } else {
+                            completion(.failure(.parse))
+                        }
+                    case .forecast:
+                        let forecastData = try self.deserializer.deserialize(Forecast.self, data: data)
+                        if let result = forecastData as? T {
+                            completion(.success(result))
+                        } else {
+                            completion(.failure(.parse))
+                        }
+                    case .iconImage(let id):
+                        guard let icon = UIImage(data: data) else {
+                            completion(.failure(.invalidImage))
+                            return
+                        }
+                        ImageCacheManager.shared.store(icon, for: id)
+
+                        if let result = icon as? T {
+                            completion(.success(result))
+                        } else {
+                            completion(.failure(.parse))
+                        }
+                    }
+
+                } catch {
+                    completion(.failure(.parse))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 
     func fetchWeather(coordinate: Coordinate,
                       completion: @escaping (Result<CurrentWeather, NetworkError>) -> Void) {
