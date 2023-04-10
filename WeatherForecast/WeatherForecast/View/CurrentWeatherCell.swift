@@ -28,6 +28,8 @@ final class CurrentWeatherCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        view.stackView.subviews.forEach { ($0 as? UILabel)?.text = nil }
+        view.stackView.subviews.forEach {
+            ($0 as? UILabel)?.text = nil
+        }
     }
 }

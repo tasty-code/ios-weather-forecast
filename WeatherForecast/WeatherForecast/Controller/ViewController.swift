@@ -96,10 +96,14 @@ extension ViewController: CLLocationManagerDelegate {
         guard let location = locations.first else {
             return
         }
+
         let coordinate = CurrentCoordinate(of: location)
-        
+
         Task {
-            updateAddress(to: location) { String(place: $0) }
+            updateAddress(to: location) {
+                String(place: $0)
+            }
+
             try await updateCurrentWeather(for: coordinate)
             try await updateForecastWeather(for: coordinate)
             collectionView.reloadData()
@@ -113,23 +117,35 @@ extension ViewController: CLLocationManagerDelegate {
     private func updateCurrentWeather(for location: CurrentCoordinate) async throws {
         let current = try await WeatherParser<CurrentWeatherComponents>.parseWeatherData(at: location)
         currentWeather = WeatherData(current: current)
-        try await currentWeather?.convertToImage { self.currentWeather?.iconImage = $0 }
+        try await currentWeather?.convertToImage {
+            self.currentWeather?.iconImage = $0
+        }
     }
     
     private func updateForecastWeather(for location: CurrentCoordinate) async throws {
         let forecast = try await WeatherParser<ForecastWeatherComponents>.parseWeatherData(at: location)
         forecastWeather = forecast.list.map { WeatherData(forecast: $0) }
-        guard let forecastWeather else { return }
+
+        guard let forecastWeather else {
+            return
+        }
+
         for (index, weatherData) in forecastWeather.enumerated() {
             var image: UIImage?
-            try await weatherData.convertToImage { image = $0 }
+            try await weatherData.convertToImage {
+                image = $0
+            }
+
             self.forecastWeather?[index].iconImage = image
         }
     }
 
     private func updateAddress(to location: CLLocation, _ completion: @escaping (CLPlacemark) -> String?) {
         CLGeocoder().reverseGeocodeLocation(location) { places, _ in
-            guard let place = places?.first else { return }
+            guard let place = places?.first else {
+                return
+            }
+
             self.userAddress = completion(place)
         }
     }

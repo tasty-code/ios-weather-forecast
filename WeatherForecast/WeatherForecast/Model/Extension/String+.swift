@@ -19,7 +19,10 @@ extension String {
     
     init?(place: CLPlacemark) {
         guard let administrativeArea = place.administrativeArea,
-              let thoroughfare = place.thoroughfare else { return nil }
+              let thoroughfare = place.thoroughfare else {
+            return nil
+        }
+        
         self = administrativeArea + " " + thoroughfare
     }
     

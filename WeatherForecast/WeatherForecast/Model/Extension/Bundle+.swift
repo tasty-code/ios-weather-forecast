@@ -14,6 +14,7 @@ extension Bundle {
               let key = resource["WeatherApiKey"] as? String else {
             return WeatherNetworkError.apiKeyNotFound.description
         }
+
         return key
     }
 }
