@@ -9,7 +9,11 @@ import CoreLocation
 
 class Repository {
     
+    //MARK: - Private Property
+
     private let session = URLSession.shared
+    
+    //MARK: - Public Method
     
     func loadData(with location: CLLocationCoordinate2D, path: URLPath, completion: @escaping (WeatherModel?, Error?) -> Void) {
         
@@ -48,18 +52,6 @@ class Repository {
         }
     }
     
-    private func loadJSON(weatherType: WeatherModel.Type, weatherData: Data) -> WeatherModel? {
-        let decoder = JSONDecoder()
-        
-        do {
-            let wishData = try decoder.decode(weatherType, from: weatherData)
-            return wishData
-        } catch {
-            print("Unable to decode \(weatherData): (error)")
-            return nil
-        }
-    }
-
     func loadIcon(completion: @escaping (Data?, Error?) -> Void) {
 
         certifiedMakeURL { [self] url in
@@ -88,9 +80,23 @@ class Repository {
             }.resume()
         }
     }
+    
+    //MARK: - Private Method
+    
+    private func loadJSON(weatherType: WeatherModel.Type, weatherData: Data) -> WeatherModel? {
+        let decoder = JSONDecoder()
+        
+        do {
+            let wishData = try decoder.decode(weatherType, from: weatherData)
+            return wishData
+        } catch {
+            print("Unable to decode \(weatherData): (error)")
+            return nil
+        }
+    }
 }
 
-//MARK: - Load Icon Image
+//MARK: - Make Icon URL
 
 extension Repository {
     private func certifiedMakeURL(completion: @escaping (URL) -> Void) {

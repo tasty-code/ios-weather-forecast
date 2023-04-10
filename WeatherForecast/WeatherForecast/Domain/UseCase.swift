@@ -9,19 +9,24 @@ import CoreLocation
 import UIKit
 
 final class UseCase {
-    
+
     weak var delegate: WeatherModelDelegate?
+    
+    //MARK: - Private Property
     
     private let repository: Repository
     private var cashedImage = NSCache<NSString, UIImage>()
+    
+    //MARK: - Initializer
     
     init() {
         self.repository = Repository()
     }
     
+    //MARK: - Public Method
+    
     func receiveCurrentLocation() -> CLLocationCoordinate2D {
         guard let location = UserLocation.shared.location?.coordinate else {
-            //TODO: - Error 처리
             return CLLocationCoordinate2D()
         }
         return location
@@ -131,6 +136,7 @@ final class UseCase {
     }
 }
 
+//MARK: - Interface Delegate
 protocol WeatherModelDelegate: NSObject {
     func loadCurrentWeather(of model: CurrentViewModel)
     func loadForecastWeather(of model: [ForecastViewModel])

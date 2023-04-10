@@ -9,6 +9,8 @@ import CoreLocation
 
 class ViewController: UIViewController {
     
+    //MARK: - Private Property
+
     private let useCase = UseCase()
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: configureCollectionView())
@@ -32,6 +34,7 @@ class ViewController: UIViewController {
         self.view.addSubview(collectionView)
         return collectionView
     }()
+    
     private lazy var refresh: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
 
@@ -43,6 +46,8 @@ class ViewController: UIViewController {
     private var currentWeather: CurrentViewModel?
     private var forecastWeathers: [ForecastViewModel]?
     
+    //MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,6 +57,8 @@ class ViewController: UIViewController {
         UserLocation.shared.authorize()
         useCase.loadIconImage()
     }
+    
+    //MARK: - Objective-C Method
 
     @objc func handleRefreshControl() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
@@ -61,6 +68,7 @@ class ViewController: UIViewController {
     }
 }
 
+//MARK: - Configure CollectionView Layout
 extension ViewController {
     private func configureCollectionView() -> UICollectionViewLayout {
         var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
@@ -70,6 +78,7 @@ extension ViewController {
     }
 }
 
+//MARK: - Configure CollectionView DataSource
 extension ViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
@@ -109,6 +118,7 @@ extension ViewController: UICollectionViewDataSource {
     }
 }
 
+//MARK: - Delegate Method
 extension ViewController: WeatherModelDelegate {
     func loadCurrentWeather(of model: CurrentViewModel) {
         currentWeather = model
