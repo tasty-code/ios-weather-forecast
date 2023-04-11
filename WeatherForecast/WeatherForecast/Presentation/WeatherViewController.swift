@@ -14,25 +14,35 @@ final class WeatherViewController: UIViewController {
     private let useCase = UseCase()
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: configureCollectionView())
-        
+
         collectionView.isScrollEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.clipsToBounds = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         collectionView.register(CurrentWeatherHeaderView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherHeaderView.identifier)
         collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.identifier)
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.refreshControl = refresh
+        collectionView.layer.cornerRadius = 20.0
 
-        let backgroundImageView = UIImageView()
-        backgroundImageView.image = UIImage(named: "WeatherBackground")
-        backgroundImageView.contentMode = .scaleAspectFill
-
-        collectionView.backgroundView = backgroundImageView
         self.view.addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+
         return collectionView
+    }()
+    private lazy var backgroundView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "WeatherBackground")
+        imageView.frame = view.bounds
+        imageView.contentMode = .scaleAspectFill
+        return imageView
     }()
     
     private lazy var refresh: UIRefreshControl = {
@@ -50,6 +60,7 @@ final class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(backgroundView)
 
         useCase.delegate = self
         collectionView.dataSource = self
@@ -73,7 +84,7 @@ extension WeatherViewController {
     private func configureCollectionView() -> UICollectionViewLayout {
         var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
         configuration.headerMode = .supplementary
-        configuration.backgroundColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 0.6)
+        configuration.backgroundColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 0.2)
         return UICollectionViewCompositionalLayout.list(using: configuration)
     }
 }
