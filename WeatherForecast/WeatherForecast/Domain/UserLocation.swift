@@ -16,7 +16,7 @@ final class UserLocation: NSObject, CLLocationManagerDelegate {
 
     static let shared = UserLocation()
 
-    var delegate: UserLocationDelegate?
+    weak var delegate: UserLocationDelegate?
     var location: CLLocation? {
         sharedLocationManager.location
     }
@@ -91,6 +91,6 @@ private extension CLPlacemark {
     }
 }
 
-protocol UserLocationDelegate {
+protocol UserLocationDelegate: NSObject {
     func changedAuthorization()
 }
