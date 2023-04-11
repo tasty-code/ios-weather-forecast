@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreLocation
 
 extension String {
     init(utcTime: Int) {
@@ -15,15 +14,6 @@ extension String {
         formatter.locale = Locale(identifier: "ko_KR")
         formatter.dateFormat = "MM/dd(EE) HH시"
         self = formatter.string(from: date)
-    }
-    
-    init?(place: CLPlacemark) {
-        guard let administrativeArea = place.administrativeArea,
-              let thoroughfare = place.thoroughfare else {
-            return nil
-        }
-        
-        self = administrativeArea + " " + thoroughfare
     }
     
     init(temperature: Double) {

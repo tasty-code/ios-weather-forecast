@@ -105,7 +105,7 @@ extension ViewController: CLLocationManagerDelegate {
 
         Task {
             updateAddress(to: location) {
-                String(place: $0)
+                $0.formatAddress()
             }
 
             try await updateCurrentWeather(for: coordinate)
