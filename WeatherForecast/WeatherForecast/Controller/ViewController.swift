@@ -119,7 +119,7 @@ extension ViewController: CLLocationManagerDelegate {
     }
     
     private func updateCurrentWeather(for location: CurrentCoordinate) async throws {
-        let current = try await WeatherParser<CurrentWeatherComponents>.parseWeatherData(at: location)
+        let current = try await WeatherParser.parseData(at: location, type: CurrentWeatherComponents.self)
         currentWeather = WeatherData(current: current)
         try await currentWeather?.convertToImage {
             self.currentWeather?.iconImage = $0
@@ -127,7 +127,7 @@ extension ViewController: CLLocationManagerDelegate {
     }
     
     private func updateForecastWeather(for location: CurrentCoordinate) async throws {
-        let forecast = try await WeatherParser<ForecastWeatherComponents>.parseWeatherData(at: location)
+        let forecast = try await WeatherParser.parseData(at: location, type: ForecastWeatherComponents.self)
         forecastWeather = forecast.list.map { WeatherData(forecast: $0) }
 
         guard let forecastWeather else {

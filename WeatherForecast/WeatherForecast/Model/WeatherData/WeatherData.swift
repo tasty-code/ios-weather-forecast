@@ -30,7 +30,7 @@ struct WeatherData {
     }
     
     func convertToImage(_ completion: @escaping (UIImage?) -> Void) async throws {
-        let image = try await WeatherParser<CurrentWeatherComponents>.parseWeatherIcon(with: iconCode)
+        let image = try await WeatherParser.parseIcon(with: iconCode)
         completion(image)
     }
     

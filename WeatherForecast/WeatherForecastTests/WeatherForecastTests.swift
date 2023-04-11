@@ -8,8 +8,8 @@ import XCTest
 @testable import WeatherForecast
 
 class WeatherForecastTests: XCTestCase {
-    var sutCurrent: WeatherParser<CurrentWeatherComponents>!
-    var sutForecast: WeatherParser<ForecastWeatherComponents>!
+    var sutCurrent: NetworkService<CurrentWeatherComponents>!
+    var sutForecast: NetworkService<ForecastWeatherComponents>!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -29,8 +29,8 @@ class WeatherForecastTests: XCTestCase {
         let apiKey = Bundle.main.apiKey
 
         // when
-        let yonsanCurrentURL = try? URLService.makeDataURL(at: yongsanCoordinate, weatherRange: CurrentWeatherComponents.weatherRange)
-        let yonsanForecastURL = try? URLService.makeDataURL(at: yongsanCoordinate, weatherRange: ForecastWeatherComponents.weatherRange)
+        let yonsanCurrentURL = try? WeatherAPIEndpoint.makeDataURL(at: yongsanCoordinate, weatherRange: CurrentWeatherComponents.weatherRange)
+        let yonsanForecastURL = try? WeatherAPIEndpoint.makeDataURL(at: yongsanCoordinate, weatherRange: ForecastWeatherComponents.weatherRange)
         let resultCurrentURL = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=37.53&lon=126.96&units=metric&lang=kr&appid=\(apiKey)")
         let resultForecastURL = URL(string: "https://api.openweathermap.org/data/2.5/forecast?lat=37.53&lon=126.96&units=metric&lang=kr&appid=\(apiKey)")
 
