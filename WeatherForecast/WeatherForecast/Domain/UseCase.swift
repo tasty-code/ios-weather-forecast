@@ -103,7 +103,8 @@ final class UseCase {
                                       highest: maxTemperature,
                                       current: currentTemperature)
         
-        if let weather = data.weathers.first, let data = cachedImage.object(forKey: weather.icon as NSString) {
+        if let weather = data.weathers.first,
+            let data = cachedImage.object(forKey: weather.icon as NSString) {
             iconData = data
         }
         let currentInformation = CurrentInformation(weatherImage: iconData, locationAddress: address)
@@ -121,11 +122,9 @@ final class UseCase {
             let forecastInformation = ForecastInformation(date: forecastDate, degree: forecastTemperature)
             var forecastIcon: UIImage = UIImage()
             
-            if let icon = element.weather.first?.icon {
-                guard let icon = cachedImage.object(forKey: icon as NSString) else {
-                    return
-                }
-                forecastIcon = icon
+            if let icon = element.weather.first?.icon,
+                let certifiedIcon = cachedImage.object(forKey: icon as NSString) {
+                forecastIcon = certifiedIcon
             }
             
             let forecastViewModel = ForecastViewModel(weatherImage: forecastIcon, information: forecastInformation)
