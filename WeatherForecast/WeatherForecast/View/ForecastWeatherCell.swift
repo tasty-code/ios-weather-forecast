@@ -20,14 +20,14 @@ final class ForecastWeatherCell: UICollectionViewListCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
-        temperatureLabel.textAlignment = .right
+        configureLabelStyle()
         self.backgroundConfiguration = .clear()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureLayout()
-        temperatureLabel.textAlignment = .right
+        configureLabelStyle()
         self.backgroundConfiguration = .clear()
     }
     
@@ -49,24 +49,32 @@ final class ForecastWeatherCell: UICollectionViewListCell {
 
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            timeLabel.heightAnchor.constraint(equalTo: self.heightAnchor),
             timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            timeLabel.trailingAnchor.constraint(equalTo: temperatureLabel.leadingAnchor)
+            timeLabel.trailingAnchor.constraint(equalTo: temperatureLabel.leadingAnchor),
+            timeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
 
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            temperatureLabel.heightAnchor.constraint(equalTo: self.heightAnchor),
             temperatureLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor),
-            temperatureLabel.trailingAnchor.constraint(equalTo: icon.leadingAnchor, constant: -20)
+            temperatureLabel.trailingAnchor.constraint(equalTo: icon.leadingAnchor, constant: -20),
+            temperatureLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
 
         icon.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            icon.heightAnchor.constraint(equalTo: self.heightAnchor),
+            icon.heightAnchor.constraint(equalToConstant: self.frame.height),
             icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             icon.widthAnchor.constraint(equalTo: icon.heightAnchor)
         ])
+    }
+
+    private func configureLabelStyle() {
+        temperatureLabel.textAlignment = .right
+        timeLabel.font = .preferredFont(forTextStyle: .body)
+        timeLabel.adjustsFontForContentSizeCategory = true
+        temperatureLabel.font = .preferredFont(forTextStyle: .body)
+        temperatureLabel.adjustsFontForContentSizeCategory = true
     }
     
     func updateWeather(_ data: WeatherData?) {

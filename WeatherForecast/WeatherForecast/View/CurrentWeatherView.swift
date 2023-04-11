@@ -30,14 +30,14 @@ final class CurrentWeatherView: UIView {
         super.init(frame: frame)
         setupStackView()
         configureLayout()
-        temperatureLabel.font = .preferredFont(forTextStyle: .title2)
+        configureLabelStyle()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupStackView()
         configureLayout()
-        temperatureLabel.font = .preferredFont(forTextStyle: .title2)
+        configureLabelStyle()
     }
     
     private func setupStackView() {
@@ -45,7 +45,7 @@ final class CurrentWeatherView: UIView {
         stackView.addArrangedSubview(minMaxTemperatureLabel)
         stackView.addArrangedSubview(temperatureLabel)
     }
-    
+
     private func configureLayout() {
         self.addSubview(image)
         self.addSubview(stackView)
@@ -68,5 +68,14 @@ final class CurrentWeatherView: UIView {
         ])
         
         image.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+    }
+
+    private func configureLabelStyle() {
+        addressLabel.font = .preferredFont(forTextStyle: .body)
+        addressLabel.adjustsFontForContentSizeCategory = true
+        minMaxTemperatureLabel.font = .preferredFont(forTextStyle: .body)
+        minMaxTemperatureLabel.adjustsFontForContentSizeCategory = true
+        temperatureLabel.font = .preferredFont(forTextStyle: .title1)
+        temperatureLabel.adjustsFontForContentSizeCategory = true
     }
 }

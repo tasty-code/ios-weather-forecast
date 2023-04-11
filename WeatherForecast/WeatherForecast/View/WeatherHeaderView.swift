@@ -25,9 +25,10 @@ final class WeatherHeaderView: UICollectionViewListCell {
         self.addSubview(headerView)
         headerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            headerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            headerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             headerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            headerView.heightAnchor.constraint(equalTo: self.heightAnchor)
+            headerView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -10),
+            headerView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
     
