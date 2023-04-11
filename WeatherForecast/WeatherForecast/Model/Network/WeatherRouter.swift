@@ -68,7 +68,7 @@ extension WeatherRouter {
     var request: URLRequest? {
         guard let url = self.url else { return nil }
         
-        var request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
+        var request = URLRequest(url: url)
         request.httpMethod = self.method
         
         return request
