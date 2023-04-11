@@ -21,13 +21,10 @@ final class CurrentWeatherCell: UICollectionViewListCell {
                  let maximumTemperature = currentWeather?.temperatures.maximumTemperature,
                  let currentTemperature = currentWeather?.temperatures.averageTemperature
            else { return }
-           
-           let minimumTemperatureText = String(format: "%.1f", minimumTemperature)
-           let maximumTemperatureText = String(format: "%.1f", maximumTemperature)
 
            let addressAndTemperatureText: String = """
            \(address)
-           최저 \(minimumTemperatureText.degree) 최소 \(maximumTemperatureText.degree)
+           최저 \(minimumTemperature.changeWeatherFormat().degree) 최소 \(maximumTemperature.changeWeatherFormat().degree)
            """
            
            let paragraphStyle = NSMutableParagraphStyle()
@@ -38,18 +35,14 @@ final class CurrentWeatherCell: UICollectionViewListCell {
                .paragraphStyle : paragraphStyle,
            ]
            
-           configuration.attributedText = NSAttributedString(string: addressAndTemperatureText,
-                                                             attributes: addressAndTemperatureTextAttributes)
+           configuration.attributedText = NSAttributedString(string: addressAndTemperatureText, attributes: addressAndTemperatureTextAttributes)
            configuration.textProperties.color = .white
            
-           let currentTemperatureValue = String(format: "%.1f", currentTemperature)
-           let currentTemperatureText: String = "\(currentTemperatureValue.degree)"
            let currentTemperatureTextAttribtues: [NSAttributedString.Key: Any] = [
                .font : UIFont.systemFont(ofSize: 30, weight: .semibold)
            ]
            
-           configuration.secondaryAttributedText = NSAttributedString(string: currentTemperatureText,
-                                                                      attributes: currentTemperatureTextAttribtues)
+           configuration.secondaryAttributedText = NSAttributedString(string: currentTemperature.changeWeatherFormat().degree, attributes: currentTemperatureTextAttribtues)
            configuration.secondaryTextProperties.color = .white
            configuration.textToSecondaryTextVerticalPadding = 10
            
