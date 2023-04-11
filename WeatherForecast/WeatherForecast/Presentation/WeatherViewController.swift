@@ -1,5 +1,5 @@
 //
-//  WeatherForecast - ViewController.swift
+//  WeatherForecast - WeatherViewController.swift
 //  Created by yagom.
 //  Copyright © yagom. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController {
+final class WeatherViewController: UIViewController {
     
     //MARK: - Private Property
 
@@ -69,7 +69,7 @@ class ViewController: UIViewController {
 }
 
 //MARK: - Configure CollectionView Layout
-extension ViewController {
+extension WeatherViewController {
     private func configureCollectionView() -> UICollectionViewLayout {
         var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
         configuration.headerMode = .supplementary
@@ -79,7 +79,7 @@ extension ViewController {
 }
 
 //MARK: - Configure CollectionView DataSource
-extension ViewController: UICollectionViewDataSource {
+extension WeatherViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
     }
@@ -119,7 +119,7 @@ extension ViewController: UICollectionViewDataSource {
 }
 
 //MARK: - Delegate Method
-extension ViewController: WeatherModelDelegate {
+extension WeatherViewController: WeatherModelDelegate {
     func loadCurrentWeather(of model: CurrentViewModel) {
         currentWeather = model
         self.collectionView.reloadData()
@@ -131,7 +131,7 @@ extension ViewController: WeatherModelDelegate {
     }
 }
 
-extension ViewController: UserLocationDelegate {
+extension WeatherViewController: UserLocationDelegate {
     func changedAuthorization() {
         let location = useCase.receiveCurrentLocation()
         useCase.determine(with: location)
