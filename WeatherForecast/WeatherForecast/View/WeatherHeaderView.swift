@@ -18,6 +18,7 @@ final class WeatherHeaderView: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        configureLayout()
     }
     
     private func configureLayout() {

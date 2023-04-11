@@ -34,7 +34,10 @@ final class CurrentWeatherView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Expected \(Self.self) initialization did fail")
+        super.init(coder: coder)
+        setupStackView()
+        configureLayout()
+        temperatureLabel.font = .preferredFont(forTextStyle: .title2)
     }
     
     private func setupStackView() {

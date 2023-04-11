@@ -25,6 +25,8 @@ final class ForecastWeatherCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        configureLayout()
+        temperatureLabel.textAlignment = .right
     }
     
     override func prepareForReuse() {
