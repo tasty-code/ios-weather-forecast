@@ -20,15 +20,13 @@ final class ForecastWeatherCell: UICollectionViewListCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
-        configureLabelStyle()
-        self.backgroundConfiguration = .clear()
+        configureCellStyle()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureLayout()
-        configureLabelStyle()
-        self.backgroundConfiguration = .clear()
+        configureCellStyle()
     }
     
     override func prepareForReuse() {
@@ -67,6 +65,19 @@ final class ForecastWeatherCell: UICollectionViewListCell {
             icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             icon.widthAnchor.constraint(equalTo: icon.heightAnchor)
         ])
+    }
+    
+    private func configureCellStyle() {
+        self.backgroundConfiguration = .clear()
+        configureIconStyle()
+        configureLabelStyle()
+    }
+    
+    private func configureIconStyle() {
+        icon.layer.shadowColor = UIColor.black.cgColor
+        icon.layer.shadowOffset = .zero
+        icon.layer.shadowOpacity = 1
+        icon.layer.shadowRadius = 0.1
     }
 
     private func configureLabelStyle() {

@@ -14,11 +14,13 @@ final class WeatherHeaderView: UICollectionViewListCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
+        configureIconStyle()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureLayout()
+        configureIconStyle()
     }
     
     private func configureLayout() {
@@ -41,6 +43,13 @@ final class WeatherHeaderView: UICollectionViewListCell {
         headerView.stackView.subviews.forEach {
             ($0 as? UILabel)?.text = nil
         }
+    }
+    
+    private func configureIconStyle() {
+        headerView.image.layer.shadowColor = UIColor.black.cgColor
+        headerView.image.layer.shadowOffset = .zero
+        headerView.image.layer.shadowOpacity = 1
+        headerView.image.layer.shadowRadius = 0.1
     }
     
     func updateWeather(_ data: WeatherData?, in address: String?) {
