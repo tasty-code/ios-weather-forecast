@@ -12,78 +12,72 @@ class ViewController: UIViewController {
     private var currentWeather: WeatherData?
     private var forecastWeather: [WeatherData]?
     private var userAddress: String?
-    
-    private let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        return collectionView
-    }()
+    private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLocationManager()
-        configureCollectionView()
-        configureAutoLayout()
+        setUpCollectionView()
     }
 
     private func configureLocationManager() {
         locationManager.delegate = self
     }
 
-    private func configureCollectionView() {
-        collectionView.dataSource = self
-        collectionView.delegate = self
+    private func setUpCollectionView() {
+        configureCollectionView()
+        setUpCollectionViewStyle()
         registerCollectionViewCell()
+        view.addSubview(collectionView)
+        collectionView.dataSource = self
     }
-    
+
+    private func configureCollectionView() {
+        var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
+        configuration.backgroundColor = .clear
+        configuration.headerMode = .supplementary
+        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        self.collectionView = collectionView
+    }
+
+    private func setUpCollectionViewStyle() {
+        let image = UIImage(named: "bgImage")
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFill
+        collectionView.backgroundView = imageView
+        collectionView.frame = view.frame
+    }
+
     private func registerCollectionViewCell() {
         collectionView.register(WeatherHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.id)
         collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.id)
-    }
-    
-    private func configureAutoLayout() {
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.widthAnchor.constraint(equalTo: view.widthAnchor)
-        ])
-    }
-}
-
-extension ViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSizeMake(view.frame.width, 100)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSizeMake(view.frame.width, 70)
     }
 }
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 40
+        guard let count = forecastWeather?.count else {
+            return 40
+        }
+
+        return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.id, for: indexPath) as! ForecastWeatherCell
         let data = forecastWeather?[indexPath.row]
         cell.updateWeather(data)
+
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: WeatherHeaderView.id, for: indexPath) as! WeatherHeaderView
         header.updateWeather(currentWeather, in: userAddress)
+
         return header
     }
-}
-
-extension ViewController: UICollectionViewDelegate {
-    
 }
 
 extension ViewController: CLLocationManagerDelegate {

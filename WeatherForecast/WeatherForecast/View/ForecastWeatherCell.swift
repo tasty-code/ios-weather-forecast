@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ForecastWeatherCell: UICollectionViewCell {
+final class ForecastWeatherCell: UICollectionViewListCell {
     static let id = "forecast"
     let icon: UIImageView = {
         let imageView = UIImageView()
@@ -21,12 +21,14 @@ final class ForecastWeatherCell: UICollectionViewCell {
         super.init(frame: frame)
         configureLayout()
         temperatureLabel.textAlignment = .right
+        self.backgroundConfiguration = .clear()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureLayout()
         temperatureLabel.textAlignment = .right
+        self.backgroundConfiguration = .clear()
     }
     
     override func prepareForReuse() {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class WeatherHeaderView: UICollectionViewCell {
+final class WeatherHeaderView: UICollectionViewListCell {
     static let id = "current"
     let headerView = CurrentWeatherView()
     
