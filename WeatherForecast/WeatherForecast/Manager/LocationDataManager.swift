@@ -5,7 +5,6 @@
 //  Created by Mason Kim on 2023/03/20.
 //
 
-import Foundation
 import CoreLocation
 
 protocol LocationDataManagerDelegate: AnyObject {
