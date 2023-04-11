@@ -15,7 +15,7 @@ final class UseCase {
     //MARK: - Private Property
     
     private let repository: Repository
-    private var cashedImage = NSCache<NSString, UIImage>()
+    private var cachedImage = NSCache<NSString, UIImage>()
     
     //MARK: - Initializer
     
