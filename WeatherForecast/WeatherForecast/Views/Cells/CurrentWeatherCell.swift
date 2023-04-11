@@ -27,7 +27,7 @@ final class CurrentWeatherCell: UICollectionViewListCell {
 
            let addressAndTemperatureText: String = """
            \(address)
-           최저 \(minimumTemperatureText)° 최소 \(maximumTemperatureText)°
+           최저 \(minimumTemperatureText.degree) 최소 \(maximumTemperatureText.degree)
            """
            
            let paragraphStyle = NSMutableParagraphStyle()
@@ -43,7 +43,7 @@ final class CurrentWeatherCell: UICollectionViewListCell {
            configuration.textProperties.color = .white
            
            let currentTemperatureValue = String(format: "%.1f", currentTemperature)
-           let currentTemperatureText: String = "\(currentTemperatureValue)°"
+           let currentTemperatureText: String = "\(currentTemperatureValue.degree)"
            let currentTemperatureTextAttribtues: [NSAttributedString.Key: Any] = [
                .font : UIFont.systemFont(ofSize: 30, weight: .semibold)
            ]
