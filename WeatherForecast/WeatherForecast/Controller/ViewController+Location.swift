@@ -29,7 +29,7 @@ extension ViewController: CLLocationManagerDelegate {
         updateAddress(to: location)
 
         Task {
-            try await updateCurrentWeather(for: coordinate)
+            try await updateCurrentWeather(at: coordinate)
             try await updateForecastWeather(for: coordinate)
             collectionView.reloadData()
             
@@ -43,7 +43,7 @@ extension ViewController: CLLocationManagerDelegate {
         print(WeatherNetworkError.requestFailed("위치").description)
     }
     
-    private func updateCurrentWeather(for location: CurrentCoordinate) async throws {
+    private func updateCurrentWeather(at location: CurrentCoordinate) async throws {
         let current = try await WeatherParser.parseData(at: location, type: CurrentWeatherComponents.self)
         currentWeather = WeatherData(current: current)
         try await currentWeather?.convertToImage {
