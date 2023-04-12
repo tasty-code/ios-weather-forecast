@@ -26,11 +26,9 @@ extension ViewController: CLLocationManagerDelegate {
 
         let coordinate = CurrentCoordinate(of: location)
 
-        Task {
-            updateAddress(to: location) {
-                $0.formatAddress()
-            }
+        updateAddress(to: location)
 
+        Task {
             try await updateCurrentWeather(for: coordinate)
             try await updateForecastWeather(for: coordinate)
             collectionView.reloadData()
@@ -67,13 +65,13 @@ extension ViewController: CLLocationManagerDelegate {
         }
     }
 
-    private func updateAddress(to location: CLLocation, _ completion: @escaping (CLPlacemark) -> String?) {
+    private func updateAddress(to location: CLLocation) {
         CLGeocoder().reverseGeocodeLocation(location) { places, _ in
             guard let place = places?.first else {
                 return
             }
 
-            self.userAddress = completion(place)
+            self.userAddress = place.formatAddress()
         }
     }
 }
