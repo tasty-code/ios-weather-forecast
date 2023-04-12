@@ -9,9 +9,9 @@ import CoreLocation
 
 class WeatherViewController: UIViewController {
     
-    private var weatherViewModel = WeatherViewModel()
+    private let weatherViewModel = WeatherViewModel()
     private var weatherCollectionView: UICollectionView!
-    private var backgroundImageView: UIImageView = {
+    private let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "backgroundImage")
         imageView.contentMode = .scaleAspectFill
@@ -67,7 +67,7 @@ extension WeatherViewController {
         collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
-    @objc func handleRefreshControl() {
+    @objc private func handleRefreshControl() {
         
         self.weatherCollectionView.reloadData()
         
