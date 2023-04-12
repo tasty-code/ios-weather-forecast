@@ -32,7 +32,11 @@ extension ViewController: CLLocationManagerDelegate {
             try await updateCurrentWeather(for: coordinate)
             try await updateForecastWeather(for: coordinate)
             collectionView.reloadData()
-        }
+            
+            if collectionView.refreshControl?.isRefreshing == true {
+                collectionView.refreshControl?.endRefreshing()
+            }
+  }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

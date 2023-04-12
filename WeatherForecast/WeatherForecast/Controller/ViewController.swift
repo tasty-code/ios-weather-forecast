@@ -63,7 +63,6 @@ class ViewController: UIViewController {
     
     @objc private func refreshCollectionView() {
         locationManager.requestLocation()
-        collectionView.refreshControl?.endRefreshing()
     }
 }
 
