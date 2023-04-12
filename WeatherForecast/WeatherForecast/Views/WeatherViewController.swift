@@ -88,16 +88,8 @@ extension WeatherViewController: UICollectionViewDataSource {
         
         let cell = weatherCollectionView.dequeue(cell: FiveDaysForecastCell.self, for: indexPath)
         let fiveDaysForecasts = weatherViewModel.fiveDaysForecastWeather
-        
-        let temperature = fiveDaysForecasts[indexPath.row].temperature
-        cell.temperatureLabel.text = "\(temperature.changeWeatherFormat().degree)"
-        
-        let date = fiveDaysForecasts[indexPath.row].date
-        let transformedDate = date.changeDateFormat()
-        cell.dateLabel.text = transformedDate
-        
-        let weatherIconImage = fiveDaysForecasts[indexPath.row].image
-        cell.weatherIconImage.image = weatherIconImage
+        let fiveDaysForecast = fiveDaysForecasts[indexPath.item]
+        cell.configure(with: fiveDaysForecast)
         
         return cell
     }

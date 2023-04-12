@@ -9,7 +9,7 @@ import UIKit
 
 class FiveDaysForecastCell: UICollectionViewCell {
     
-    var weatherIconImage: UIImageView = {
+    private let weatherIconImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .clear
@@ -17,36 +17,34 @@ class FiveDaysForecastCell: UICollectionViewCell {
         return imageView
     }()
     
-    var dateLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
-        label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let dateLabel = UILabel(systemFontSize: 16, textColor: .white)
     
-    var temperatureLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
-        label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let temperatureLabel = UILabel(systemFontSize: 16, textColor: .white)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setUp()
+        self.setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setUp() {
+    func configure(with fiveDaysForecast: FiveDaysForecastWeatherViewModel.FiveDaysForecast) {
+        
+        temperatureLabel.text = fiveDaysForecast.temperature.changeWeatherFormat().degree
+        dateLabel.text = fiveDaysForecast.date.changeDateFormat()
+        weatherIconImage.image = fiveDaysForecast.image
+    }
+    
+    private func setUp() {
         self.contentView.addSubview(weatherIconImage)
         self.contentView.addSubview(dateLabel)
         self.contentView.addSubview(temperatureLabel)
-        
+    }
+    
+    private func setupConstraints() {
         weatherIconImage.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -20).isActive = true
         weatherIconImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         weatherIconImage.heightAnchor.constraint(equalToConstant: 45).isActive = true
