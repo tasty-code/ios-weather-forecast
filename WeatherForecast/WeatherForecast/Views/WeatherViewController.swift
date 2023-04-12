@@ -10,7 +10,11 @@ import CoreLocation
 class WeatherViewController: UIViewController {
     
     private let weatherViewModel = WeatherViewModel()
-    private var weatherCollectionView: UICollectionView!
+    private lazy var weatherCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        return collectionView
+    }()
+    
     private let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "backgroundImage")
@@ -22,18 +26,20 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        configureHierarchy()
+        configureAttributes()
         register()
+        setUp()
         collectionViewDelegate()
     }
 }
 
 extension WeatherViewController {
-    private func configureHierarchy() {
-        
-        weatherCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+    private func configureAttributes() {
         weatherCollectionView.backgroundView = backgroundImageView
         configureRefreshControl(in: weatherCollectionView)
+    }
+    
+    private func setUp() {
         view.addSubview(weatherCollectionView)
     }
     
