@@ -49,5 +49,5 @@ final class CurrentWeatherCell: UICollectionViewListCell {
         configuration.image = currentWeather?.image
         
         contentConfiguration = configuration
-    }
+    }    
 }

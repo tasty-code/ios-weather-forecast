@@ -30,6 +30,7 @@ class WeatherViewController: UIViewController {
         register()
         setUp()
         collectionViewDelegate()
+        addNotificationObserver()
     }
 }
 
@@ -46,7 +47,14 @@ extension WeatherViewController {
     private func collectionViewDelegate() {
         
         weatherCollectionView.dataSource = self
-        weatherViewModel.delegate = self
+    }
+    
+    private func addNotificationObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(modelDidFinishSetUp(_:)), name: Notification.Name.modelDidFinishSetUp, object: nil)
+    }
+    
+    @objc func modelDidFinishSetUp(_ notification: Notification) {
+        weatherCollectionView.reloadData()
     }
     
     private func register() {
