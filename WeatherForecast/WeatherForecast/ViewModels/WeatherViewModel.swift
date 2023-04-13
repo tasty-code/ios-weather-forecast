@@ -35,8 +35,8 @@ final class WeatherViewModel {
     }
     
     private func execute(locationManager: CoreLocationManager,
-                 location: CLLocation,
-                 weatherNetworkDispatcher: WeatherNetworkDispatcher) {
+                         location: CLLocation,
+                         weatherNetworkDispatcher: WeatherNetworkDispatcher) {
         
         let coordinate = self.makeCoordinate(from: location)
         
@@ -81,7 +81,7 @@ final class WeatherViewModel {
             self.fiveDaysForecastWeather = fiveDaysForecasts
             
             DispatchQueue.main.async {
-                self.delegate?.weatherViewModelDidFinishSetUp(self)
+                NotificationCenter.default.post(name: Notification.Name.modelDidFinishSetUp, object: nil)
             }
         }
     }

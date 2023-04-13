@@ -9,7 +9,7 @@ import UIKit
 
 extension URLResponse {
     
-    fileprivate var successRange: ClosedRange<Int> {
+    private var successRange: ClosedRange<Int> {
         
         return 200...299
     }

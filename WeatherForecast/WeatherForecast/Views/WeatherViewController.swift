@@ -9,9 +9,13 @@ import CoreLocation
 
 class WeatherViewController: UIViewController {
     
-    private var weatherViewModel = WeatherViewModel()
-    private var weatherCollectionView: UICollectionView!
-    private var backgroundImageView: UIImageView = {
+    private let weatherViewModel = WeatherViewModel()
+    private lazy var weatherCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        return collectionView
+    }()
+    
+    private let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "backgroundImage")
         imageView.contentMode = .scaleAspectFill
@@ -22,25 +26,35 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        configureHierarchy()
+        configureAttributes()
         register()
+        setUp()
         collectionViewDelegate()
+        addNotificationObserver()
     }
 }
 
 extension WeatherViewController {
-    private func configureHierarchy() {
-        
-        weatherCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+    private func configureAttributes() {
         weatherCollectionView.backgroundView = backgroundImageView
         configureRefreshControl(in: weatherCollectionView)
+    }
+    
+    private func setUp() {
         view.addSubview(weatherCollectionView)
     }
     
     private func collectionViewDelegate() {
         
         weatherCollectionView.dataSource = self
-        weatherViewModel.delegate = self
+    }
+    
+    private func addNotificationObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(modelDidFinishSetUp(_:)), name: Notification.Name.modelDidFinishSetUp, object: nil)
+    }
+    
+    @objc func modelDidFinishSetUp(_ notification: Notification) {
+        weatherCollectionView.reloadData()
     }
     
     private func register() {
@@ -67,7 +81,7 @@ extension WeatherViewController {
         collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
-    @objc func handleRefreshControl() {
+    @objc private func handleRefreshControl() {
         
         self.weatherCollectionView.reloadData()
         
