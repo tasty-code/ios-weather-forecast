@@ -10,10 +10,18 @@ import CoreLocation
 
 final class CurrentWeatherViewModel {
         
-    struct CurrentWeather {
+    struct CurrentWeather: CustomStringConvertible {
         let image: UIImage?
         let address: String
         let temperatures: Temperature
+        
+        var description: String {
+            let text = """
+            \(address)
+            최저 \(temperatures.minimumTemperature) 최대 \(temperatures.maximumTemperature)
+            """
+            return text
+        }
     }
     
     func fetchCurrentAddress(locationManager: CoreLocationManager,

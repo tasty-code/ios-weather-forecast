@@ -14,26 +14,14 @@ final class CurrentWeatherCell: UICollectionViewListCell {
     override func updateConfiguration(using state: UICellConfigurationState) {
         super.updateConfiguration(using: state)
         
-        let (addressAndTemperatureText, currentTemperature) = makeTemperatureText()
-        var configuration = configureAttribute(addressAndTemperatureText: addressAndTemperatureText, currentTemperatureText: currentTemperature)
-        configuration.image = currentWeather?.image
+        guard let currentWeather = currentWeather else { return }
+        
+        let currentTemperatureText = currentWeather.temperatures.averageTemperature.description
+        
+        var configuration = configureAttribute(addressAndTemperatureText: currentWeather.description, currentTemperatureText: currentTemperatureText)
+        configuration.image = currentWeather.image
         
         contentConfiguration = configuration
-    }
-    
-    private func makeTemperatureText() -> (String, String) {
-        
-        guard let address = currentWeather?.address,
-              let minimumTemperature = currentWeather?.temperatures.minimumTemperature.changeWeatherFormat(),
-              let maximumTemperature = currentWeather?.temperatures.maximumTemperature.changeWeatherFormat(),
-              let currentTemperatureText = currentWeather?.temperatures.averageTemperature.description else { return ("", "") }
-        
-        let addressAndTemperatureText: String = """
-        \(address)
-        최저 \(minimumTemperature) 최소 \(maximumTemperature)
-        """
-        
-        return (addressAndTemperatureText, currentTemperatureText)
     }
     
     private func configureAttribute(addressAndTemperatureText: String, currentTemperatureText: String) -> UIListContentConfiguration {
