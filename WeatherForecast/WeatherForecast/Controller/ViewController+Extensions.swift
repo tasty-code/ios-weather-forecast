@@ -10,7 +10,7 @@ import CoreLocation
 
 extension ViewController: LocationManagerDelegate {
     func fetchData() {
-        guard let coordinate = locationManager.getCoordinate() else { return }
+        guard let coordinate = locationManager.coordinate else { return }
         Task {
             weather = try await networkManager.callWeatherAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
             forecast = try await networkManager.callForecastAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
@@ -49,7 +49,7 @@ extension ViewController: UICollectionViewDataSource {
 
         header.weatherImage.image = weatherIcon
 
-        header.locationLabel.text = locationManager.getAddress()
+        header.locationLabel.text = locationManager.address
 
         if let tempMin = weather?.main.tempMin, let tempMax = weather?.main.tempMax {
             header.tempMinAndMaxLabel.text = "최저 \(String(format: "%.1f", tempMin))° 최대 \(String(format: "%.1f", tempMax))°"

@@ -12,8 +12,8 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     // MARK: - Private property
     private let locationManager = CLLocationManager()
     private let geoCoder = CLGeocoder()
-    private var address = ""
-    private var coordinate: CLLocationCoordinate2D?
+    private(set) var address = ""
+    private(set) var coordinate: CLLocationCoordinate2D?
 
     weak var delegate: LocationManagerDelegate?
 
@@ -29,15 +29,6 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         default:
             manager.requestWhenInUseAuthorization()
         }
-    }
-
-    func getAddress() -> String {
-        return address
-    }
-
-    func getCoordinate() -> CLLocationCoordinate2D? {
-        guard let coordinateData = coordinate else { return nil }
-        return coordinateData
     }
     
     // MARK: - Lifecycle
