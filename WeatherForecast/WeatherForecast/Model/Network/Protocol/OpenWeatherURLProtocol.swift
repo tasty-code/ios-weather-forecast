@@ -9,8 +9,6 @@ import Foundation
 
 protocol OpenWeatherURLProtocol {
     var BaseURL: String { get }
-    var latitude: Double { get }
-    var longitude: Double { get }
     var appid: String { get }
     
     func weatherURL(lat: Double, lon: Double) -> String
@@ -26,10 +24,10 @@ extension OpenWeatherURLProtocol {
     }
     
     func weatherURL(lat: Double, lon: Double) -> String {
-        return "\(BaseURL)weather?lat=\(lat)&lon=\(lon)&appid=\(appid)"
+        return "\(BaseURL)weather?lat=\(lat)&lon=\(lon)&units=metric&appid=\(appid)"
     }
     
     func forecastURL(lat: Double, lon: Double) -> String {
-        return "\(BaseURL)forecast?lat=\(lat)&lon=\(lon)&appid=\(appid)"
+        return "\(BaseURL)forecast?lat=\(lat)&lon=\(lon)&units=metric&appid=\(appid)"
     }
 }
