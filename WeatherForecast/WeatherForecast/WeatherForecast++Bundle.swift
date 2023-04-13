@@ -21,7 +21,7 @@ extension Bundle {
     private func getApiKey() throws -> String {
         guard let file = self.path(forResource: "WeatherInfo", ofType: "plist") else { throw NetworkError.apiFilePath }
         guard let resource = NSDictionary(contentsOfFile: file) else { throw NetworkError.apiResource }
-        guard let key = resource["API_KEY"] as? String else { throw NetworkError.apiKey }
+        guard let key = resource["API_KEY"] as? String, key != "" else { throw NetworkError.apiKey }
         return key
     }
 }
