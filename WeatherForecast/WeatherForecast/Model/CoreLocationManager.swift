@@ -20,20 +20,14 @@ final class CoreLocationManager: NSObject {
         locationManager.delegate = self
     }
     
-    func changeGeocoder(location: CLLocation, completion: @escaping (CLPlacemark?) -> Void) {
+    func changeGeocoder(location: CLLocation) async throws -> CLPlacemark? {
+        
         let geocoder = CLGeocoder()
         let locale = Locale(identifier: "Ko-kr")
+        let locations = try await geocoder.reverseGeocodeLocation(location, preferredLocale: locale)
+        let firstLocation = locations.last
         
-        geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { placemark, error in
-            
-            guard error == nil else {
-                completion(nil)
-                return
-            }
-            
-            guard let firstLocation = placemark?.last else { return }
-            completion(firstLocation)
-        }
+        return firstLocation
     }
 }
 
@@ -46,17 +40,21 @@ extension CoreLocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error")
+        print("locationManager-didFailWithError")
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        
         switch manager.authorizationStatus {
         case .authorizedWhenInUse:
             manager.requestLocation()
+            
         case .denied, .restricted:
             break
+            
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
+            
         default:
             return
         }

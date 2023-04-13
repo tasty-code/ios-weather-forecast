@@ -10,35 +10,21 @@ import UIKit
 typealias NetworkResult = Result<Data, NetworkError>
 
 final class NetworkSession {
+    
     private let session: URLSession
     
     init(session: URLSession = .shared) {
         self.session = session
     }
     
-    func task(urlRequest: URLRequest, completionHandler: @escaping (NetworkResult) -> Void
-    ) -> URLSessionDataTask {
+    func fetchData(from urlRequest: URLRequest) async throws -> NetworkResult {
         
-        let task = session.dataTask(with: urlRequest) { data, response, error in
-            
-            guard error == nil else {
-                completionHandler(.failure(.failedRequest))
-                return
-            }
-            
-            guard let response = response, response.checkResponse else {
-                completionHandler(.failure(.outOfReponseCode))
-                return
-            }
-            
-            guard let data = data else {
-                completionHandler(.failure(.emptyData))
-                return
-            }
-                        
-            completionHandler(.success(data))
+        let (data, response) = try await session.data(for: urlRequest)
+        
+        guard response.checkResponse else {
+            return .failure(.outOfReponseCode)
         }
         
-        return task
+        return .success(data)
     }
 }

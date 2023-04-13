@@ -28,7 +28,6 @@ struct Coordinate: Decodable {
 extension Coordinate: CustomStringConvertible {
     
     var description: String {
-        
         return "lat=\(latitude)&lon=\(longitude)"
     }
 }

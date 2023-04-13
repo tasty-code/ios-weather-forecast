@@ -16,12 +16,13 @@ final class WeatherViewModel {
     private let coreLocationManager = CoreLocationManager()
     private let weatherNetworkDispatcher: WeatherNetworkDispatcher
     
+    weak var delegate: WeatherViewModelDelegate?
+    
     var fiveDaysForecastWeather: [FiveDaysForecastWeatherViewModel.FiveDaysForecast] = []
     var currentWeather: CurrentWeatherViewModel.CurrentWeather?
     
     init(networkSession: NetworkSession = NetworkSession(session: URLSession.shared)) {
         weatherNetworkDispatcher = WeatherNetworkDispatcher(networkSession: networkSession)
-        
         coreLocationManager.delegate = self
     }
     
@@ -33,48 +34,63 @@ final class WeatherViewModel {
         return Coordinate(longitude: longitude, latitude: latitude)
     }
     
-    func execute(locationManager: CoreLocationManager, location: CLLocation, weatherNetworkDispatcher: WeatherNetworkDispatcher) {
+    private func execute(locationManager: CoreLocationManager,
+                         location: CLLocation,
+                         weatherNetworkDispatcher: WeatherNetworkDispatcher) {
         
         let coordinate = self.makeCoordinate(from: location)
         
-        currentWeatherViewModel.fetchCurrentAddress(
-            locationManager: locationManager,
-            location: location
-        ) { [weak self] address in
+        Task {
+            let address = try await currentWeatherViewModel.fetchCurrentAddress(
+                locationManager: coreLocationManager,
+                location: location)
             
-            self?.currentWeatherViewModel.fetchCurrentInformation(
+            let currentWeatherDTO = try await currentWeatherViewModel.fetchCurrentInformation(
                 weatherNetworkDispatcher: weatherNetworkDispatcher,
-                coordinate: coordinate,
-                location: location,
-                address: address
-            ) { [weak self] iconString, weatherData in
-                
-                self?.currentWeatherViewModel.fetchCurrentImage(
-                    weatherNetworkDispatcher: weatherNetworkDispatcher,
-                    iconString: iconString,
-                    address: address,
-                    weatherData: weatherData
-                )
-            }
-        }
-        
-        self.fiveDaysForecastWeatherViewModel.fetchForecastWeather(
-            weatherNetworkDispatcher: weatherNetworkDispatcher,
-            coordinate: coordinate,
-            location: location
-        ) { [weak self] iconString, eachData in
-            
-            self?.fiveDaysForecastWeatherViewModel.fetchForecastImage(
-                weatherNetworkDispatcher: weatherNetworkDispatcher,
-                icon: iconString,
-                eachData: eachData
+                coordinate: coordinate
             )
+            
+            let currentWeatherImage = try await currentWeatherViewModel.fetchCurrentImage(
+                weatherNetworkDispatcher: weatherNetworkDispatcher,
+                currentWeatherDTO: currentWeatherDTO
+            )
+            
+            let currentWeather = currentWeatherViewModel.makeCurrentWeather(
+                image: currentWeatherImage,
+                address: address,
+                currentWeatherDTO: currentWeatherDTO
+            )
+            
+            self.currentWeather = currentWeather
+            
+            let fiveDaysForecastWeatherDTO = try await fiveDaysForecastWeatherViewModel.fetchForecastWeather(
+                weatherNetworkDispatcher: weatherNetworkDispatcher,
+                coordinate: coordinate
+            )
+            
+            let fiveDaysForecastImages = try await fiveDaysForecastWeatherViewModel.fetchForecastImages(
+                weatherNetworkDispatcher: weatherNetworkDispatcher,
+                fiveDaysForecastDTO: fiveDaysForecastWeatherDTO
+            )
+            
+            let fiveDaysForecasts = fiveDaysForecastWeatherViewModel.makeFiveDaysForecast(
+                images: fiveDaysForecastImages,
+                fiveDaysForecastDTO: fiveDaysForecastWeatherDTO
+            )
+            
+            self.fiveDaysForecastWeather = fiveDaysForecasts
+            
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name.modelDidFinishSetUp, object: nil)
+            }
         }
     }
 }
 
 extension WeatherViewModel: CoreLocationManagerDelegate {
-    func coreLocationManager(_ manager: CoreLocationManager, didUpdateLocation location: CLLocation) {
+    
+    func coreLocationManager(_ manager: CoreLocationManager,
+                             didUpdateLocation location: CLLocation) {
         execute(
             locationManager: manager,
             location: location,

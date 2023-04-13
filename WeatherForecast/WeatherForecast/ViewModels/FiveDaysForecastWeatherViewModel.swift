@@ -9,34 +9,59 @@ import UIKit
 import CoreLocation
 
 final class FiveDaysForecastWeatherViewModel {
-    
-    struct FiveDaysForecast: Identifiable {
-        let id = UUID()
+        
+    struct FiveDaysForecast {
         var image: UIImage?
         let date: String
         let temperature: Double
     }
     
     func fetchForecastWeather(weatherNetworkDispatcher: WeatherNetworkDispatcher,
-                             coordinate: Coordinate,
-                             location: CLLocation,
-                             completion: @escaping (String, Day) -> Void
-    ) {
-        weatherNetworkDispatcher.requestWeatherInformation(of: .fiveDaysForecast, in: coordinate) { data in
-            guard let forecastData = data as? FiveDaysForecastDTO else { return }
-            for eachData in forecastData.list {
-                guard let icon = eachData.weather.first?.icon else { return }
-                completion(icon, eachData)
-            }
+                              coordinate: Coordinate) async throws -> FiveDaysForecastDTO {
+        
+        let decodedData = try await weatherNetworkDispatcher.requestWeatherInformation(of: .fiveDaysForecast, in: coordinate)
+        
+        guard let fiveDaysForecastDTO = decodedData as? FiveDaysForecastDTO else {
+            throw NetworkError.failedTypeCasting
         }
+        
+        return fiveDaysForecastDTO
+    }
+    func fetchForecastImages(weatherNetworkDispatcher: WeatherNetworkDispatcher,
+                             fiveDaysForecastDTO: FiveDaysForecastDTO) async throws -> [UIImage] {
+        
+        var images: [UIImage] = []
+        
+        for day in fiveDaysForecastDTO.list {
+            guard let iconString = day.weather.first?.icon else {
+                throw NetworkError.failedTypeCasting
+            }
+            
+            let image = try await weatherNetworkDispatcher.requestWeatherImage(icon: iconString)
+            
+            guard let image = image else {
+                throw NetworkError.failedTypeCasting
+            }
+            
+            images.append(image)
+        }
+        
+        return images
     }
     
-    func fetchForecastImage(weatherNetworkDispatcher: WeatherNetworkDispatcher,
-                           icon: String,
-                           eachData: Day
-    ) {
-        weatherNetworkDispatcher.requestWeatherImage(icon: icon) { image in
-            let fiveDaysForecast = FiveDaysForecast(image: image, date: eachData.time, temperature: eachData.temperature.temperature)
+    func makeFiveDaysForecast(images: [UIImage],
+                              fiveDaysForecastDTO: FiveDaysForecastDTO) -> [FiveDaysForecast] {
+        
+        var fiveDaysForecast: [FiveDaysForecast] = []
+        
+        for (index, day) in fiveDaysForecastDTO.list.enumerated() {
+            let date = day.time
+            let temeperature = day.temperature.averageTemperature
+            let fiveDaysForecastWeather = FiveDaysForecast(image: images[index], date: date, temperature: temeperature)
+            
+            fiveDaysForecast.append(fiveDaysForecastWeather)
         }
+        
+        return fiveDaysForecast
     }
 }
