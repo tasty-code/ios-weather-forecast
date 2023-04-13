@@ -14,40 +14,50 @@ final class CurrentWeatherCell: UICollectionViewListCell {
     override func updateConfiguration(using state: UICellConfigurationState) {
         super.updateConfiguration(using: state)
         
-        var configuration = UIListContentConfiguration.subtitleCell()
+        let (addressAndTemperatureText, currentTemperature) = makeTemperatureText()
+        var configuration = configureAttribute(addressAndTemperatureText: addressAndTemperatureText, currentTemperatureText: currentTemperature)
+        configuration.image = currentWeather?.image
+        
+        contentConfiguration = configuration
+    }
+    
+    private func makeTemperatureText() -> (String, String) {
         
         guard let address = currentWeather?.address,
-              let minimumTemperature = currentWeather?.temperatures.minimumTemperature,
-              let maximumTemperature = currentWeather?.temperatures.maximumTemperature,
-              let currentTemperature = currentWeather?.temperatures.averageTemperature
-        else { return }
+              let minimumTemperature = currentWeather?.temperatures.minimumTemperature.changeWeatherFormat(),
+              let maximumTemperature = currentWeather?.temperatures.maximumTemperature.changeWeatherFormat(),
+              let currentTemperatureText = currentWeather?.temperatures.averageTemperature.description else { return ("", "") }
         
         let addressAndTemperatureText: String = """
-           \(address)
-           최저 \(minimumTemperature.changeWeatherFormat().degree) 최소 \(maximumTemperature.changeWeatherFormat().degree)
-           """
+        \(address)
+        최저 \(minimumTemperature) 최소 \(maximumTemperature)
+        """
+        
+        return (addressAndTemperatureText, currentTemperatureText)
+    }
+    
+    private func configureAttribute(addressAndTemperatureText: String, currentTemperatureText: String) -> UIListContentConfiguration {
+        
+        var configuration = UIListContentConfiguration.subtitleCell()
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 6
-        
         let addressAndTemperatureTextAttributes: [NSAttributedString.Key: Any] = [
             .font : UIFont.systemFont(ofSize: 13),
             .paragraphStyle : paragraphStyle,
         ]
         
-        configuration.attributedText = NSAttributedString(string: addressAndTemperatureText, attributes: addressAndTemperatureTextAttributes)
+        configuration.attributedText = NSAttributedString(string: addressAndTemperatureText,attributes: addressAndTemperatureTextAttributes)
         configuration.textProperties.color = .white
         
         let currentTemperatureTextAttribtues: [NSAttributedString.Key: Any] = [
             .font : UIFont.systemFont(ofSize: 30, weight: .semibold)
         ]
         
-        configuration.secondaryAttributedText = NSAttributedString(string: currentTemperature.changeWeatherFormat().degree, attributes: currentTemperatureTextAttribtues)
+        configuration.secondaryAttributedText = NSAttributedString(string: currentTemperatureText,attributes: currentTemperatureTextAttribtues)
         configuration.secondaryTextProperties.color = .white
         configuration.textToSecondaryTextVerticalPadding = 10
         
-        configuration.image = currentWeather?.image
-        
-        contentConfiguration = configuration
+        return configuration
     }
 }
