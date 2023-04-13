@@ -8,7 +8,7 @@
 import UIKit
 import CoreLocation
 
-final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
+final class NetworkManager: OpenWeatherURLProtocol {
     
     // MARK: - Public
     func callWeatherAPI(latitude: Double, longitude: Double) async throws -> Weather? {
