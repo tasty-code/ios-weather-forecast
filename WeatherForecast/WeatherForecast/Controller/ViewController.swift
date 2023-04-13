@@ -74,7 +74,7 @@ class ViewController: UIViewController {
     private func setUpCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor(red: 0, green: 0.0, blue: 0.0, alpha: 0)
+        collectionView.backgroundColor = .clear
         
         collectionView.register(WeatherCollectionViewHeader.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
