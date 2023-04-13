@@ -12,14 +12,14 @@ extension ViewController: LocationManagerDelegate {
     func fetchData() {
         guard let coordinate = locationManager.coordinate else { return }
         Task {
-            weather = try await networkManager.callWeatherAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            forecast = try await networkManager.callForecastAPIConcurrency(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            weather = try await networkManager.callWeatherAPI(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            forecast = try await networkManager.callForecastAPI(latitude: coordinate.latitude, longitude: coordinate.longitude)
 
             guard let weatherIconString = weather?.weather.first?.icon else { return }
-            weatherIcon = try await networkManager.getWeatherIconCuncurrency(weatherStatus: weatherIconString)
+            weatherIcon = try await networkManager.callWeatherIconAPI(weatherStatus: weatherIconString)
 
             guard let forecastList = forecast?.list else { return }
-            forecastIcons = try await networkManager.getForecastIconCuncurrency(forecastList: forecastList)
+            forecastIcons = try await networkManager.callForecastIconAPI(forecastList: forecastList)
         }
     }
 }

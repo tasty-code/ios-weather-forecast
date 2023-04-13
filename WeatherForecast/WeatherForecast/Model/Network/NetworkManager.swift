@@ -11,7 +11,7 @@ import CoreLocation
 final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
     
     // MARK: - Public
-    func callWeatherAPIConcurrency(latitude: Double, longitude: Double) async throws -> Weather? {
+    func callWeatherAPI(latitude: Double, longitude: Double) async throws -> Weather? {
         let weatherURLString = weatherURL(lat: latitude, lon: longitude)
         let weatherURL = try getURL(string: weatherURLString)
         var weatherURLRequest = URLRequest(url: weatherURL)
@@ -24,7 +24,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
         return weather
     }
 
-    func callForecastAPIConcurrency(latitude: Double, longitude: Double) async throws -> Forecast? {
+    func callForecastAPI(latitude: Double, longitude: Double) async throws -> Forecast? {
         let forecastURLString = forecastURL(lat: latitude, lon: longitude)
         let forecastURL = try getURL(string: forecastURLString)
         var forecastURLRequest = URLRequest(url: forecastURL)
@@ -37,7 +37,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
         return forecast
     }
 
-    func getWeatherIconCuncurrency(weatherStatus: String) async throws -> UIImage? {
+    func callWeatherIconAPI(weatherStatus: String) async throws -> UIImage? {
         let weatherIconURL = try getURL(string: "https://openweathermap.org/img/wn/\(weatherStatus)@2x.png")
         var weatherIconURLRequest = URLRequest(url: weatherIconURL)
 
@@ -49,7 +49,7 @@ final class NetworkManager: OpenWeatherURLProtocol, NetworkTaskProtcol {
         return weatherIconImage
     }
 
-    func getForecastIconCuncurrency(forecastList: [Forecast.List]) async throws -> [String: UIImage]? {
+    func callForecastIconAPI(forecastList: [Forecast.List]) async throws -> [String: UIImage]? {
         var imageSet: [String: UIImage] = [:]
 
         for forecastCase in forecastList {
