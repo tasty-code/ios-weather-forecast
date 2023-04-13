@@ -22,9 +22,9 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         
         super.init(frame: frame)
 
-        addSubview(timeLabel)
-        addSubview(temperatureLabel)
-        addSubview(tempImage)
+        contentView.addSubview(timeLabel)
+        contentView.addSubview(temperatureLabel)
+        contentView.addSubview(tempImage)
         configureConstraint()
         configureUI()
     }
