@@ -25,7 +25,8 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         addSubview(timeLabel)
         addSubview(temperatureLabel)
         addSubview(tempImage)
-        configureLabelConstraint()
+        configureConstraint()
+        configureUI()
     }
 
     required init?(coder: NSCoder) {
@@ -33,7 +34,14 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Private function
-    private func configureLabelConstraint() {
+    private func configureUI() {
+        timeLabel.textColor = .white
+        
+        temperatureLabel.textColor = .white
+        temperatureLabel.textAlignment = .center
+    }
+    
+    private func configureConstraint() {
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         tempImage.translatesAutoresizingMaskIntoConstraints = false

@@ -27,7 +27,9 @@ class WeatherCollectionViewHeader: UICollectionReusableView {
         addSubview(locationLabel)
         addSubview(tempMinAndMaxLabel)
         addSubview(tempLabel)
-        configureHeaderSubViewConstraints()
+        
+        configureConstraints()
+        configureUI()
     }
 
     required init?(coder: NSCoder) {
@@ -35,7 +37,18 @@ class WeatherCollectionViewHeader: UICollectionReusableView {
     }
 
     // MARK: - Private function
-    private func configureHeaderSubViewConstraints() {
+    private func configureUI() {
+        locationLabel.textColor = .white
+        locationLabel.font = UIFont.systemFont(ofSize: 15)
+        
+        tempMinAndMaxLabel.textColor = .white
+        tempMinAndMaxLabel.font = UIFont.systemFont(ofSize: 15)
+        
+        tempLabel.textColor = .white
+        tempLabel.font = UIFont.systemFont(ofSize: 30)
+    }
+    
+    private func configureConstraints() {
         weatherImage.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         tempMinAndMaxLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -51,15 +64,18 @@ class WeatherCollectionViewHeader: UICollectionReusableView {
             locationLabel.topAnchor.constraint(equalTo: self.topAnchor),
             locationLabel.leadingAnchor.constraint(equalTo: weatherImage.trailingAnchor),
             locationLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            locationLabel.heightAnchor.constraint(equalToConstant: self.frame.height / 5),
 
             tempMinAndMaxLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor),
             tempMinAndMaxLabel.leadingAnchor.constraint(equalTo: weatherImage.trailingAnchor),
             tempMinAndMaxLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            tempMinAndMaxLabel.heightAnchor.constraint(equalToConstant: self.frame.height / 5),
 
             tempLabel.topAnchor.constraint(equalTo: tempMinAndMaxLabel.bottomAnchor),
             tempLabel.leadingAnchor.constraint(equalTo: weatherImage.trailingAnchor),
             tempLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            tempLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            tempLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            tempLabel.heightAnchor.constraint(equalToConstant: self.frame.height * 3 / 5)
         ])
     }
 }

@@ -50,19 +50,13 @@ extension ViewController: UICollectionViewDataSource {
         header.weatherImage.image = weatherIcon
 
         header.locationLabel.text = locationManager.getAddress()
-        header.locationLabel.textColor = .white
-        header.locationLabel.font = UIFont.systemFont(ofSize: 15)
 
         if let tempMin = weather?.main.tempMin, let tempMax = weather?.main.tempMax {
             header.tempMinAndMaxLabel.text = "최저 \(String(format: "%.1f", tempMin))° 최대 \(String(format: "%.1f", tempMax))°"
-            header.tempMinAndMaxLabel.textColor = .white
-            header.tempMinAndMaxLabel.font = UIFont.systemFont(ofSize: 15)
         }
 
         if let temp = weather?.main.temp {
             header.tempLabel.text = "\(String(format: "%.1f", temp))°"
-            header.tempLabel.textColor = .white
-            header.tempLabel.font = UIFont.systemFont(ofSize: 30)
         }
 
         return header
@@ -77,11 +71,8 @@ extension ViewController: UICollectionViewDataSource {
             let conversionTimeDataToDate = Date(timeIntervalSinceReferenceDate: TimeInterval(forecastData.timeOfData))
 
             cell.timeLabel.text = dateFormatter.string(from: conversionTimeDataToDate)
-            cell.timeLabel.textColor = .white
 
             cell.temperatureLabel.text = String(format: "%.1f", forecastData.main.temp) + "°"
-            cell.temperatureLabel.textColor = .white
-            cell.temperatureLabel.textAlignment = .center
 
             if let forecastIconData = forecastIcons {
                 if let forecastStatus = forecastData.weather.first?.icon {
