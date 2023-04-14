@@ -13,8 +13,8 @@ class WeatherForecastTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        sutCurrent = WeatherParser()
-        sutForecast = WeatherParser()
+        sutCurrent = WeatherNetworkService()
+        sutForecast = WeatherNetworkService()
     }
 
     override func tearDownWithError() throws {

@@ -1,5 +1,5 @@
 //
-//  WeatherParser.swift
+//  WeatherNetworkService.swift
 //  WeatherForecast
 //
 //  Created by Blu on 2023/03/15.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct WeatherParser {
+struct WeatherNetworkService {
     static func parseData<T: WeatherComposable>(at coordinate: CurrentCoordinate, type: T.Type) async throws -> T {
         guard let request = WeatherRouter.data(weatherRange: T.weatherRange, coordinate: coordinate).request else {
             throw WeatherNetworkError.requestFailed(T.weatherRange.description)

@@ -30,7 +30,7 @@ extension ViewController: CLLocationManagerDelegate {
 
         Task {
             try await updateCurrentWeather(at: coordinate)
-            try await updateForecastWeather(for: coordinate)
+            try await updateForecastWeather(at: coordinate)
             collectionView.reloadData()
             
             if collectionView.refreshControl?.isRefreshing == true {
@@ -44,15 +44,15 @@ extension ViewController: CLLocationManagerDelegate {
     }
     
     private func updateCurrentWeather(at location: CurrentCoordinate) async throws {
-        let current = try await WeatherParser.parseData(at: location, type: CurrentWeatherComponents.self)
+        let current = try await WeatherNetworkService.parseData(at: location, type: CurrentWeatherComponents.self)
         currentWeather = WeatherData(current: current)
         try await currentWeather?.convertToImage {
             self.currentWeather?.iconImage = $0
         }
     }
     
-    private func updateForecastWeather(for location: CurrentCoordinate) async throws {
-        let forecast = try await WeatherParser.parseData(at: location, type: ForecastWeatherComponents.self)
+    private func updateForecastWeather(at location: CurrentCoordinate) async throws {
+        let forecast = try await WeatherNetworkService.parseData(at: location, type: ForecastWeatherComponents.self)
         forecastWeather = forecast.list.map { WeatherData(forecast: $0) }
 
         guard let forecastWeather else {
