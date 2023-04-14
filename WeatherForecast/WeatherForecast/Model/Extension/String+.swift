@@ -8,9 +8,6 @@
 import Foundation
 
 extension String {
-    static var weatherMeasurementUnit: Self { "metric" }
-    static var weatherDataLanguage: Self { "kr" }
-    
     init(utcTime: Int) {
         let date = Date(timeIntervalSince1970: TimeInterval(utcTime))
         let formatter = DateFormatter()

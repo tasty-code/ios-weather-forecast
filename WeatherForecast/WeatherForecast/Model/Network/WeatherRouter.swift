@@ -37,8 +37,8 @@ enum WeatherRouter {
             return [
                 URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
                 URLQueryItem(name: "lon", value: "\(coordinate.longitude)"),
-                URLQueryItem(name: "units", value: String.weatherMeasurementUnit),
-                URLQueryItem(name: "lang", value: String.weatherDataLanguage),
+                URLQueryItem(name: "units", value: QueryItemValue.weatherMeasurementUnit.rawValue),
+                URLQueryItem(name: "lang", value: QueryItemValue.weatherDataLanguage.rawValue),
                 URLQueryItem(name: "appid", value: Bundle.main.apiKey)
             ]
         case .icon(_):
@@ -72,5 +72,12 @@ extension WeatherRouter {
         request.httpMethod = self.method
         
         return request
+    }
+}
+
+extension WeatherRouter {
+    enum QueryItemValue: String {
+        case weatherMeasurementUnit = "metric"
+        case weatherDataLanguage = "kr"
     }
 }
