@@ -76,6 +76,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C3E791922B0AF6DD00257AF6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C3E791932B0AF6E500257AF6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
+				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C3E791942B0AF6F100257AF6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C3E791952B0AF75B00257AF6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
+				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
+				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
+				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C79C8CE725ADDDF200EEE3F1 = {
 			isa = PBXGroup;
 			children = (
@@ -99,13 +134,10 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
-				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
-				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
-				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
-				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
-				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
-				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
-				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
+				C3E791952B0AF75B00257AF6 /* Resources */,
+				C3E791922B0AF6DD00257AF6 /* Models */,
+				C3E791932B0AF6E500257AF6 /* Views */,
+				C3E791942B0AF6F100257AF6 /* Controllers */,
 			);
 			path = WeatherForecast;
 			sourceTree = "<group>";
