@@ -18,10 +18,14 @@ class ViewController: UIViewController {
             switch result {
             case .success(let weatherResponse):
                 DispatchQueue.main.async {
-                    print(self.fiveWeather)
+                    self.weather = weatherResponse
+                    guard let weather = self.weather else {
+                        return
+                    }
+                    print(weather)
                 }
-            case .failure(_ ):
-                print("error")
+            case .failure(let error):
+                print(error)
             }
         })
     }

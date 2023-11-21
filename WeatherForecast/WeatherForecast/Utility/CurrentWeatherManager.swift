@@ -9,7 +9,7 @@ enum NetworkError: Error {
 class CurrentWeatherManager {
     private var apiKey: String {
         get {
-            guard let filePath = Bundle.main.path(forResource: "ApiKeyList", ofType: "plist") else {
+            guard let filePath = Bundle.main.path(forResource: "APIKeyList", ofType: "plist") else {
                 fatalError("Couldn`t find ApiKeyList")
             }
             
@@ -32,7 +32,6 @@ class CurrentWeatherManager {
             guard let data = data, error == nil else {
                 return completion(.failure(.noData))
             }
-            
             do {
                 let weatherResponse = try JSONDecoder().decode(CurrentWeatherDTO.self, from: data)
                 completion(.success(weatherResponse))

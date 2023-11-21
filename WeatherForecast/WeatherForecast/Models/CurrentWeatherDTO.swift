@@ -65,7 +65,7 @@ extension CurrentWeatherDTO {
     // MARK: - Wind
     struct Wind: Decodable {
         let speed: Double
-        let gust: Double
+        let gust: Double?
         let deg: Int?
     }
     
