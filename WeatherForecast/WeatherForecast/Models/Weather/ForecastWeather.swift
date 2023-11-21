@@ -1,5 +1,5 @@
 //
-//  FiveDaysWeather.swift
+//  ForecastWeather.swift
 //  WeatherForecast
 //
 //  Created by 김경록 on 11/20/23.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - FiveDaysWeather
+// MARK: - ForecastWeather
 
-struct FiveDaysWeather: Codable {
+struct ForecastWeather: Codable {
     let cod: String
     let message, cnt: Int
     let list: [List]
