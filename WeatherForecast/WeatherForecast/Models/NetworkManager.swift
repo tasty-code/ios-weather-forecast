@@ -8,13 +8,15 @@
 import Foundation
 
 final class NetworkManager {
-    func fetchCurrentWeather(latitude: Double,
-                             longitude: Double,
-                             completionHandler: @escaping (CurrentWeather?)-> Void) {
+    
+    func fetchWeather<T: Decodable>(weatherType: WeatherType,
+                                    latitude: Double,
+                                    longitude: Double,
+                                    completionHandler: @escaping (T?)-> Void) {
         
-        guard let url = URL(string: WeatherType.current.fetchURL(lon: longitude, lat: latitude))
+        guard let url = URL(string: weatherType.fetchURL(lon: longitude, lat: latitude))
         else {
-            completionHandler(nil)
+            print("올바른 URL이 아닙니다.")
             return
         }
         
@@ -22,77 +24,32 @@ final class NetworkManager {
         request.httpMethod = "GET"
         
         URLSession.shared.dataTask(with: request) { data, response, error in
-            
             guard error == nil else {
-                print("Error: error calling GET")
-                print(error!)
-//                completionHandler(nil)
+                print("에러 발생")
+                print(error)
                 return
             }
             
-            guard let safeData = data else {
+            guard let data = data else {
                 print("Error: Did not receive data")
-//                completionHandler(nil)
                 return
             }
             
             guard let response = response as? HTTPURLResponse,
                   (200 ..< 299) ~= response.statusCode
             else {
-                print(url)
+                print("응답 코드 에러")
                 print("Error: HTTP request failed")
-//                completionHandler(nil)
                 return
             }
             
-            let currentWeather = try? JSONDecoder().decode(CurrentWeather.self, from: safeData)
-            completionHandler(currentWeather)
+            do {
+                let weather = try JSONDecoder().decode(T.self, from: data)
+                completionHandler(weather)
+            } catch {
+                print("디코딩 불가")
+                print(error)
+            }
         }.resume()
     }
-    
-    func fetchForecastWeather(latitude: Double,
-                             longitude: Double,
-                             completionHandler: @escaping (ForecastWeather?)-> Void) {
-        
-        guard let url = URL(string: WeatherType.forecast.fetchURL(lon: longitude, lat: latitude))
-        else {
-            completionHandler(nil)
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            guard error == nil else {
-                print("Error: error calling GET")
-                print(error!)
-//                completionHandler(nil)
-                return
-            }
-            
-            guard let safeData = data else {
-                print("Error: Did not receive data")
-//                completionHandler(nil)
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse,
-                  (200 ..< 299) ~= response.statusCode
-            else {
-                print(url)
-
-                print("Error: HTTP request failed")
-//                completionHandler(nil)
-                return
-            }
-            
-            let forecastWeather = try? JSONDecoder().decode(ForecastWeather.self, from: safeData)
-            completionHandler(forecastWeather)
-        }.resume()
-    }
-    
-    
-    
 }
