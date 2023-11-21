@@ -16,13 +16,17 @@ struct WeatherToday: Decodable {
     let base: String
     let visibility: Int
     
-    let coord: Coord
     let weather: [WeatherCommonInformation.Weather]
     let main: WeatherCommonInformation.Main
     let wind: WeatherCommonInformation.Wind
     let clouds: WeatherCommonInformation.Clouds
+    let rain: WeatherCommonInformation.Rain?
+    let snow: WeatherCommonInformation.Snow?
+    let coord: Coord
     let sys: Sys
 }
+
+// MARK: - Coord
 
 extension WeatherToday {
     struct Coord: Decodable {
@@ -31,10 +35,12 @@ extension WeatherToday {
     }
 }
 
+// MARK: - Sys
+
 extension WeatherToday {
     struct Sys: Decodable {
-        let type: Int
-        let id: Int
+        let type: Int?
+        let id: Int?
         let country: String
         let sunrise: Int
         let sunset: Int

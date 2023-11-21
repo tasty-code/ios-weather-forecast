@@ -12,7 +12,8 @@ struct WeatherForecast: Decodable {
     let message: Int
     let cnt: Int
     let list: [WeatherList]
-    let snow: Snow?
+    let rain: WeatherCommonInformation.Rain?
+    let snow: WeatherCommonInformation.Snow?
 }
 
 // MARK: - WeatherList
@@ -37,16 +38,6 @@ extension WeatherForecast {
         
         struct Sys: Decodable {
             let pod: String
-        }
-    }
-}
-
-extension WeatherForecast {
-    struct Snow: Decodable {
-        let hour: Double
-        
-        private enum CodingKeys: String, CodingKey {
-            case hour = "3h"
         }
     }
 }

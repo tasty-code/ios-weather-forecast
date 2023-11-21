@@ -67,16 +67,30 @@ extension WeatherCommonInformation {
     }
 }
 
-// MARK: - Sys
+// MARK: - Rain
 
 extension WeatherCommonInformation {
-    struct Sys: Decodable {
-        let pod: String?
+    struct Rain: Decodable {
+        let oneHour: Double?
+        let threeHour: Double?
         
-        let type: Int?
-        let id: Int?
-        let country: String?
-        let sunrise: Int?
-        let sunset: Int?
+        private enum CodingKeys: String, CodingKey {
+            case oneHour = "1h"
+            case threeHour = "3h"
+        }
+    }
+}
+
+// MARK: - Snow
+
+extension WeatherCommonInformation {
+    struct Snow: Decodable {
+        let oneHour: Double?
+        let threeHour: Double?
+        
+        private enum CodingKeys: String, CodingKey {
+            case oneHour = "1h"
+            case threeHour = "3h"
+        }
     }
 }
