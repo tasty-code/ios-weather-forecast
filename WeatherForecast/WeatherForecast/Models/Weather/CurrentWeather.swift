@@ -8,11 +8,10 @@
 import Foundation
 
 // MARK: - CurrentWeather
-
 struct CurrentWeather: Codable {
     let coord: Coord
     let weather: [Weather]
-    let base: String
+    let base: String?
     let main: Main
     let visibility: Int
     let wind: Wind
@@ -26,23 +25,20 @@ struct CurrentWeather: Codable {
 }
 
 // MARK: - Clouds
-
 struct Clouds: Codable {
     let all: Int
 }
 
 // MARK: - Coord
-
 struct Coord: Codable {
     let lon, lat: Double
 }
 
 // MARK: - Main
-
 struct Main: Codable {
     let temp, feelsLike, tempMin, tempMax: Double
-    let pressure, humidity, seaLevel, grndLevel: Int
-    let tempKf: Double
+    let pressure, humidity: Int
+    let seaLevel, grndLevel: Int?
     
     enum CodingKeys: String, CodingKey {
         case temp
@@ -52,12 +48,10 @@ struct Main: Codable {
         case pressure, humidity
         case seaLevel = "sea_level"
         case grndLevel = "grnd_level"
-        case tempKf = "temp_kf"
     }
 }
 
 // MARK: - Rain
-
 struct Rain: Codable {
     let the1H: Double
     let the3H: Double
@@ -69,7 +63,6 @@ struct Rain: Codable {
 }
 
 // MARK: - Sys
-
 struct Sys: Codable {
     let type, id: Int
     let country: String
@@ -77,18 +70,14 @@ struct Sys: Codable {
 }
 
 // MARK: - Weather
-
 struct Weather: Codable {
     let id: Int
     let main, description, icon: String
 }
 
 // MARK: - Wind
-
 struct Wind: Codable {
     let speed: Double
     let deg: Int
-    let gust: Double
+    let gust: Double?
 }
-
-
