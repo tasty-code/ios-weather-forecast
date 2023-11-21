@@ -30,7 +30,7 @@ struct City: Codable {
 
 struct List: Codable {
     let dt: Int
-    let main: MainClass
+    let main: Main
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
@@ -44,32 +44,6 @@ struct List: Codable {
         case dt, main, weather, clouds, wind, visibility, pop, sys
         case dtTxt = "dt_txt"
         case rain
-    }
-}
-
-// MARK: - Clouds
-
-struct Clouds: Codable {
-    let all: Int
-}
-
-// MARK: - MainClass
-
-struct MainClass: Codable {
-    let temp, feelsLike, tempMin, tempMax: Double
-    let pressure, seaLevel, grndLevel, humidity: Int
-    let tempKf: Double
-    
-    enum CodingKeys: String, CodingKey {
-        case temp
-        case feelsLike = "feels_like"
-        case tempMin = "temp_min"
-        case tempMax = "temp_max"
-        case pressure
-        case seaLevel = "sea_level"
-        case grndLevel = "grnd_level"
-        case humidity
-        case tempKf = "temp_kf"
     }
 }
 
