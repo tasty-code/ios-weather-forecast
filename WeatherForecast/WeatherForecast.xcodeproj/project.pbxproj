@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0E4A84842B0C48F700726F9F /* CurrentWeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84832B0C48F700726F9F /* CurrentWeatherManager.swift */; };
-		0E4A84872B0C67FC00726F9F /* ApiKeyList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E4A84862B0C67FC00726F9F /* ApiKeyList.plist */; };
 		0E4A84892B0C749700726F9F /* WeatherMenuType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84882B0C749700726F9F /* WeatherMenuType.swift */; };
 		A650B5682B0B3D9A00649805 /* CurrentWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650B5672B0B3D9A00649805 /* CurrentWeatherDTO.swift */; };
 		A650B56A2B0B3F7B00649805 /* FiveDaysWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650B5692B0B3F7B00649805 /* FiveDaysWeatherDTO.swift */; };
@@ -41,7 +40,6 @@
 
 /* Begin PBXFileReference section */
 		0E4A84832B0C48F700726F9F /* CurrentWeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherManager.swift; sourceTree = "<group>"; };
-		0E4A84862B0C67FC00726F9F /* ApiKeyList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeyList.plist; sourceTree = "<group>"; };
 		0E4A84882B0C749700726F9F /* WeatherMenuType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherMenuType.swift; sourceTree = "<group>"; };
 		A650B5672B0B3D9A00649805 /* CurrentWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherDTO.swift; sourceTree = "<group>"; };
 		A650B5692B0B3F7B00649805 /* FiveDaysWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiveDaysWeatherDTO.swift; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 		C79C8CE725ADDDF200EEE3F1 = {
 			isa = PBXGroup;
 			children = (
-				0E4A84862B0C67FC00726F9F /* ApiKeyList.plist */,
 				C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */,
 				C79C8D0925ADDDF400EEE3F1 /* WeatherForecastTests */,
 				C79C8D1425ADDDF400EEE3F1 /* WeatherForecastUITests */,
@@ -271,7 +268,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E4A84872B0C67FC00726F9F /* ApiKeyList.plist in Resources */,
 				C79C8D0025ADDDF300EEE3F1 /* LaunchScreen.storyboard in Resources */,
 				C79C8CFD25ADDDF300EEE3F1 /* Assets.xcassets in Resources */,
 				C79C8CFB25ADDDF200EEE3F1 /* Main.storyboard in Resources */,

@@ -14,9 +14,10 @@ enum NetworkError: Error {
 }
 
 class CurrentWeatherManager {
+    
     private var apiKey: String {
         get {
-            guard let filePath = Bundle.main.path(forResource: "ApiKeyList", ofType: "plist") else {
+            guard let filePath = Bundle.main.path(forResource: "APIKeyList", ofType: "plist") else {
                 fatalError("Couldn`t find ApiKeyList")
             }
             
@@ -30,29 +31,29 @@ class CurrentWeatherManager {
     }
     
     func fetchWeather(completion: @escaping (Result<CurrentWeatherDTO, NetworkError>) -> Void) {
-        let url = URL(string: "https://api.openweathermap.org/data/2.5/\(CurrentWeatherDTO.self)?lat=37.715122&lon=126.734086&appid=\(apiKey)")
-    
-        guard let url = url else {
-            return completion(.failure(.badUrl))
-        }
+        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/forecast?lat=37.715122&lon=126.734086&appid=\(apiKey)") else { return }
         
-        
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else {
-                return completion(.failure(.noData))
+        let session: URLSession = URLSession(configuration: .default)
+        let dataTask: URLSessionDataTask = session.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
             }
             
-          
-            let weatherResponse = try? JSONDecoder().decode(CurrentWeatherDTO.self, from: data)
-
-            if let weatherResponse = weatherResponse {
-                print(weatherResponse)
-                completion(.success(weatherResponse))
-            } else {
-                completion(.failure(.decodingError))
+            guard let data = data else {
+                return
+            }
+            
+            do {
+                let weatherResponse = try? JSONDecoder().decode(FiveDaysWeatherDTO.self, from: data)
+                DispatchQueue.main.async {
+                    
+                }
+            } catch(let error) {
+                print(error.localizedDescription)
             }
         }
-        task.resume()
+        dataTask.resume()
     }
 }
 
