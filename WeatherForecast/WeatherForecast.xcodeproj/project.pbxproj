@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,6 +15,9 @@
 		C79C8D0025ADDDF300EEE3F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */; };
 		C79C8D0B25ADDDF400EEE3F1 /* WeatherForecastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8D0A25ADDDF400EEE3F1 /* WeatherForecastTests.swift */; };
 		C79C8D1625ADDDF400EEE3F1 /* WeatherForecastUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */; };
+		E3E7161F2B0AFE82006B3C63 /* NowWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E7161E2B0AFE82006B3C63 /* NowWeather.swift */; };
+		E3E716212B0B6C7C006B3C63 /* ForecastWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E716202B0B6C7C006B3C63 /* ForecastWeather.swift */; };
+		E3E716242B0C7C32006B3C63 /* WeatherInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E716232B0C7C32006B3C63 /* WeatherInformation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		C79C8D1125ADDDF400EEE3F1 /* WeatherForecastUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherForecastUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastUITests.swift; sourceTree = "<group>"; };
 		C79C8D1725ADDDF400EEE3F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E3E7161E2B0AFE82006B3C63 /* NowWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowWeather.swift; sourceTree = "<group>"; };
+		E3E716202B0B6C7C006B3C63 /* ForecastWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastWeather.swift; sourceTree = "<group>"; };
+		E3E716232B0C7C32006B3C63 /* WeatherInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInformation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +105,7 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				E3E7161D2B0AFE39006B3C63 /* Models */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
@@ -126,6 +133,24 @@
 				C79C8D1725ADDDF400EEE3F1 /* Info.plist */,
 			);
 			path = WeatherForecastUITests;
+			sourceTree = "<group>";
+		};
+		E3E7161D2B0AFE39006B3C63 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E3E716222B0C782D006B3C63 /* Weathers */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E3E716222B0C782D006B3C63 /* Weathers */ = {
+			isa = PBXGroup;
+			children = (
+				E3E7161E2B0AFE82006B3C63 /* NowWeather.swift */,
+				E3E716202B0B6C7C006B3C63 /* ForecastWeather.swift */,
+				E3E716232B0C7C32006B3C63 /* WeatherInformation.swift */,
+			);
+			path = Weathers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,8 +215,9 @@
 		C79C8CE825ADDDF200EEE3F1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1230;
-				LastUpgradeCheck = 1230;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					C79C8CEF25ADDDF200EEE3F1 = {
 						CreatedOnToolsVersion = 12.3;
@@ -258,9 +284,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3E7161F2B0AFE82006B3C63 /* NowWeather.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
+				E3E716212B0B6C7C006B3C63 /* ForecastWeather.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
+				E3E716242B0C7C32006B3C63 /* WeatherInformation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,6 +381,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -366,7 +396,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -413,6 +443,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -421,7 +452,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -437,8 +468,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LYVG9RTN58;
 				INFOPLIST_FILE = WeatherForecast/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -456,8 +488,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LYVG9RTN58;
 				INFOPLIST_FILE = WeatherForecast/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
