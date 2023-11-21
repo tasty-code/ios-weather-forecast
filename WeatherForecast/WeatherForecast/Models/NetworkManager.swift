@@ -26,21 +26,22 @@ final class NetworkManager {
             guard error == nil else {
                 print("Error: error calling GET")
                 print(error!)
-                completionHandler(nil)
+//                completionHandler(nil)
                 return
             }
             
             guard let safeData = data else {
                 print("Error: Did not receive data")
-                completionHandler(nil)
+//                completionHandler(nil)
                 return
             }
             
             guard let response = response as? HTTPURLResponse,
                   (200 ..< 299) ~= response.statusCode
             else {
+                print(url)
                 print("Error: HTTP request failed")
-                completionHandler(nil)
+//                completionHandler(nil)
                 return
             }
             
@@ -48,4 +49,50 @@ final class NetworkManager {
             completionHandler(currentWeather)
         }.resume()
     }
+    
+    func fetchForecastWeather(latitude: Double,
+                             longitude: Double,
+                             completionHandler: @escaping (ForecastWeather?)-> Void) {
+        
+        guard let url = URL(string: WeatherType.forecast.fetchURL(lon: longitude, lat: latitude))
+        else {
+            completionHandler(nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            guard error == nil else {
+                print("Error: error calling GET")
+                print(error!)
+//                completionHandler(nil)
+                return
+            }
+            
+            guard let safeData = data else {
+                print("Error: Did not receive data")
+//                completionHandler(nil)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse,
+                  (200 ..< 299) ~= response.statusCode
+            else {
+                print(url)
+
+                print("Error: HTTP request failed")
+//                completionHandler(nil)
+                return
+            }
+            
+            let forecastWeather = try? JSONDecoder().decode(ForecastWeather.self, from: safeData)
+            completionHandler(forecastWeather)
+        }.resume()
+    }
+    
+    
+    
 }
