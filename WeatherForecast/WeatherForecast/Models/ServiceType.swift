@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+enum ServiceType: CustomStringConvertible {
+    case weather, forecast
+    
+    var description: String {
+        switch self {
+        case .weather: "weather"
+        case .forecast: "forecast"
+        }
+    }
+}
