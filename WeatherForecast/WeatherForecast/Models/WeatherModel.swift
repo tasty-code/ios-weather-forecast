@@ -7,10 +7,6 @@
 
 import Foundation
 
-/*
- https://api.openweathermap.org/data/2.5/"\(forecast)"?lat="\(latitude)&lon="\(longitude)"&appid="\(api_key)"&units=metric&lang=kr
- */
-
 struct WeatherModel: Codable {
     let coord: Coord?
     let weather: [Weather]?
