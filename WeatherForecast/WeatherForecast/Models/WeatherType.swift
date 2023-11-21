@@ -1,5 +1,5 @@
 //
-//  WeatherURL.swift
+//  WeatherType.swift
 //  WeatherForecast
 //
 //  Created by 김경록 on 11/21/23.
