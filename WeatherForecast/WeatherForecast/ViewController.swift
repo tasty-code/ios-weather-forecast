@@ -10,7 +10,16 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        NetworkService().getForecastWeather { result in
+                   switch result {
+                   case .success(let weatherResponse):
+                       DispatchQueue.main.async {
+            
+                       }
+                   case .failure(_ ):
+                       print("error")
+                   }
+               }
     }
 
 

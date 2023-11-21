@@ -1,10 +1,3 @@
-//
-//  Coordinate.swift
-//  WeatherForecast
-//
-//  Created by JaeHyeok Sim on 11/21/23.
-//
-
 import Foundation
 
 struct Coordinate: Codable {
@@ -21,7 +14,7 @@ struct Clouds: Codable {
 }
 
 struct Rain: Codable {
-    let amountOfRainOneHour, amountOfRainThreeHour: Double
+    let amountOfRainOneHour, amountOfRainThreeHour: Double?
     
     enum CodingKeys: String, CodingKey {
         case amountOfRainOneHour = "1h"
@@ -37,7 +30,7 @@ struct Wind: Codable {
 
 
 struct Snow: Codable {
-    let amountOfSnowOneHour, amountOfSnowThreeHour: Double
+    let amountOfSnowOneHour, amountOfSnowThreeHour: Double?
     
     enum CodingKeys: String, CodingKey {
         case amountOfSnowOneHour = "1h"
@@ -55,7 +48,7 @@ struct Weather: Codable {
 
 struct Temperature: Codable {
     let temp, feelsLike, tempMin, tempMax: Double
-    let pressure, humidity, seaLevel, grndLevel: Int
+    let pressure, humidity: Int
     
     enum CodingKeys: String, CodingKey {
         case temp
@@ -63,8 +56,8 @@ struct Temperature: Codable {
         case tempMin = "temp_min"
         case tempMax = "temp_max"
         case pressure, humidity
-        case seaLevel = "sea_level"
-        case grndLevel = "grnd_level"
+//        case seaLevel = "sea_level"
+//        case grndLevel = "grnd_level"
     }
 }
 
