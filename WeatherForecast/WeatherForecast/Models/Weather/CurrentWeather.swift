@@ -1,5 +1,5 @@
 //
-//  Weather.swift
+//  CurrentWeather.swift
 //  WeatherForecast
 //
 //  Created by 김경록 on 11/20/23.
