@@ -7,18 +7,18 @@
 
 import Foundation
 
-struct WeatherForecast {
-    let cod: Int
+struct WeatherForecast: Decodable {
+    let cod: String
     let message: Int
     let cnt: Int
     let list: [WeatherList]
-    
+    let snow: Snow?
 }
 
 // MARK: - WeatherList
 
 extension WeatherForecast {
-    struct WeatherList {
+    struct WeatherList: Decodable {
         let dt: Int
         let visibility: Int
         let pop: Double
@@ -30,8 +30,23 @@ extension WeatherForecast {
         let wind: WeatherCommonInformation.Wind
         let sys: Sys
         
+        private enum CodingKeys: String, CodingKey {
+            case dtTxt = "dt_txt"
+            case dt, visibility, pop, main, weather, clouds, wind, sys
+        }
+        
         struct Sys: Decodable {
             let pod: String
+        }
+    }
+}
+
+extension WeatherForecast {
+    struct Snow: Decodable {
+        let hour: Double
+        
+        private enum CodingKeys: String, CodingKey {
+            case hour = "3h"
         }
     }
 }

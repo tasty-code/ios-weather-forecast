@@ -20,7 +20,6 @@ struct WeatherToday: Decodable {
     let weather: [WeatherCommonInformation.Weather]
     let main: WeatherCommonInformation.Main
     let wind: WeatherCommonInformation.Wind
-    let snow: Snow
     let clouds: WeatherCommonInformation.Clouds
     let sys: Sys
 }
@@ -29,16 +28,6 @@ extension WeatherToday {
     struct Coord: Decodable {
         let lon: Double
         let lat: Double
-    }
-}
-
-extension WeatherToday {
-    struct Snow: Decodable {
-        let hour: Double
-        
-        private enum CodingKeys: String, CodingKey {
-            case hour = "1h"
-        }
     }
 }
 
