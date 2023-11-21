@@ -12,7 +12,7 @@ final class NetworkManager {
     func fetchWeather<T: Decodable>(weatherType: ForecastType,
                                     latitude: Double,
                                     longitude: Double,
-                                    completionHandler: @escaping (Result<T, Error>)-> Void) {
+                                    completion: @escaping (Result<T, Error>)-> Void) {
         
         guard let url = URL(string: weatherType.fetchURL(lon: longitude, lat: latitude))
         else {
@@ -26,7 +26,7 @@ final class NetworkManager {
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil else {
                 print("에러 발생")
-                completionHandler(.failure(NetworkError.unknownError))
+                completion(.failure(NetworkError.unknownError))
                 return
             }
             
@@ -35,18 +35,17 @@ final class NetworkManager {
                 return
             }
             
-            guard let response = response as? HTTPURLResponse,
-                  (200 ..< 299) ~= response.statusCode
-            else {
-                completionHandler(.failure(NetworkError.responseError))
+            guard let response = response as? HTTPURLResponse else { return }
+            guard (200 ..< 299) ~= response.statusCode else {
+                completion(.failure(NetworkError.responseError(statusCode: response.statusCode)))
                 return
             }
             
             do {
                 let weather = try JSONDecoder().decode(T.self, from: data)
-                completionHandler(.success(weather))
+                completion(.success(weather))
             } catch {
-                completionHandler(.failure(NetworkError.decodingError))
+                completion(.failure(NetworkError.decodingError))
             }
         }.resume()
     }
