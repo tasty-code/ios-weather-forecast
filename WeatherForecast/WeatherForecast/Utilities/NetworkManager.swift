@@ -8,6 +8,8 @@
 import Foundation
 
 protocol DataServiceProtocol {
+    init(networkManager: NetworkManager)
+    
     func fetchData(_ serviceType: ServiceType)
 }
 
@@ -21,33 +23,40 @@ final class WeatherDataService: DataServiceProtocol {
     
     func fetchData(_ serviceType: ServiceType) {
         guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else { return }
-        let urlString = "https://api.openweathermap.org/data/2.5/\(serviceType)?lat=32.98&lon=44.11&appid=\(apiKey)&units=metric&lang=kr"
+        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/\(serviceType.description)?lat=32.98&lon=44.11&appid=\(apiKey)&units=metric&lang=kr") else { return }
         
-        guard let downloadedData = networkManager.downloadData(urlString: urlString) else { return }
-        weatherModel = try? JSONDecoder().decode(WeatherModel.self, from: downloadedData)
+        networkManager.downloadData(url: url) { [weak self] downloadedData in
+            guard let data = downloadedData else { return }
+            self?.weatherModel = try? JSONDecoder().decode(WeatherModel.self, from: data)
+        }
     }
 }
 
 final class NetworkManager {
+    private enum ResponseStatus {
+        case success, failure
+        
+        static func judge(_ statusCode: Int) -> ResponseStatus {
+            switch statusCode {
+            case 200..<300: ResponseStatus.success
+            default: ResponseStatus.failure
+            }
+        }
+    }
+    
     static let `default` = NetworkManager()
     
     private init() {}
     
-    func downloadData(urlString: String) -> Data? {
-        guard let url = URL(string: urlString) else {
-            return nil
-        }
-        
-        var downloadedData: Data? = nil
-        
+    func downloadData(url: URL, _ completionHandler: @escaping (Data?) -> Void) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, let response = response as? HTTPURLResponse,
-                  response.statusCode >= 200 && response.statusCode < 300
-            else { return }
+                  ResponseStatus.judge(response.statusCode) == .success
+            else {
+                return
+            }
             
-            downloadedData = data
+            completionHandler(data)
         }.resume()
-        
-        return downloadedData
     }
 }
