@@ -13,8 +13,7 @@ struct CurrentWeather: Decodable {
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
-    let snow: Moisture
-    let rain: Moisture
+    let snow, rain: Moisture?
     let visibility: Int
     let sys: Sys
     let coord: Coord

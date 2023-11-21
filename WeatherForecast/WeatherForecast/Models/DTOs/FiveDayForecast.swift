@@ -22,9 +22,8 @@ struct Forecast: Decodable {
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
-    let snow: Moisture?
+    let rain, snow: Moisture?
     let visibility: Int
-    let rain: Moisture?
     let sys: Sys
     let pop: Double
     let dtTxt: String

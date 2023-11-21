@@ -25,7 +25,7 @@ final class RequestManager {
             
             url += queries
         }
-        
+        print("🔥",url)
         return url
     }
     
