@@ -41,3 +41,19 @@ extension WeatherForecast {
         }
     }
 }
+
+// MARK: - City
+
+extension WeatherForecast {
+    struct City {
+        let id: Int
+        let name: String
+        let country: String
+        let population: Int
+        let timezone: Int
+        let sunrise: Int
+        let sunset: Int
+        
+        let coord: WeatherCommonInformation.Coord
+    }
+}

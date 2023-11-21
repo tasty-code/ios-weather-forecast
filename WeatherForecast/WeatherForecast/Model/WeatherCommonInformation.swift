@@ -14,26 +14,24 @@ struct WeatherCommonInformation {
 
 extension WeatherCommonInformation {
     struct Main: Decodable {
-        let temp: Double
         let feelsLike: Double
         let tempMin: Double
         let tempMax: Double
-        let pressure: Int
         let seaLevel: Int
         let grndLevel: Int
-        let humidity: Int
         let tempKf: Double?
+        let temp: Double
+        let pressure: Int
+        let humidity: Int
         
         private enum CodingKeys: String, CodingKey {
-            case temp
             case feelsLike = "feels_like"
             case tempMin = "temp_min"
             case tempMax = "temp_max"
-            case pressure
             case seaLevel = "sea_level"
             case grndLevel = "grnd_level"
-            case humidity
             case tempKf = "temp_kf"
+            case temp, pressure, humidity
         }
     }
 }
@@ -92,5 +90,14 @@ extension WeatherCommonInformation {
             case oneHour = "1h"
             case threeHour = "3h"
         }
+    }
+}
+
+// MARK: - Coord
+
+extension WeatherCommonInformation {
+    struct Coord: Decodable {
+        let lon: Double
+        let lat: Double
     }
 }
