@@ -22,17 +22,8 @@ struct WeatherToday: Decodable {
     let clouds: WeatherCommonInformation.Clouds
     let rain: WeatherCommonInformation.Rain?
     let snow: WeatherCommonInformation.Snow?
-    let coord: Coord
+    let coord: WeatherCommonInformation.Coord
     let sys: Sys
-}
-
-// MARK: - Coord
-
-extension WeatherToday {
-    struct Coord: Decodable {
-        let lon: Double
-        let lat: Double
-    }
 }
 
 // MARK: - Sys
