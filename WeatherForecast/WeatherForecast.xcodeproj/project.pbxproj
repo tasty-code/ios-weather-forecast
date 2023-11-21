@@ -11,6 +11,8 @@
 		53272AE92B0B43FC00A73EF7 /* WeeklyWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53272AE82B0B43FC00A73EF7 /* WeeklyWeather.swift */; };
 		7FF59F022B0C484B00C6AA24 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF59F012B0C484B00C6AA24 /* Bundle+Extension.swift */; };
 		7FF59F0C2B0C78DC00C6AA24 /* WeatherURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF59F0B2B0C78DC00C6AA24 /* WeatherURL.swift */; };
+		7FF59F0F2B0C796900C6AA24 /* URLFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF59F0E2B0C796900C6AA24 /* URLFormatter.swift */; };
+		7FF59F122B0C797D00C6AA24 /* URLFormattable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF59F112B0C797D00C6AA24 /* URLFormattable.swift */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
 		C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */; };
 		C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */; };
@@ -44,6 +46,8 @@
 		7FF59EFF2B0C3EF700C6AA24 /* OpenWeather.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = OpenWeather.xcconfig; sourceTree = "<group>"; };
 		7FF59F012B0C484B00C6AA24 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		7FF59F0B2B0C78DC00C6AA24 /* WeatherURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherURL.swift; sourceTree = "<group>"; };
+		7FF59F0E2B0C796900C6AA24 /* URLFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLFormatter.swift; sourceTree = "<group>"; };
+		7FF59F112B0C797D00C6AA24 /* URLFormattable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLFormattable.swift; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +107,22 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		7FF59F0D2B0C793F00C6AA24 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				7FF59F0E2B0C796900C6AA24 /* URLFormatter.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		7FF59F102B0C796F00C6AA24 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				7FF59F112B0C797D00C6AA24 /* URLFormattable.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		C79C8CE725ADDDF200EEE3F1 = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +146,8 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				7FF59F102B0C796F00C6AA24 /* Protocol */,
+				7FF59F0D2B0C793F00C6AA24 /* Utility */,
 				7FF59F002B0C481400C6AA24 /* Extension */,
 				53272AE52B0B3EE300A73EF7 /* Model */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
@@ -291,7 +313,9 @@
 				7FF59F0C2B0C78DC00C6AA24 /* WeatherURL.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				7FF59F022B0C484B00C6AA24 /* Bundle+Extension.swift in Sources */,
+				7FF59F122B0C797D00C6AA24 /* URLFormattable.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
+				7FF59F0F2B0C796900C6AA24 /* URLFormatter.swift in Sources */,
 				53272AE72B0B3EEF00A73EF7 /* CurrentWeather.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				53272AE92B0B43FC00A73EF7 /* WeeklyWeather.swift in Sources */,
