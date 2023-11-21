@@ -7,7 +7,7 @@
 import Foundation
 
 // MARK: - CurrentWeather
-struct CurrentWeather: Decodable {
+struct CurrentWeatherDTO: Decodable {
     let coord: Coord
     let weather: [Weather]
     let base: String
@@ -24,7 +24,7 @@ struct CurrentWeather: Decodable {
     let name: String
     let cod: Int
 }
-extension CurrentWeather {
+extension CurrentWeatherDTO {
     // MARK: - Coord
     struct Coord: Decodable {
         let lon: Double

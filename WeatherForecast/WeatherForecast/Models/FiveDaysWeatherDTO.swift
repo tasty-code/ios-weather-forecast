@@ -7,7 +7,7 @@
 import Foundation
 
 // MARK: - FiveDaysWeather
-struct FiveDaysWeather: Decodable {
+struct FiveDaysWeatherDTO: Decodable {
     let cod: String
     let message: Int
     let cnt: Int
@@ -15,7 +15,7 @@ struct FiveDaysWeather: Decodable {
     let city: City
 }
 
-extension FiveDaysWeather {
+extension FiveDaysWeatherDTO {
     // MARK: - List
     struct List: Decodable {
         let dt: Int
