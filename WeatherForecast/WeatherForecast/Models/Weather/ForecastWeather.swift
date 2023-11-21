@@ -4,11 +4,9 @@
 //
 //  Created by 김경록 on 11/20/23.
 
-
 import Foundation
 
 // MARK: - ForecastWeather
-
 struct ForecastWeather: Codable {
     let cod: String
     let message, cnt: Int
@@ -21,39 +19,35 @@ struct ForecastWeather: Codable {
 struct City: Codable {
     let id: Int
     let name: String
-    let coord: Coord
+    let coord: Coordinate
     let country: String
-    let population, timezone, sunrise, sunset: Int
+    let population, timezone, sunrise, sunset: Int?
 }
 
 // MARK: - List
 
 struct List: Codable {
     let dt: Int
-    let main: Main
+    let weatherCondition: WeatherCondition
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
     let visibility: Int
     let pop: Double
-    let sys: Sys
-    let dtTxt: String
     let rain: Rain?
+    let partOfDay: PartOfDay
+    let dtTxt: String
     
     enum CodingKeys: String, CodingKey {
-        case dt, main, weather, clouds, wind, visibility, pop, sys
+        case dt, weather, clouds, wind, visibility, pop, rain
         case dtTxt = "dt_txt"
-        case rain
+        case partOfDay = "sys"
+        case weatherCondition = "main"
     }
 }
 
 // MARK: - PartOfDay
 
 struct PartOfDay: Codable {
-    let pod: Pod
-    
-    enum Pod: String, Codable {
-        case d = "d"
-        case n = "n"
-    }
+    let pod: String
 }
