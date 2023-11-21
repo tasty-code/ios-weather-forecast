@@ -7,6 +7,7 @@
 import Foundation
 
 // MARK: - ForecastWeather
+
 struct ForecastWeather: Codable {
     let cod: String
     let message, cnt: Int

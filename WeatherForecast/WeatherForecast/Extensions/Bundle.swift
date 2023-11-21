@@ -10,7 +10,7 @@ import Foundation
 extension Bundle {
     var apiKey: String? {
         guard let file = self.path(forResource: "WeatherAPI", ofType: "plist"),
-              let resource = NSDictionary(contentsOfFile: file),
+              let resource = NSDictionary(contentsOf: URL(fileURLWithPath: file)),
               let key = resource["API_KEY"] as? String
         else {
             return nil
