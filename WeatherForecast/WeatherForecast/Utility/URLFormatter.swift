@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct URLFormatter: URLFormattable {
-    typealias T = WeatherURL
-    
-    func makeURL(urlType: T, with queryDict: [String: String]) -> URL? {
-        let urlString = "\(urlType)"
+struct URLFormatter<T: URLProtocol>: URLFormattable {
+    func makeURL(path: String, with queries: [String: String]) -> URL? {
+        let urlString = "\(T.url)"
         var urlComponents = URLComponents(string: urlString)
-        let queryItems = queryDict.map {
+        urlComponents?.path = "\(path)"
+        let queryItems = queries.map {
             URLQueryItem(name: $0.key, value: $0.value)
         }
         urlComponents?.queryItems = queryItems
         return urlComponents?.url
     }
 }
+

@@ -7,16 +7,7 @@
 
 import Foundation
 
-enum WeatherURL: CustomStringConvertible {
-    case current
-    case weekly
-    
-    var description: String {
-        switch self {
-        case .current:
-            return "https://api.openweathermap.org/data/2.5/weather?"
-        case .weekly :
-            return "https://api.openweathermap.org/data/2.5/forecast?"
-        }
-    }
+enum WeatherURL: URLProtocol {
+    static var url = "https://api.openweathermap.org"
 }
+
