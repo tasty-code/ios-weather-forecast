@@ -23,30 +23,23 @@ struct APIManager {
         }
     }
     
-    
-    enum weatherSelect : String {
+    enum forecastType : String {
         case weather = "weather"
         case forecast = "forecast"
     }
     
-    func getWeather(api: weatherSelect, loc: String, lat: Double, lon: Double) {
+    func getWeather(api: forecastType, latitude: Double, longitude: Double) {
         var baseUrl = URLComponents(string: "https://api.openweathermap.org")
         baseUrl?.path = "/data/2.5/" + api.rawValue
-        let location = URLQueryItem(name: "q", value: loc)
-        let apikey = URLQueryItem(name: "appid", value: "\(apiKey)")
+        let latitude = URLQueryItem(name: "lat", value: "\(latitude)")
+        let longitude = URLQueryItem(name: "lon", value: "\(longitude)")
         let units = URLQueryItem(name: "units", value: "metric")
-        baseUrl?.queryItems = [location, apikey, units]
+        let apikey = URLQueryItem(name: "appid", value: "\(apiKey)")
+        baseUrl?.queryItems = [latitude, longitude, units, apikey]
         guard let url = baseUrl?.url else {
             return
         }
-        print(url)
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        let session = URLSession.shared
     }
-    
 }
 
 
