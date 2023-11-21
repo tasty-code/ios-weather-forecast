@@ -65,12 +65,12 @@ struct WeatherCondition: Codable {
 // MARK: - Rain
 
 struct Rain: Codable {
-    let the1H: Double?
-    let the3H: Double?
+    let amountOfRainOneHour: Double?
+    let amountOfRainThreeHour: Double?
     
     enum CodingKeys: String, CodingKey {
-        case the1H = "1h"
-        case the3H = "3h"
+        case amountOfRainOneHour = "1h"
+        case amountOfRainThreeHour = "3h"
     }
 }
 

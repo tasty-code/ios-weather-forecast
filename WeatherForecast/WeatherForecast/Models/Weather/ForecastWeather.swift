@@ -34,16 +34,17 @@ struct List: Codable {
     let clouds: Clouds
     let wind: Wind
     let visibility: Int
-    let pop: Double
+    let rainfallProbability: Double
     let rain: Rain?
     let partOfDay: PartOfDay
     let dtTxt: String
     
     enum CodingKeys: String, CodingKey {
-        case dt, weather, clouds, wind, visibility, pop, rain
+        case dt, weather, clouds, wind, visibility, rain
         case dtTxt = "dt_txt"
         case partOfDay = "sys"
         case weatherCondition = "main"
+        case rainfallProbability = "pop"
     }
 }
 
