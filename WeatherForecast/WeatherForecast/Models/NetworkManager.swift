@@ -9,10 +9,10 @@ import Foundation
 
 final class NetworkManager {
     
-    func fetchWeather<T: Decodable>(weatherType: WeatherType,
+    func fetchWeather<T: Decodable>(weatherType: ForecastType,
                                     latitude: Double,
                                     longitude: Double,
-                                    completionHandler: @escaping (T?)-> Void) {
+                                    completionHandler: @escaping (Result<T, Error>)-> Void) {
         
         guard let url = URL(string: weatherType.fetchURL(lon: longitude, lat: latitude))
         else {
@@ -26,7 +26,7 @@ final class NetworkManager {
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil else {
                 print("에러 발생")
-                print(error)
+                completionHandler(.failure(NetworkError.unknownError))
                 return
             }
             
@@ -38,17 +38,15 @@ final class NetworkManager {
             guard let response = response as? HTTPURLResponse,
                   (200 ..< 299) ~= response.statusCode
             else {
-                print("응답 코드 에러")
-                print("Error: HTTP request failed")
+                completionHandler(.failure(NetworkError.responseError))
                 return
             }
             
             do {
                 let weather = try JSONDecoder().decode(T.self, from: data)
-                completionHandler(weather)
+                completionHandler(.success(weather))
             } catch {
-                print("디코딩 불가")
-                print(error)
+                completionHandler(.failure(NetworkError.decodingError))
             }
         }.resume()
     }

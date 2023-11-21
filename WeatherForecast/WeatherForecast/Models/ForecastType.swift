@@ -1,5 +1,5 @@
 //
-//  WeatherType.swift
+//  ForecastTyp.swift
 //  WeatherForecast
 //
 //  Created by 김경록 on 11/21/23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum WeatherType: String {
+enum ForecastType: String {
     case current = "weather"
     case forecast = "forecast"
     
