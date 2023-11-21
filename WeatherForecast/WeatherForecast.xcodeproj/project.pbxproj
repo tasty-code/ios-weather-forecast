@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E4A84842B0C48F700726F9F /* CurrentWeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84832B0C48F700726F9F /* CurrentWeatherManager.swift */; };
+		0E4A84872B0C67FC00726F9F /* ApiKeyList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E4A84862B0C67FC00726F9F /* ApiKeyList.plist */; };
+		0E4A84892B0C749700726F9F /* WeatherMenuType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84882B0C749700726F9F /* WeatherMenuType.swift */; };
 		A650B5682B0B3D9A00649805 /* CurrentWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650B5672B0B3D9A00649805 /* CurrentWeatherDTO.swift */; };
 		A650B56A2B0B3F7B00649805 /* FiveDaysWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650B5692B0B3F7B00649805 /* FiveDaysWeatherDTO.swift */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
@@ -37,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E4A84832B0C48F700726F9F /* CurrentWeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherManager.swift; sourceTree = "<group>"; };
+		0E4A84862B0C67FC00726F9F /* ApiKeyList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeyList.plist; sourceTree = "<group>"; };
+		0E4A84882B0C749700726F9F /* WeatherMenuType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherMenuType.swift; sourceTree = "<group>"; };
 		A650B5672B0B3D9A00649805 /* CurrentWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherDTO.swift; sourceTree = "<group>"; };
 		A650B5692B0B3F7B00649805 /* FiveDaysWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiveDaysWeatherDTO.swift; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +86,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E4A84822B0C48E400726F9F /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				0E4A84832B0C48F700726F9F /* CurrentWeatherManager.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		0E4A848B2B0C761600726F9F /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				0E4A84882B0C749700726F9F /* WeatherMenuType.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		A650B56B2B0B627800649805 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +114,7 @@
 		C79C8CE725ADDDF200EEE3F1 = {
 			isa = PBXGroup;
 			children = (
+				0E4A84862B0C67FC00726F9F /* ApiKeyList.plist */,
 				C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */,
 				C79C8D0925ADDDF400EEE3F1 /* WeatherForecastTests */,
 				C79C8D1425ADDDF400EEE3F1 /* WeatherForecastUITests */,
@@ -112,6 +135,8 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				0E4A848B2B0C761600726F9F /* Enums */,
+				0E4A84822B0C48E400726F9F /* Utility */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
@@ -246,6 +271,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E4A84872B0C67FC00726F9F /* ApiKeyList.plist in Resources */,
 				C79C8D0025ADDDF300EEE3F1 /* LaunchScreen.storyboard in Resources */,
 				C79C8CFD25ADDDF300EEE3F1 /* Assets.xcassets in Resources */,
 				C79C8CFB25ADDDF200EEE3F1 /* Main.storyboard in Resources */,
@@ -273,9 +299,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E4A84842B0C48F700726F9F /* CurrentWeatherManager.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				A650B56A2B0B3F7B00649805 /* FiveDaysWeatherDTO.swift in Sources */,
+				0E4A84892B0C749700726F9F /* WeatherMenuType.swift in Sources */,
 				A650B5682B0B3D9A00649805 /* CurrentWeatherDTO.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 			);
