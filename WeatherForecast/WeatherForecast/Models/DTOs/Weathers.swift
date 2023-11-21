@@ -25,7 +25,7 @@ struct Clouds: Decodable {
     let all: Int
 }
 
-// MARK: - Moisture
+// MARK: - Rain and Snow
 struct Moisture: Decodable {
     let the1H, the3H: Double?
 
