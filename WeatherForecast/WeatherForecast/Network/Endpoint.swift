@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Endpoint: String, CaseIterable, Codable {
+enum Endpoint: String, Decodable {
     case weather
     case forecast
 }

@@ -7,31 +7,34 @@
 
 import Foundation
 
-
 final class ServiceManager {
     static let shared = ServiceManager()
-
+    
     private init() {}
     
-
-    public func execute<T: Codable>(
+    private enum ServiceError: Error {
+        case failedToCreateRequest
+        case failedToGetData
+    }
+    
+    public func execute<T: Decodable>(
         _ request: RequestManager,
         expecting type: T.Type,
         completion: @escaping (Result<T, Error>) -> Void) {
-
+            
             guard let urlRequest = self.request(from: request) else {
-//                completion(.failure(RMServiceError.failedToCreateRequest))
+                completion(.failure(ServiceError.failedToCreateRequest))
                 return
             }
             
-            let task = URLSession.shared.dataTask(with: urlRequest) {[weak self] data, _ , error in
+            let task = URLSession.shared.dataTask(with: urlRequest) { data, _ , error in
                 guard let data = data, error == nil else {
-//                    completion(.failure(error ?? RMServiceError.failedToGetData))
+                    completion(.failure(error ?? ServiceError.failedToGetData))
                     return
                 }
+                
                 do {
                     let result = try JSONDecoder().decode(type.self, from: data)
-                    
                     completion(.success(result))
                 }
                 catch {
@@ -40,6 +43,7 @@ final class ServiceManager {
             }
             task.resume()
         }
+    
     // MARK: - Private
     private func request(from request: RequestManager) -> URLRequest? {
         guard let url = request.url else {return nil}
@@ -48,7 +52,6 @@ final class ServiceManager {
         
         return request
     }
-    
     
 }
 

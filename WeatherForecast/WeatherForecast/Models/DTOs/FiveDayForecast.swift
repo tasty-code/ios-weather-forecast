@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - FiveDayForecast
-struct FiveDayForecast: Codable {
+struct FiveDayForecast: Decodable {
     let cod: String
     let message, cnt: Int
     let list: [Forecast]
@@ -16,15 +16,15 @@ struct FiveDayForecast: Codable {
 }
 
 // MARK: - List
-struct Forecast: Codable {
+struct Forecast: Decodable {
     let dt: Int
     let main: Main
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
-    let snow: Snow?
+    let snow: Moisture?
     let visibility: Int
-    let rain: Rain?
+    let rain: Moisture?
     let sys: Sys
     let pop: Double
     let dtTxt: String
@@ -36,7 +36,7 @@ struct Forecast: Codable {
 }
 
 // MARK: - City
-struct City: Codable {
+struct City: Decodable {
     let id: Int
     let name: String
     let coord: Coord

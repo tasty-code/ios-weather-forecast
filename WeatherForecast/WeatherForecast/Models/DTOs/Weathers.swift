@@ -8,25 +8,25 @@
 import Foundation
 
 // MARK: - Weather
-struct Weather: Codable {
+struct Weather: Decodable {
     let id: Int
     let main, description, icon: String
 }
 
 // MARK: - Wind
-struct Wind: Codable {
+struct Wind: Decodable {
     let speed: Double
     let deg: Int
     let gust: Double
 }
 
 // MARK: - Clouds
-struct Clouds: Codable {
+struct Clouds: Decodable {
     let all: Int
 }
 
-// MARK: - Rain
-struct Rain: Codable {
+// MARK: - Moisture
+struct Moisture: Decodable {
     let the1H, the3H: Double?
 
     enum CodingKeys: String, CodingKey {
@@ -34,14 +34,3 @@ struct Rain: Codable {
         case the3H = "3h"
     }
 }
-
-// MARK: - Snow
-struct Snow: Codable {
-    let the1H, the3H: Double?
-
-    enum CodingKeys: String, CodingKey {
-        case the1H = "1h"
-        case the3H = "3h"
-    }
-}
-

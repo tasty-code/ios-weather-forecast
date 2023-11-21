@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Main: Codable {
+struct Main: Decodable {
     let temp, feelsLike, tempMin, tempMax: Double
     let pressure, seaLevel, grndLevel, humidity: Int
     let tempKf: Double?

@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct CurrentWeather: Codable {
+struct CurrentWeather: Decodable {
     let dt: Int
     let main: Main
     let weather: [Weather]
     let clouds: Clouds
     let wind: Wind
-    let snow: Snow
-    let rain: Rain
+    let snow: Moisture
+    let rain: Moisture
     let visibility: Int
     let sys: Sys
     let coord: Coord

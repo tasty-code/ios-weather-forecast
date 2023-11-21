@@ -9,8 +9,8 @@ import Foundation
 
 enum Environment {
     private enum Keys {
-        static let apiKey = "ApiKey"
-        static let baseUrl = "BaseURL"
+        static let API_KEY = "API_KEY"
+        static let BASE_URL = "BASE_URL"
     }
     
     private static let infoDictionary: [String: Any] = {
@@ -21,12 +21,12 @@ enum Environment {
     }()
     
     static let baseURL: String = {
-        guard let string = Environment.infoDictionary[Keys.baseUrl] as? String else { fatalError("not exists in plist") }
+        guard let string = Environment.infoDictionary[Keys.BASE_URL] as? String else { fatalError("not exists in plist") }
         return string
     }()
     
     static let apiKey: String = {
-        guard let string = Environment.infoDictionary[Keys.apiKey] as? String else { fatalError("not exists in plist") }
+        guard let string = Environment.infoDictionary[Keys.API_KEY] as? String else { fatalError("not exists in plist") }
         return string
     }()
 }
