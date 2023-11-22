@@ -17,6 +17,6 @@ enum ForecastType: String {
             return ""
         }
 
-        return "https://api.openweathermap.org/data/2.5/\(self.rawValue)?lat=\(lon)&lon=\(lat)&appid=\(apiKey)"
+        return "https://api.openweathermap.org/data/2.5/\(self.rawValue)?lat=\(lon)&lon=\(lat)&appid=\(apiKey)&units=metric"
     }
 }
