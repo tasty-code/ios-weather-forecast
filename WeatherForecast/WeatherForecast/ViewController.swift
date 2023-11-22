@@ -4,10 +4,9 @@ final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let weatherType = WeatherType.fiveDaysWeahter
-        let weatherManager = NetworkManager()
+        let weatherManager = NetworkManager<CurrentWeatherDTO>()
         
-        weatherManager.fetch(weatherType) { result in
+        weatherManager.fetch { result in
             switch result {
             case .success(let weatherResponse):
                 print(weatherResponse)

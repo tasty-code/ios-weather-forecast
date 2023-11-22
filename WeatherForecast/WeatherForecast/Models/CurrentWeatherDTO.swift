@@ -106,5 +106,5 @@ extension CurrentWeatherDTO {
 }
 
 extension CurrentWeatherDTO: DataTransferable {
-    
+    static let name = "weather"
 }
