@@ -8,7 +8,6 @@
 import Foundation
 
 struct WeatherURLFormatter<T: URLProtocol>: URLFormattable {
-    typealias T = T
     
     var defaultPath: String
     
