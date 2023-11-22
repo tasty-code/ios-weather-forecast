@@ -15,8 +15,8 @@ struct CurrentWeather: Decodable {
     let wind: Wind
     let snow, rain: Moisture?
     let visibility: Int
-    let sys: Sys
-    let coord: Coord
+    let sys: SystemData
+    let coord: Coordinate
     let base: String
     let timezone, id: Int
     let name: String

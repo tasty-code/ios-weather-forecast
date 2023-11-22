@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Sys: Decodable {
+struct SystemData: Decodable {
     let type, id: Int?
     let country, pod: String?
     let sunrise, sunset: Int?
