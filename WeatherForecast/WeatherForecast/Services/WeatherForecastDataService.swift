@@ -8,28 +8,35 @@
 import Foundation
 
 protocol DataServiceProtocol {
-    init(networkManager: NetworkManager)
+    associatedtype T
     
-    func fetchData(_ serviceType: ServiceType)
+    init(networkManager: NetworkManager, locationManager: LocationManager)
+    
+    func fetchData(_ serviceType: ServiceType, _ completionHandler: @escaping (T) -> Void)
 }
 
 final class WeatherForecastDataService<T: Decodable>: DataServiceProtocol {
-    private var dataModel: T?
     private let networkManager: NetworkManager
+    private let locationManager: LocationManager
     
-    init(networkManager: NetworkManager) {
+    init(networkManager: NetworkManager, locationManager: LocationManager) {
         self.networkManager = networkManager
+        self.locationManager = locationManager
     }
     
-    func fetchData(_ serviceType: ServiceType) {
+    func fetchData(_ serviceType: ServiceType, _ completionHandler: @escaping (T?) -> Void) {
         guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else {
+            return
+        }
+        
+        guard let coordinate = locationManager.fetchCurrentCoordinate2D() else {
             return
         }
         
         var urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(serviceType.name)")
         urlComponents?.queryItems = [
-            URLQueryItem(name: "lat", value: "32.98"),
-            URLQueryItem(name: "lon", value: "44.11"),
+            URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
+            URLQueryItem(name: "lon", value: "\(coordinate.longitude)"),
             URLQueryItem(name: "appid", value: apiKey),
             URLQueryItem(name: "units", value: "metric")
         ]
@@ -38,22 +45,29 @@ final class WeatherForecastDataService<T: Decodable>: DataServiceProtocol {
             return
         }
         
-        networkManager.downloadData(url: url) { [weak self] downloadedData in
-            guard let data = downloadedData else {
-                return
-            }
-            
-            do {
-                self?.dataModel = try JSONDecoder().decode(T.self, from: data)
-            } catch {
-                guard let error = error as? DecodingError else { return }
-                print("Failed to Decoding JSON: \(error)")
+        networkManager.downloadData(url: url) { [weak self] result in
+            switch result {
+            case .success(let data):
+                let model = self?.decodeJSONToSwift(data)
+                completionHandler(model)
+            case .failure(let error): print(error)
             }
         }
     }
     
-    func foo() -> T? {
-        guard let model = dataModel else { return nil }
-        return model
+    private func decodeJSONToSwift(_ data: Data?) -> T? {
+        guard let data = data else {
+            return nil
+        }
+        
+        do {
+            let model = try JSONDecoder().decode(T.self, from: data)
+            return model
+        } catch {
+            guard let error = error as? DecodingError else { return nil }
+            print("Failed to Decoding JSON: \(error)")
+        }
+        
+        return nil
     }
 }
