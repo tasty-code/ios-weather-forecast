@@ -24,6 +24,7 @@ struct CurrentWeatherDTO: Decodable {
     let name: String
     let cod: Int
 }
+
 extension CurrentWeatherDTO {
     // MARK: - Coord
     struct Coord: Decodable {
@@ -96,9 +97,9 @@ extension CurrentWeatherDTO {
     
     // MARK: - Sys
     struct Sys: Decodable {
-        let type: Int
-        let id: Int
-        let country: String
+        let type: Int?
+        let id: Int?
+        let country: String?
         let sunrise: Int
         let sunset: Int
     }

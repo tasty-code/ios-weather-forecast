@@ -4,7 +4,7 @@ final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let weatherType = WeatherType.currentWeather
+        let weatherType = WeatherType.fiveDaysWeahter
         let weatherManager = NetworkManager()
         
         weatherManager.fetch(weatherType) { result in
