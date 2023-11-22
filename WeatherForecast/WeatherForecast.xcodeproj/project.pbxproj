@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0E4A84842B0C48F700726F9F /* CurrentWeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84832B0C48F700726F9F /* CurrentWeatherManager.swift */; };
-		0E4A84892B0C749700726F9F /* WeatherMenuType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84882B0C749700726F9F /* WeatherMenuType.swift */; };
+		0E468CAF2B0DC5DA00201507 /* APIKeyList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E468CAE2B0DC5DA00201507 /* APIKeyList.plist */; };
+		0E468CB12B0DCA7000201507 /* DataTransferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E468CB02B0DCA7000201507 /* DataTransferable.swift */; };
+		0E468CB32B0DDD6A00201507 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E468CB22B0DDD6A00201507 /* NetworkError.swift */; };
+		0E468CB72B0DE86100201507 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E468CB62B0DE86100201507 /* APIError.swift */; };
+		0E4A84842B0C48F700726F9F /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84832B0C48F700726F9F /* WeatherManager.swift */; };
+		0E4A84892B0C749700726F9F /* WeatherType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84882B0C749700726F9F /* WeatherType.swift */; };
 		A650B5682B0B3D9A00649805 /* CurrentWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650B5672B0B3D9A00649805 /* CurrentWeatherDTO.swift */; };
 		A650B56A2B0B3F7B00649805 /* FiveDaysWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650B5692B0B3F7B00649805 /* FiveDaysWeatherDTO.swift */; };
-		A6AFCABB2B0CA04B004CACBF /* APIKeyList.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6AFCABA2B0CA04B004CACBF /* APIKeyList.plist */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
 		C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */; };
 		C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */; };
@@ -40,11 +43,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0E4A84832B0C48F700726F9F /* CurrentWeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherManager.swift; sourceTree = "<group>"; };
-		0E4A84882B0C749700726F9F /* WeatherMenuType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherMenuType.swift; sourceTree = "<group>"; };
+		0E468CAE2B0DC5DA00201507 /* APIKeyList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = APIKeyList.plist; sourceTree = "<group>"; };
+		0E468CB02B0DCA7000201507 /* DataTransferable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransferable.swift; sourceTree = "<group>"; };
+		0E468CB22B0DDD6A00201507 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		0E468CB62B0DE86100201507 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		0E4A84832B0C48F700726F9F /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
+		0E4A84882B0C749700726F9F /* WeatherType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherType.swift; sourceTree = "<group>"; };
 		A650B5672B0B3D9A00649805 /* CurrentWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherDTO.swift; sourceTree = "<group>"; };
 		A650B5692B0B3F7B00649805 /* FiveDaysWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiveDaysWeatherDTO.swift; sourceTree = "<group>"; };
-		A6AFCABA2B0CA04B004CACBF /* APIKeyList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = APIKeyList.plist; path = Utility/APIKeyList.plist; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -86,18 +92,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0E4A84822B0C48E400726F9F /* Utility */ = {
+		0E468CB42B0DDD8100201507 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				0E4A84832B0C48F700726F9F /* CurrentWeatherManager.swift */,
+				0E468CB02B0DCA7000201507 /* DataTransferable.swift */,
 			);
-			path = Utility;
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		0E468CB52B0DE83D00201507 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				0E468CB22B0DDD6A00201507 /* NetworkError.swift */,
+				0E468CB62B0DE86100201507 /* APIError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		0E4A84822B0C48E400726F9F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				0E4A84832B0C48F700726F9F /* WeatherManager.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		0E4A848B2B0C761600726F9F /* Enums */ = {
 			isa = PBXGroup;
 			children = (
-				0E4A84882B0C749700726F9F /* WeatherMenuType.swift */,
+				0E4A84882B0C749700726F9F /* WeatherType.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -114,6 +137,7 @@
 		C79C8CE725ADDDF200EEE3F1 = {
 			isa = PBXGroup;
 			children = (
+				0E468CAE2B0DC5DA00201507 /* APIKeyList.plist */,
 				C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */,
 				C79C8D0925ADDDF400EEE3F1 /* WeatherForecastTests */,
 				C79C8D1425ADDDF400EEE3F1 /* WeatherForecastUITests */,
@@ -134,9 +158,10 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
-				A6AFCABA2B0CA04B004CACBF /* APIKeyList.plist */,
+				0E468CB52B0DE83D00201507 /* Errors */,
+				0E468CB42B0DDD8100201507 /* Protocols */,
 				0E4A848B2B0C761600726F9F /* Enums */,
-				0E4A84822B0C48E400726F9F /* Utility */,
+				0E4A84822B0C48E400726F9F /* Utilities */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
@@ -272,7 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C79C8D0025ADDDF300EEE3F1 /* LaunchScreen.storyboard in Resources */,
-				A6AFCABB2B0CA04B004CACBF /* APIKeyList.plist in Resources */,
+				0E468CAF2B0DC5DA00201507 /* APIKeyList.plist in Resources */,
 				C79C8CFD25ADDDF300EEE3F1 /* Assets.xcassets in Resources */,
 				C79C8CFB25ADDDF200EEE3F1 /* Main.storyboard in Resources */,
 			);
@@ -299,11 +324,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E4A84842B0C48F700726F9F /* CurrentWeatherManager.swift in Sources */,
+				0E4A84842B0C48F700726F9F /* WeatherManager.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
+				0E468CB72B0DE86100201507 /* APIError.swift in Sources */,
+				0E468CB12B0DCA7000201507 /* DataTransferable.swift in Sources */,
 				A650B56A2B0B3F7B00649805 /* FiveDaysWeatherDTO.swift in Sources */,
-				0E4A84892B0C749700726F9F /* WeatherMenuType.swift in Sources */,
+				0E4A84892B0C749700726F9F /* WeatherType.swift in Sources */,
+				0E468CB32B0DDD6A00201507 /* NetworkError.swift in Sources */,
 				A650B5682B0B3D9A00649805 /* CurrentWeatherDTO.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 			);
