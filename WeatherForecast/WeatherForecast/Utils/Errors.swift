@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum KeyError : Error, CustomStringConvertible {
+enum APIKeyError : Error, CustomStringConvertible {
     case keyFileNotFound, keyNotFound
     
     var description: String {
