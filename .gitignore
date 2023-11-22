@@ -1,0 +1,3 @@
+# gitignore 정리
+.DS_Store
+ApiKeys.plist
