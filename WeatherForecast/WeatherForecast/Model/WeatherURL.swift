@@ -9,5 +9,17 @@ import Foundation
 
 enum WeatherURL: URLProtocol {
     static var url = "https://api.openweathermap.org"
+    
+    case current
+    case weekly
+    
+    var path: String {
+        switch self {
+        case .current:
+            return "weather"
+        case .weekly:
+            return "forecast"
+        }
+    }
 }
 
