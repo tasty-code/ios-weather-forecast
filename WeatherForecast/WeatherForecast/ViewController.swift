@@ -5,12 +5,33 @@
 // 
 
 import UIKit
+import Combine
 
 class ViewController: UIViewController {
-
+    @IBOutlet weak var countryLabel: UILabel!
+    var subscriber: AnyCancellable?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        guard let url = WeatherURLManager().getUrl(api: .weather, latitude: 40, longitude: -73)
+        else {
+            return
+        }
+        
+        let publisher = URLSession.shared.publisher(request: URLRequest(url: url))
+        subscriber =  WeatherHTTPClient().publishCurrentWeather(publisher)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    return
+                case .failure(let error):
+                    self.countryLabel.text = error.localizedDescription
+                }
+            } receiveValue: { weather in
+                self.countryLabel.text = weather.system.country
+            }
     }
 
 
