@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040AB0372B0DCB8900A1EA78 /* WeatherForecastDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040AB0362B0DCB8900A1EA78 /* WeatherForecastDataService.swift */; };
 		043F174E2B0AEB1800084087 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F174D2B0AEB1800084087 /* WeatherModel.swift */; };
 		043F17502B0AF10E00084087 /* ForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F174F2B0AF10E00084087 /* ForecastModel.swift */; };
 		043F17532B0AF30800084087 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F17522B0AF30800084087 /* NetworkManager.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		040AB0362B0DCB8900A1EA78 /* WeatherForecastDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastDataService.swift; sourceTree = "<group>"; };
 		043F174D2B0AEB1800084087 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		043F174F2B0AF10E00084087 /* ForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastModel.swift; sourceTree = "<group>"; };
 		043F17522B0AF30800084087 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -92,6 +94,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040AB0352B0DCB6600A1EA78 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				040AB0362B0DCB8900A1EA78 /* WeatherForecastDataService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		043F174C2B0AEB1000084087 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +157,7 @@
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+				040AB0352B0DCB6600A1EA78 /* Services */,
 				043F17512B0AF2FD00084087 /* Utilities */,
 				043F174C2B0AEB1000084087 /* Models */,
 				043F17542B0AF95800084087 /* Extensions */,
@@ -318,6 +329,7 @@
 				043F17532B0AF30800084087 /* NetworkManager.swift in Sources */,
 				043F174E2B0AEB1800084087 /* WeatherModel.swift in Sources */,
 				043F175E2B0B721F00084087 /* LocationManager.swift in Sources */,
+				040AB0372B0DCB8900A1EA78 /* WeatherForecastDataService.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				CB63CCBF2B0B3E03000A2E12 /* ApiName.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,

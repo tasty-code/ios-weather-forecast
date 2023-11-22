@@ -7,10 +7,10 @@
 
 import Foundation
 
-enum ServiceType: CustomStringConvertible {
+enum ServiceType {
     case weather, forecast
     
-    var description: String {
+    var name: String {
         switch self {
         case .weather: "weather"
         case .forecast: "forecast"

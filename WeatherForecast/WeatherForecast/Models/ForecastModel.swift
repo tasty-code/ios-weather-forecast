@@ -1,8 +1,7 @@
 import Foundation
 
 struct ForecastModel: Codable {
-    let cod: String?
-    let message, cnt: Int?
+    let message: Int?
     let list: [List]?
     let city: City?
 }
@@ -11,9 +10,14 @@ extension ForecastModel {
     struct City: Codable {
         let id: Int?
         let name: String?
-        let coord: Coord?
+        let coordinate: Coord?
         let country: String?
         let population, timezone, sunrise, sunset: Int?
+        
+        enum CodingKeys: String, CodingKey {
+            case id, name, country, population, timezone, sunrise, sunset
+            case coordinate = "coord"
+        }
     }
 }
 
@@ -25,20 +29,23 @@ extension ForecastModel {
 
 extension ForecastModel {
     struct List: Codable {
-        let dt: Int?
+        let date: Int?
         let main: MainClass?
         let weather: [Weather]?
         let clouds: Clouds?
         let wind: Wind?
         let visibility: Int?
-        let pop: Double?
+        let probabilityOfPrecipitation: Double?
         let rain: Rain?
-        let sys: Sys?
-        let dtTxt: String?
+        let system: Sys?
+        let dateTxt: String?
         
         enum CodingKeys: String, CodingKey {
-            case dt, main, weather, clouds, wind, visibility, pop, rain, sys
-            case dtTxt = "dt_txt"
+            case main, weather, clouds, wind, visibility, rain
+            case dateTxt = "dt_txt"
+            case date = "dt"
+            case probabilityOfPrecipitation = "pop"
+            case system = "sys"
         }
     }
 }
@@ -52,8 +59,7 @@ extension ForecastModel {
 extension ForecastModel {
     struct MainClass: Codable {
         let temp, feelsLike, tempMin, tempMax: Double?
-        let pressure, seaLevel, grndLevel, humidity: Int?
-        let tempKf: Double?
+        let pressure, seaLevel, groundLevel, humidity: Int?
         
         enum CodingKeys: String, CodingKey {
             case temp
@@ -62,9 +68,8 @@ extension ForecastModel {
             case tempMax = "temp_max"
             case pressure
             case seaLevel = "sea_level"
-            case grndLevel = "grnd_level"
+            case groundLevel = "grnd_level"
             case humidity
-            case tempKf = "temp_kf"
         }
     }
 }
@@ -81,14 +86,18 @@ extension ForecastModel {
 
 extension ForecastModel {
     struct Sys: Codable {
-        let pod: Pod?
+        let partOfDay: Pod?
+        
+        enum CodingKeys: String, CodingKey {
+            case partOfDay = "pod"
+        }
     }
 }
 
 extension ForecastModel {
     enum Pod: String, Codable {
-        case d = "d"
-        case n = "n"
+        case day = "d"
+        case night = "n"
     }
 }
 
@@ -123,7 +132,12 @@ extension ForecastModel {
 extension ForecastModel {
     struct Wind: Codable {
         let speed: Double?
-        let deg: Int?
+        let degree: Int?
         let gust: Double?
+        
+        enum CodingKeys: String, CodingKey {
+            case speed, gust
+            case degree = "deg"
+        }
     }
 }

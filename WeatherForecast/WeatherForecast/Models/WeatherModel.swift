@@ -8,18 +8,24 @@
 import Foundation
 
 struct WeatherModel: Codable {
-    let coord: Coord?
+    let coordinate: Coord?
     let weather: [Weather]?
     let base: String?
     let main: Main?
     let visibility: Int?
     let wind: Wind?
     let clouds: Clouds?
-    let dt: Int?
-    let sys: Sys?
+    let date: Int?
+    let system: Sys?
     let timezone, id: Int?
     let name: String?
-    let cod: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case weather, base, main, visibility, wind, clouds, timezone, id, name
+        case coordinate = "coord"
+        case date = "dt"
+        case system = "sys"
+    }
 }
 
 extension WeatherModel {
