@@ -6,11 +6,10 @@ enum InformationType {
     
     var name: String {
         switch self {
-            
         case .weather:
-           return "weather"
+            return "weather"
         case .forecast:
-           return "forecast"
+            return "forecast"
         }
         
     }
@@ -26,7 +25,11 @@ struct Coordinate: Decodable {
 }
 
 struct Clouds: Decodable {
-    let all: Int
+    let cloudiness: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case cloudiness = "all"
+    }
 }
 
 struct Rain: Decodable {

@@ -35,7 +35,7 @@ struct DayCondition: Decodable {
     let dtTxt: String
     let rain: Rain?
     let snow: Snow?
-
+    
     enum CodingKeys: String, CodingKey {
         case dt, weather, clouds, wind, visibility, rain, snow
         case dtTxt = "dt_txt"
