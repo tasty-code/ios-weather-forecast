@@ -1,0 +1,3 @@
+protocol DataTransferable: Decodable {
+    
+}
