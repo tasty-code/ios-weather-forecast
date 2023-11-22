@@ -129,3 +129,7 @@ extension FiveDaysWeatherDTO {
         let lon: Double
     }
 }
+
+extension FiveDaysWeatherDTO: DataTransferable {
+    
+}

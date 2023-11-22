@@ -103,3 +103,7 @@ extension CurrentWeatherDTO {
         let sunset: Int
     }
 }
+
+extension CurrentWeatherDTO: DataTransferable {
+    
+}
