@@ -18,11 +18,11 @@ final class ServiceManager {
     }
     
     public func execute<T: Decodable>(
-        _ request: RequestManager,
+        _ request: URLRequest?,
         expecting type: T.Type,
         completion: @escaping (Result<T, Error>) -> Void) {
             
-            guard let urlRequest = self.request(from: request) else {
+            guard let urlRequest = request else {
                 completion(.failure(ServiceError.failedToCreateRequest))
                 return
             }
@@ -43,15 +43,4 @@ final class ServiceManager {
             }
             task.resume()
         }
-    
-    // MARK: - Private
-    private func request(from request: RequestManager) -> URLRequest? {
-        guard let url = request.url else {return nil}
-        var request = URLRequest(url: url)
-        request.httpMethod = request.httpMethod
-        
-        return request
-    }
-    
 }
-
