@@ -78,7 +78,7 @@ final class NetworkManager {
         }
     }
     
-    static let `default` = NetworkManager()
+    static let shared = NetworkManager()
     
     private init() {}
     
