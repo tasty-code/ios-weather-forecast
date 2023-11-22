@@ -8,15 +8,15 @@
 import Foundation
 
 struct WeatherModel: Codable {
-    let coordinate: Coord?
-    let weather: [Weather]?
+    let coordinate: CurrentCoordinate?
+    let weather: [CurrentWeather]?
     let base: String?
     let main: Main?
     let visibility: Int?
-    let wind: Wind?
-    let clouds: Clouds?
+    let wind: CurrentWind?
+    let clouds: CurrentClouds?
     let date: Int?
-    let system: Sys?
+    let system: CurrentSys?
     let timezone, id: Int?
     let name: String?
     
@@ -28,52 +28,40 @@ struct WeatherModel: Codable {
     }
 }
 
-extension WeatherModel {
-    struct Clouds: Codable {
-        let all: Int?
+struct CurrentClouds: Codable {
+    let all: Int?
+}
+
+struct CurrentCoordinate: Codable {
+    let lon, lat: Double?
+}
+
+struct Main: Codable {
+    let temp, feelsLike, tempMin, tempMax: Double?
+    let pressure, humidity: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case temp
+        case feelsLike = "feels_like"
+        case tempMin = "temp_min"
+        case tempMax = "temp_max"
+        case pressure, humidity
     }
 }
 
-extension WeatherModel {
-    struct Coord: Codable {
-        let lon, lat: Double?
-    }
+struct CurrentSys: Codable {
+    let type, id: Int?
+    let country: String?
+    let sunrise, sunset: Int?
 }
 
-extension WeatherModel {
-    struct Main: Codable {
-        let temp, feelsLike, tempMin, tempMax: Double?
-        let pressure, humidity: Int?
-        
-        enum CodingKeys: String, CodingKey {
-            case temp
-            case feelsLike = "feels_like"
-            case tempMin = "temp_min"
-            case tempMax = "temp_max"
-            case pressure, humidity
-        }
-    }
+struct CurrentWeather: Codable {
+    let id: Int?
+    let main, description, icon: String?
+    
 }
 
-extension WeatherModel {
-    struct Sys: Codable {
-        let type, id: Int?
-        let country: String?
-        let sunrise, sunset: Int?
-    }
-}
-
-extension WeatherModel {
-    struct Weather: Codable {
-        let id: Int?
-        let main, description, icon: String?
-        
-    }
-}
-
-extension WeatherModel {
-    struct Wind: Codable {
-        let speed: Double?
-        let deg: Int?
-    }
+struct CurrentWind: Codable {
+    let speed: Double?
+    let deg: Int?
 }
