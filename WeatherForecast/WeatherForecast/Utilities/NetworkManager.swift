@@ -1,15 +1,13 @@
 import Foundation
 
-final class NetworkManager: Networkable {
-    func fetch(_ weatherType: WeatherType, completion: @escaping (Result<DataTransferable, NetworkError>) -> Void) {
+final class NetworkManager<T: DataTransferable>: Networkable {
+    func fetch(completion: @escaping (Result<DataTransferable, NetworkError>) -> Void) {
         var url : URL?
         do {
-            url = try URL(string: "https://api.openweathermap.org/data/2.5/\(weatherType.description)?lat=37.715122&lon=126.734086&appid=\(apiKey)")
+            url = try URL(string: "https://api.openweathermap.org/data/2.5/\(T.name)?lat=37.715122&lon=126.734086&appid=\(apiKey)")
         } catch {
             print(error)
         }
-        
-        let DTO = weatherType.check()
         
         guard let url = url else {
             return completion(.failure(.noExistedUrl))
@@ -20,7 +18,7 @@ final class NetworkManager: Networkable {
                 return completion(.failure(.noExistedData))
             }
             do {
-                let weatherResponse = try JSONDecoder().decode(DTO.self, from: data)
+                let weatherResponse = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(weatherResponse))
             } catch {
                 completion(.failure(.decodingError))

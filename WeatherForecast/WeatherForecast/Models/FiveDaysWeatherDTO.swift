@@ -131,5 +131,5 @@ extension FiveDaysWeatherDTO {
 }
 
 extension FiveDaysWeatherDTO: DataTransferable {
-    
+    static let name = "forecast"
 }
