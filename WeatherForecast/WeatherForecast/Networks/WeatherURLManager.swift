@@ -1,5 +1,5 @@
 //
-//  ApiKey.swift
+//  WeatherURLManager.swift
 //  WeatherForecast
 //
 //  Created by Wonji Ha on 2023/11/20.
@@ -8,15 +8,17 @@
 import Foundation
 
 struct WeatherURLManager {
-    private var apiKey: String {
+    private var apiKey: String? {
         get {
             guard let filePath = Bundle.main.path(forResource: "APIKey", ofType: "plist") else {
-                fatalError(KeyError.keyFileNotFound.description)
+                debugPrint(APIKeyError.keyFileNotFound.localizedDescription)
+                return nil
             }
             
             let plist = NSDictionary(contentsOfFile: filePath)
             guard let value = plist?.object(forKey: "KEY") as? String else {
-                fatalError(KeyError.keyNotFound.description)
+                debugPrint(APIKeyError.keyNotFound.description)
+                return nil
             }
             return value
         }
@@ -34,7 +36,7 @@ struct WeatherURLManager {
         let latitude = URLQueryItem(name: "lat", value: "\(latitude)")
         let longitude = URLQueryItem(name: "lon", value: "\(longitude)")
         let units = URLQueryItem(name: "units", value: "metric")
-        let apikey = URLQueryItem(name: "appid", value: "\(apiKey)")
+        let apikey = URLQueryItem(name: "appid", value: apiKey)
         baseURL?.queryItems = [latitude, longitude, units, apikey]
         guard let url = baseURL?.url else {
             return nil
