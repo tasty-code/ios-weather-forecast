@@ -6,7 +6,7 @@
 
 import UIKit
 
-final class ViewController: UIViewController {
+final class WeatherViewController: UIViewController {
     private let networkManager = NetworkManager()
     
     override func viewDidLoad() {
