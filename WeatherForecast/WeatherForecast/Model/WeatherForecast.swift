@@ -45,7 +45,7 @@ extension WeatherForecast {
 // MARK: - City
 
 extension WeatherForecast {
-    struct City {
+    struct City: Decodable {
         let id: Int
         let name: String
         let country: String
