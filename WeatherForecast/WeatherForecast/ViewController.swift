@@ -6,11 +6,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    private let networkManager = NetworkManager(lat: 37.532600, lon: 127.024612)
+final class ViewController: UIViewController {
+    private let networkManager = NetworkManager()
+    private let apiClient = ApiClient()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        networkManager.startLoad()
+        let dataType = WeatherType.forecast
+        networkManager.loadData(apiClient: apiClient, type: dataType)
     }
 }
