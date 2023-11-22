@@ -7,18 +7,13 @@
 
 import Foundation
 
-struct WeatherURLFormatter: URLFormattable {
-    private let defaultPath: String
-    private let formatter: URLFormattable
+struct WeatherURLFormatter<T: URLProtocol>: URLFormattable {
+    typealias T = T
     
-    init(defaultPath: String = "/data/2.5/",
-         formatter: URLFormattable = URLFormatter<WeatherURL>()) {
+    var defaultPath: String
+    
+    init(defaultPath: String = "/data/2.5/") {
         self.defaultPath = defaultPath
-        self.formatter = formatter
     }
     
-    func makeURL(path: String, with queries: [String : String]) -> URL? {
-        let weatherAPIPath = defaultPath + "\(path)"
-        return formatter.makeURL(path: weatherAPIPath, with: queries)
-    }
 }
