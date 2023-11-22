@@ -24,10 +24,8 @@ final class NetworkManager {
         request.httpMethod = "GET"
         
         URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil else {
-                print("에러 발생")
-                completion(.failure(NetworkError.unknownError))
-                return
+            if let error = error {
+                completion(.failure(NetworkError.unknownError(error)))
             }
             
             guard let data = data else {

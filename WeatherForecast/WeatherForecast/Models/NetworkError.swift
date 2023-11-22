@@ -10,7 +10,7 @@ import Foundation
 enum NetworkError: Error, CustomStringConvertible {
     case decodingError
     case responseError(statusCode: Int)
-    case unknownError
+    case unknownError(_ error: Error)
     
     var description: String {
         switch self {
@@ -19,8 +19,8 @@ enum NetworkError: Error, CustomStringConvertible {
             return "decodingError"
         case .responseError(statusCode: let statusCode):
             return "\(statusCode) responseError"
-        case .unknownError:
-            return "unknownError"
+        case .unknownError(error: let error):
+            return "unknownError: \(error.localizedDescription)"
         }
     }
 }
