@@ -1,6 +1,6 @@
 import Foundation
 
-struct CurrentWeather: Codable {
+struct CurrentWeather: Decodable {
     let coordinate: Coordinate
     let weather: [Weather]
     let temperature: Temperature

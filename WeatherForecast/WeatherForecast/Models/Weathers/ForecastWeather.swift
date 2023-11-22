@@ -1,6 +1,6 @@
 import Foundation
 
-struct ForecastWeather: Codable {
+struct ForecastWeather: Decodable {
     let cnt: Int
     let fiveDaysForecast: [DayCondition]
     let city: City
@@ -11,7 +11,7 @@ struct ForecastWeather: Codable {
     }
 }
 
-struct City: Codable {
+struct City: Decodable {
     let id: Int
     let name: String
     let coordinate: Coordinate
@@ -24,7 +24,7 @@ struct City: Codable {
     }
 }
 
-struct DayCondition: Codable {
+struct DayCondition: Decodable {
     let dt: Int
     let temperature: Temperature
     let weather: [Weather]

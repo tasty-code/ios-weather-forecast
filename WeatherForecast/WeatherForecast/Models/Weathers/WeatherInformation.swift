@@ -1,6 +1,22 @@
 import Foundation
 
-struct Coordinate: Codable {
+enum InformationType {
+    case weather
+    case forecast
+    
+    var name: String {
+        switch self {
+            
+        case .weather:
+           return "weather"
+        case .forecast:
+           return "forecast"
+        }
+        
+    }
+}
+
+struct Coordinate: Decodable {
     let longitude, latitude: Double
     
     enum CodingKeys: String, CodingKey {
@@ -9,11 +25,11 @@ struct Coordinate: Codable {
     }
 }
 
-struct Clouds: Codable {
+struct Clouds: Decodable {
     let all: Int
 }
 
-struct Rain: Codable {
+struct Rain: Decodable {
     let amountOfRainOneHour, amountOfRainThreeHour: Double?
     
     enum CodingKeys: String, CodingKey {
@@ -22,14 +38,14 @@ struct Rain: Codable {
     }
 }
 
-struct Wind: Codable {
+struct Wind: Decodable {
     let speed: Double
     let deg: Int
     let gust: Double?
 }
 
 
-struct Snow: Codable {
+struct Snow: Decodable {
     let amountOfSnowOneHour, amountOfSnowThreeHour: Double?
     
     enum CodingKeys: String, CodingKey {
@@ -39,14 +55,14 @@ struct Snow: Codable {
 }
 
 
-struct Weather: Codable {
+struct Weather: Decodable {
     let id: Int
     let main: String
     let description: String
     let icon: String
 }
 
-struct Temperature: Codable {
+struct Temperature: Decodable {
     let temp, feelsLike, tempMin, tempMax: Double
     let pressure, humidity: Int
     
@@ -56,13 +72,11 @@ struct Temperature: Codable {
         case tempMin = "temp_min"
         case tempMax = "temp_max"
         case pressure, humidity
-//        case seaLevel = "sea_level"
-//        case grndLevel = "grnd_level"
     }
 }
 
 
-struct Sys: Codable {
+struct Sys: Decodable {
     let type, id: Int
     let country: String
     let sunrise, sunset: Int
