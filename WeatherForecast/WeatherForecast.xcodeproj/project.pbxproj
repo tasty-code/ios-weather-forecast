@@ -89,6 +89,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		66204A6E2B0DEC63006886C8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF725ADDDF200EEE3F1 /* WeatherViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		669283552B0B499C00BF1FFF /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,9 +143,9 @@
 				66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */,
 				66FD8CF32B0C7051008B698D /* Network */,
 				669283552B0B499C00BF1FFF /* Model */,
+				66204A6E2B0DEC63006886C8 /* Controller */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
-				C79C8CF725ADDDF200EEE3F1 /* WeatherViewController.swift */,
 				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
