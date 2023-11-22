@@ -17,9 +17,9 @@ final class NetworkManager: NSObject, URLSessionDelegate {
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
-    func loadData(apiClient: ApiClient, type: WeatherType) {
+    func loadData(type: WeatherType) {
         weatherType = type
-        guard let url = ApiClient.makeURL(lat: 37.532600, lon: 127.024612, dataType: type) else { return }
+        guard let url = ApiClient.makeURL(lat: 37.532600, lon: 127.024612, weatherType: type) else { return }
         let task = session.dataTask(with: url)
         task.resume()
     }

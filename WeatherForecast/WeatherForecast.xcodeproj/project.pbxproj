@@ -100,13 +100,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		66FD8CF02B0C4F4B008B698D /* Util */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
 		66FD8CF32B0C7051008B698D /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,7 +134,6 @@
 			children = (
 				66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */,
 				66FD8CF32B0C7051008B698D /* Network */,
-				66FD8CF02B0C4F4B008B698D /* Util */,
 				669283552B0B499C00BF1FFF /* Model */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,

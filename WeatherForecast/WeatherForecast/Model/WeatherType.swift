@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum WeatherType: CustomStringConvertible {
+enum WeatherType {
     case forecast
     case weatherToday
     
-    var description: String {
+    var path: String {
         switch self {
         case .forecast:
             return "forecast/"
