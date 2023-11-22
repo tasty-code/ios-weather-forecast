@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		66204A6D2B0DE2D0006886C8 /* WeatherType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66204A6C2B0DE2D0006886C8 /* WeatherType.swift */; };
 		669283572B0B49C600BF1FFF /* WeatherForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669283562B0B49C600BF1FFF /* WeatherForecast.swift */; };
 		669283592B0B4EB000BF1FFF /* WeatherToday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669283582B0B4EB000BF1FFF /* WeatherToday.swift */; };
 		66FD8CEE2B0C3EAD008B698D /* WeatherCommonInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FD8CED2B0C3EAD008B698D /* WeatherCommonInformation.swift */; };
-		66FD8CF22B0C4F6A008B698D /* Sequrity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FD8CF12B0C4F6A008B698D /* Sequrity.swift */; };
 		66FD8CF52B0C7065008B698D /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FD8CF42B0C7065008B698D /* ApiClient.swift */; };
 		66FD8CF72B0C7388008B698D /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FD8CF62B0C7388008B698D /* NetworkManager.swift */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
@@ -41,10 +41,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Seretes.xcconfig; sourceTree = "<group>"; };
+		66204A6C2B0DE2D0006886C8 /* WeatherType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherType.swift; sourceTree = "<group>"; };
 		669283562B0B49C600BF1FFF /* WeatherForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecast.swift; sourceTree = "<group>"; };
 		669283582B0B4EB000BF1FFF /* WeatherToday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherToday.swift; sourceTree = "<group>"; };
 		66FD8CED2B0C3EAD008B698D /* WeatherCommonInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCommonInformation.swift; sourceTree = "<group>"; };
-		66FD8CF12B0C4F6A008B698D /* Sequrity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequrity.swift; sourceTree = "<group>"; };
 		66FD8CF42B0C7065008B698D /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		66FD8CF62B0C7388008B698D /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +92,7 @@
 		669283552B0B499C00BF1FFF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				66204A6C2B0DE2D0006886C8 /* WeatherType.swift */,
 				669283582B0B4EB000BF1FFF /* WeatherToday.swift */,
 				669283562B0B49C600BF1FFF /* WeatherForecast.swift */,
 				66FD8CED2B0C3EAD008B698D /* WeatherCommonInformation.swift */,
@@ -101,7 +103,6 @@
 		66FD8CF02B0C4F4B008B698D /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				66FD8CF12B0C4F6A008B698D /* Sequrity.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -138,6 +139,7 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */,
 				66FD8CF32B0C7051008B698D /* Network */,
 				66FD8CF02B0C4F4B008B698D /* Util */,
 				669283552B0B499C00BF1FFF /* Model */,
@@ -302,12 +304,12 @@
 			files = (
 				66FD8CF72B0C7388008B698D /* NetworkManager.swift in Sources */,
 				669283592B0B4EB000BF1FFF /* WeatherToday.swift in Sources */,
-				66FD8CF22B0C4F6A008B698D /* Sequrity.swift in Sources */,
 				66FD8CEE2B0C3EAD008B698D /* WeatherCommonInformation.swift in Sources */,
 				66FD8CF52B0C7065008B698D /* ApiClient.swift in Sources */,
 				669283572B0B49C600BF1FFF /* WeatherForecast.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
+				66204A6D2B0DE2D0006886C8 /* WeatherType.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -481,6 +483,7 @@
 		};
 		C79C8D1B25ADDDF400EEE3F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -519,6 +522,7 @@
 		};
 		C79C8D1E25ADDDF400EEE3F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
