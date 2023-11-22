@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DataType: CustomStringConvertible {
+enum WeatherType: CustomStringConvertible {
     case forecast
     case weatherToday
     
@@ -17,6 +17,15 @@ enum DataType: CustomStringConvertible {
             return "forecast/"
         case .weatherToday:
             return "weather/"
+        }
+    }
+    
+    var model: Decodable.Type {
+        switch self {
+        case .forecast:
+            return WeatherForecast.self
+        case .weatherToday:
+            return WeatherToday.self
         }
     }
 }
