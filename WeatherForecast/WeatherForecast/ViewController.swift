@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         }
         
         let publisher = URLSession.shared.publisher(request: URLRequest(url: url))
-        subscriber =  WeatherHTTPClient().publishCurrentWeather(publisher)
+        subscriber =  WeatherHTTPClient.publishForecast(from: publisher, forecastType: CurrentWeather.self)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {

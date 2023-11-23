@@ -102,12 +102,12 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		37AA4CB82B0DC64D001A8E90 /* Extenssions */ = {
+		37AA4CB82B0DC64D001A8E90 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				37AA4CB92B0DC66D001A8E90 /* HTTPClient.swift */,
 			);
-			path = Extenssions;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		37AA4CBF2B0DDF54001A8E90 /* Networks */ = {
@@ -152,7 +152,7 @@
 			children = (
 				37AA4CC02B0DDFF8001A8E90 /* Utils */,
 				37AA4CBF2B0DDF54001A8E90 /* Networks */,
-				37AA4CB82B0DC64D001A8E90 /* Extenssions */,
+				37AA4CB82B0DC64D001A8E90 /* Extensions */,
 				0D3814BF2B0B4F1100B7E0DD /* Models */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,

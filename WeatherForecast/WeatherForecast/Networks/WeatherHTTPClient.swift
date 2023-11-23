@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 struct WeatherHTTPClient {
-    func publishCurrentWeather(_ publisher: AnyPublisher<(Data, HTTPURLResponse), Error>) -> AnyPublisher<CurrentWeather, Error>  {
+    static func publishForecast<T: Decodable>(from publisher: AnyPublisher<(Data, HTTPURLResponse), Error>, forecastType: T.Type) -> AnyPublisher<T, Error>  {
             return publisher.tryMap { (data, httpResponse) in
                 guard (200..<300).contains(httpResponse.statusCode)
                 else {
@@ -22,7 +22,7 @@ struct WeatherHTTPClient {
                 
                 return data
             }
-            .decode(type: CurrentWeather.self, decoder: JSONDecoder())
+            .decode(type: T.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
         }
 }
