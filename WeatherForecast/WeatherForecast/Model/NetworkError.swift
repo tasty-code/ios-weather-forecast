@@ -8,6 +8,7 @@
 import Foundation
 
 enum NetworkError: Error, LocalizedError {
+    case unknownError(description: String)
     case urlFormattingError
     case responseError(statusCode: Int)
     case emptyDataError
@@ -15,6 +16,8 @@ enum NetworkError: Error, LocalizedError {
     
     var errorDescription: String {
         switch self {
+        case .unknownError(let description):
+            return "\(description)"
         case .urlFormattingError:
             return "url 변환 실패"
         case .responseError(let statusCode):
