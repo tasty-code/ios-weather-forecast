@@ -15,9 +15,9 @@ struct Weather: Decodable {
 
 // MARK: - Wind
 struct Wind: Decodable {
-    let speed: Double
-    let deg: Int
-    let gust: Double
+    let speed: Double?
+    let deg: Int?
+    let gust: Double?
 }
 
 // MARK: - Clouds
