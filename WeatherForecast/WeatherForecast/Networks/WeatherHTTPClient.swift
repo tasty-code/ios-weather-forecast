@@ -13,11 +13,11 @@ struct WeatherHTTPClient {
             return publisher.tryMap { (data, httpResponse) in
                 guard (200..<300).contains(httpResponse.statusCode)
                 else {
-                    fatalError("status code 오류")
+                    throw StatusCodeError.httpError(httpResponse.statusCode)
                 }
                 
                 if data.count <= 0 {
-                    fatalError("data가 없음")
+                    throw URLError(.zeroByteResource)
                 }
                 
                 return data
