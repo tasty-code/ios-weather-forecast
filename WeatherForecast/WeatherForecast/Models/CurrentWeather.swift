@@ -1,53 +1,47 @@
-// This file was generated from JSON Schema using quicktype, do not modify it directly.
-// To parse the JSON, add this file to your project and do:
-//
-//   let currentWeather = try? JSONDecoder().decode(CurrentWeather.self, from: jsonData)
-
-// https://openweathermap.org/current#min
 import Foundation
 
 // MARK: - CurrentWeather
-struct CurrentWeatherDTO: Decodable {
-    let coord: Coord
-    let weather: [Weather]
-    let base: String
-    let main: Main
-    let visibility: Int
-    let wind: Wind
-    let clouds: Clouds
+struct CurrentWeather: Decodable {
+    let coord: Coord?
+    let weather: [Weather]?
+    let base: String?
+    let main: Main?
+    let visibility: Int?
+    let wind: Wind?
+    let clouds: Clouds?
     let rain: Rain?
     let snow: Snow?
-    let dt: Int
-    let sys: Sys
-    let timezone: Int
-    let id: Int
-    let name: String
-    let cod: Int
+    let dt: Int?
+    let sys: Sys?
+    let timezone: Int?
+    let id: Int?
+    let name: String?
+    let cod: Int?
 }
 
-extension CurrentWeatherDTO {
+extension CurrentWeather {
     // MARK: - Coord
     struct Coord: Decodable {
-        let lon: Double
-        let lat: Double
+        let lon: Double?
+        let lat: Double?
     }
     
     // MARK: - Weather
     struct Weather: Decodable {
-        let id: Int
-        let main: String
-        let description: String
-        let icon: String
+        let id: Int?
+        let main: String?
+        let description: String?
+        let icon: String?
     }
     
     // MARK: - Main
     struct Main: Decodable {
-        let temp: Double
-        let feelsLike: Double
-        let pressure: Int
-        let humidity: Int
-        let tempMin: Double
-        let tempMax: Double
+        let temp: Double?
+        let feelsLike: Double?
+        let pressure: Int?
+        let humidity: Int?
+        let tempMin: Double?
+        let tempMax: Double?
         let seaLevel: Int?
         let grndLevel: Int?
         
@@ -65,14 +59,14 @@ extension CurrentWeatherDTO {
     
     // MARK: - Wind
     struct Wind: Decodable {
-        let speed: Double
+        let speed: Double?
         let gust: Double?
         let deg: Int?
     }
     
     // MARK: - Clouds
     struct Clouds: Decodable {
-        let all: Int
+        let all: Int?
     }
     
     struct Rain: Decodable {
@@ -100,11 +94,11 @@ extension CurrentWeatherDTO {
         let type: Int?
         let id: Int?
         let country: String?
-        let sunrise: Int
-        let sunset: Int
+        let sunrise: Int?
+        let sunset: Int?
     }
 }
 
-extension CurrentWeatherDTO: DataTransferable {
+extension CurrentWeather: DataTransferable {
     static let name = "weather"
 }
