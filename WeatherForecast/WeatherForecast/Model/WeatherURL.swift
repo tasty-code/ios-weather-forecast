@@ -8,7 +8,7 @@
 import Foundation
 
 enum WeatherURL: URLProtocol {
-    static var url = "https://api.openweathermap.org"
+    static let url = "https://api.openweathermap.org"
     
     case current
     case weekly
