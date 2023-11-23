@@ -11,12 +11,12 @@ enum ForecastType: String {
     case current = "weather"
     case forecast = "forecast"
     
-    func makeURL(lon: Double, lat: Double) -> String {
+    func makeURL(lon: Double, lat: Double) -> URL? {
         guard let apiKey = Bundle.main.apiKey else {
-            print("API KEY를 찾을 수 없습니다!!")
-            return ""
+            return nil
         }
-
-        return "https://api.openweathermap.org/data/2.5/\(self.rawValue)?lat=\(lon)&lon=\(lat)&appid=\(apiKey)&units=metric"
+        
+        let url = URL(string: "https://api.openweathermap.org/data/2.5/\(self.rawValue)?lat=\(lon)&lon=\(lat)&appid=\(apiKey)&units=metric")
+        return url
     }
 }

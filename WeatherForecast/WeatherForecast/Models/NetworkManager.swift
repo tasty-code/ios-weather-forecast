@@ -14,9 +14,9 @@ final class NetworkManager {
                                     longitude: Double,
                                     completion: @escaping (Result<T, Error>)-> Void) {
         
-        guard let url = URL(string: weatherType.makeURL(lon: longitude, lat: latitude))
+        guard let url = weatherType.makeURL(lon: longitude, lat: latitude)
         else {
-            print("올바른 URL이 아닙니다.")
+            completion(.failure(NetworkError.invalidURLError))
             return
         }
         
@@ -28,14 +28,14 @@ final class NetworkManager {
                 completion(.failure(NetworkError.unknownError(error)))
             }
             
-            guard let data = data else {
-                print("Error: Did not receive data")
-                return
-            }
-            
             guard let response = response as? HTTPURLResponse else { return }
             guard (200 ..< 299) ~= response.statusCode else {
                 completion(.failure(NetworkError.responseError(statusCode: response.statusCode)))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NetworkError.noDataError))
                 return
             }
             
