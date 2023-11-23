@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = CLLocationManager()
+        
         locationManager?.requestWhenInUseAuthorization()
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         locationManager?.startUpdatingLocation()
@@ -52,6 +53,28 @@ class ViewController: UIViewController {
         alert.addAction(noAction)
         present(alert, animated: true, completion: nil)
     }
+    
+    func getCurrentAddress() {
+        var currentAddress = ""
+        let geoCoder: CLGeocoder = CLGeocoder()
+        
+        let locale = Locale(identifier: "Ko-Kr")
+        
+        guard let locationManager = locationManager, let location = locationManager.location else { return }
+        
+        geoCoder.reverseGeocodeLocation(location, preferredLocale:  locale) { (placemark, error) -> Void in
+            guard error == nil, let place = placemark?.first else { return }
+            
+            if let administrativeArea: String = place.administrativeArea { currentAddress.append(administrativeArea + " ") }
+            
+            if let locality: String = place.locality { currentAddress.append(locality + " ") }
+            
+            if let subLocality: String = place.subLocality { currentAddress.append(subLocality + " ") }
+            
+            // 데이터 확인용
+            print(currentAddress)
+        }
+    }
 }
 
 extension ViewController: CLLocationManagerDelegate {
@@ -68,6 +91,7 @@ extension ViewController: CLLocationManagerDelegate {
         default:
             fetchWeatherData(endpoint: .forecast, expect: FiveDayForecast.self)
             fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self)
+            getCurrentAddress()
             break
         }
     }
