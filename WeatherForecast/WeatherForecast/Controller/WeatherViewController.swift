@@ -7,7 +7,7 @@
 import UIKit
 
 final class WeatherViewController: UIViewController {
-    private let networkManager = NetworkManager()
+    private let networkManager = WeatherNetworkManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()

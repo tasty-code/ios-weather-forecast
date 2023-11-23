@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class NetworkManager: NSObject, URLSessionDelegate {
+final class WeatherNetworkManager: NSObject, URLSessionDelegate {
     private var receivedData: Data?
     private var weatherType: WeatherType?
     
@@ -19,7 +19,7 @@ final class NetworkManager: NSObject, URLSessionDelegate {
     
     func loadData(type: WeatherType) {
         weatherType = type
-        guard let url = ApiClient.makeURL(lat: 37.532600, lon: 127.024612, weatherType: type) else { return }
+        guard let url = WeatherApiClient.makeURL(lat: 37.532600, lon: 127.024612, weatherType: type) else { return }
         let task = session.dataTask(with: url)
         task.resume()
     }
@@ -27,7 +27,7 @@ final class NetworkManager: NSObject, URLSessionDelegate {
 
 // MARK: - URLSessionDataDelegate
 
-extension NetworkManager: URLSessionDataDelegate {
+extension WeatherNetworkManager: URLSessionDataDelegate {
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping @Sendable (URLSession.ResponseDisposition) -> Void) {
         guard

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ApiClient {
+struct WeatherApiClient {
     private static let baseURL = "https://api.openweathermap.org/data/2.5/"
     
     static func makeURL(lat: Double, lon: Double, weatherType: WeatherType) -> URL? {
