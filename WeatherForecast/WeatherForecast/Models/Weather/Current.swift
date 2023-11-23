@@ -1,5 +1,5 @@
 //
-//  CurrentWeather.swift
+//  Current.swift
 //  WeatherForecast
 //
 //  Created by 김경록 on 11/20/23.
@@ -7,33 +7,31 @@
 
 import Foundation
 
-// MARK: - CurrentWeather
+// MARK: - Current
 
-struct CurrentWeather: Decodable {
-    let coord: Coordinate
-    let weather: [Weather]
-    let base: String?
+struct Current: Decodable {
+    let coord: CurrentCoordinate
+    let weather: [CurrentWeather]
     let main: WeatherCondition
     let visibility: Int
-    let wind: Wind
-    let rain: Rain?
-    let clouds: Clouds
+    let wind: CurrentWind
+    let rain: CurrentRain?
+    let clouds: CurrentClouds
     let dt: Int
-    let sys: Sys
+    let sys: System
     let timezone, id: Int
     let name: String
-    let cod: Int
 }
 
-// MARK: - Clouds
+// MARK: - CurrentClouds
 
-struct Clouds: Decodable {
+struct CurrentClouds: Decodable {
     let all: Int
 }
 
-// MARK: - Coord
+// MARK: - CurrentCoordinate
 
-struct Coordinate: Decodable {
+struct CurrentCoordinate: Decodable {
     let longitude, latitude: Double
     
     enum CodingKeys: String, CodingKey {
@@ -42,13 +40,12 @@ struct Coordinate: Decodable {
     }
 }
 
-// MARK: - Main
+// MARK: - WeatherCondition
 
 struct WeatherCondition: Decodable {
     let temp, feelsLike, tempMin, tempMax: Double
     let pressure, humidity: Int
     let seaLevel, grndLevel: Int?
-    let tempKf: Double?
     
     enum CodingKeys: String, CodingKey {
         case temp
@@ -58,13 +55,12 @@ struct WeatherCondition: Decodable {
         case pressure, humidity
         case seaLevel = "sea_level"
         case grndLevel = "grnd_level"
-        case tempKf = "temp_kf"
     }
 }
 
-// MARK: - Rain
+// MARK: - CurrentWeather
 
-struct Rain: Decodable {
+struct CurrentRain: Decodable {
     let amountOfRainOneHour: Double?
     let amountOfRainThreeHour: Double?
     
@@ -74,24 +70,23 @@ struct Rain: Decodable {
     }
 }
 
-// MARK: - Sys
+// MARK: - System
 
-struct Sys: Decodable {
-    let type, id: Int
+struct System: Decodable {
     let country: String
     let sunrise, sunset: Int
 }
 
-// MARK: - Weather
+// MARK: - CurrentWeather
 
-struct Weather: Decodable {
+struct CurrentWeather: Decodable {
     let id: Int
     let main, description, icon: String
 }
 
-// MARK: - Wind
+// MARK: - CurrentWind
 
-struct Wind: Decodable {
+struct CurrentWind: Decodable {
     let speed: Double
     let deg: Int
     let gust: Double?
