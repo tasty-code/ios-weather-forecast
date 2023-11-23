@@ -7,13 +7,13 @@
 import UIKit
 
 class ViewController: UIViewController {
-    var weatherManager = WeatherManager()
+    let weatherManager = WeatherManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         weatherManager.delegate = self
-        weatherManager.start()
+        weatherManager.startLocationUpdate()
     }
 }
 

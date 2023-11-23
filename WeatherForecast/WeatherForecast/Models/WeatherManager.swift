@@ -16,7 +16,7 @@ final class WeatherManager: NSObject {
     
     var delegate: LocationManagerUIDelegate?
     
-    let locationManager: CLLocationManager
+    private let locationManager: CLLocationManager
     
     var longitude: String? {
         return locationManager.location?.coordinate.longitude.description
@@ -25,21 +25,22 @@ final class WeatherManager: NSObject {
         return locationManager.location?.coordinate.latitude.description
     }
     
+    var currentAddress: String?
+    
     override init() {
         locationManager = CLLocationManager()
         super.init()
-        
         
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
     }
 
-    func start() {
+    func startLocationUpdate() {
         locationManager.startUpdatingLocation()
     }
     
-    func stop() {
+    func stopLocationUpdate() {
         locationManager.stopUpdatingLocation()
     }
     
@@ -65,13 +66,14 @@ final class WeatherManager: NSObject {
     
     func getCurrentAddress() {
         var currentAddress = ""
+        
         let geoCoder: CLGeocoder = CLGeocoder()
         
         let locale = Locale(identifier: "Ko-Kr")
         
         guard let location = locationManager.location else { return }
         
-        geoCoder.reverseGeocodeLocation(location, preferredLocale:  locale) { (placemark, error) -> Void in
+        geoCoder.reverseGeocodeLocation(location, preferredLocale:  locale) { placemark, error in
             guard error == nil, let place = placemark?.first else { return }
             
             if let administrativeArea: String = place.administrativeArea { currentAddress.append(administrativeArea + " ") }
@@ -82,6 +84,8 @@ final class WeatherManager: NSObject {
             
             // 데이터 확인용
             print(currentAddress)
+            
+            self.currentAddress = currentAddress
         }
     }
     
@@ -90,11 +94,14 @@ final class WeatherManager: NSObject {
 extension WeatherManager: CLLocationManagerDelegate {
     @available(iOS 14.0, *)
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        stopLocationUpdate()
+        
         switch manager.authorizationStatus {
         case .restricted, .denied:
             DispatchQueue.main.async {
                 self.delegate?.showAlertWhenNoAuthorization()
             }
+            
             break
             
         case .notDetermined:
@@ -104,6 +111,7 @@ extension WeatherManager: CLLocationManagerDelegate {
             fetchWeatherData(endpoint: .forecast, expect: FiveDayForecast.self)
             fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self)
             getCurrentAddress()
+            
             break
         }
     }
