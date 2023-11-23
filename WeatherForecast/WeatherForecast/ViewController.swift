@@ -9,12 +9,13 @@ import UIKit
 final class ViewController: UIViewController {
     @IBOutlet weak var weatherLabel: UILabel!
     
-    private let dataService = WeatherForecastDataService()
+    private lazy var dataService = WeatherForecastDataService(dataServiceDelegate: self)
     private let locationManager = LocationManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    }
+    @IBAction func updateCurrentTemp(_ sender: UIButton) {
         configureLocationLabel()
     }
     
@@ -22,13 +23,16 @@ final class ViewController: UIViewController {
         guard let coordinates = locationManager.fetchCurrentLocatedCoordinates() else { return print("Failed to fetch current located coordinates") }
         
         dataService.fetchData(.weather, coordinate: coordinates)
-        
-        guard let model = dataService.readModel() else { return print("Failed to read model from DataService") }
-        
+    }
+}
+
+// MARK: DataServiceDelegate Conformation
+extension ViewController: DataServiceDelegate {
+    func notifyModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?) {
         guard let weatherModel = model as? WeatherModel else { return print("Failed to downcast from model") }
         
-        if let name = weatherModel.name {
-            weatherLabel.text = name
+        if let temp = weatherModel.main?.temp {
+            weatherLabel.text = "\(temp)"
         }
     }
 }

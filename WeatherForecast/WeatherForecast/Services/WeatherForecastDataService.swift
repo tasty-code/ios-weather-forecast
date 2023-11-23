@@ -8,8 +8,21 @@
 import Foundation
 import CoreLocation
 
+protocol DataServiceDelegate: AnyObject {
+    func notifyModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?)
+}
+
 final class WeatherForecastDataService {
-    private var model: Decodable? = nil
+    private var model: Decodable? {
+        didSet {
+            delegate?.notifyModelDidUpdate(dataService: self, model: model)
+        }
+    }
+    private weak var delegate: DataServiceDelegate?
+    
+    init(dataServiceDelegate: DataServiceDelegate) {
+        self.delegate = dataServiceDelegate
+    }
     
     func fetchData(_ serviceType: ServiceType, coordinate: CLLocationCoordinate2D) {
         guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else {
@@ -38,10 +51,6 @@ final class WeatherForecastDataService {
             case .failure(let error): print(error)
             }
         }
-    }
-    
-    func readModel() -> Decodable? {
-        return model
     }
 }
 
