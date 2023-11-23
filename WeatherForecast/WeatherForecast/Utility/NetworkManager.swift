@@ -16,36 +16,35 @@ final class NetworkManager {
         self.session = session
     }
     
-    func getData<T: Decodable>(path: String, with queries: [String: String], completion: @escaping (Result<T, NetworkError>) -> Void) {
-          guard let url = urlFormatter.makeURL(path: path, with: queries) else {
-              return
-          }
+    func getData<T: Decodable>(path: String, with queries: [String: String], completion: @escaping (Result<T, Error>) -> Void) {
+        guard let url = urlFormatter.makeURL(path: path, with: queries) else {
+            return
+        }
+        
+        let request = URLRequest(url: url)
+        
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                return completion(.failure(NetworkError.unknownError(description: error.localizedDescription)))
+            }
             
-          let task = session.dataTask(with: url) { data, response, error in
-              if let error = error {
-                  return completion(.failure(.unknownError(description: error.localizedDescription)))
-              }
-              
-              guard let response = response as? HTTPURLResponse else {return}
-              guard (200..<300).contains(response.statusCode)
-              else {
-                  return completion(.failure(.responseError(statusCode: response.statusCode)))
-              }
-              
-              guard let data = data
-              else {
-                  return completion(.failure(.emptyDataError))
-              }
-              do {
-                  let decodingData = try JSONDecoder().decode(T.self, from: data)
-                  completion(.success(decodingData))
-              } catch {
-                  completion(.failure(.decodingError))
-              }
-          }
-          task.resume()
-      }
-      
-
-
+            guard let response = response as? HTTPURLResponse else {return}
+            guard (200..<300).contains(response.statusCode)
+            else {
+                return completion(.failure(NetworkError.responseError(statusCode: response.statusCode)))
+            }
+            
+            guard let data = data
+            else {
+                return completion(.failure(NetworkError.emptyDataError))
+            }
+            do {
+                let decodingData = try JSONDecoder().decode(T.self, from: data)
+                completion(.success(decodingData))
+            } catch {
+                completion(.failure(NetworkError.decodingError))
+            }
+        }
+        task.resume()
+    }
 }

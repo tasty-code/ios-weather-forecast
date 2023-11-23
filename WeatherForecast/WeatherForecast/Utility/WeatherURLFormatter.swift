@@ -14,5 +14,4 @@ struct WeatherURLFormatter<T: URLProtocol>: URLFormattable {
     init(defaultPath: String = "/data/2.5/") {
         self.defaultPath = defaultPath
     }
-    
 }
