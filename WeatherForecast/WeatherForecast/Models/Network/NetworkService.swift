@@ -1,6 +1,8 @@
 import Foundation
 
-class NetworkService {
+final class NetworkService {
+    
+    
     
     func getWeatherData<T: Decodable>(informationType: InformationType, latitude: Double, longitude: Double, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
         
@@ -19,10 +21,14 @@ class NetworkService {
                 return completionHandler(.failure(.invalidData))
             }
             
+            guard let response = response as? HTTPURLResponse else { return }
+            guard (200..<300) ~= response.statusCode else {
+                return completionHandler(.failure(.invalidResponse))
+            }
+            
             let weatherData = try? JSONDecoder().decode(T.self, from: data)
             
             if let weatherData = weatherData {
-                print(weatherData)
                 completionHandler(.success(weatherData))
             } else {
                 completionHandler(.failure(.decodingError))
