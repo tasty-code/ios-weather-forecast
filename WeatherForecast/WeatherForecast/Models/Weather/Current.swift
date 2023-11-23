@@ -10,23 +10,24 @@ import Foundation
 // MARK: - Current
 
 struct Current: Decodable {
-    let coord: CurrentCoordinate
+    let coordinate: CurrentCoordinate
     let weather: [CurrentWeather]
     let main: WeatherCondition
-    let visibility: Int
     let wind: CurrentWind
     let rain: CurrentRain?
     let clouds: CurrentClouds
-    let dt: Int
-    let sys: System
+    let system: System
+    let visibility: Int
+    let timeOfDataCalculation: Int
     let timezone, id: Int
     let name: String
-}
-
-// MARK: - CurrentClouds
-
-struct CurrentClouds: Decodable {
-    let all: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case coordinate = "coord"
+        case timeOfDataCalculation = "dt"
+        case system = "sys"
+        case weather,main,wind,rain,clouds,visibility,timezone,id,name
+    }
 }
 
 // MARK: - CurrentCoordinate
@@ -40,21 +41,41 @@ struct CurrentCoordinate: Decodable {
     }
 }
 
+// MARK: - CurrentWeather
+
+struct CurrentWeather: Decodable {
+    let id: Int
+    let main, description, icon: String
+}
+
 // MARK: - WeatherCondition
 
 struct WeatherCondition: Decodable {
-    let temp, feelsLike, tempMin, tempMax: Double
+    let temperature, feelsLike, minimumTemperature, maxTemperature: Double
     let pressure, humidity: Int
-    let seaLevel, grndLevel: Int?
+    let seaLevel, groundLevel: Int?
     
     enum CodingKeys: String, CodingKey {
-        case temp
+        case temperature = "temp"
         case feelsLike = "feels_like"
-        case tempMin = "temp_min"
-        case tempMax = "temp_max"
+        case minimumTemperature = "temp_min"
+        case maxTemperature = "temp_max"
         case pressure, humidity
         case seaLevel = "sea_level"
-        case grndLevel = "grnd_level"
+        case groundLevel = "grnd_level"
+    }
+}
+
+// MARK: - CurrentWind
+
+struct CurrentWind: Decodable {
+    let speed: Double
+    let degrees: Int
+    let gust: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case speed,gust
+        case degrees = "deg"
     }
 }
 
@@ -70,24 +91,15 @@ struct CurrentRain: Decodable {
     }
 }
 
+// MARK: - CurrentClouds
+
+struct CurrentClouds: Decodable {
+    let all: Int
+}
+
 // MARK: - System
 
 struct System: Decodable {
     let country: String
     let sunrise, sunset: Int
-}
-
-// MARK: - CurrentWeather
-
-struct CurrentWeather: Decodable {
-    let id: Int
-    let main, description, icon: String
-}
-
-// MARK: - CurrentWind
-
-struct CurrentWind: Decodable {
-    let speed: Double
-    let deg: Int
-    let gust: Double?
 }

@@ -9,37 +9,43 @@ import Foundation
 // MARK: - Forecast
 
 struct Forecast: Decodable {
-    let list: [List]
     let city: City
+    let list: [List]
 }
 
 // MARK: - City
 
 struct City: Decodable {
+    let coordinate: ForecastCoordinate
     let id: Int
     let name: String
-    let coord: ForecastCoordinate
     let country: String
     let population, timezone, sunrise, sunset: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case id,name,country,population,timezone,sunrise,sunset
+        case coordinate = "coord"
+    }
 }
 
 // MARK: - List
 
 struct List: Decodable {
-    let dt: Int
     let weatherCondition: ForecastWeatherCondition
     let weather: [ForecastWeather]
     let clouds: ForecastClouds
     let wind: ForecastWind
-    let visibility: Int
-    let rainfallProbability: Double
     let rain: ForecastRain?
     let partOfDay: PartOfDay
-    let dtTxt: String
+    let visibility: Int
+    let rainfallProbability: Double
+    let TimeOfDataForecasted: Int
+    let TimeOfDataForecastedTxt: String
     
     enum CodingKeys: String, CodingKey {
-        case dt, weather, clouds, wind, visibility, rain
-        case dtTxt = "dt_txt"
+        case weather, clouds, wind, visibility, rain
+        case TimeOfDataForecasted = "dt"
+        case TimeOfDataForecastedTxt = "dt_txt"
         case partOfDay = "sys"
         case weatherCondition = "main"
         case rainfallProbability = "pop"
@@ -57,29 +63,29 @@ struct ForecastCoordinate: Decodable {
     }
 }
 
-// MARK: - ForecastWeatherCondition
-
-struct ForecastWeatherCondition: Decodable {
-    let temp, feelsLike, tempMin, tempMax: Double
-    let pressure, humidity: Int
-    let seaLevel, grndLevel: Int?
-    
-    enum CodingKeys: String, CodingKey {
-        case temp
-        case feelsLike = "feels_like"
-        case tempMin = "temp_min"
-        case tempMax = "temp_max"
-        case pressure, humidity
-        case seaLevel = "sea_level"
-        case grndLevel = "grnd_level"
-    }
-}
-
 // MARK: - ForecastWeather
 
 struct ForecastWeather: Decodable {
     let id: Int
     let main, description, icon: String
+}
+
+// MARK: - ForecastWeatherCondition
+
+struct ForecastWeatherCondition: Decodable {
+    let temperature, feelsLike, minimumTemperature, maxTemperature: Double
+    let pressure, humidity: Int
+    let seaLevel, groundLevel: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case temperature = "temp"
+        case feelsLike = "feels_like"
+        case minimumTemperature = "temp_min"
+        case maxTemperature = "temp_max"
+        case pressure, humidity
+        case seaLevel = "sea_level"
+        case groundLevel = "grnd_level"
+    }
 }
 
 // MARK: - ForecastClouds
@@ -92,8 +98,13 @@ struct ForecastClouds: Decodable {
 
 struct ForecastWind: Decodable {
     let speed: Double
-    let deg: Int
+    let degrees: Int
     let gust: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case speed,gust
+        case degrees = "deg"
+    }
 }
 
 // MARK: - ForecastRain
@@ -111,5 +122,9 @@ struct ForecastRain: Decodable {
 // MARK: - PartOfDay
 
 struct PartOfDay: Decodable {
-    let pod: String
+    let dayOrNight: String
+    
+    enum CodingKeys: String, CodingKey {
+        case dayOrNight = "pod"
+    }
 }
