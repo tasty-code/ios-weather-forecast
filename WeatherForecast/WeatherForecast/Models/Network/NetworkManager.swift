@@ -9,21 +9,20 @@ import Foundation
 
 final class NetworkManager {
     
-    func fetchWeather<T: Decodable>(weatherType: ForecastType,
-                                    latitude: Double,
-                                    longitude: Double,
+    func fetchData<T: Decodable>(for request: APIRequest?,
                                     completion: @escaping (Result<T, Error>)-> Void) {
         
-        guard let url = weatherType.makeURL(lon: longitude, lat: latitude)
-        else {
-            completion(.failure(NetworkError.invalidURLError))
+        guard let request = request else {
+            completion(.failure(NetworkError.invalidAPIKey))
             return
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        guard let url = makeURL(for: request) else {
+            completion(.failure(NetworkError.invalidURLError))
+            return
+        }
+        print(url)
+        URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 completion(.failure(NetworkError.unknownError(error)))
             }
@@ -46,5 +45,17 @@ final class NetworkManager {
                 completion(.failure(NetworkError.decodingError))
             }
         }.resume()
+    }
+    
+    private func makeURL(for request: APIRequest) -> URL? {
+        var components = URLComponents()
+        components.scheme = request.scheme
+        components.host = request.host
+        components.path = request.path
+        components.queryItems = request.parameters?.map {
+            URLQueryItem(name: $0.key, value: $0.value)
+        }
+        
+        return components.url
     }
 }
