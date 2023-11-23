@@ -8,30 +8,30 @@
 import Foundation
 
 struct WeeklyWeather: Decodable {
-    var cod: String
-    var message: Int
-    var cnt: Int
-    var list: [List]
-    var city: City
+    var cod: String?
+    var message: Int?
+    var cnt: Int?
+    var list: [List]?
+    var city: City?
 }
 
 // MARK: - List
 
 struct List: Decodable {
-    var dt: Int
-    var main: Main
-    var weather: [Weather]
-    var clouds: Clouds
-    var wind: Wind
-    var visibility: Int
-    var pop: Double
+    var dt: Int?
+    var main: Main?
+    var weather: [Weather]?
+    var clouds: Clouds?
+    var wind: Wind?
+    var visibility: Int?
+    var pop: Double?
     var rain: Rain?
     var snow: Snow?
-    var sys: List.Sys
-    var dateText: String
+    var sys: List.Sys?
+    var dateText: String?
     
     struct Sys: Decodable {
-        var pod: String
+        var pod: String?
     }
     
     enum CodingKeys: String, CodingKey {
@@ -43,14 +43,14 @@ struct List: Decodable {
 // MARK: - City
 
 struct City: Decodable {
-    var id: Int
-    var name: String
-    var coord: Coord
-    var country: String
-    var population: Int
-    var timezone: Int
-    var sunrise: Int
-    var sunset: Int
+    var id: Int?
+    var name: String?
+    var coord: Coord?
+    var country: String?
+    var population: Int?
+    var timezone: Int?
+    var sunrise: Int?
+    var sunset: Int?
 }
 
 

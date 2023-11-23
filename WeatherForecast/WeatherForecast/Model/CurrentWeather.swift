@@ -8,21 +8,21 @@
 import Foundation
 
 struct CurrentWeather: Decodable {
-    var coord: Coord
-    var weather: [Weather]
-    var base: String
-    var main: Main
-    var visibility: Int
-    var wind: Wind
-    var clouds: Clouds
+    var coord: Coord?
+    var weather: [Weather]?
+    var base: String?
+    var main: Main?
+    var visibility: Int?
+    var wind: Wind?
+    var clouds: Clouds?
     var rain: Rain?
     var snow: Snow?
-    var dt: Int
-    var sys: Sys
-    var timezone: Int
-    var id: Int
-    var name: String
-    var cod: Int
+    var dt: Int?
+    var sys: Sys?
+    var timezone: Int?
+    var id: Int?
+    var name: String?
+    var cod: Int?
 }
 
 // MARK: - Coord
@@ -35,23 +35,23 @@ struct Coord: Decodable {
 // MARK: - Weather
 
 struct Weather: Decodable {
-    var id: Int
-    var main: String
-    var description: String
-    var icon: String
+    var id: Int?
+    var main: String?
+    var description: String?
+    var icon: String?
 }
 
 // MARK: - Main
 
 struct Main: Decodable {
-    var temp: Double
-    var feelsLike: Double
-    var tempMin: Double
-    var tempMax: Double
-    var pressure: Int
-    var humidity: Int
-    var seaLevel: Int
-    var grndLevel: Int
+    var temp: Double?
+    var feelsLike: Double?
+    var tempMin: Double?
+    var tempMax: Double?
+    var pressure: Int?
+    var humidity: Int?
+    var seaLevel: Int?
+    var grndLevel: Int?
     
     enum CodingKeys: String, CodingKey {
         case temp, pressure, humidity
@@ -66,15 +66,15 @@ struct Main: Decodable {
 // MARK: - Wind
 
 struct Wind: Decodable {
-    var speed: Double
-    var deg: Int
-    var gust: Double
+    var speed: Double?
+    var deg: Int?
+    var gust: Double?
 }
 
 // MARK: - Clouds
 
 struct Clouds: Decodable {
-    var all: Int
+    var all: Int?
 }
 
 // MARK: - Rain
@@ -104,10 +104,10 @@ struct Snow: Decodable {
 // MARK: - Sys
 
 struct Sys: Decodable {
-    var type: Int
-    var id: Int
-    var country: String
-    var sunrise: Int
-    var sunset: Int
+    var type: Int?
+    var id: Int?
+    var country: String?
+    var sunrise: Int?
+    var sunset: Int?
 }
 
