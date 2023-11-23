@@ -41,8 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Seretes.xcconfig; sourceTree = "<group>"; };
 		66204A6C2B0DE2D0006886C8 /* WeatherType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherType.swift; sourceTree = "<group>"; };
+		665CEB542B0F279100CF3FC6 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		669283562B0B49C600BF1FFF /* WeatherForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecast.swift; sourceTree = "<group>"; };
 		669283582B0B4EB000BF1FFF /* WeatherToday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherToday.swift; sourceTree = "<group>"; };
 		66FD8CED2B0C3EAD008B698D /* WeatherCommonInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCommonInformation.swift; sourceTree = "<group>"; };
@@ -140,7 +140,7 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
-				66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */,
+				665CEB542B0F279100CF3FC6 /* Secrets.xcconfig */,
 				66FD8CF32B0C7051008B698D /* Network */,
 				669283552B0B499C00BF1FFF /* Model */,
 				66204A6E2B0DEC63006886C8 /* Controller */,
@@ -483,7 +483,7 @@
 		};
 		C79C8D1B25ADDDF400EEE3F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */;
+			baseConfigurationReference = 665CEB542B0F279100CF3FC6 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -503,6 +503,7 @@
 		};
 		C79C8D1C25ADDDF400EEE3F1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 665CEB542B0F279100CF3FC6 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -522,7 +523,7 @@
 		};
 		C79C8D1E25ADDDF400EEE3F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 66204A6B2B0DE13D006886C8 /* Seretes.xcconfig */;
+			baseConfigurationReference = 665CEB542B0F279100CF3FC6 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -544,6 +545,7 @@
 		};
 		C79C8D1F25ADDDF400EEE3F1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 665CEB542B0F279100CF3FC6 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
