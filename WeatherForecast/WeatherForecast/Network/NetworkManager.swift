@@ -56,8 +56,12 @@ extension NetworkManager: URLSessionDataDelegate {
             let receivedData = self.receivedData,
             let weatherType = self.weatherType 
         {
-            let dtoData = try! JSONDecoder().decode(weatherType.model, from: receivedData)
-            print(dtoData)
+            do {
+                let dtoData = try JSONDecoder().decode(weatherType.model, from: receivedData)
+                print(dtoData)
+            } catch {
+                print(error)
+            }
         }
     }
 }
