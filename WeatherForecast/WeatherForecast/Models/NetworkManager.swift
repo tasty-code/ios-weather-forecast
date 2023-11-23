@@ -14,7 +14,7 @@ final class NetworkManager {
                                     longitude: Double,
                                     completion: @escaping (Result<T, Error>)-> Void) {
         
-        guard let url = URL(string: weatherType.fetchURL(lon: longitude, lat: latitude))
+        guard let url = URL(string: weatherType.makeURL(lon: longitude, lat: latitude))
         else {
             print("올바른 URL이 아닙니다.")
             return

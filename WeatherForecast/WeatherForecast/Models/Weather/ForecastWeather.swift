@@ -8,7 +8,7 @@ import Foundation
 
 // MARK: - ForecastWeather
 
-struct ForecastWeather: Codable {
+struct ForecastWeather: Decodable {
     let cod: String
     let message, cnt: Int
     let list: [List]
@@ -17,7 +17,7 @@ struct ForecastWeather: Codable {
 
 // MARK: - City
 
-struct City: Codable {
+struct City: Decodable {
     let id: Int
     let name: String
     let coord: Coordinate
@@ -27,7 +27,7 @@ struct City: Codable {
 
 // MARK: - List
 
-struct List: Codable {
+struct List: Decodable {
     let dt: Int
     let weatherCondition: WeatherCondition
     let weather: [Weather]
@@ -50,6 +50,6 @@ struct List: Codable {
 
 // MARK: - PartOfDay
 
-struct PartOfDay: Codable {
+struct PartOfDay: Decodable {
     let pod: String
 }

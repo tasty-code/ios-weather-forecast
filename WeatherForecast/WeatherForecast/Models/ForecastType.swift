@@ -11,7 +11,7 @@ enum ForecastType: String {
     case current = "weather"
     case forecast = "forecast"
     
-    func fetchURL(lon: Double, lat: Double) -> String {
+    func makeURL(lon: Double, lat: Double) -> String {
         guard let apiKey = Bundle.main.apiKey else {
             print("API KEY를 찾을 수 없습니다!!")
             return ""

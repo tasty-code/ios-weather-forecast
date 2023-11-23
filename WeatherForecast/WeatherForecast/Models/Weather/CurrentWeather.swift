@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - CurrentWeather
 
-struct CurrentWeather: Codable {
+struct CurrentWeather: Decodable {
     let coord: Coordinate
     let weather: [Weather]
     let base: String?
@@ -27,13 +27,13 @@ struct CurrentWeather: Codable {
 
 // MARK: - Clouds
 
-struct Clouds: Codable {
+struct Clouds: Decodable {
     let all: Int
 }
 
 // MARK: - Coord
 
-struct Coordinate: Codable {
+struct Coordinate: Decodable {
     let longitude, latitude: Double
     
     enum CodingKeys: String, CodingKey {
@@ -44,7 +44,7 @@ struct Coordinate: Codable {
 
 // MARK: - Main
 
-struct WeatherCondition: Codable {
+struct WeatherCondition: Decodable {
     let temp, feelsLike, tempMin, tempMax: Double
     let pressure, humidity: Int
     let seaLevel, grndLevel: Int?
@@ -64,7 +64,7 @@ struct WeatherCondition: Codable {
 
 // MARK: - Rain
 
-struct Rain: Codable {
+struct Rain: Decodable {
     let amountOfRainOneHour: Double?
     let amountOfRainThreeHour: Double?
     
@@ -76,7 +76,7 @@ struct Rain: Codable {
 
 // MARK: - Sys
 
-struct Sys: Codable {
+struct Sys: Decodable {
     let type, id: Int
     let country: String
     let sunrise, sunset: Int
@@ -84,14 +84,14 @@ struct Sys: Codable {
 
 // MARK: - Weather
 
-struct Weather: Codable {
+struct Weather: Decodable {
     let id: Int
     let main, description, icon: String
 }
 
 // MARK: - Wind
 
-struct Wind: Codable {
+struct Wind: Decodable {
     let speed: Double
     let deg: Int
     let gust: Double?
