@@ -1,48 +1,38 @@
 import Foundation
 
-final class NetworkManager<T: Decodable>: Networkable, KeyAuthenticatable {
-     var apiKey: String {
-      get throws {
-          guard let filePath = Bundle.main.path(forResource: "APIKeyList", ofType: "plist") else {
-              throw APIError.noExistedAPIPlist
-          }
-          
-          let plist = NSDictionary(contentsOfFile: filePath)
-          guard let value = plist?.object(forKey: "OPENWEATHERMAP_KEY") as? String else {
-              throw APIError.noExistedAPIKey
-          }
-          return value
-      }
+final class NetworkManager<T: Decodable>: Networkable {
+    private let url: URL?
+    private let session: URLSession
+    
+    init(url: URL?, session: URLSession = URLSession.shared) {
+        self.url = url
+        self.session = session
     }
     
-    func fetch(completion: @escaping (Result<Decodable, NetworkError>) -> Void) {
-        var url : URL?
-        do {
-            url = try URL(string: "https://api.openweathermap.org/data/2.5/\(T.name())?lat=37.715122&lon=126.734086&appid=\(apiKey)")
-        } catch {
-            return completion(.failure(.urlError))
+    func fetch(completion: @escaping (Result<T, NetworkError>) -> Void) {
+        guard let url = url else {
+            return completion(.failure(.urlError(url)))
         }
         
-        guard let url = url else { return }
-
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        session.dataTask(with: url) { data, response, error in
             if let error = error {
-                return completion(.failure(.unknownError))
+                return completion(.failure(.unknownError(error)))
             }
+            
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
-                return completion(.failure(.handleServerError(response: response)))
+                return completion(.failure(.serverError(response)))
             }
             guard let data = data else {
-                return completion(.failure(.dataUnwrappingError))
+                return completion(.failure(.dataUnwrappingError(data)))
             }
+
             do {
                 let weatherResponse = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(weatherResponse))
             } catch {
-                completion(.failure(.decodingError))
+                completion(.failure(.decodingError(error)))
             }
-        }
-        task.resume()
+        }.resume()
     }
 }
