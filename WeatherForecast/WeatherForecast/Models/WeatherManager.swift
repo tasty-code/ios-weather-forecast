@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-protocol LocationManagerUIDelegate {
+protocol LocationManagerUIDelegate: AnyObject {
     func showAlertWhenNoAuthorization()
 }
 
