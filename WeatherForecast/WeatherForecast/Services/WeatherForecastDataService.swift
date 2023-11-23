@@ -6,62 +6,51 @@
 //
 
 import Foundation
+import CoreLocation
 
-protocol DataServiceProtocol {
-    associatedtype T
+final class WeatherForecastDataService {
+    private var model: Decodable? = nil
     
-    init(networkManager: NetworkManager, locationManager: LocationManager)
-    
-    func fetchData(_ serviceType: ServiceType, _ completionHandler: @escaping (T) -> Void)
-}
-
-final class WeatherForecastDataService<T: Decodable>: DataServiceProtocol {
-    private let networkManager: NetworkManager
-    private let locationManager: LocationManager
-    
-    init(networkManager: NetworkManager, locationManager: LocationManager) {
-        self.networkManager = networkManager
-        self.locationManager = locationManager
-    }
-    
-    func fetchData(_ serviceType: ServiceType, _ completionHandler: @escaping (T?) -> Void) {
+    func fetchData(_ serviceType: ServiceType, coordinate: CLLocationCoordinate2D) {
         guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else {
             return
         }
         
-        guard let coordinate = locationManager.fetchCurrentCoordinate2D() else {
-            return
-        }
-        
-        var urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(serviceType.name)")
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
-            URLQueryItem(name: "lon", value: "\(coordinate.longitude)"),
+        let urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(serviceType.name)")
+        let queries = [
+            URLQueryItem(name: "lat", value: "\(33.44)"),
+            URLQueryItem(name: "lon", value: "\(128.12)"),
             URLQueryItem(name: "appid", value: apiKey),
             URLQueryItem(name: "units", value: "metric")
         ]
         
-        guard let url = urlComponents?.url else {
+        guard let url = NetworkManager.makeURL(urlComponents, queries: queries, serviceType: serviceType) else {
             return
         }
         
-        networkManager.downloadData(url: url) { [weak self] result in
+        NetworkManager.downloadData(url: url) { [weak self] result in
             switch result {
             case .success(let data):
-                let model = self?.decodeJSONToSwift(data)
-                completionHandler(model)
+                let model = self?.decodeJSONToSwift(data, serviceType: serviceType)
+                DispatchQueue.main.async {
+                    self?.model = model
+                }
             case .failure(let error): print(error)
             }
         }
     }
     
-    private func decodeJSONToSwift(_ data: Data?) -> T? {
-        guard let data = data else {
-            return nil
-        }
-        
+    func readModel() -> Decodable? {
+        return model
+    }
+}
+
+// MARK: Private Methods
+extension WeatherForecastDataService {
+    private func decodeJSONToSwift(_ data: Data?, serviceType: ServiceType) -> Decodable? {
         do {
-            let model = try JSONDecoder().decode(T.self, from: data)
+            guard let data = data else { return nil }
+            let model = try JSONDecoder().decode(serviceType.decodingType, from: data)
             return model
         } catch {
             guard let error = error as? DecodingError else { return nil }

@@ -19,7 +19,12 @@ final class LocationManager: NSObject {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
         locationManager.delegate = self
+    }
+    
+    func fetchCurrentLocatedCoordinates() -> CLLocationCoordinate2D? {
+        location?.coordinate
     }
 }
 

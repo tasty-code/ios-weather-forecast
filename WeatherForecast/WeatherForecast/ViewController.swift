@@ -6,22 +6,29 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+final class ViewController: UIViewController {
+    @IBOutlet weak var weatherLabel: UILabel!
+    
+    private let dataService = WeatherForecastDataService()
+    private let locationManager = LocationManager.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let weatherDataService = WeatherForecastDataService<WeatherModel>(networkManager: NetworkManager.shared)
-        let forecastDataService = WeatherForecastDataService<ForecastModel>(networkManager: NetworkManager.shared)
         
-        weatherDataService.fetchData(.weather)
-        forecastDataService.fetchData(.forecast)
+        configureLocationLabel()
+    }
+    
+    private func configureLocationLabel() {
+        guard let coordinates = locationManager.fetchCurrentLocatedCoordinates() else { return print("Failed to fetch current located coordinates") }
         
-        sleep(3)
+        dataService.fetchData(.weather, coordinate: coordinates)
         
-        if let weather = weatherDataService.foo(),
-           let forecast = forecastDataService.foo() {
-            print(weather)
-            print(forecast)
+        guard let model = dataService.readModel() else { return print("Failed to read model from DataService") }
+        
+        guard let weatherModel = model as? WeatherModel else { return print("Failed to downcast from model") }
+        
+        if let name = weatherModel.name {
+            weatherLabel.text = name
         }
     }
 }

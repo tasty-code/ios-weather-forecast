@@ -153,7 +153,6 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
-				CB63CCBD2B0B3DD8000A2E12 /* Namespaces */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
@@ -161,6 +160,7 @@
 				043F17512B0AF2FD00084087 /* Utilities */,
 				043F174C2B0AEB1000084087 /* Models */,
 				043F17542B0AF95800084087 /* Extensions */,
+				CB63CCBD2B0B3DD8000A2E12 /* Namespaces */,
 				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,

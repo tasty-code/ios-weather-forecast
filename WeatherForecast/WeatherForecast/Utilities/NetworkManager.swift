@@ -26,11 +26,13 @@ final class NetworkManager {
         }
     }
     
-    static let shared = NetworkManager()
+    static func makeURL(_ components: URLComponents?, queries: [URLQueryItem], serviceType: ServiceType) -> URL? {
+        var components = components
+        components?.queryItems = queries
+        return components?.url
+    }
     
-    private init() {}
-    
-    func downloadData(url: URL, _ completionHandler: @escaping (Result<Data, NetworkingError>) -> Void) {
+    static func downloadData(url: URL, _ completionHandler: @escaping (Result<Data, NetworkingError>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         

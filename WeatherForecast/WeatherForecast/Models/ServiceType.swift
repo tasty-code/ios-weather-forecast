@@ -16,4 +16,11 @@ enum ServiceType {
         case .forecast: "forecast"
         }
     }
+    
+    var decodingType: Decodable.Type {
+        switch self {
+        case .weather: WeatherModel.self
+        case .forecast: ForecastModel.self
+        }
+    }
 }
