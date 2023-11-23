@@ -1,7 +1,9 @@
+import Foundation
+
 enum NetworkError: Error {
-    case noExistedUrl
-    case noExistedData
+    case urlError
+    case unknownError
+    case handleServerError(response: URLResponse?)
+    case dataUnwrappingError
     case decodingError
 }
-
-
