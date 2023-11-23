@@ -6,13 +6,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+final class WeatherViewController: UIViewController {
+    private let networkManager = NetworkManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        networkManager.loadData(type: WeatherType.forecast)
     }
-
-
 }
-
