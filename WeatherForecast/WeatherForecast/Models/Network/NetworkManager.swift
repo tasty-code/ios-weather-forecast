@@ -9,9 +9,14 @@ import Foundation
 
 final class NetworkManager {
     
+    private let session: URLSessionProtocol
+    
+    init(session: URLSessionProtocol = URLSession.shared) {
+        self.session = session
+    }
+    
     func fetchData<T: Decodable>(for request: APIRequest?,
                                     completion: @escaping (Result<T, Error>)-> Void) {
-        
         guard let request = request else {
             completion(.failure(NetworkError.invalidAPIKey))
             return
@@ -21,8 +26,8 @@ final class NetworkManager {
             completion(.failure(NetworkError.invalidURLError))
             return
         }
-        print(url)
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        
+        let dataTask: URLSessionDataTaskProtocol = session.dataTask(with: url) { data, response, error in
             if let error = error {
                 completion(.failure(NetworkError.unknownError(error)))
             }
@@ -44,7 +49,8 @@ final class NetworkManager {
             } catch {
                 completion(.failure(NetworkError.decodingError))
             }
-        }.resume()
+        }
+        dataTask.resume()
     }
     
     private func makeURL(for request: APIRequest) -> URL? {
@@ -55,7 +61,6 @@ final class NetworkManager {
         components.queryItems = request.parameters?.map {
             URLQueryItem(name: $0.key, value: $0.value)
         }
-        
         return components.url
     }
 }
