@@ -13,6 +13,9 @@
 		0EFE826F2B0EE0300021B2EF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE826E2B0EE0300021B2EF /* Model.swift */; };
 		0EFE82712B0EE2A00021B2EF /* KeyAuthenticatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */; };
 		A6A891582B0EEAD800D2AC27 /* Decodable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A891572B0EEAD800D2AC27 /* Decodable+Extension.swift */; };
+		A6A8915C2B0F0EAC00D2AC27 /* Model+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A8915B2B0F0EAC00D2AC27 /* Model+Extension.swift */; };
+		A6A8915E2B0F0EE700D2AC27 /* ModelCurrentWeather+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A8915D2B0F0EE700D2AC27 /* ModelCurrentWeather+Extension.swift */; };
+		A6A891602B0F0F0B00D2AC27 /* ModelFiveDaysWeather+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A8915F2B0F0F0B00D2AC27 /* ModelFiveDaysWeather+Extension.swift */; };
 		A6AFCADD2B0DFB68004CACBF /* APIKeyList.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6AFCADC2B0DFB68004CACBF /* APIKeyList.plist */; };
 		A6AFCADF2B0DFBB3004CACBF /* Networkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
@@ -49,6 +52,9 @@
 		0EFE826E2B0EE0300021B2EF /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAuthenticatable.swift; sourceTree = "<group>"; };
 		A6A891572B0EEAD800D2AC27 /* Decodable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+Extension.swift"; sourceTree = "<group>"; };
+		A6A8915B2B0F0EAC00D2AC27 /* Model+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Model+Extension.swift"; sourceTree = "<group>"; };
+		A6A8915D2B0F0EE700D2AC27 /* ModelCurrentWeather+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelCurrentWeather+Extension.swift"; sourceTree = "<group>"; };
+		A6A8915F2B0F0F0B00D2AC27 /* ModelFiveDaysWeather+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelFiveDaysWeather+Extension.swift"; sourceTree = "<group>"; };
 		A6AFCADC2B0DFB68004CACBF /* APIKeyList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = APIKeyList.plist; sourceTree = "<group>"; };
 		A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networkable.swift; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +136,9 @@
 			isa = PBXGroup;
 			children = (
 				A6A891572B0EEAD800D2AC27 /* Decodable+Extension.swift */,
+				A6A8915B2B0F0EAC00D2AC27 /* Model+Extension.swift */,
+				A6A8915D2B0F0EE700D2AC27 /* ModelCurrentWeather+Extension.swift */,
+				A6A8915F2B0F0F0B00D2AC27 /* ModelFiveDaysWeather+Extension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -337,10 +346,13 @@
 				A6A891582B0EEAD800D2AC27 /* Decodable+Extension.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				0E468CB72B0DE86100201507 /* APIError.swift in Sources */,
+				A6A891602B0F0F0B00D2AC27 /* ModelFiveDaysWeather+Extension.swift in Sources */,
+				A6A8915C2B0F0EAC00D2AC27 /* Model+Extension.swift in Sources */,
 				0EFE82712B0EE2A00021B2EF /* KeyAuthenticatable.swift in Sources */,
 				A6AFCADF2B0DFBB3004CACBF /* Networkable.swift in Sources */,
 				0E468CB32B0DDD6A00201507 /* NetworkError.swift in Sources */,
 				0EFE826F2B0EE0300021B2EF /* Model.swift in Sources */,
+				A6A8915E2B0F0EE700D2AC27 /* ModelCurrentWeather+Extension.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
