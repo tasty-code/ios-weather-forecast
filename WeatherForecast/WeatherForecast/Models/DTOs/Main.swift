@@ -8,8 +8,8 @@
 import Foundation
 
 struct Main: Decodable {
-    let temp, feelsLike, tempMin, tempMax: Double
-    let pressure, seaLevel, grndLevel, humidity: Int
+    let temp, feelsLike, tempMin, tempMax: Double?
+    let pressure, seaLevel, grndLevel, humidity: Int?
     let tempKf: Double?
 
     enum CodingKeys: String, CodingKey {
