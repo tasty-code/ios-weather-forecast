@@ -7,14 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0E468CB12B0DCA7000201507 /* DataTransferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E468CB02B0DCA7000201507 /* DataTransferable.swift */; };
 		0E468CB32B0DDD6A00201507 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E468CB22B0DDD6A00201507 /* NetworkError.swift */; };
 		0E468CB72B0DE86100201507 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E468CB62B0DE86100201507 /* APIError.swift */; };
 		0E4A84842B0C48F700726F9F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84832B0C48F700726F9F /* NetworkManager.swift */; };
 		0EFE826F2B0EE0300021B2EF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE826E2B0EE0300021B2EF /* Model.swift */; };
 		0EFE82712B0EE2A00021B2EF /* KeyAuthenticatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */; };
-		A650B5682B0B3D9A00649805 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650B5672B0B3D9A00649805 /* CurrentWeather.swift */; };
-		A650B56A2B0B3F7B00649805 /* FiveDaysWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = A650B5692B0B3F7B00649805 /* FiveDaysWeather.swift */; };
+		A6A891582B0EEAD800D2AC27 /* Decodable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A891572B0EEAD800D2AC27 /* Decodable+Extension.swift */; };
 		A6AFCADD2B0DFB68004CACBF /* APIKeyList.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6AFCADC2B0DFB68004CACBF /* APIKeyList.plist */; };
 		A6AFCADF2B0DFBB3004CACBF /* Networkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
@@ -45,14 +43,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0E468CB02B0DCA7000201507 /* DataTransferable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransferable.swift; sourceTree = "<group>"; };
 		0E468CB22B0DDD6A00201507 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		0E468CB62B0DE86100201507 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		0E4A84832B0C48F700726F9F /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0EFE826E2B0EE0300021B2EF /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAuthenticatable.swift; sourceTree = "<group>"; };
-		A650B5672B0B3D9A00649805 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
-		A650B5692B0B3F7B00649805 /* FiveDaysWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiveDaysWeather.swift; sourceTree = "<group>"; };
+		A6A891572B0EEAD800D2AC27 /* Decodable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+Extension.swift"; sourceTree = "<group>"; };
 		A6AFCADC2B0DFB68004CACBF /* APIKeyList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = APIKeyList.plist; sourceTree = "<group>"; };
 		A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networkable.swift; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,7 +95,6 @@
 		0E468CB42B0DDD8100201507 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				0E468CB02B0DCA7000201507 /* DataTransferable.swift */,
 				A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */,
 				0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */,
 			);
@@ -126,11 +121,25 @@
 		A650B56B2B0B627800649805 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A650B5672B0B3D9A00649805 /* CurrentWeather.swift */,
-				A650B5692B0B3F7B00649805 /* FiveDaysWeather.swift */,
 				0EFE826E2B0EE0300021B2EF /* Model.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		A6A891592B0F0ABD00D2AC27 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A6A891572B0EEAD800D2AC27 /* Decodable+Extension.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		A6A8915A2B0F0ACB00D2AC27 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		C79C8CE725ADDDF200EEE3F1 = {
@@ -162,7 +171,8 @@
 				0E4A84822B0C48E400726F9F /* Utilities */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
-				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+				A6A8915A2B0F0ACB00D2AC27 /* ViewControllers */,
+				A6A891592B0F0ABD00D2AC27 /* Extensions */,
 				A650B56B2B0B627800649805 /* Models */,
 				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
@@ -324,15 +334,13 @@
 			files = (
 				0E4A84842B0C48F700726F9F /* NetworkManager.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
+				A6A891582B0EEAD800D2AC27 /* Decodable+Extension.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				0E468CB72B0DE86100201507 /* APIError.swift in Sources */,
-				0E468CB12B0DCA7000201507 /* DataTransferable.swift in Sources */,
-				A650B56A2B0B3F7B00649805 /* FiveDaysWeather.swift in Sources */,
 				0EFE82712B0EE2A00021B2EF /* KeyAuthenticatable.swift in Sources */,
 				A6AFCADF2B0DFBB3004CACBF /* Networkable.swift in Sources */,
 				0E468CB32B0DDD6A00201507 /* NetworkError.swift in Sources */,
 				0EFE826F2B0EE0300021B2EF /* Model.swift in Sources */,
-				A650B5682B0B3D9A00649805 /* CurrentWeather.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
