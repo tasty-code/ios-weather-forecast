@@ -1,7 +1,7 @@
 import Foundation
 
 final class NetworkManager<T: DataTransferable>: Networkable, KeyAuthenticatable {
-    private var apiKey: String {
+    internal var apiKey: String {
       get throws {
           guard let filePath = Bundle.main.path(forResource: "APIKeyList", ofType: "plist") else {
               throw APIError.noExistedAPIPlist
@@ -20,16 +20,21 @@ final class NetworkManager<T: DataTransferable>: Networkable, KeyAuthenticatable
         do {
             url = try URL(string: "https://api.openweathermap.org/data/2.5/\(T.name)?lat=37.715122&lon=126.734086&appid=\(apiKey)")
         } catch {
-            print(error)
+            return completion(.failure(.urlError))
         }
         
-        guard let url = url else {
-            return completion(.failure(.noExistedUrl))
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else {
-                return completion(.failure(.noExistedData))
+        guard let url = url else { return }
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                return completion(.failure(.unknownError))
+            }
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                return completion(.failure(.handleServerError(response: response)))
+            }
+            guard let data = data else {
+                return completion(.failure(.dataUnwrappingError))
             }
             do {
                 let weatherResponse = try JSONDecoder().decode(T.self, from: data)
@@ -37,6 +42,7 @@ final class NetworkManager<T: DataTransferable>: Networkable, KeyAuthenticatable
             } catch {
                 completion(.failure(.decodingError))
             }
-        }.resume()
+        }
+        task.resume()
     }
 }
