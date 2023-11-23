@@ -33,11 +33,17 @@ class ViewController: UIViewController {
         }
         
         let request = GetRequest(endpoint: endpoint, queryParameters: [URLQueryItem(name: "lat", value: latitude), URLQueryItem(name: "lon", value: longitude), URLQueryItem(name: "appid", value: Environment.apiKey)]).makeURLrequest()
-        ServiceManager.shared.execute(request, expecting: expect) {
+        ServiceManager.shared.execute(request, expecting: expect) { result in
             
-            // 데이터 확인용
-            print(">>> ✅ \(endpoint.rawValue) :",$0.self)
-            
+            switch result {
+            case .success(let success):
+                
+                // 데이터 확인용
+                print(type(of: success))
+            case .failure:
+                print("모델 객체에 넣기 실패")
+                break
+            }
         }
     }
     
