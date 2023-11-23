@@ -1,3 +1,7 @@
+import Foundation
+
 protocol Networkable {
-    func fetch(completion: @escaping (Result<Decodable, NetworkError>) -> Void)
+    associatedtype T
+    
+    func fetch(completion: @escaping (Result<T, NetworkError>) -> Void)
 }

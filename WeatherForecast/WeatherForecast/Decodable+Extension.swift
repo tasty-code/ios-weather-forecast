@@ -1,11 +1,11 @@
 extension Decodable {
-    static func name() -> String {
+    static var weatherType: String? {
         if self == Model.CurrentWeather.self {
             return "weather"
         } else if self == Model.FiveDaysWeather.self {
             return "forecast"
         } else {
-            return ""
+            return nil
         }
     }
 }
