@@ -1,17 +1,29 @@
 import Foundation
 
 final class NetworkService {
+
+    private func createApiKey(name: String) -> String? {
+        let apiKey = Bundle.main.object(forInfoDictionaryKey: name) as? String
+        return apiKey
+    }
     
+    private func createWeatherApiUrl(for informationType: InformationType,coordinate: Coordinate, apiKey: String) -> URL? {
+        switch informationType{
+        case .weather:
+            return URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&appid=\(apiKey)&lang=kr")
+        case .forecast:
+            return URL(string: "https://api.openweathermap.org/data/2.5/forecast?lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&appid=\(apiKey)&lang=kr")
+        }
+    }
     
-    
-    func getWeatherData<T: Decodable>(informationType: InformationType, latitude: Double, longitude: Double, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
+    func getWeatherData<T: Decodable>(keyName: String, informationType: InformationType,coordinate: Coordinate, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
         
-        let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String
+        let apiKey = createApiKey(name: keyName)
+        guard let apiKey = apiKey else {
+            return completionHandler(.failure(.invalidApikeyName))
+        }
         
-        guard let apiKey = apiKey else { return }
-        
-        let url = URL(string: "https://api.openweathermap.org/data/2.5/\(informationType)?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&lang=kr")
-        
+        let url = createWeatherApiUrl(for: informationType,coordinate: coordinate, apiKey: apiKey)
         guard let url = url else {
             return completionHandler(.failure(.invalidUrl))
         }
@@ -36,4 +48,3 @@ final class NetworkService {
         }.resume()
     }
 }
-

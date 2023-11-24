@@ -6,12 +6,12 @@ enum InformationType {
     
     var name: String {
         switch self {
+            
         case .weather:
             return "weather"
         case .forecast:
             return "forecast"
         }
-        
     }
 }
 
