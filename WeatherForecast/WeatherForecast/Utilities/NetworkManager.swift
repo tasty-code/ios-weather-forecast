@@ -1,17 +1,21 @@
 import Foundation
 
 final class NetworkManager<T: Decodable>: Networkable {
-    private let url: URL?
-    private let session: URLSession
+    private let request: Requestable?
+    private let session: RequestSessionable
     
-    init(url: URL?, session: URLSession = URLSession.shared) {
-        self.url = url
+    init(request: Requestable?, session: RequestSessionable = URLSession.shared) {
+        self.request = request
         self.session = session
     }
     
     func fetch(completion: @escaping (Result<T, NetworkError>) -> Void) {
-        guard let url = url else {
-            return completion(.failure(.urlError(url)))
+        guard let path = self.request?.path else {
+            return
+        }
+        
+        guard let url = URL(string: path) else {
+            return completion(.failure(.urlError(request)))
         }
         
         session.dataTask(with: url) { data, response, error in
