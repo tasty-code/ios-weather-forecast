@@ -42,7 +42,7 @@ extension ViewController: DataServiceDelegate {
     }
 }
 
-// MARK: StartLocationServiceDelegate Conformation
+// MARK: LocationManagerDelegate Conformation
 extension ViewController: LocationManagerDelegate {
     func didUpdateLocation(locationManager: LocationManager, location: CLLocation) {
         dataService.fetchData(.weather, location: location)

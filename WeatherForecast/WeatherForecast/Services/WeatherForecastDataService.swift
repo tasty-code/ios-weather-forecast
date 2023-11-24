@@ -59,6 +59,7 @@ extension WeatherForecastDataService {
             switch result {
             case .success(let data):
                 let model = self?.decodeJSONToSwift(data, serviceType: serviceType)
+                
                 DispatchQueue.main.async {
                     guard let self = self else { return }
                     self.model = model
