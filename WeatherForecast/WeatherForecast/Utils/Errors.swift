@@ -41,9 +41,11 @@ enum StatusCodeError: Error {
             return .unauthorized
         case 403:
             return .forbidden
+        case 404:
+            return .notFound
         case 406:
             return .notAcceptable
-        case 400..<500:
+        case 402, 405, 407..<500:
             return .other4XXError(statusCode: statusCode)
         case 500:
             return .internalSeverError
@@ -51,7 +53,7 @@ enum StatusCodeError: Error {
             return .badGateway
         case 504:
             return .gatewayTimeout
-        case 500..<600:
+        case 501, 503, 505..<600:
             return .other5XXError(statusCode: statusCode)
         default:
             return .anotherStatusError(statusCode: statusCode)
