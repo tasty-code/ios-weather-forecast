@@ -5,6 +5,10 @@
 // 
 
 import UIKit
+import CoreLocation
+
+
+// TODO: 버튼 두 개 만들어서 하나는 예보, 하나는 현재 날씨 불러오도록 구현
 
 final class WeatherViewController: UIViewController {
     private let networkManager = WeatherNetworkManager()
@@ -12,7 +16,13 @@ final class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        networkManager.loadData(type: WeatherType.weatherToday)
+        locationDataManager.locationDelegate = self
+    }
+}
+
+// MARK: - LocationDelegate
+extension WeatherViewController: LocationDelegate {
+    func location(_ manager: CLLocationManager, didLoad coordinate: CLLocationCoordinate2D) {
+        networkManager.loadData(type: WeatherType.weatherToday, coord: coordinate)
     }
 }

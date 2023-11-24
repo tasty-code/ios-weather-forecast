@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import CoreLocation
+
+// TODO: HTTP GET 메서드 명시적 호출 (request 수정)
 
 final class WeatherNetworkManager: NSObject, URLSessionDelegate {
     private var receivedData: Data?
@@ -17,9 +20,9 @@ final class WeatherNetworkManager: NSObject, URLSessionDelegate {
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
-    func loadData(type: WeatherType) {
+    func loadData(type: WeatherType, coord: CLLocationCoordinate2D) {
         weatherType = type
-        guard let url = WeatherApiClient.makeURL(lat: 37.532600, lon: 127.024612, weatherType: type) else { return }
+        guard let url = WeatherApiClient.makeURL(lat: coord.latitude, lon: coord.latitude, weatherType: type) else { return }
         let task = session.dataTask(with: url)
         task.resume()
     }

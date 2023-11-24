@@ -7,8 +7,11 @@
 
 import CoreLocation
 
-final class LocationDataManager : NSObject, CLLocationManagerDelegate {
+// TODO: coreLoacation 을 통해 주소 가져오기
+
+final class LocationDataManager : NSObject {
     private var locationManager = CLLocationManager()
+    weak var locationDelegate: LocationDelegate?
     
     override init() {
         super.init()
@@ -18,6 +21,11 @@ final class LocationDataManager : NSObject, CLLocationManagerDelegate {
         
         locationManager.delegate = self
     }
+}
+
+// MARK: - CLLocationManagerDelegate
+
+extension LocationDataManager: CLLocationManagerDelegate {
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         if #available(iOS 14.0, *) {
@@ -36,16 +44,15 @@ final class LocationDataManager : NSObject, CLLocationManagerDelegate {
                 break
             }
         } else {
-            
+            // Fallback on earlier versions
         }
     }
-}
-
-extension LocationDataManager {
     
+    // 사용자의 위치를 성공적으로 가져왔을 때 호출
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let coordinate = locations.last?.coordinate {
             print(coordinate)
+            locationDelegate?.location(locationManager, didLoad: coordinate)
         }
         
         locationManager.stopUpdatingLocation()
