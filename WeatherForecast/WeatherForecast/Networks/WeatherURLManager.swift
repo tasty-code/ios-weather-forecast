@@ -29,16 +29,16 @@ struct WeatherURLManager {
         case forecast = "forecast"
     }
     
-    func getUrl(api: forecastType, latitude: Double, longitude: Double) -> URL? {
-        var baseURL = URLComponents(string: "https://api.openweathermap.org")
-        baseURL?.path = "/data/2.5/" + api.rawValue
-        
-        let latitude = URLQueryItem(name: "lat", value: "\(latitude)")
-        let longitude = URLQueryItem(name: "lon", value: "\(longitude)")
-        let units = URLQueryItem(name: "units", value: "metric")
-        let apikey = URLQueryItem(name: "appid", value: apiKey)
-        baseURL?.queryItems = [latitude, longitude, units, apikey]
-        guard let url = baseURL?.url else {
+    func getURL(api: forecastType, latitude: Double, longitude: Double) -> URL? {
+        let baseURL = "https://api.openweathermap.org/data/2.5/" + api.rawValue
+        var makeURL = URLComponents(string: baseURL)
+        makeURL?.queryItems = [
+            URLQueryItem(name: "lat", value: "\(latitude)"),
+            URLQueryItem(name: "lon", value: "\(longitude)"),
+            URLQueryItem(name: "units", value: "metric"),
+            URLQueryItem(name: "appid", value: apiKey)
+        ]
+        guard let url = makeURL?.url else {
             return nil
         }
         return url

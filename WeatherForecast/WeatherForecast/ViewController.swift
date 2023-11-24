@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let url = WeatherURLManager().getUrl(api: .weather, latitude: 40, longitude: -73)
+        guard let url = WeatherURLManager().getURL(api: .weather, latitude: 40, longitude: -73)
         else {
             return
         }
