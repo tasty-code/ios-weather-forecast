@@ -11,10 +11,11 @@ final class ViewController: UIViewController {
     @IBOutlet weak var label: UILabel!
     
     private lazy var dataService = WeatherForecastDataService(dataServiceDelegate: self)
-    private let locationManager = LocationManager.shared
+    private let locationManager: LocationManager = LocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.locationManager.delegate = self
     }
 }
 

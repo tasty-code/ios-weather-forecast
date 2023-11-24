@@ -13,29 +13,21 @@ protocol LocationManagerDelegate: AnyObject {
 }
 
 final class LocationManager: NSObject {
-    static let shared = LocationManager()
-    
     private let locationManager: CLLocationManager = CLLocationManager()
-    private var location: CLLocation?
-    private weak var delegate: LocationManagerDelegate?
+    weak var delegate: LocationManagerDelegate?
     
-    private override init() {
+    override init() {
         super.init()
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
     }
-    
-    func setDelegate(instance: LocationManagerDelegate) {
-        self.delegate = instance
-    }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        self.location = location
         delegate?.didUpdateLocation(locationManager: self, location: location)
     }
     
