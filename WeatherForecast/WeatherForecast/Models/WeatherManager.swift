@@ -8,13 +8,13 @@
 import Foundation
 import CoreLocation
 
-protocol LocationManagerUIDelegate: AnyObject {
+protocol WeatherManagerDelegate: AnyObject {
     func showAlertWhenNoAuthorization()
 }
 
 final class WeatherManager: NSObject {
     
-    var delegate: LocationManagerUIDelegate?
+    weak var delegate: WeatherManagerDelegate?
     
     private let locationManager: CLLocationManager
     
@@ -35,7 +35,7 @@ final class WeatherManager: NSObject {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
     }
-
+    
     func startLocationUpdate() {
         locationManager.startUpdatingLocation()
     }
@@ -44,7 +44,7 @@ final class WeatherManager: NSObject {
         locationManager.stopUpdatingLocation()
     }
     
-    func fetchWeatherData<T: Decodable>(endpoint: Endpoint, expect: T.Type) {
+    private func fetchWeatherData<T: Decodable>(endpoint: Endpoint, expect: T.Type) {
         guard let latitude = latitude, let longitude = longitude else {
             return
         }
@@ -64,7 +64,7 @@ final class WeatherManager: NSObject {
         }
     }
     
-    func getCurrentAddress() {
+    private func getCurrentAddress() {
         var currentAddress = ""
         
         let geoCoder: CLGeocoder = CLGeocoder()

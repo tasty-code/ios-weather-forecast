@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: LocationManagerUIDelegate {
+extension ViewController: WeatherManagerDelegate {
     func showAlertWhenNoAuthorization() {
         let alert = UIAlertController(title: nil, message: "설정>앱>위치에서 변경 가능", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "설정으로 이동", style: .default)  { _ in
