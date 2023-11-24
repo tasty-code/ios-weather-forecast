@@ -11,10 +11,12 @@ extension WeatherAPI: Requestable, KeyAuthenticatable {
         }
                 
         var components = URLComponents(string: "https://api.openweathermap.org")
-        let lat = URLQueryItem(name: "lat", value: "37.715122")
-        let lon = URLQueryItem(name: "lon", value: "126.734086")
-        let appid = URLQueryItem(name: "appid", value: "\(APIKey)")
-        components?.queryItems = [lat, lon, appid]
+        
+        components?.queryItems = [
+            URLQueryItem(name: "lat", value: "37.715122"),
+            URLQueryItem(name: "lon", value: "126.734086"),
+            URLQueryItem(name: "appid", value: "\(APIKey)"),
+        ]
         
         switch self {
         case .current:
