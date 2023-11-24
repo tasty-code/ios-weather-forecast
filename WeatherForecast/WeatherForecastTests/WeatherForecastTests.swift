@@ -1,32 +1,46 @@
-//
-//  WeatherForecastTests - WeatherForecastTests.swift
-//  Created by yagom. 
-//  Copyright © yagom. All rights reserved.
-// 
-
 import XCTest
 @testable import WeatherForecast
 
 class WeatherForecastTests: XCTestCase {
-
+    let coordinate = Coordinate(longitude: 127.3, latitude: 37.6)
+    let apiKey = "API_KEY"
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
     }
-
+    
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func test_잘못된API_KEY_입력() throws {
+        var errorMessage: String = ""
+        NetworkService().getWeatherData(keyName: "API_KE", weatherType: .current, coordinate: coordinate) { (result: Result<CurrentWeather, NetworkError>) in
+            switch result {
+            case .success(_ ):
+                return
+            case .failure(let error):
+                errorMessage = error.description
+                XCTAssertEqual(errorMessage,"잘못된 Api Key의 이름입니다.")
+                return
+            }
         }
     }
 
+    func test_올바른_Data_받아오기() throws {
+        let city = "Gyeonggi-do"
+        var name = ""
+        let expectation = XCTestExpectation(description: "APIPrivoderTaskExpectation")
+        NetworkService().getWeatherData(keyName: "API_KEY", weatherType: .forecast, coordinate: coordinate) { (result: Result<ForecastWeather, NetworkError>) in
+            switch result {
+            case .success(let weatherInformation ):
+                name = weatherInformation.city.name
+                expectation.fulfill()
+                return
+            case .failure(_ ):
+                return
+            }
+        }
+        wait(for: [expectation], timeout: 4)
+        XCTAssertEqual(city, name)
+    }
 }
