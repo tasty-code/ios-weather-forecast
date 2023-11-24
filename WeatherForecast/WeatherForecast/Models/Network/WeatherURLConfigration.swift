@@ -6,7 +6,7 @@ struct WeatherURLConfigration: APIRequestable {
     var path: String
     var parameters: [String : String]?
     
-init?(coordinate: Coordinate, weatherType: WeatherType, apiKey: String) {
+    init?(coordinate: Coordinate, weatherType: WeatherType, apiKey: String) {
         self.path = "/data/2.5/\(weatherType)"
         
         parameters = [
@@ -22,7 +22,3 @@ enum WeatherType: String {
     case current = "weather"
     case forecast = "forecast"
 }
-
-
-
-

@@ -4,13 +4,6 @@ import XCTest
 class WeatherForecastTests: XCTestCase {
     let coordinate = Coordinate(longitude: 127.3, latitude: 37.6)
     let apiKey = "API_KEY"
-    override func setUpWithError() throws {
-        
-    }
-    
-    override func tearDownWithError() throws {
-    
-    }
     
     func test_잘못된API_KEY_입력() throws {
         var errorMessage: String = ""
