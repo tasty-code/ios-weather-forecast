@@ -23,26 +23,16 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PXa-hx-DDB">
-                                <rect key="frame" x="159" y="596.66666666666663" width="75" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
-                                <connections>
-                                    <action selector="updateCurrentTemp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="p1S-QN-vjI"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="FfK-bc-i8F" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="68b-2h-ZXt"/>
-                            <constraint firstItem="PXa-hx-DDB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="HT5-zx-QCY"/>
                             <constraint firstItem="FfK-bc-i8F" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SGH-Rj-2ZE"/>
-                            <constraint firstItem="PXa-hx-DDB" firstAttribute="top" secondItem="FfK-bc-i8F" secondAttribute="bottom" constant="160" id="uxT-Nk-ThZ"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="weatherLabel" destination="FfK-bc-i8F" id="24a-jz-5Aq"/>
+                        <outlet property="label" destination="FfK-bc-i8F" id="24a-jz-5Aq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
