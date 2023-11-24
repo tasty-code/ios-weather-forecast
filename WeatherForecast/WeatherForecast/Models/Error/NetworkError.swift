@@ -1,6 +1,6 @@
 import Foundation
 
-enum NetworkError: Error { // 이름 변경 필요
+enum NetworkError: Error {
     case invalidUrl
     case invalidData
     case invalidResponse
