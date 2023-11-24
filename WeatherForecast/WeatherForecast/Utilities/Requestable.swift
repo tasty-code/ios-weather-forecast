@@ -1,3 +1,4 @@
+import Foundation
 protocol Requestable {
-    var path: String? { get }
+    var path: URL? { get }
 }

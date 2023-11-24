@@ -1,21 +1,28 @@
+import Foundation
 enum WeatherAPI {
     case current
     case fiveDays
 }
 
 extension WeatherAPI: Requestable, KeyAuthenticatable {
-    var path: String? {
+    var path: URL? {
         guard let APIKey = APIKey else {
             return nil
         }
+                
+        var components = URLComponents(string: "https://api.openweathermap.org")
+        let lat = URLQueryItem(name: "lat", value: "37.715122")
+        let lon = URLQueryItem(name: "lon", value: "126.734086")
+        let appid = URLQueryItem(name: "appid", value: "\(APIKey)")
+        components?.queryItems = [lat, lon, appid]
         
         switch self {
         case .current:
-            return "https://api.openweathermap.org/data/2.5/weather?lat=37.715122&lon=126.734086&appid=\(APIKey)"
-            
+            components?.path = "/data/2.5/weather"
+            return components?.url
         case .fiveDays:
-            return "https://api.openweathermap.org/data/2.5/forecast?lat=37.715122&lon=126.734086&appid=\(APIKey)"
+            components?.path = "/data/2.5/forecast"
+            return components?.url
         }
     }
 }
-

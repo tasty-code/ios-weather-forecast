@@ -5,3 +5,4 @@ protocol Networkable {
     
     func fetch(completion: @escaping (Result<T, NetworkError>) -> Void)
 }
+

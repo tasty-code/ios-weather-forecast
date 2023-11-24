@@ -1,15 +1,13 @@
 import Foundation
 
 final class Networker<T: Decodable> {
-    private var networkManager: NetworkManager<T>?
+    private let networkManager: NetworkManager<T>
 
+    init(request: Requestable) {
+        self.networkManager = NetworkManager<T>(request: request)
+    }
+    
     func fetchWeatherData() {
-        networkManager = NetworkManager<T>(request: WeatherAPI.current)
-        
-        guard let networkManager = networkManager else {
-            return
-        }
-        
         networkManager.fetch { result in
             switch result {
             case .success(let weatherResponse):

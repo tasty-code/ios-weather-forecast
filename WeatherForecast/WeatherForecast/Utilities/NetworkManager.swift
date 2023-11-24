@@ -10,12 +10,8 @@ final class NetworkManager<T: Decodable>: Networkable {
     }
     
     func fetch(completion: @escaping (Result<T, NetworkError>) -> Void) {
-        guard let path = self.request?.path else {
+        guard let url = self.request?.path else {
             return
-        }
-        
-        guard let url = URL(string: path) else {
-            return completion(.failure(.urlError(request)))
         }
         
         session.dataTask(with: url) { data, response, error in
