@@ -53,12 +53,7 @@ extension LocationDataManager: CLLocationManagerDelegate {
         if let coordinate = locations.last?.coordinate {
             print(coordinate)
             locationDelegate?.location(self, didLoad: coordinate)
-            lookUpCurrentLocation { placemarks in
-                if let placemarks = placemarks {
-                    let address = "\(placemarks.country!) \(placemarks.administrativeArea!) \(placemarks.locality!) \(placemarks.subLocality!) \(placemarks.thoroughfare!) \(placemarks.subThoroughfare!)"
-                    print(address)
-                }
-            }
+            lookUpCurrentLocation(completionHandler: viewCurrentAddress)
         }
         
         locationManager.stopUpdatingLocation()
@@ -84,6 +79,13 @@ extension LocationDataManager {
             }
         } else {
             completionHandler(nil)
+        }
+    }
+    
+    func viewCurrentAddress(placemarks: CLPlacemark?) {
+        if let placemarks = placemarks {
+            let address = "\(placemarks.country!) \(placemarks.administrativeArea!) \(placemarks.locality!) \(placemarks.subLocality!) \(placemarks.thoroughfare!) \(placemarks.subThoroughfare!)"
+            print(address)
         }
     }
 }
