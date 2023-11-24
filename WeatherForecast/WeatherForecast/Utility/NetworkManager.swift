@@ -28,7 +28,7 @@ final class NetworkManager {
                 return completion(.failure(NetworkError.unknownError(description: error.localizedDescription)))
             }
             
-            guard let response = response as? HTTPURLResponse else {return}
+            guard let response = response as? HTTPURLResponse else { return }
             guard (200..<300).contains(response.statusCode)
             else {
                 return completion(.failure(NetworkError.responseError(statusCode: response.statusCode)))

@@ -10,7 +10,7 @@ import Foundation
 protocol URLFormattable {
     associatedtype T: URLProtocol
     
-    var defaultPath: String {get}
+    var defaultPath: String { get }
     
     func makeURL(path: String, with queries: [String: String]) -> URL?
 }

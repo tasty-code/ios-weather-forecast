@@ -8,7 +8,7 @@
 import Foundation
 
 struct CurrentWeather: Decodable {
-    var coord: Coord?
+    var coordinate: Coordinate?
     var weather: [Weather]?
     var base: String?
     var main: Main?
@@ -17,19 +17,31 @@ struct CurrentWeather: Decodable {
     var clouds: Clouds?
     var rain: Rain?
     var snow: Snow?
-    var dt: Int?
-    var sys: Sys?
+    var dataTime: Int?
+    var system: System?
     var timezone: Int?
     var id: Int?
     var name: String?
     var cod: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case weather, base, main, visibility, wind, clouds, rain, snow, timezone, id, name, cod
+        case coordinate = "coord"
+        case dataTime = "dt"
+        case system = "sys"
+    }
 }
 
 // MARK: - Coord
 
-struct Coord: Decodable {
-    var lon: Double
-    var lat: Double
+struct Coordinate: Decodable {
+    var longitude: Double
+    var latitude: Double
+    
+    enum CodingKeys: String, CodingKey {
+        case longitude = "lon"
+        case latitude = "lat"
+    }
 }
 
 // MARK: - Weather
@@ -44,22 +56,23 @@ struct Weather: Decodable {
 // MARK: - Main
 
 struct Main: Decodable {
-    var temp: Double?
+    var temperature: Double?
     var feelsLike: Double?
-    var tempMin: Double?
-    var tempMax: Double?
+    var minTemperature: Double?
+    var maxTemperature: Double?
     var pressure: Int?
     var humidity: Int?
     var seaLevel: Int?
-    var grndLevel: Int?
+    var groundLevel: Int?
     
     enum CodingKeys: String, CodingKey {
-        case temp, pressure, humidity
+        case pressure, humidity
+        case temperature = "temp"
         case feelsLike = "feels_like"
-        case tempMin = "temp_min"
-        case tempMax = "temp_max"
+        case minTemperature = "temp_min"
+        case maxTemperature = "temp_max"
         case seaLevel = "sea_level"
-        case grndLevel = "grnd_level"
+        case groundLevel = "grnd_level"
     }
 }
 
@@ -67,8 +80,13 @@ struct Main: Decodable {
 
 struct Wind: Decodable {
     var speed: Double?
-    var deg: Int?
+    var direction: Int?
     var gust: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case speed, gust
+        case direction = "deg"
+    }
 }
 
 // MARK: - Clouds
@@ -103,7 +121,7 @@ struct Snow: Decodable {
 
 // MARK: - Sys
 
-struct Sys: Decodable {
+struct System: Decodable {
     var type: Int?
     var id: Int?
     var country: String?
