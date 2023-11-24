@@ -52,7 +52,7 @@ extension LocationDataManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let coordinate = locations.last?.coordinate {
             print(coordinate)
-            locationDelegate?.location(locationManager, didLoad: coordinate)
+            locationDelegate?.location(self, didLoad: coordinate)
         }
         
         locationManager.stopUpdatingLocation()

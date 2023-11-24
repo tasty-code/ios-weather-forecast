@@ -22,7 +22,7 @@ final class WeatherViewController: UIViewController {
 
 // MARK: - LocationDelegate
 extension WeatherViewController: LocationDelegate {
-    func location(_ manager: CLLocationManager, didLoad coordinate: CLLocationCoordinate2D) {
+    func location(_ manager: LocationDataManager, didLoad coordinate: CLLocationCoordinate2D) {
         networkManager.loadData(type: WeatherType.weatherToday, coord: coordinate)
     }
 }

@@ -8,5 +8,5 @@
 import CoreLocation
 
 protocol LocationDelegate: AnyObject {
-    func location(_ manager: CLLocationManager, didLoad coordinate: CLLocationCoordinate2D)
+    func location(_ manager: LocationDataManager, didLoad coordinate: CLLocationCoordinate2D)
 }
