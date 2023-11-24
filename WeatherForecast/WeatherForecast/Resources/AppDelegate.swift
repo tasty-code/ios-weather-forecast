@@ -8,12 +8,19 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        return true
-    }
+           if #available(iOS 13.0, *) {
+               return true
+           }
+           
+           window = UIWindow()
+           window?.rootViewController = ViewController()
+           window?.makeKeyAndVisible()
+           return true
+       }
 
     // MARK: UISceneSession Lifecycle
 
