@@ -1,4 +1,5 @@
 import Foundation
+
 enum WeatherAPI {
     case current
     case fiveDays
