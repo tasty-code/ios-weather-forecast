@@ -53,7 +53,7 @@ extension LocationDataManager: CLLocationManagerDelegate {
         if let coordinate = locations.last?.coordinate {
             print(coordinate)
             locationDelegate?.location(self, didLoad: coordinate)
-            lookUpCurrentLocation(completionHandler: viewCurrentAddress)
+            lookUpCurrentAddress(completionHandler: viewCurrentAddress)
         }
         
         locationManager.stopUpdatingLocation()
@@ -65,13 +65,13 @@ extension LocationDataManager: CLLocationManagerDelegate {
 }
 
 extension LocationDataManager {
-    func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?) -> Void ) {
+    func lookUpCurrentAddress(completionHandler: @escaping (CLPlacemark?) -> Void ) {
         if let lastLocation = locationManager.location {
             let geocoder = CLGeocoder()
             
-            geocoder.reverseGeocodeLocation(lastLocation) { (placemrks, error) in
+            geocoder.reverseGeocodeLocation(lastLocation) { (placemarks, error) in
                 if error == nil {
-                    let firstLocation = placemrks?[0]
+                    let firstLocation = placemarks?[0]
                     completionHandler(firstLocation)
                 } else {
                     completionHandler(nil)
