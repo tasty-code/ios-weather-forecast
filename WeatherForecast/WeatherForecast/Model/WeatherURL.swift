@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum WeatherURL: URLProtocol {
-    static let url = "https://api.openweathermap.org"
+enum WeatherURL: APIBaseURLProtocol {
+    static let baseURLString = "https://api.openweathermap.org"
     
     case current
     case weekly
@@ -16,10 +16,9 @@ enum WeatherURL: URLProtocol {
     var path: String {
         switch self {
         case .current:
-            return "weather"
+            return "/data/2.5/weather"
         case .weekly:
-            return "forecast"
+            return "/data/2.5/forecast"
         }
     }
 }
-

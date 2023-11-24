@@ -7,11 +7,6 @@
 
 import Foundation
 
-struct WeatherURLFormatter<T: URLProtocol>: URLFormattable {
-    
-    let defaultPath: String
-    
-    init(defaultPath: String = "/data/2.5/") {
-        self.defaultPath = defaultPath
-    }
+struct WeatherURLFormatter: URLFormattable {
+    typealias T = WeatherURL
 }

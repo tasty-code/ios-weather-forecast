@@ -8,11 +8,10 @@
 import Foundation
 
 extension Bundle {
-    var apiKey: String {
+    var apiKey: String? {
         guard let key = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String
         else {
-            print("APIKEY없음")
-            return " "
+            return nil
         }
         return key
     }

@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol URLProtocol {
-    static var url: String { get }
+protocol APIBaseURLProtocol {
+    static var baseURLString: String { get }
 }
