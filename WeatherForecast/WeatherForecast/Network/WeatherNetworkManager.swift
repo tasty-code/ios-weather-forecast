@@ -22,9 +22,13 @@ final class WeatherNetworkManager: NSObject, URLSessionDelegate {
     
     func loadData(type: WeatherType, coord: CLLocationCoordinate2D) {
         weatherType = type
-        guard let url = WeatherApiClient.makeURL(lat: coord.latitude, lon: coord.latitude, weatherType: type) else { return }
-        let task = session.dataTask(with: url)
-        task.resume()
+        do {
+            let request = try WeatherApiClient.makeRequest(coord: coord, weatherType: type)
+            let task = session.dataTask(with: request)
+            task.resume()
+        } catch {
+            print(error)
+        }
     }
 }
 
