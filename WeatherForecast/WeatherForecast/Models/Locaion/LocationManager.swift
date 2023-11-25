@@ -9,13 +9,12 @@ import Foundation
 import CoreLocation
 
 protocol LocationManagerDelegate: AnyObject {
-    func update(with location: LocationData)
+    func update(with data: LocationData)
 }
 
 final class LocationManager: NSObject {
     weak var delegate: LocationManagerDelegate?
     private let locationManager: CLLocationManager = CLLocationManager()
-    private let geoCoder: CLGeocoder = CLGeocoder()
     
     override init() {
         super.init()
@@ -28,14 +27,13 @@ final class LocationManager: NSObject {
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        let geoCoder = CLGeocoder()
-        geoCoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
                 print("주소 가져오기 실패: \(error.localizedDescription)")
             }
             
-            var addressArray = [String]()
-            guard let placemark = placemarks?.first else {
+            guard let placemark = placemarks?.last else {
                 print("주소를 찾을 수 없습니다.")
                 return
             }
