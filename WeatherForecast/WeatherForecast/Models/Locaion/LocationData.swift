@@ -1,5 +1,5 @@
 //
-//  LacationInfo.swift
+//  LocationData.swift
 //  WeatherForecast
 //
 //  Created by 김진웅 on 11/24/23.
