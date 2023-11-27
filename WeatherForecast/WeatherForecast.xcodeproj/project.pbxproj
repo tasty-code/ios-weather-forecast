@@ -11,6 +11,7 @@
 		53272AE92B0B43FC00A73EF7 /* WeeklyWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53272AE82B0B43FC00A73EF7 /* WeeklyWeather.swift */; };
 		53B496692B0DD1C600957314 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B496682B0DD1C600957314 /* NetworkManager.swift */; };
 		53B4966B2B0E23C400957314 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B4966A2B0E23C400957314 /* NetworkError.swift */; };
+		7F53C1572B14A1FF0061DD02 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F53C1562B14A1FF0061DD02 /* LocationManager.swift */; };
 		7F71CBF02B1054F90096D278 /* CommonWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71CBEF2B1054F90096D278 /* CommonWeatherDTO.swift */; };
 		7FF59F022B0C484B00C6AA24 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF59F012B0C484B00C6AA24 /* Bundle+Extension.swift */; };
 		7FF59F0C2B0C78DC00C6AA24 /* WeatherURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF59F0B2B0C78DC00C6AA24 /* WeatherURL.swift */; };
@@ -49,6 +50,7 @@
 		53272AE82B0B43FC00A73EF7 /* WeeklyWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeather.swift; sourceTree = "<group>"; };
 		53B496682B0DD1C600957314 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		53B4966A2B0E23C400957314 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		7F53C1562B14A1FF0061DD02 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7F71CBEF2B1054F90096D278 /* CommonWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWeatherDTO.swift; sourceTree = "<group>"; };
 		7FF59EFF2B0C3EF700C6AA24 /* OpenWeather.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = OpenWeather.xcconfig; sourceTree = "<group>"; };
 		7FF59F012B0C484B00C6AA24 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			children = (
 				7FF59F152B0CC1AB00C6AA24 /* WeatherURLFormatter.swift */,
 				53B496682B0DD1C600957314 /* NetworkManager.swift */,
+				7F53C1562B14A1FF0061DD02 /* LocationManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				53272AE72B0B3EEF00A73EF7 /* CurrentWeather.swift in Sources */,
 				7FF59F142B0CC18300C6AA24 /* APIBaseURLProtocol.swift in Sources */,
+				7F53C1572B14A1FF0061DD02 /* LocationManager.swift in Sources */,
 				53B4966B2B0E23C400957314 /* NetworkError.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				53272AE92B0B43FC00A73EF7 /* WeeklyWeather.swift in Sources */,
@@ -511,8 +515,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CX8P4D8Z7M;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = WeatherForecast/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -521,6 +526,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.yagom.WeatherForecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -532,8 +538,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CX8P4D8Z7M;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = WeatherForecast/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -542,6 +549,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.yagom.WeatherForecast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
