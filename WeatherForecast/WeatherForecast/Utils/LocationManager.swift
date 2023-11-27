@@ -8,27 +8,26 @@
 import Foundation
 import CoreLocation
 
-final class LocationManager: NSObject {
+final class WeatherLocationManager: NSObject {
+    let locationManger: CLLocationManager = {
+        var locationManager = CLLocationManager()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.startUpdatingLocation()
+        locationManager.requestWhenInUseAuthorization()
+        return locationManager
+    }()
     
-    var locationManger : CLLocationManager?
+    weak var delegate: WeatherUIDelegate?
     
     override init() {
         super.init()
-        locationManger = CLLocationManager()
-        locationManger?.delegate = self
-        locationManger?.requestWhenInUseAuthorization()
-        locationManger?.startUpdatingLocation()
-        locationManger?.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManger.delegate = self
     }
 
-    private(set) var lat : Double = 0
-    private(set) var lon : Double = 0
-    private(set) var address: String?
-
-    private func getAddress(){
+    private func getAddress(from coordinate: CLLocationCoordinate2D) {
         let geocoder = CLGeocoder()
         let locale = Locale(identifier: "ko-kR")
-        geocoder.reverseGeocodeLocation(CLLocation(latitude: lat, longitude: lon), preferredLocale: locale, completionHandler: { placemarks, error in
+        geocoder.reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude), preferredLocale: locale, completionHandler: { placemarks, error in
             guard let placemark = placemarks?.first, error == nil else {
                 return
             }
@@ -37,21 +36,21 @@ final class LocationManager: NSObject {
             if let subAdministrativeArea = placemark.subAdministrativeArea { address += "\(subAdministrativeArea) " }
             if let administrativeArea = placemark.administrativeArea { address += "\(administrativeArea) " }
             if let subThoroughfare = placemark.name { address += "\(subThoroughfare) " }
-            
-            self.address = address
+            DispatchQueue.main.async {
+                self.delegate?.updateAddress(address)
+            }
         })
     }
 }
 
-extension LocationManager: CLLocationManagerDelegate {
+extension WeatherLocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            lat = location.coordinate.latitude
-            lon = location.coordinate.longitude
-            debugPrint("위도: \(lat), 경도: \(lon)")
-            getAddress()
-            locationManger?.stopUpdatingLocation()
+            debugPrint("위도: \(location.coordinate.latitude), 경도: \(location.coordinate)")
+            delegate?.loadForecast(location.coordinate)
+            getAddress(from: location.coordinate)
+            locationManger.stopUpdatingLocation()
         }
     }
     

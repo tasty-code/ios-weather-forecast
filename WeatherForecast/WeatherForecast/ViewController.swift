@@ -12,24 +12,30 @@ final class ViewController: UIViewController {
     @IBOutlet weak var countryLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     var subscriber: AnyCancellable?
-    var locationM = LocationManager()
+    let locationManager = WeatherLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        DispatchQueue.main.async { [self] in
-            makeUI()
-        }
+        locationManager.delegate = self
     }
     
-    private func makeUI() {
-        guard let url = WeatherURLManager().getURL(api: .weather, latitude: locationM.lat, longitude: locationM.lon)
-        else {
-            return
+    func configureURLRequest(_ coordinate: CLLocationCoordinate2D) -> URLRequest? {
+        guard let url = WeatherURLManager().getURL(api: .weather, latitude: coordinate.latitude, longitude: coordinate.longitude) else {
+            return nil
         }
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
+        return urlRequest
+    }
+}
+
+extension ViewController: WeatherUIDelegate {
+    func loadForecast(_ coordinate: CLLocationCoordinate2D) {
+        guard let urlRequest = configureURLRequest(coordinate) else {
+            return
+        }
+        
         let publisher = URLSession.shared.publisher(request: urlRequest)
         subscriber =  WeatherHTTPClient.publishForecast(from: publisher, forecastType: CurrentWeather.self)
             .receive(on: DispatchQueue.main)
@@ -42,9 +48,11 @@ final class ViewController: UIViewController {
                     print(error)
                 }
             } receiveValue: { weather in
-                
                 self.countryLabel.text = weather.system.country
-                self.addressLabel.text = self.locationM.address
             }
+    }
+    
+    func updateAddress(_ addressString: String) {
+        addressLabel.text = addressString
     }
 }
