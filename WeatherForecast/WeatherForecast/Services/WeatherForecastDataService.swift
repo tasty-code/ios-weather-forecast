@@ -38,7 +38,7 @@ extension WeatherForecastDataService {
             return nil
         }
         
-        let urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(serviceType.name)")
+        let urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(serviceType.urlPath)")
         let queries = [
             URLQueryItem(name: "lat", value: "\(location.coordinate.latitude)"),
             URLQueryItem(name: "lon", value: "\(location.coordinate.longitude)"),
@@ -47,7 +47,7 @@ extension WeatherForecastDataService {
             URLQueryItem(name: "lang", value: "kr")
         ]
         
-        guard let url = NetworkManager.makeURL(urlComponents, queries: queries, serviceType: serviceType) else {
+        guard let url = NetworkManager.makeURL(urlComponents, queries: queries) else {
             return nil
         }
         
@@ -84,9 +84,8 @@ extension WeatherForecastDataService {
         }
     }
     
-    private func decodeJSONToSwift(_ data: Data?, serviceType: ServiceType) -> Decodable? {
+    private func decodeJSONToSwift(_ data: Data, serviceType: ServiceType) -> Decodable? {
         do {
-            guard let data = data else { return nil }
             let model = try JSONDecoder().decode(serviceType.decodingType, from: data)
             return model
         } catch {

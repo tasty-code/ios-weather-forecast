@@ -26,29 +26,29 @@ final class NetworkManager {
         }
     }
     
-    static func makeURL(_ components: URLComponents?, queries: [URLQueryItem], serviceType: ServiceType) -> URL? {
+    static func makeURL(_ components: URLComponents?, queries: [URLQueryItem]) -> URL? {
         var components = components
         components?.queryItems = queries
         return components?.url
     }
     
-    static func downloadData(url: URL, _ completionHandler: @escaping (Result<Data, NetworkingError>) -> Void) {
+    static func downloadData(url: URL, _ completionHandler: @escaping (Result<Data, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil else {
-                return completionHandler(.failure(.taskingError))
+                return completionHandler(.failure(NetworkingError.taskingError))
             }
             
-            guard let response = response as? HTTPURLResponse else { return completionHandler(.failure(.unknown)) }
+            guard let response = response as? HTTPURLResponse else { return completionHandler(.failure(NetworkingError.unknown)) }
             
             guard (200..<300).contains(response.statusCode) else {
-                return completionHandler(.failure(.badServerResponse(statusCode: response.statusCode)))
+                return completionHandler(.failure(NetworkingError.badServerResponse(statusCode: response.statusCode)))
             }
             
             guard let data = data else {
-                return completionHandler(.failure(.corruptedData))
+                return completionHandler(.failure(NetworkingError.corruptedData))
             }
             
             completionHandler(.success(data))

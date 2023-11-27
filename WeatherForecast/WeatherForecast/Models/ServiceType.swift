@@ -10,7 +10,7 @@ import Foundation
 enum ServiceType {
     case weather, forecast
     
-    var name: String {
+    var urlPath: String {
         switch self {
         case .weather: "weather"
         case .forecast: "forecast"
