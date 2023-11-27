@@ -20,10 +20,10 @@ final class WeatherNetworkManager: NSObject, URLSessionDelegate {
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
-    func loadData(type: WeatherType, coord: CLLocationCoordinate2D) {
+    func loadWeatherData(type: WeatherType, coord: CLLocationCoordinate2D) {
         weatherType = type
         do {
-            let request = try WeatherApiClient.makeRequest(coord: coord, weatherType: type)
+            let request = try WeatherApiClient.makeRequest(weatherType: type, coord: coord)
             let task = session.dataTask(with: request)
             task.resume()
         } catch {

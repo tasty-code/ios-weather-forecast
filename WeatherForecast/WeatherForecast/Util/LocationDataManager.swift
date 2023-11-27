@@ -48,7 +48,6 @@ extension LocationDataManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let coordinate = locations.last?.coordinate {
-            print(coordinate)
             locationDelegate?.location(self, didLoad: coordinate)
             lookUpCurrentAddress(completionHandler: viewCurrentAddress)
         }
@@ -64,7 +63,7 @@ extension LocationDataManager: CLLocationManagerDelegate {
 // MARK: - Get Address
 
 extension LocationDataManager {
-    func lookUpCurrentAddress(completionHandler: @escaping (CLPlacemark?) -> Void ) {
+    private func lookUpCurrentAddress(completionHandler: @escaping (CLPlacemark?) -> Void ) {
         if let lastLocation = locationManager.location {
             let geocoder = CLGeocoder()
             
@@ -81,8 +80,7 @@ extension LocationDataManager {
         }
     }
     
-    // TODO: 이거 강제 언래핑 안 쓰고 잘 구현해보기
-    func viewCurrentAddress(placemarks: CLPlacemark?) {
+    private func viewCurrentAddress(placemarks: CLPlacemark?) {
         if let placemarks = placemarks {
             let address = "\(placemarks.country!) \(placemarks.administrativeArea!) \(placemarks.locality!) \(placemarks.subLocality!) \(placemarks.thoroughfare!) \(placemarks.subThoroughfare!)"
             print(address)

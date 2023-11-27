@@ -23,7 +23,7 @@ struct WeatherApiClient {
         return components?.url
     }
     
-    static func makeRequest(coord: CLLocationCoordinate2D, weatherType: WeatherType) throws -> URLRequest {
+    static func makeRequest(weatherType: WeatherType, coord: CLLocationCoordinate2D) throws -> URLRequest {
         guard let url = makeURL(coord: coord, weatherType: weatherType) else { throw NetworkError.invailedURL }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
