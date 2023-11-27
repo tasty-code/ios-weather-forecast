@@ -1,5 +1,5 @@
 //
-//  LocationManager.swift
+//  WeatherLocationManager.swift
 //  WeatherForecast
 //
 //  Created by Wonji Ha on 2023/11/24.
@@ -47,7 +47,7 @@ extension WeatherLocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            debugPrint("위도: \(location.coordinate.latitude), 경도: \(location.coordinate)")
+            debugPrint("위도: \(location.coordinate.latitude), 경도: \(location.coordinate.longitude)")
             delegate?.loadForecast(location.coordinate)
             getAddress(from: location.coordinate)
             locationManger.stopUpdatingLocation()
