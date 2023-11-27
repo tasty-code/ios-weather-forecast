@@ -69,7 +69,8 @@ extension LocationDataManager {
             
             geocoder.reverseGeocodeLocation(lastLocation) { (placemarks, error) in
                 if error == nil {
-                    let firstLocation = placemarks?[0]
+                    guard let placemarks else { return }
+                    let firstLocation = placemarks[0]
                     completionHandler(firstLocation)
                 } else {
                     completionHandler(nil)
@@ -80,10 +81,21 @@ extension LocationDataManager {
         }
     }
     
-    private func viewCurrentAddress(placemarks: CLPlacemark?) {
-        if let placemarks = placemarks {
-            let address = "\(placemarks.country!) \(placemarks.administrativeArea!) \(placemarks.locality!) \(placemarks.subLocality!) \(placemarks.thoroughfare!) \(placemarks.subThoroughfare!)"
-            print(address)
+    private func viewCurrentAddress(placemark: CLPlacemark?) {
+        if let placemark {
+            if
+                let country = placemark.country,
+                let administrativeArea = placemark.administrativeArea,
+                let locality = placemark.locality,
+                let subLocality = placemark.subLocality,
+                let thoroughfare = placemark.thoroughfare,
+                let subThoroughfare = placemark.subThoroughfare
+            {
+                let address = "\(country) \(administrativeArea) \(locality) \(subLocality) \(thoroughfare) \(subThoroughfare)"
+                print(address)
+            }
+        } else {
+            print("location 가져오기 실패")
         }
     }
 }
