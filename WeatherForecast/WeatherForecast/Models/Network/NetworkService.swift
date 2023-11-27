@@ -7,7 +7,7 @@ final class NetworkService {
         return apiKey
     }
     
-    func getWeatherData<T: Decodable>(keyName: String, weatherType: WeatherType,coordinate: Coordinate, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
+    func getWeatherData<T: Decodable>(keyName: String, weatherType: WeatherType, coordinate: Coordinate, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
         
         let apiKey = createApiKey(name: keyName)
         guard let apiKey = apiKey else {

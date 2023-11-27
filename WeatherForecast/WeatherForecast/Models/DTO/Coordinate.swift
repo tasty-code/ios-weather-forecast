@@ -1,7 +1,7 @@
 import Foundation
 
 struct Coordinate: Decodable {
-    let longitude, latitude: Double
+    var longitude, latitude: Double
     
     enum CodingKeys: String, CodingKey {
         case longitude = "lon"
