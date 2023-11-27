@@ -8,8 +8,6 @@
 import Foundation
 import CoreLocation
 
-// TODO: HTTP GET 메서드 명시적 호출 (request 수정)
-
 final class WeatherNetworkManager: NSObject, URLSessionDelegate {
     private var receivedData: Data?
     private var weatherType: WeatherType?
