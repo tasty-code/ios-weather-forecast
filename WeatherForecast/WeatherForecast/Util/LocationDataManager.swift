@@ -7,11 +7,9 @@
 
 import CoreLocation
 
-// TODO: coreLoacation 을 통해 주소 가져오기
-
 final class LocationDataManager : NSObject {
     private var locationManager = CLLocationManager()
-    weak var locationDelegate: LocationDelegate?
+    weak var locationDelegate: LocationDataManagerDelegate?
     
     override init() {
         super.init()
@@ -48,7 +46,6 @@ extension LocationDataManager: CLLocationManagerDelegate {
         }
     }
     
-    // 사용자의 위치를 성공적으로 가져왔을 때 호출
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let coordinate = locations.last?.coordinate {
             print(coordinate)
@@ -63,6 +60,8 @@ extension LocationDataManager: CLLocationManagerDelegate {
         print("GPS 사용이 불가한 지역에 있는 등 위치 정보를 가져오지 못했습니다.")
     }
 }
+
+// MARK: - Get Address
 
 extension LocationDataManager {
     func lookUpCurrentAddress(completionHandler: @escaping (CLPlacemark?) -> Void ) {
@@ -82,6 +81,7 @@ extension LocationDataManager {
         }
     }
     
+    // TODO: 이거 강제 언래핑 안 쓰고 잘 구현해보기
     func viewCurrentAddress(placemarks: CLPlacemark?) {
         if let placemarks = placemarks {
             let address = "\(placemarks.country!) \(placemarks.administrativeArea!) \(placemarks.locality!) \(placemarks.subLocality!) \(placemarks.thoroughfare!) \(placemarks.subThoroughfare!)"

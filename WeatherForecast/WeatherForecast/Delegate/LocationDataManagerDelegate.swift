@@ -7,6 +7,6 @@
 
 import CoreLocation
 
-protocol LocationDelegate: AnyObject {
+protocol LocationDataManagerDelegate: AnyObject {
     func location(_ manager: LocationDataManager, didLoad coordinate: CLLocationCoordinate2D)
 }

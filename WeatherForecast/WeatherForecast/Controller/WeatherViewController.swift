@@ -21,7 +21,8 @@ final class WeatherViewController: UIViewController {
 }
 
 // MARK: - LocationDelegate
-extension WeatherViewController: LocationDelegate {
+
+extension WeatherViewController: LocationDataManagerDelegate {
     func location(_ manager: LocationDataManager, didLoad coordinate: CLLocationCoordinate2D) {
         networkManager.loadData(type: WeatherType.weatherToday, coord: coordinate)
     }
