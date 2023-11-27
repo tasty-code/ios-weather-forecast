@@ -3,6 +3,7 @@ import CoreLocation
 
 class WeatherViewController: UIViewController {
     let location = CLLocationManager()
+    
     var latitude = 0.0
     var longitude = 0.0
     
@@ -11,14 +12,17 @@ class WeatherViewController: UIViewController {
         location.delegate = self
         location.requestWhenInUseAuthorization()
         location.startUpdatingLocation()
+
     }
 }
 
 extension WeatherViewController: CLLocationManagerDelegate {
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-          latitude = location.coordinate.latitude
-          longitude = location.coordinate.longitude
+            latitude = location.coordinate.latitude
+            longitude = location.coordinate.longitude
+            convertToAddressWith(coordinate: location)
         }
         print(latitude, longitude)
     }

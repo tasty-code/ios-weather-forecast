@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>&quot;123123&quot;</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>&quot;123123123&quot;</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>&quot;위치 탐색을 허용하시겠습니까?&quot;</string>
 	<key>API_KEY</key>
