@@ -20,7 +20,26 @@ final class WeatherViewController: UIViewController {
 // MARK: - LocationDataManagerDelegate
 
 extension WeatherViewController: LocationDataManagerDelegate {
+    
     func location(_ manager: LocationDataManager, didLoad coordinate: CLLocationCoordinate2D) {
         networkManager.loadWeatherData(type: WeatherType.weatherToday, coord: coordinate)
+    }
+    
+    func viewCurrentAddress(placemark: CLPlacemark?) {
+        if let placemark {
+            if
+                let country = placemark.country,
+                let administrativeArea = placemark.administrativeArea,
+                let locality = placemark.locality,
+                let subLocality = placemark.subLocality,
+                let thoroughfare = placemark.thoroughfare,
+                let subThoroughfare = placemark.subThoroughfare
+            {
+                let address = "\(country) \(administrativeArea) \(locality) \(subLocality) \(thoroughfare) \(subThoroughfare)"
+                print(address)
+            }
+        } else {
+            print("location 가져오기 실패")
+        }
     }
 }
