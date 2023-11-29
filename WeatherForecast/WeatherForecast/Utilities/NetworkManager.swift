@@ -27,7 +27,7 @@ final class NetworkManager<T: Decodable>: Networkable {
             guard let data = data else {
                 return completion(.failure(.dataUnwrappingError(data)))
             }
-            print(url)
+            
             do {
                 let weatherResponse = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(weatherResponse))

@@ -12,7 +12,6 @@
 		0E4A84842B0C48F700726F9F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84832B0C48F700726F9F /* NetworkManager.swift */; };
 		0EFE826F2B0EE0300021B2EF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE826E2B0EE0300021B2EF /* Model.swift */; };
 		0EFE82712B0EE2A00021B2EF /* KeyAuthenticatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */; };
-		A63AB3372B1613F90088F502 /* Locator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63AB3362B1613F90088F502 /* Locator.swift */; };
 		A647C3B02B1431A800D386FB /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A647C3AF2B1431A800D386FB /* LocationManager.swift */; };
 		A64F0E0B2B0F69DF00FC988F /* RequestSessionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F0E0A2B0F69DF00FC988F /* RequestSessionable.swift */; };
 		A64F0E122B1059E600FC988F /* Requestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F0E112B1059E600FC988F /* Requestable.swift */; };
@@ -58,7 +57,6 @@
 		0E4A84832B0C48F700726F9F /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0EFE826E2B0EE0300021B2EF /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAuthenticatable.swift; sourceTree = "<group>"; };
-		A63AB3362B1613F90088F502 /* Locator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; };
 		A647C3AF2B1431A800D386FB /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		A64F0E0A2B0F69DF00FC988F /* RequestSessionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSessionable.swift; sourceTree = "<group>"; };
 		A64F0E112B1059E600FC988F /* Requestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requestable.swift; sourceTree = "<group>"; };
@@ -140,7 +138,6 @@
 				0E4A84832B0C48F700726F9F /* NetworkManager.swift */,
 				A6A891612B0F25C400D2AC27 /* Networker.swift */,
 				A647C3AF2B1431A800D386FB /* LocationManager.swift */,
-				A63AB3362B1613F90088F502 /* Locator.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -384,7 +381,6 @@
 				A6A891602B0F0F0B00D2AC27 /* ModelFiveDaysWeather+Extension.swift in Sources */,
 				A6A8915C2B0F0EAC00D2AC27 /* Model+Extension.swift in Sources */,
 				0EFE82712B0EE2A00021B2EF /* KeyAuthenticatable.swift in Sources */,
-				A63AB3372B1613F90088F502 /* Locator.swift in Sources */,
 				A6AFCADF2B0DFBB3004CACBF /* Networkable.swift in Sources */,
 				A64F0E192B10679A00FC988F /* RequestDataTaskable.swift in Sources */,
 				0E468CB32B0DDD6A00201507 /* NetworkError.swift in Sources */,
