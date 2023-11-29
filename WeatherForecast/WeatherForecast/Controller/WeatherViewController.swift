@@ -1,8 +1,8 @@
 //
 //  WeatherForecast - ViewController.swift
-//  Created by yagom. 
+//  Created by yagom.
 //  Copyright © yagom. All rights reserved.
-// 
+//
 
 import UIKit
 import CoreLocation
@@ -25,7 +25,7 @@ extension WeatherViewController: LocationDataManagerDelegate {
         weatherNetworkManager.loadWeatherData(type: WeatherType.forecast, coord: coordinate)
     }
     
-    func viewCurrentAddress(placemark: CLPlacemark?) {
+    func loaction(_ manager: LocationDataManager, didComplete placemark: CLPlacemark?) {
         guard let placemark else {
             print("can't look up current address")
             return
