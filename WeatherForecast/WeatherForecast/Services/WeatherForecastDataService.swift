@@ -14,39 +14,62 @@ protocol DataServiceDelegate: AnyObject {
 }
 
 final class WeatherForecastDataService {
-    private let networkManager: NetworkDownloadable
     private var model: Decodable? = nil
     private var currentPlacemark: CLPlacemark? = nil
+    private weak var delegate: DataServiceDelegate?
     
-    weak var delegate: DataServiceDelegate? = nil
-    
-    init(networkManager: NetworkDownloadable) {
-        self.networkManager = networkManager
+    init(dataServiceDelegate: DataServiceDelegate) {
+        self.delegate = dataServiceDelegate
     }
     
     func fetchData(_ serviceType: ServiceType, location: CLLocation) {
-        let builder = NetworkBuilder(for: serviceType)
-        networkManager.downloadData(builder) { [weak self] result in
-            switch result {
-            case let .success(data):
-                let model = self?.decodeJSONToSwift(data, serviceType: serviceType)
-                self?.model = model
-                
-                DispatchQueue.main.async {
-                    guard let self = self else { return }
-                    self.delegate?.notifyModelDidUpdate(dataService: self, model: model)
-                }
-            case let .failure(error):
-                print(error)
-            }
-        }
+        guard let url = generateURL(serviceType, location: location) else { return }
         
         reverseGeocodeLocation(location: location)
+        
+        downloadData(url: url, serviceType: serviceType)
     }
 }
 
 // MARK: Private Methods
 extension WeatherForecastDataService {
+    private func generateURL(_ serviceType: ServiceType, location: CLLocation) -> URL? {
+        guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else {
+            return nil
+        }
+        
+        let urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/\(serviceType.urlPath)")
+        let queries = [
+            URLQueryItem(name: "lat", value: "\(location.coordinate.latitude)"),
+            URLQueryItem(name: "lon", value: "\(location.coordinate.longitude)"),
+            URLQueryItem(name: "appid", value: apiKey),
+            URLQueryItem(name: "units", value: "metric"),
+            URLQueryItem(name: "lang", value: "kr")
+        ]
+        
+        guard let url = NetworkManager.makeURL(urlComponents, queries: queries) else {
+            return nil
+        }
+        
+        return url
+    }
+    
+    private func downloadData(url: URL, serviceType: ServiceType) {
+        NetworkManager.downloadData(url: url) { [weak self] result in
+            switch result {
+            case .success(let data):
+                let model = self?.decodeJSONToSwift(data, serviceType: serviceType)
+                
+                DispatchQueue.main.async {
+                    guard let self = self else { return }
+                    self.model = model
+                    self.delegate?.notifyModelDidUpdate(dataService: self, model: model)
+                }
+            case .failure(let error): print(error)
+            }
+        }
+    }
+    
     private func reverseGeocodeLocation(location: CLLocation) {
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "ko_KR")) { placemarks, error in

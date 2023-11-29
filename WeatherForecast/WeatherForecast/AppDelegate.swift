@@ -9,13 +9,10 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    let baseURLStorage = BaseURLStorage()
+
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if let url = URL(string: "https://api.openweathermap.org/data/2.5/") {
-            baseURLStorage.store(url, for: .openWeatherMap)
-        }
-        
+        // Override point for customization after application launch.
         return true
     }
 

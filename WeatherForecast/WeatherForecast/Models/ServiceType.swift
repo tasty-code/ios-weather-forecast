@@ -1,34 +1,26 @@
 //
-//  ServiceType.swift
+//  File.swift
 //  WeatherForecast
 //
-//  Created by Swain Yun on 11/28/23.
+//  Created by Swain Yun on 11/20/23.
 //
 
 import Foundation
-import CoreLocation
 
 enum ServiceType {
-    case weather(coordinate: CLLocationCoordinate2D, apiKey: String)
-    case forecast(coordinate: CLLocationCoordinate2D, apiKey: String)
+    case weather, forecast
     
-    var path: String {
+    var urlPath: String {
         switch self {
         case .weather: "weather"
         case .forecast: "forecast"
         }
     }
     
-    var queries: [URLQueryItem] {
+    var decodingType: Decodable.Type {
         switch self {
-        case .weather(let coordinate, let apiKey), .forecast(let coordinate, let apiKey):
-            [
-                URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
-                URLQueryItem(name: "lon", value: "\(coordinate.longitude)"),
-                URLQueryItem(name: "appid", value: apiKey),
-                URLQueryItem(name: "units", value: "metric"),
-                URLQueryItem(name: "lang", value: "kr")
-            ]
+        case .weather: WeatherModel.self
+        case .forecast: ForecastModel.self
         }
     }
 }
