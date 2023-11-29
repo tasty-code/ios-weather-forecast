@@ -14,7 +14,12 @@ protocol DataServiceDelegate: AnyObject {
     func notifyPlacemarkDidUpdate(dataService: WeatherForecastDataService, currentPlacemark: CLPlacemark?)
 }
 
-final class WeatherForecastDataService {
+protocol WeatherForecastDataServiceProtocol {
+    func fetchData(_ serviceType: ServiceType, location: CLLocation)
+    func reverseGeocodeLocation(location: CLLocation)
+}
+
+final class WeatherForecastDataService: WeatherForecastDataServiceProtocol {
     private var weatherModel: Decodable? = nil
     private var forecastModel: Decodable? = nil
     private var currentPlacemark: CLPlacemark? = nil
@@ -27,9 +32,21 @@ final class WeatherForecastDataService {
     func fetchData(_ serviceType: ServiceType, location: CLLocation) {
         guard let url = generateURL(serviceType, location: location) else { return }
         
-        reverseGeocodeLocation(location: location)
-        
         downloadData(url: url, serviceType: serviceType)
+    }
+    
+    func reverseGeocodeLocation(location: CLLocation) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "ko_KR")) { placemarks, error in
+            guard error == nil else { return }
+            guard let placemark = placemarks?.last else { return }
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.currentPlacemark = placemark
+                self.delegate?.notifyPlacemarkDidUpdate(dataService: self, currentPlacemark: currentPlacemark)
+            }
+        }
     }
 }
 
@@ -45,8 +62,7 @@ extension WeatherForecastDataService {
             URLQueryItem(name: "lat", value: "\(location.coordinate.latitude)"),
             URLQueryItem(name: "lon", value: "\(location.coordinate.longitude)"),
             URLQueryItem(name: "appid", value: apiKey),
-            URLQueryItem(name: "units", value: "metric"),
-            URLQueryItem(name: "lang", value: "kr")
+            URLQueryItem(name: "units", value: "metric")
         ]
         
         guard let url = NetworkManager.makeURL(urlComponents, queries: queries) else {
@@ -74,20 +90,6 @@ extension WeatherForecastDataService {
                     }
                 }
             case .failure(let error): print(error)
-            }
-        }
-    }
-    
-    private func reverseGeocodeLocation(location: CLLocation) {
-        let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "ko_KR")) { placemarks, error in
-            guard error == nil else { return }
-            guard let placemark = placemarks?.last else { return }
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.currentPlacemark = placemark
-                self.delegate?.notifyPlacemarkDidUpdate(dataService: self, currentPlacemark: currentPlacemark)
             }
         }
     }
