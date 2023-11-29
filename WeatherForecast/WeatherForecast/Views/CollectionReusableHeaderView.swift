@@ -68,6 +68,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
 // MARK: Autolayout Methods
 extension CollectionReusableHeaderView {
     private func setUpLayout() {
+        self.addSubview(contentView)
         contentView.addSubviews([iconImageView, labelsStackView])
         labelsStackView.addSubviews([addressLabel, maxAndMinTemperatureLabel, temperatureLabel])
     }

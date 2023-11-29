@@ -11,7 +11,7 @@ final class ViewController: UIViewController {
     // MARK: - Constants
     private enum Constants {
         static let collectionReusableHeaderViewHeightRatio: CGFloat = 6
-        static let collectionViewDefaultPadding: CGFloat = 10
+        static let collectionViewDefaultPadding: CGFloat = 6
     }
     
     //MARK: - View Components
@@ -62,7 +62,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 // MARK: UICollectionViewDelegateFlowLayout Confirmation
 extension ViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: self.view.bounds.height / Constants.collectionReusableHeaderViewHeightRatio)
+        return CGSize(width: 100, height: 100)
+//        return CGSize(width: collectionView.bounds.width, height: self.view.bounds.height / Constants.collectionReusableHeaderViewHeightRatio)
     }
 }
 
@@ -75,9 +76,9 @@ extension ViewController {
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.collectionViewDefaultPadding),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Constants.collectionViewDefaultPadding),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.collectionViewDefaultPadding),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.collectionViewDefaultPadding),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: Constants.collectionViewDefaultPadding),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.collectionViewDefaultPadding),
         ])
     }
 }
