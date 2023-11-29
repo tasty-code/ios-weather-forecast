@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C340595C2B17062000AE0703 /* AlertContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = C340595B2B17062000AE0703 /* AlertContoller.swift */; };
 		C3E791992B0B3F1F00257AF6 /* Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E791982B0B3F1F00257AF6 /* Current.swift */; };
 		C3FDB0692B0B434200006C49 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FDB0682B0B434200006C49 /* Forecast.swift */; };
 		C3FDB0852B0C402F00006C49 /* WeatherAPI.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3FDB0842B0C402F00006C49 /* WeatherAPI.plist */; };
@@ -49,7 +48,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C340595B2B17062000AE0703 /* AlertContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertContoller.swift; sourceTree = "<group>"; };
 		C3E791982B0B3F1F00257AF6 /* Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Current.swift; path = WeatherForecast/Models/Weather/Current.swift; sourceTree = SOURCE_ROOT; };
 		C3FDB0682B0B434200006C49 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Forecast.swift; path = WeatherForecast/Models/Weather/Forecast.swift; sourceTree = SOURCE_ROOT; };
 		C3FDB0842B0C402F00006C49 /* WeatherAPI.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WeatherAPI.plist; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 			isa = PBXGroup;
 			children = (
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
-				C340595B2B17062000AE0703 /* AlertContoller.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -382,7 +379,6 @@
 				DEA4AC8C2B0F61350094ED6B /* URLSessionProtocol.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				DE5133772B10640400DC6A41 /* LocationData.swift in Sources */,
-				C340595C2B17062000AE0703 /* AlertContoller.swift in Sources */,
 				C3FDB0892B0CA2E900006C49 /* NetworkError.swift in Sources */,
 				DE5133792B106F1000DC6A41 /* WeatherType.swift in Sources */,
 				C3FDB0872B0C47B300006C49 /* WeatherRequest.swift in Sources */,
