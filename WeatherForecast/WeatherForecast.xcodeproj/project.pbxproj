@@ -113,21 +113,13 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
-		665CEB562B0F2AD800CF3FC6 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				665CEB572B0F2AE500CF3FC6 /* LocationDataManager.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
-		665CEB592B0F3FE500CF3FC6 /* Delegate */ = {
+		665CEB562B0F2AD800CF3FC6 /* Location */ = {
 			isa = PBXGroup;
 			children = (
 				665CEB5A2B0F400000CF3FC6 /* LocationDataManagerDelegate.swift */,
-				662C70462B171A29007D1601 /* WeatherNetworkManagerDelegate.swift */,
+				665CEB572B0F2AE500CF3FC6 /* LocationDataManager.swift */,
 			);
-			path = Delegate;
+			path = Location;
 			sourceTree = "<group>";
 		};
 		669283552B0B499C00BF1FFF /* Model */ = {
@@ -144,6 +136,7 @@
 		66FD8CF32B0C7051008B698D /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				662C70462B171A29007D1601 /* WeatherNetworkManagerDelegate.swift */,
 				66FD8CF42B0C7065008B698D /* WeatherApiClient.swift */,
 				66FD8CF62B0C7388008B698D /* WeatherNetworkManager.swift */,
 			);
@@ -174,9 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				662C70452B170EB3007D1601 /* Error */,
-				665CEB592B0F3FE500CF3FC6 /* Delegate */,
 				665CEB552B0F29DA00CF3FC6 /* Secrets.xcconfig */,
-				665CEB562B0F2AD800CF3FC6 /* Util */,
+				665CEB562B0F2AD800CF3FC6 /* Location */,
 				66FD8CF32B0C7051008B698D /* Network */,
 				669283552B0B499C00BF1FFF /* Model */,
 				66204A6E2B0DEC63006886C8 /* Controller */,
