@@ -8,12 +8,12 @@
 import Foundation
 import CoreLocation
 
-protocol LocationManagerDelegate: AnyObject {
+protocol UpdatedLocationDelegate: AnyObject {
     func update(with data: LocationData)
 }
 
 final class LocationManager: NSObject {
-    weak var delegate: LocationManagerDelegate?
+    weak var delegate: UpdatedLocationDelegate?
     private let locationManager: CLLocationManager = CLLocationManager()
     
     override init() {
