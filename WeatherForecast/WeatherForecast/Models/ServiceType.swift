@@ -10,10 +10,17 @@ import Foundation
 enum ServiceType {
     case weather, forecast
     
-    var name: String {
+    var urlPath: String {
         switch self {
         case .weather: "weather"
         case .forecast: "forecast"
+        }
+    }
+    
+    var decodingType: Decodable.Type {
+        switch self {
+        case .weather: WeatherModel.self
+        case .forecast: ForecastModel.self
         }
     }
 }
