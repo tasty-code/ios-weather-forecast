@@ -9,35 +9,34 @@ import UIKit
 import CoreLocation
 
 final class LocationManager: NSObject {
-    var manager: CLLocationManager!
-    var coordinates: CLLocationCoordinate2D?
+    private(set) var manager: CLLocationManager!
+    private(set) var coordinates: CLLocationCoordinate2D?
     
     override init() {
         super.init()
         self.manager = CLLocationManager()
         self.manager.delegate = self
-        self.manager.startUpdatingLocation()
+//        self.manager.startUpdatingLocation()
     }
     
 }
 
 extension LocationManager: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        print("aaaaaa")
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:
-            self.coordinates = manager.location?.coordinate
-        case .notDetermined, .restricted:
+            manager.startUpdatingLocation()
+        case .notDetermined:
             manager.requestWhenInUseAuthorization()
-        case .denied:
-            guard CLLocationManager.locationServicesEnabled() else {
-                return
-            }
-            break
+        case .denied, .restricted:
+            coordinates = CLLocationCoordinate2D(latitude: 37.5336584, longitude: 126.9775707)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        manager.stopUpdatingLocation()
+        guard let location = locations.last else { return }
+        coordinates = location.coordinate
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
