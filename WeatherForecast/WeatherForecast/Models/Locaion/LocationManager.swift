@@ -30,7 +30,7 @@ extension LocationManager: CLLocationManagerDelegate {
         guard let location = locations.last else { return }
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
-            if let error = error {
+            if let _ = error {
                 self?.delegate?.notifyLocationErrorAlert()
                 return
             }

@@ -8,8 +8,18 @@ import UIKit
 import CoreLocation
 
 final class ViewController: UIViewController {
-    private let locationManager: LocationManager = LocationManager()
-    private let networkManager: NetworkManager = NetworkManager()
+    private let locationManager: LocationManager
+    private let networkManager: NetworkManager
+    
+    init(locationManager: LocationManager, networkManager: NetworkManager) {
+        self.locationManager = locationManager
+        self.networkManager = networkManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
