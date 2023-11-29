@@ -24,12 +24,12 @@ struct WeatherURLManager {
         }
     }
     
-    enum forecastType : String {
+    enum ForecastType : String {
         case weather = "weather"
         case forecast = "forecast"
     }
     
-    func getURL(api: forecastType, latitude: Double, longitude: Double) -> URL? {
+    func getURL(api: ForecastType, latitude: Double, longitude: Double) -> URL? {
         let baseURL = "https://api.openweathermap.org/data/2.5/" + api.rawValue
         var makeURL = URLComponents(string: baseURL)
         makeURL?.queryItems = [
