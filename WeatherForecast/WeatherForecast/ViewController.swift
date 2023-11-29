@@ -39,16 +39,19 @@ extension ViewController: WeatherUIDelegate {
         let publisher = URLSession.shared.publisher(request: urlRequest)
         subscriber =  WeatherHTTPClient.publishForecast(from: publisher, forecastType: CurrentWeather.self)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
+                guard let self = self else { return }
+                
                 switch completion {
                 case .finished:
                     return
                 case .failure(let error):
                     self.countryLabel.text = error.localizedDescription
-                    print(error)
                 }
-            } receiveValue: { weather in
-                self.countryLabel.text = weather.system.country
+            } receiveValue: { [weak self] weather in
+                if let self {
+                    countryLabel.text = weather.system.country
+                }
             }
     }
     
