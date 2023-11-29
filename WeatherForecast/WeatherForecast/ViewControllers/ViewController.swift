@@ -13,11 +13,11 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
 }
 
 extension ViewController: UILocationDelegate {
-    func updatePlacemark(placemark: CLPlacemark) {
+    func update(placemark: CLPlacemark) {
         print(placemark)
     }
     
-    func updateUI(coordinate: CLLocationCoordinate2D?) {
+    func update(coordinate: CLLocationCoordinate2D?) {
         print(coordinate)
         
         networker.fetchWeatherData { weatherResponse in

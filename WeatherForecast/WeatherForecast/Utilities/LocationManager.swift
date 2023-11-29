@@ -39,7 +39,7 @@ final class LocationManager: NSObject {
                   let address = placemarks.last else {
                 return
             }
-            self?.delegate?.updatePlacemark(placemark: address)
+            self?.delegate?.update(placemark: address)
         }
     }
 }
@@ -64,7 +64,7 @@ extension LocationManager: CLLocationManagerDelegate {
         }
         
         manager.stopUpdatingLocation()
-        delegate?.updateUI(coordinate: coordinate)
+        delegate?.update(coordinate: coordinate)
         fetchPlacemark()
     }
     

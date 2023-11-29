@@ -1,6 +1,6 @@
 import CoreLocation
 
 protocol UILocationDelegate: AnyObject {
-    func updateUI(coordinate: CLLocationCoordinate2D?)
-    func updatePlacemark(placemark: CLPlacemark)
+    func update(coordinate: CLLocationCoordinate2D?)
+    func update(placemark: CLPlacemark)
 }

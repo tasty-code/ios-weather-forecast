@@ -209,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				A6E4DD5D2B1731650068E00C /* APIKeyList.plist */,
+				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
 				A6E4DD502B1730220068E00C /* Enums */,
 				0E4A84822B0C48E400726F9F /* Utilities */,
 				0E468CB52B0DE83D00201507 /* Errors */,
@@ -220,7 +221,6 @@
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				C79C8CF925ADDDF200EEE3F1 /* Main.storyboard */,
 				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
-				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
 			);
 			path = WeatherForecast;
 			sourceTree = "<group>";
