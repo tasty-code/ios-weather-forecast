@@ -16,7 +16,7 @@ final class NetworkManager {
     }
     
     func fetchData<T: Decodable>(for request: APIRequest?,
-                                    completion: @escaping (Result<T, Error>)-> Void) {
+                                 completion: @escaping (Result<T, Error>)-> Void) {
         guard let request = request else {
             completion(.failure(NetworkError.invalidAPIKey))
             return
@@ -30,6 +30,7 @@ final class NetworkManager {
         let dataTask: URLSessionDataTaskProtocol = session.dataTask(with: url) { data, response, error in
             if let error = error {
                 completion(.failure(NetworkError.unknownError(error)))
+                return
             }
             
             guard let response = response as? HTTPURLResponse else { return }

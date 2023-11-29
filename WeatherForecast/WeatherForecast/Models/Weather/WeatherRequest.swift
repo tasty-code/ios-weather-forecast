@@ -8,15 +8,15 @@
 import Foundation
 
 struct WeatherRequest: APIRequest {
-    var scheme: String = "https"
-    var host: String = "api.openweathermap.org"
-    var method: String = "GET"
+    let scheme: String = "https"
+    let host: String = "api.openweathermap.org"
+    let method: String = "GET"
     
     var path: String
     var parameters: [String : String]?
     
-    init?(latitude: Double, longitude: Double, forecastType: WeatherType) {
-        self.path = "/data/2.5/\(forecastType)"
+    init?(latitude: Double, longitude: Double, weatherType: WeatherType) {
+        self.path = "/data/2.5/\(weatherType)"
         
         guard let apiKey = Bundle.main.apiKey else { return }
         parameters = [
@@ -26,9 +26,4 @@ struct WeatherRequest: APIRequest {
             "units": "metric"
         ]
     }
-}
-
-enum WeatherType: String {
-    case current = "weather"
-    case forecast = "forecast"
 }
