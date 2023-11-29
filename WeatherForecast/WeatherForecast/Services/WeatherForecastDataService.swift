@@ -9,12 +9,14 @@ import Foundation
 import CoreLocation
 
 protocol DataServiceDelegate: AnyObject {
-    func notifyModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?)
+    func notifyWeatherModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?)
+    func notifyForecastModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?)
     func notifyPlacemarkDidUpdate(dataService: WeatherForecastDataService, currentPlacemark: CLPlacemark?)
 }
 
 final class WeatherForecastDataService {
-    private var model: Decodable? = nil
+    private var weatherModel: Decodable? = nil
+    private var forecastModel: Decodable? = nil
     private var currentPlacemark: CLPlacemark? = nil
     private weak var delegate: DataServiceDelegate?
     
@@ -62,8 +64,14 @@ extension WeatherForecastDataService {
                 
                 DispatchQueue.main.async {
                     guard let self = self else { return }
-                    self.model = model
-                    self.delegate?.notifyModelDidUpdate(dataService: self, model: model)
+                    switch serviceType {
+                    case .weather:
+                        self.weatherModel = model
+                        self.delegate?.notifyWeatherModelDidUpdate(dataService: self, model: model)
+                    case .forecast:
+                        self.forecastModel = model
+                        self.delegate?.notifyForecastModelDidUpdate(dataService: self, model: model)
+                    }
                 }
             case .failure(let error): print(error)
             }

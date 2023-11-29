@@ -21,7 +21,11 @@ final class ViewController: UIViewController {
 
 // MARK: DataServiceDelegate Conformation
 extension ViewController: DataServiceDelegate {
-    func notifyModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?) {
+    func notifyWeatherModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?) {
+        
+    }
+    
+    func notifyForecastModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?) {
         
     }
     
