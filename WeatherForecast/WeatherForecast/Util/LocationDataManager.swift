@@ -13,11 +13,14 @@ final class LocationDataManager : NSObject {
     
     override init() {
         super.init()
-        // 절전 기능 활성화
+        
+        configurePowerSaving()
+        locationManager.delegate = self
+    }
+    
+    private func configurePowerSaving() {
         locationManager.distanceFilter = CLLocationDistanceMax
         locationManager.allowsBackgroundLocationUpdates = false
-        
-        locationManager.delegate = self
     }
 }
 
