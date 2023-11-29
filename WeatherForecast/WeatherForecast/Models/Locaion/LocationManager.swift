@@ -10,7 +10,7 @@ import CoreLocation
 
 protocol LocationUpdateDelegate: AnyObject {
     func updateWeather(with data: LocationData)
-    func notifyLocationErrorAlert(_ error: Error)
+    func notifyLocationErrorAlert()
 }
 
 final class LocationManager: NSObject {
@@ -31,7 +31,7 @@ extension LocationManager: CLLocationManagerDelegate {
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
-                self?.delegate?.notifyLocationErrorAlert(error)
+                self?.delegate?.notifyLocationErrorAlert()
                 return
             }
         
@@ -54,7 +54,7 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        delegate?.notifyLocationErrorAlert(error)
+        delegate?.notifyLocationErrorAlert()
     }
 }
 

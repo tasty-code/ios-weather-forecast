@@ -40,7 +40,7 @@ extension ViewController: LocationUpdateDelegate {
         }
     }
     
-    func notifyLocationErrorAlert(_ error: Error) {
+    func notifyLocationErrorAlert() {
         let alert = UIAlertController(title: "위치 정보 오류", message: "사용자의 위치 정보를 가져 올 수 없습니다", preferredStyle: .alert)
         let action = UIAlertAction(title: "확인", style: .default)
         alert.addAction(action)
