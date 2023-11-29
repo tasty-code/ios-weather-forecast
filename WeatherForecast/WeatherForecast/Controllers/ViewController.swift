@@ -8,14 +8,49 @@ import UIKit
 
 class ViewController: UIViewController {
     let weatherManager = WeatherManager()
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.addSubview(collectionView)
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(WeatherTimeViewCell.self, forCellWithReuseIdentifier: WeatherTimeViewCell.identifier)
+        
         weatherManager.delegate = self
         weatherManager.startLocationUpdate()
     }
+    
+    override func viewDidLayoutSubviews() {
+        collectionView.frame = view.bounds
+    }
 }
+
+extension ViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.size.width, height: 50)
+    }
+}
+
+extension ViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherTimeViewCell.identifier, for: indexPath) as? WeatherTimeViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        cell.backgroundColor = .red
+        
+        return cell
+    }
+}
+extension ViewController: UICollectionViewDelegate {}
 
 extension ViewController: WeatherManagerDelegate {
     func showAlertWhenNoAuthorization() {
