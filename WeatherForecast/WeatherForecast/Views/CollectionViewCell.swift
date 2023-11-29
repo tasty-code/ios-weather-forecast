@@ -8,33 +8,34 @@
 import UIKit
 
 final class CollectionViewCell: UICollectionViewCell {
-    // MARK: - Depencies
+    // MARK: - Dependencies
     static let reuseIdentifier: String = String(describing: CollectionViewCell.self)
     
     // MARK: - View Components
-    private lazy var dateAndHourLabel: UILabel! = {
+    private lazy var dateAndHourLabel: UILabel = {
         let label = UILabel(font: .preferredFont(forTextStyle: .headline), textColor: .black)
         return label
     }()
     
-    private lazy var temperatureLabel: UILabel! = {
+    private lazy var temperatureLabel: UILabel = {
         let label = UILabel(font: .preferredFont(forTextStyle: .headline), textColor: .black)
         return label
     }()
     
-    private lazy var iconImageView: UIImageView! = {
+    private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    init(_ model: ForecastModel) {
-        super.init(frame: .zero)
+    // MARK: - Public
+    func configureCell(_ model: ForecastModel) {
+        // 모델 주입 받아서 셀 드로잉
     }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
+    override func prepareForReuse() {
+        // 셀 재사용 준비
     }
 }
 
