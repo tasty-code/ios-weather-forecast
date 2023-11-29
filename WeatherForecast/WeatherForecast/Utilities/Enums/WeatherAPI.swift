@@ -7,14 +7,14 @@ enum WeatherAPI {
 
 extension WeatherAPI: Requestable, KeyAuthenticatable {
     
-    private func fetchPath(completion: @escaping (URL?) -> Void) {
-        let locationManager = LocationManager()
+    private func fetchPath() -> URL? {
+        let locationManager = LocationManager.shared
         var components = URLComponents(string: "https://api.openweathermap.org")
         
         let coordinate = locationManager.fetchCoordinate()
         
         guard let latitude = coordinate?.latitude, let longitude = coordinate?.longitude, let APIKey = APIKey else {
-            return
+            return nil
         }
         
         components?.queryItems = [
@@ -26,20 +26,15 @@ extension WeatherAPI: Requestable, KeyAuthenticatable {
         switch self {
         case .current:
             components?.path = "/data/2.5/weather"
-            completion(components?.url)
+            return components?.url
         case .fiveDays:
             components?.path = "/data/2.5/forecast"
-            completion(components?.url)
+            return components?.url
         }
-        
     }
     
-    
     var path: URL? {
-        var result: URL?
-        fetchPath { url in
-            result = url
-        }
+        let result: URL? = fetchPath()
         return result
     }
 }

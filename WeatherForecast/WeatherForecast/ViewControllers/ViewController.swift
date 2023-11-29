@@ -1,8 +1,8 @@
 import UIKit
 import CoreLocation
 
-final class ViewController: UIViewController {
-    private let locationManager = LocationManager()
+final class ViewController: UIViewController, CLLocationManagerDelegate {
+    private let locationManager = LocationManager.shared
     private let networker = Networker<Model.CurrentWeather>(request: WeatherAPI.current)
     
     override func viewDidLoad() {

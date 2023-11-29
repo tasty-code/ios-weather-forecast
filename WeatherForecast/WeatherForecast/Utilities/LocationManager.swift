@@ -2,24 +2,23 @@ import CoreLocation
 import UIKit
 
 final class LocationManager: NSObject {
-    let locationManager: CLLocationManager = {
-       let locationManager = CLLocationManager()
-        locationManager.distanceFilter = kCLDistanceFilterNone
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-        return locationManager
-    }()
+    
+    static let shared = LocationManager()
+    private let manager = CLLocationManager()
     weak var delegate: UILocationDelegate?
     
-    override init() {
+    override private init() {
         super.init()
-        locationManager.delegate = self
+        
+        manager.delegate = self
+        manager.distanceFilter = kCLDistanceFilterNone
+        manager.desiredAccuracy = kCLLocationAccuracyKilometer
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
     }
     
     func fetchCoordinate() -> CLLocationCoordinate2D? {
-        if let coordinate = locationManager.location?.coordinate {
-            delegate?.updateUI(coordinate: coordinate)
+        if let coordinate = manager.location?.coordinate {
             return coordinate
         } else {
             return nil
@@ -27,7 +26,7 @@ final class LocationManager: NSObject {
     }
     
     func fetchPlacemark() {
-        guard let coordinate = locationManager.location?.coordinate else {
+        guard let coordinate = manager.location?.coordinate else {
             return
         }
             
