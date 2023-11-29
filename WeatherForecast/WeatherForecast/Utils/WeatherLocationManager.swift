@@ -10,7 +10,7 @@ import CoreLocation
 
 final class WeatherLocationManager: NSObject {
     let locationManger: CLLocationManager = {
-        var locationManager = CLLocationManager()
+        let locationManager = CLLocationManager()
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.startUpdatingLocation()
         locationManager.requestWhenInUseAuthorization()
@@ -28,7 +28,7 @@ final class WeatherLocationManager: NSObject {
         let geocoder = CLGeocoder()
         let locale = Locale(identifier: "ko-kR")
         geocoder.reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude), preferredLocale: locale, completionHandler: { placemarks, error in
-            guard let placemark = placemarks?.first, error == nil else {
+            guard let placemark = placemarks?.last, error == nil else {
                 return
             }
             var address = ""
