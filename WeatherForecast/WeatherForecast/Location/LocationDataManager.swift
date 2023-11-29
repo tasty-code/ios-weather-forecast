@@ -50,7 +50,9 @@ extension LocationDataManager: CLLocationManagerDelegate {
         guard let locationDelegate else { return }
         if let coordinate = locations.last?.coordinate {
             locationDelegate.location(self, didLoad: coordinate)
-            lookUpCurrentAddress(completionHandler: locationDelegate.viewCurrentAddress)
+            lookUpCurrentAddress { placemark in
+                locationDelegate.loaction(self, didComplete: placemark)
+            }
         }
         
         locationManager.stopUpdatingLocation()
