@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import CoreLocation
 
-final class NetworkManager: NSObject, URLSessionDelegate {
+final class WeatherNetworkManager: NSObject, URLSessionDelegate {
     private var receivedData: Data?
     private var weatherType: WeatherType?
+    weak var weatherDelegate: WeatherNetworkManagerDelegate?
     
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
@@ -17,17 +19,21 @@ final class NetworkManager: NSObject, URLSessionDelegate {
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
-    func loadData(type: WeatherType) {
+    func loadWeatherData(type: WeatherType, coord: CLLocationCoordinate2D) {
         weatherType = type
-        guard let url = ApiClient.makeURL(lat: 37.532600, lon: 127.024612, weatherType: type) else { return }
-        let task = session.dataTask(with: url)
-        task.resume()
+        do {
+            let request = try WeatherApiClient.makeRequest(weatherType: type, coord: coord)
+            let task = session.dataTask(with: request)
+            task.resume()
+        } catch {
+            print(error)
+        }
     }
 }
 
 // MARK: - URLSessionDataDelegate
 
-extension NetworkManager: URLSessionDataDelegate {
+extension WeatherNetworkManager: URLSessionDataDelegate {
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping @Sendable (URLSession.ResponseDisposition) -> Void) {
         guard
@@ -56,8 +62,12 @@ extension NetworkManager: URLSessionDataDelegate {
             let receivedData = self.receivedData,
             let weatherType = self.weatherType 
         {
-            let dtoData = try! JSONDecoder().decode(weatherType.model, from: receivedData)
-            print(dtoData)
+            do {
+                let data = try JSONDecoder().decode(weatherType.model, from: receivedData)
+                weatherDelegate?.weather(self, didLoad: data)
+            } catch {
+                print(error)
+            }
         }
     }
 }

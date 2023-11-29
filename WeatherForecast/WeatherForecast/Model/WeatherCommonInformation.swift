@@ -17,8 +17,8 @@ extension WeatherCommonInformation {
         let feelsLike: Double
         let tempMin: Double
         let tempMax: Double
-        let seaLevel: Int
-        let grndLevel: Int
+        let seaLevel: Int?
+        let grndLevel: Int?
         let tempKf: Double?
         let temp: Double
         let pressure: Int
@@ -61,7 +61,7 @@ extension WeatherCommonInformation {
     struct Wind: Decodable {
         let speed: Double
         let deg: Int
-        let gust: Double
+        let gust: Double?
     }
 }
 
