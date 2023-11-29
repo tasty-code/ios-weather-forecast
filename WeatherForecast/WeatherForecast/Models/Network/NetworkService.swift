@@ -1,24 +1,14 @@
 import Foundation
 
 final class NetworkService {
-
-    private func createApiKey(name: String) -> String? {
-        let apiKey = Bundle.main.object(forInfoDictionaryKey: name) as? String
-        return apiKey
-    }
     
-    func getWeatherData<T: Decodable>(keyName: String, weatherType: WeatherType, coordinate: Coordinate, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
+    static func getWeatherData<T: Decodable>(weatherType: WeatherType, coordinate: Coordinate, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
         
-        let apiKey = createApiKey(name: keyName)
-        guard let apiKey = apiKey else {
-            return completionHandler(.failure(.invalidApikeyName))
-        }
-                
-        let url = WeatherURLConfigration(coordinate: coordinate, weatherType: weatherType, apiKey: apiKey)?.makeURL()
+        let url = WeatherURLConfigration(coordinate: coordinate, weatherType: weatherType)?.makeURL()
         guard let url = url else {
             return completionHandler(.failure(.invalidUrl))
         }
-    
+        
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 return completionHandler(

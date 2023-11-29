@@ -5,11 +5,17 @@ protocol APIRequestable {
     var host: String { get }
     var path: String { get }
     var parameters: [String: String]? { get }
-
+    
+    func createApiKey(name: String) -> String?
     func makeURL() -> URL?
 }
     
 extension APIRequestable {
+    func createApiKey(name: String) -> String? {
+        let apiKey = Bundle.main.object(forInfoDictionaryKey: name) as? String
+        return apiKey
+    }
+    
     func makeURL() -> URL? {
         var components = URLComponents()
         

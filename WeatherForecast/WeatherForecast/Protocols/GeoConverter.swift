@@ -2,23 +2,24 @@ import Foundation
 import CoreLocation
 
 protocol GeoConverter {
-    func convertToAddressWith(coordinate: CLLocation)
+    func convertToAddressWith(coordinate: CLLocation, completionHandler: @escaping (Result<String,GeoConverterError>) -> Void )
 }
+
 extension GeoConverter {
-    func convertToAddressWith(coordinate: CLLocation) {
+    
+    func convertToAddressWith(coordinate: CLLocation, completionHandler : @escaping (Result<String,GeoConverterError>) -> Void ) {
         let geoCoder = CLGeocoder()
         
-        geoCoder.reverseGeocodeLocation(coordinate) { (placemarks, error) -> Void in
+        geoCoder.reverseGeocodeLocation(coordinate) { (placemarks, error) in
             if error != nil {
-                print("\(error)")
-                return
+                completionHandler(.failure(.failCovertToAdress))
             }
             
+            guard let placemark = placemarks?.last else { return }
+            guard let name = placemark.subLocality else { return }
             
-            guard let placemark = placemarks?.first else {
-                return
-            }
-            print(placemark.subLocality)
+            completionHandler(.success(name))
+            
         }
     }
 }

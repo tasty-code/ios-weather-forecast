@@ -5,7 +5,6 @@ enum NetworkError: Error {
     case invalidData
     case invalidResponse
     case decodingError
-    case invalidApikeyName
     
     var description: String {
         switch self {
@@ -18,8 +17,6 @@ enum NetworkError: Error {
             return "잘못된 응답입니다."
         case .decodingError:
             return "디코딩 에러입니다."
-        case .invalidApikeyName:
-            return "잘못된 Api Key의 이름입니다."
         }
     }
 }
