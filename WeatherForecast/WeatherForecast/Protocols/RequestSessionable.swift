@@ -1,6 +1,6 @@
 import Foundation
 
-protocol RequestSessionable {
+protocol RequestSessionable: AnyObject {
     func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> RequestDataTaskable
 }
 
