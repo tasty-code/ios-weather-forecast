@@ -8,12 +8,13 @@
 import Foundation
 import CoreLocation
 
-protocol UpdatedLocationDelegate: AnyObject {
-    func update(with data: LocationData)
+protocol LocationUpdateDelegate: AnyObject {
+    func updateWeather(with data: LocationData)
+    func notifyLocationErrorAlert(_ error: Error)
 }
 
 final class LocationManager: NSObject {
-    weak var delegate: UpdatedLocationDelegate?
+    weak var delegate: LocationUpdateDelegate?
     private let locationManager: CLLocationManager = CLLocationManager()
     
     override init() {
@@ -30,17 +31,15 @@ extension LocationManager: CLLocationManagerDelegate {
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
-                print("주소 가져오기 실패: \(error.localizedDescription)")
-            }
-            
-            guard let placemark = placemarks?.last else {
-                print("주소를 찾을 수 없습니다.")
+                self?.delegate?.notifyLocationErrorAlert(error)
                 return
             }
+        
+            guard let placemark = placemarks?.last else { return }
             
             guard let address = self?.combineAddress(with: placemark) else { return }
             
-            self?.delegate?.update(with: LocationData(coordinate: location.coordinate,
+            self?.delegate?.updateWeather(with: LocationData(coordinate: location.coordinate,
                                                       address: address))
         }
     }
@@ -55,7 +54,7 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("위치 업데이트 실패: \(error.localizedDescription)")
+        delegate?.notifyLocationErrorAlert(error)
     }
 }
 
