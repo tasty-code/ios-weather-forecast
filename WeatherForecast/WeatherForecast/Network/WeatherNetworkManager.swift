@@ -11,6 +11,7 @@ import CoreLocation
 final class WeatherNetworkManager: NSObject, URLSessionDelegate {
     private var receivedData: Data?
     private var weatherType: WeatherType?
+    weak var weatherDelegate: WeatherNetworkManagerDelegate?
     
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
@@ -62,8 +63,8 @@ extension WeatherNetworkManager: URLSessionDataDelegate {
             let weatherType = self.weatherType 
         {
             do {
-                let dtoData = try JSONDecoder().decode(weatherType.model, from: receivedData)
-                print(dtoData)
+                let data = try JSONDecoder().decode(weatherType.model, from: receivedData)
+                weatherDelegate?.weather(self, didLoad: data)
             } catch {
                 print(error)
             }

@@ -7,12 +7,13 @@
 import UIKit
 import CoreLocation
 final class WeatherViewController: UIViewController {
-    private let networkManager = WeatherNetworkManager()
+    private let weatherNetworkManager = WeatherNetworkManager()
     private let locationDataManager = LocationDataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         locationDataManager.locationDelegate = self
+        weatherNetworkManager.weatherDelegate = self
     }
 }
 
@@ -21,7 +22,7 @@ final class WeatherViewController: UIViewController {
 extension WeatherViewController: LocationDataManagerDelegate {
     
     func location(_ manager: LocationDataManager, didLoad coordinate: CLLocationCoordinate2D) {
-        networkManager.loadWeatherData(type: WeatherType.weatherToday, coord: coordinate)
+        weatherNetworkManager.loadWeatherData(type: WeatherType.forecast, coord: coordinate)
     }
     
     func viewCurrentAddress(placemark: CLPlacemark?) {
@@ -64,5 +65,13 @@ extension WeatherViewController: LocationDataManagerDelegate {
         requestLocationServiceAlert.addAction(openSettingAction)
         requestLocationServiceAlert.addAction(exitAction)
         present(requestLocationServiceAlert, animated: true)
+    }
+}
+
+// MARK: - WeatherNetworkManagerDelegate
+
+extension WeatherViewController: WeatherNetworkManagerDelegate {
+    func weather<T>(_ manager: WeatherNetworkManager, didLoad data: T) where T : Decodable {
+        print(data)
     }
 }
