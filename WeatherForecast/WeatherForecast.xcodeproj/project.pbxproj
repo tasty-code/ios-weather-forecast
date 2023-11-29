@@ -103,6 +103,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		662C70452B170EB3007D1601 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				661EAE052B104386004E8D4C /* NetworkError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
 		665CEB562B0F2AD800CF3FC6 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,7 +143,6 @@
 			children = (
 				66FD8CF42B0C7065008B698D /* WeatherApiClient.swift */,
 				66FD8CF62B0C7388008B698D /* WeatherNetworkManager.swift */,
-				661EAE052B104386004E8D4C /* NetworkError.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -163,6 +170,7 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				662C70452B170EB3007D1601 /* Error */,
 				665CEB592B0F3FE500CF3FC6 /* Delegate */,
 				665CEB552B0F29DA00CF3FC6 /* Secrets.xcconfig */,
 				665CEB562B0F2AD800CF3FC6 /* Util */,

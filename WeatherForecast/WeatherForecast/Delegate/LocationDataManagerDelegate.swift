@@ -10,4 +10,5 @@ import CoreLocation
 protocol LocationDataManagerDelegate: AnyObject {
     func location(_ manager: LocationDataManager, didLoad coordinate: CLLocationCoordinate2D)
     func viewCurrentAddress(placemark: CLPlacemark?)
+    func viewRequestLocationSettingAlert()
 }

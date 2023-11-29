@@ -42,4 +42,27 @@ extension WeatherViewController: LocationDataManagerDelegate {
             print(address)
         }
     }
+    
+    func viewRequestLocationSettingAlert() {
+        let requestLocationServiceAlert = UIAlertController(
+            title: "위치 정보 이용",
+            message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.",
+            preferredStyle: .alert
+        )
+        let openSettingAction = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
+            if let appSetting = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(appSetting)
+            }
+        }
+        let exitAction = UIAlertAction(title: "종료", style: .destructive) { _ in
+            UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                exit(0)
+            }
+        }
+        
+        requestLocationServiceAlert.addAction(openSettingAction)
+        requestLocationServiceAlert.addAction(exitAction)
+        present(requestLocationServiceAlert, animated: true)
+    }
 }

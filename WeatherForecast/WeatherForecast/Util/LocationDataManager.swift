@@ -6,6 +6,7 @@
 //
 
 import CoreLocation
+import UIKit
 
 final class LocationDataManager : NSObject {
     private var locationManager = CLLocationManager()
@@ -33,14 +34,10 @@ extension LocationDataManager: CLLocationManagerDelegate {
             switch manager.authorizationStatus {
             case .authorizedWhenInUse:
                 manager.startUpdatingLocation()
-                break
             case .restricted, .denied:
-                // showRequestLocationServiceAlert()
-                // disableLocationFeatures()
-                break
+                locationDelegate?.viewRequestLocationSettingAlert()
             case .notDetermined:
                 manager.requestWhenInUseAuthorization()
-                break
             default:
                 break
             }
