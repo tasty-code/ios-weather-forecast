@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>&quot;123123&quot;</string>
+	<string>&quot;위치를 통해 날씨 정보를 확인합니다.&quot;</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>&quot;123123123&quot;</string>
+	<string>&quot;위치를 통해 날씨 정보를 확인합니다.&quot;</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>&quot;위치 탐색을 허용하시겠습니까?&quot;</string>
 	<key>API_KEY</key>

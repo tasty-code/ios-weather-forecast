@@ -1,7 +1,7 @@
 import Foundation
 
 struct WeatherURLConfigration: APIRequestable {
-
+    
     var scheme: String = "https"
     var host: String = "api.openweathermap.org"
     var path: String
@@ -11,7 +11,7 @@ struct WeatherURLConfigration: APIRequestable {
         return apiKey
     }
     
-    init?(coordinate: Coordinate, weatherType: WeatherType) {
+    init(coordinate: Coordinate, weatherType: WeatherType.RawValue) {
         self.path = "/data/2.5/\(weatherType)"
         parameters = [
             "lon": "\(coordinate.longitude)",

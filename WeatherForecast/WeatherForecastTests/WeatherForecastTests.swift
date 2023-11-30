@@ -7,7 +7,7 @@ class WeatherForecastTests: XCTestCase {
     
     func test_잘못된API_KEY_입력() throws {
         var errorMessage: String = ""
-        NetworkService().getWeatherData(keyName: "API_KE", weatherType: .current, coordinate: coordinate) { (result: Result<CurrentWeather, NetworkError>) in
+        WeatherNetworkService().getWeatherData(keyName: "API_KE", weatherType: .current, coordinate: coordinate) { (result: Result<CurrentWeather, NetworkError>) in
             switch result {
             case .success(_ ):
                 return
@@ -23,7 +23,7 @@ class WeatherForecastTests: XCTestCase {
         let city = "Gyeonggi-do"
         var name = ""
         let expectation = XCTestExpectation(description: "APIPrivoderTaskExpectation")
-        NetworkService().getWeatherData(keyName: "API_KEY", weatherType: .forecast, coordinate: coordinate) { (result: Result<ForecastWeather, NetworkError>) in
+        WeatherNetworkService().getWeatherData(keyName: "API_KEY", weatherType: .forecast, coordinate: coordinate) { (result: Result<ForecastWeather, NetworkError>) in
             switch result {
             case .success(let weatherInformation ):
                 name = weatherInformation.city.name
