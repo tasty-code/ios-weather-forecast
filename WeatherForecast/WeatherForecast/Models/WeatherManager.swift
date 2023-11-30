@@ -11,7 +11,6 @@ import CoreLocation
 protocol WeatherManagerDelegate: AnyObject {
     func showAlertWhenNoAuthorization()
     func updateCollectionViewUI()
-    func updateHeaderUI()
 }
 
 final class WeatherManager: NSObject {
@@ -65,12 +64,7 @@ final class WeatherManager: NSObject {
                 self.cacheData[endpoint] = success
                 
                 DispatchQueue.main.async {
-                    switch endpoint {
-                    case .weather:
-                        self.delegate?.updateHeaderUI()
-                    case .forecast:
-                        self.delegate?.updateCollectionViewUI()
-                    }
+                    self.delegate?.updateCollectionViewUI()
                 }
                 
             case .failure:

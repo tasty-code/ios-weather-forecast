@@ -13,14 +13,14 @@ class WeatherTimeViewCell: UICollectionViewCell {
     // MARK: - private property
     private let timeLabel = {
         let label = UILabel()
-        
+        label.textColor = .white
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return label
     }()
-
+    
     private let temperatureLabel = {
         let label = UILabel()
-        
+        label.textColor = .white
         return label
     }()
     
@@ -49,9 +49,12 @@ class WeatherTimeViewCell: UICollectionViewCell {
         stack.distribution = .fill
         
         stack.translatesAutoresizingMaskIntoConstraints = false
-        
         return stack
     }()
+    
+    private let borderLine = {
+        let line = UIView()
+    }
     
     // MARK: - initializer
 
@@ -84,11 +87,19 @@ class WeatherTimeViewCell: UICollectionViewCell {
     
     // MARK: - public method
     func setTimeLabel(_ text: String) {
-        timeLabel.text = text
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko-KR")
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        guard let date = dateFormatter.date(from: text) else { return }
+        dateFormatter.dateFormat = "MM/dd(E) HH시"
+        
+        let textString = dateFormatter.string(from: date)
+        timeLabel.text = textString
     }
     
     func setTemperatureLabel(_ text: Double) {
-        temperatureLabel.text = String(text) + "℃"
+        temperatureLabel.text = String(text) + "°"
     }
     
     func setIconImage(_ id: String) {
