@@ -21,11 +21,11 @@ final class WeatherViewController: UIViewController {
 
 extension WeatherViewController: LocationDataManagerDelegate {
     
-    func location(_ manager: LocationDataManager, didLoad coordinate: CLLocationCoordinate2D) {
+    func location(_ manager: LocationDataManager, didLoadCoordinate coordinate: CLLocationCoordinate2D) {
         weatherNetworkManager.loadWeatherData(type: WeatherType.forecast, coord: coordinate)
     }
     
-    func loaction(_ manager: LocationDataManager, didComplete placemark: CLPlacemark?) {
+    func loaction(_ manager: LocationDataManager, didCompletePlcamark placemark: CLPlacemark?) {
         guard let placemark else {
             print("can't look up current address")
             return

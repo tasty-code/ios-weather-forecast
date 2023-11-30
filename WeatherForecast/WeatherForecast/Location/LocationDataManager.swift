@@ -49,9 +49,9 @@ extension LocationDataManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locationDelegate else { return }
         if let coordinate = locations.last?.coordinate {
-            locationDelegate.location(self, didLoad: coordinate)
+            locationDelegate.location(self, didLoadCoordinate: coordinate)
             lookUpCurrentAddress { placemark in
-                locationDelegate.loaction(self, didComplete: placemark)
+                locationDelegate.loaction(self, didCompletePlcamark: placemark)
             }
         }
         
