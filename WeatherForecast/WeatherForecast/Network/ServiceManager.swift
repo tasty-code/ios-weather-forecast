@@ -8,9 +8,11 @@
 import Foundation
 
 final class ServiceManager {
-    static let shared = ServiceManager()
+    private let session: URLSession
     
-    private init() {}
+    init(session: URLSession) {
+        self.session = session
+    }
     
     private enum ServiceError: Error {
         case failedToCreateRequest
@@ -27,7 +29,7 @@ final class ServiceManager {
                 return
             }
             
-            let task = URLSession.shared.dataTask(with: urlRequest) { data, _ , error in
+            let task = session.dataTask(with: urlRequest) { data, _ , error in
                 guard let data = data, error == nil else {
                     completion(.failure(error ?? ServiceError.failedToGetData))
                     return

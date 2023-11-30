@@ -50,7 +50,8 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        guard let forecast = weatherManager.cacheData[.forecast] as? FiveDayForecast else { return 40 }
+        return forecast.cnt
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -59,7 +60,14 @@ extension ViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.backgroundColor = .red
+        guard let forecast = weatherManager.cacheData[.forecast] as? FiveDayForecast else { return cell }
+        cell.setTimeLabel(forecast.list[indexPath.row].dateTimeText)
+        cell.setTemperatureLabel(forecast.list[indexPath.row].main.temp!)
+        
+        guard let weather = forecast.list[indexPath.row].weather.first else { return cell }
+        DispatchQueue.global().async {
+            cell.setIconImage(weather.icon)
+        }
         
         return cell
     }
@@ -78,5 +86,12 @@ extension ViewController: WeatherManagerDelegate {
         alert.addAction(okAction)
         alert.addAction(noAction)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func updateCollectionViewUI() {
+        self.collectionView.reloadData()
+    }
+    func updateHeaderUI() {
+        self.collectionView.reloadData()
     }
 }

@@ -13,7 +13,6 @@ class WeatherTimeViewCell: UICollectionViewCell {
     // MARK: - private property
     private let timeLabel = {
         let label = UILabel()
-        label.text = "TEST-001"
         
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return label
@@ -21,16 +20,16 @@ class WeatherTimeViewCell: UICollectionViewCell {
 
     private let temperatureLabel = {
         let label = UILabel()
-        label.text = "TEST-002"
-        
         
         return label
     }()
     
     private let iconImageView = {
         let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
         
-        imageView.image = UIImage(named: "test")
+        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return imageView
     }()
     
@@ -50,7 +49,6 @@ class WeatherTimeViewCell: UICollectionViewCell {
         stack.distribution = .fill
         
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.backgroundColor = .darkGray
         
         return stack
     }()
@@ -79,7 +77,30 @@ class WeatherTimeViewCell: UICollectionViewCell {
             containerStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             containerStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             containerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            iconImageView.widthAnchor.constraint(equalToConstant: 40)
+            iconImageView.widthAnchor.constraint(equalToConstant: 40),
+            iconImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
+    }
+    
+    // MARK: - public method
+    func setTimeLabel(_ text: String) {
+        timeLabel.text = text
+    }
+    
+    func setTemperatureLabel(_ text: Double) {
+        temperatureLabel.text = String(text) + "℃"
+    }
+    
+    func setIconImage(_ id: String) {
+        let url = URL(string: "https://openweathermap.org/img/wn/\(id)@2x.png")
+        do {
+            let data = try Data(contentsOf: url!)
+            
+            DispatchQueue.main.async {
+                self.iconImageView.image = UIImage(data: data)
+            }
+        } catch let error {
+            print(error)
+        }
     }
 }

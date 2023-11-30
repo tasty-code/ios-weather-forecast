@@ -10,9 +10,14 @@ import CoreLocation
 
 protocol WeatherManagerDelegate: AnyObject {
     func showAlertWhenNoAuthorization()
+    func updateCollectionViewUI()
+    func updateHeaderUI()
 }
 
 final class WeatherManager: NSObject {
+    private(set) var cacheData: [Endpoint: Decodable] = [:]
+    
+    private var networkManager: ServiceManager = ServiceManager(session: URLSession(configuration: .default))
     
     weak var delegate: WeatherManagerDelegate?
     
@@ -25,7 +30,7 @@ final class WeatherManager: NSObject {
         return locationManager.location?.coordinate.latitude.description
     }
     
-    var currentAddress: String?
+    private(set) var currentAddress: String?
     
     override init() {
         locationManager = CLLocationManager()
@@ -44,25 +49,37 @@ final class WeatherManager: NSObject {
         locationManager.stopUpdatingLocation()
     }
     
+    // MARK: - private method
+    
     private func fetchWeatherData<T: Decodable>(endpoint: Endpoint, expect: T.Type) {
         guard let latitude = latitude, let longitude = longitude else {
             return
         }
         
-        let request = GetRequest(endpoint: endpoint, queryParameters: [URLQueryItem(name: "lat", value: latitude), URLQueryItem(name: "lon", value: longitude), URLQueryItem(name: "appid", value: Environment.apiKey)]).makeURLrequest()
-        ServiceManager.shared.execute(request, expecting: expect) { result in
-            
+        let request = GetRequest(endpoint: endpoint, queryParameters: [URLQueryItem(name: "lat", value: latitude), URLQueryItem(name: "lon", value: longitude), URLQueryItem(name: "units", value: "metric"), URLQueryItem(name: "appid", value: Environment.apiKey)]).makeURLrequest()
+        
+        // 통신
+        networkManager.execute(request, expecting: expect) { result in
             switch result {
             case .success(let success):
+                self.cacheData[endpoint] = success
                 
-                // 데이터 확인용
-                print(type(of: success))
+                DispatchQueue.main.async {
+                    switch endpoint {
+                    case .weather:
+                        self.delegate?.updateHeaderUI()
+                    case .forecast:
+                        self.delegate?.updateCollectionViewUI()
+                    }
+                }
+                
             case .failure:
                 print("모델 객체에 넣기 실패", result)
                 break
             }
         }
     }
+
     
     private func getCurrentAddress() {
         var currentAddress = ""
@@ -79,12 +96,8 @@ final class WeatherManager: NSObject {
             if let administrativeArea: String = place.administrativeArea { currentAddress.append(administrativeArea + " ") }
             
             if let locality: String = place.locality { currentAddress.append(locality + " ") }
-            
             if let subLocality: String = place.subLocality { currentAddress.append(subLocality + " ") }
-            
-            // 데이터 확인용
-            print(currentAddress)
-            
+                        
             self.currentAddress = currentAddress
         }
     }

@@ -20,6 +20,8 @@ class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     private let detailStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        
+        stackView.backgroundColor = .blue
         return stackView
     }()
     
@@ -30,21 +32,21 @@ class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     
     private let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = "용산구"
+        label.text = "-"
         label.textColor = .white
         return label
     }()
     
     private let maxMinTempertureLabel: UILabel = {
         let label = UILabel()
-        label.text = "최저"
+        label.text = "--"
         label.textColor = .white
         return label
     }()
     
     private let tempertureLabel: UILabel = {
         let label = UILabel()
-        label.text = "11.0"
+        label.text = "---"
         label.textColor = .white
         label.font = .systemFont(ofSize: 24)
         return label
