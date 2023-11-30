@@ -9,26 +9,26 @@ import UIKit
 
 extension UIStackView {
     convenience init(axis: NSLayoutConstraint.Axis, alignment: UIStackView.Alignment = .fill, distribution: UIStackView.Distribution = .fill, spacing: CGFloat = 0.0) {
-            self.init()
-            
-            self.axis = axis
-            self.alignment = alignment
-            self.distribution = distribution
-            self.spacing = spacing
-            self.translatesAutoresizingMaskIntoConstraints = false
-        }
+        self.init()
         
-        func addArrangedSubviews(_ views: [UIView]) {
-            views.forEach {
-                self.addArrangedSubview($0)
-            }
+        self.axis = axis
+        self.alignment = alignment
+        self.distribution = distribution
+        self.spacing = spacing
+        self.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func addArrangedSubviews(_ views: [UIView]) {
+        views.forEach {
+            self.addArrangedSubview($0)
         }
-        
-        func removeArrangedSubviews(_ views: [UIView]) {
-            views.forEach {
-                self.removeArrangedSubview($0)
-                $0.removeFromSuperview()
-            }
+    }
+    
+    func removeArrangedSubviews(_ views: [UIView]) {
+        views.forEach {
+            self.removeArrangedSubview($0)
+            $0.removeFromSuperview()
         }
+    }
 }
 

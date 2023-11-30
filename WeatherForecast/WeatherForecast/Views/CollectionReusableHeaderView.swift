@@ -11,6 +11,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
     // MARK: Constants
     private enum Constants {
         static let stackViewDefaultSpacing: CGFloat = 4
+        static let labelDefaultText: String = "-"
     }
     
     // MARK: Dependencies
@@ -24,8 +25,8 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
     }()
     
     private lazy var labelsStackView: UIStackView = {
-        let stackView = UIStackView(axis: .vertical, spacing: Constants.stackViewDefaultSpacing)
-        stackView.alignment = .leading
+        let stackView = UIStackView(axis: .vertical, alignment: .leading, distribution: .fillProportionally, spacing: Constants.stackViewDefaultSpacing)
+        stackView.backgroundColor = .gray
         return stackView
     }()
     
@@ -33,21 +34,25 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = .orange
         return imageView
     }()
     
     private lazy var addressLabel: UILabel = {
-        let label = UILabel(font: .preferredFont(forTextStyle: .callout), textColor: .black)
+        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .black)
+        label.backgroundColor = .green
         return label
     }()
     
     private lazy var maxAndMinTemperatureLabel: UILabel = {
-        let label = UILabel(font: .preferredFont(forTextStyle: .callout), textColor: .black)
+        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .black)
+        label.backgroundColor = .brown
         return label
     }()
     
     private lazy var temperatureLabel: UILabel = {
-        let label = UILabel(font: .preferredFont(forTextStyle: .largeTitle), textColor: .black)
+        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .largeTitle), textColor: .black)
+        label.backgroundColor = .magenta
         return label
     }()
     
@@ -84,10 +89,12 @@ extension CollectionReusableHeaderView {
         NSLayoutConstraint.activate([
             iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             iconImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
+            iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor),
         ])
         
         NSLayoutConstraint.activate([
             labelsStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
+            labelsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             labelsStackView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
         ])
     }

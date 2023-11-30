@@ -10,7 +10,7 @@ import CoreLocation
 final class ViewController: UIViewController {
     // MARK: - Constants
     private enum Constants {
-        static let collectionReusableHeaderViewHeightRatio: CGFloat = 6
+        static let collectionReusableHeaderViewHeightRatio: CGFloat = 8
         static let collectionViewDefaultPadding: CGFloat = 6
     }
     
@@ -62,8 +62,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 // MARK: UICollectionViewDelegateFlowLayout Confirmation
 extension ViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: 100, height: 100)
-//        return CGSize(width: collectionView.bounds.width, height: self.view.bounds.height / Constants.collectionReusableHeaderViewHeightRatio)
+        return CGSize(width: collectionView.bounds.width, height: self.view.bounds.height / Constants.collectionReusableHeaderViewHeightRatio)
     }
 }
 
