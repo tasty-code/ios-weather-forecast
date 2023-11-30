@@ -26,12 +26,6 @@ final class NetworkManager {
         }
     }
     
-    static func makeURL(_ components: URLComponents?, queries: [URLQueryItem]) -> URL? {
-        var components = components
-        components?.queryItems = queries
-        return components?.url
-    }
-    
     static func downloadData(url: URL, _ completionHandler: @escaping (Result<Data, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

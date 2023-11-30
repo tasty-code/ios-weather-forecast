@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		040AB0372B0DCB8900A1EA78 /* WeatherForecastDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040AB0362B0DCB8900A1EA78 /* WeatherForecastDataService.swift */; };
 		043F174E2B0AEB1800084087 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F174D2B0AEB1800084087 /* WeatherModel.swift */; };
 		043F17502B0AF10E00084087 /* ForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F174F2B0AF10E00084087 /* ForecastModel.swift */; };
 		043F17532B0AF30800084087 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F17522B0AF30800084087 /* NetworkManager.swift */; };
@@ -20,6 +19,13 @@
 		04AAAB612B16FFBD00A541EC /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB602B16FFBD00A541EC /* UIView.swift */; };
 		04AAAB632B171CCF00A541EC /* CollectionReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB622B171CCF00A541EC /* CollectionReusableHeaderView.swift */; };
 		04AAAB652B1735CD00A541EC /* UIStackView+convenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB642B1735CD00A541EC /* UIStackView+convenienceInit.swift */; };
+		04AAAB912B1878EB00A541EC /* DataDownloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB902B1878EB00A541EC /* DataDownloadable.swift */; };
+		04AAAB932B18792600A541EC /* JSONDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB922B18792600A541EC /* JSONDecodable.swift */; };
+		04AAAB952B187CF300A541EC /* WeatherDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB942B187CF300A541EC /* WeatherDataService.swift */; };
+		04AAAB9A2B187DCB00A541EC /* ReverseGeocodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB992B187DCB00A541EC /* ReverseGeocodable.swift */; };
+		04AAAB9D2B18935E00A541EC /* JSONFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB9C2B18935E00A541EC /* JSONFormatter.swift */; };
+		04AAABA52B189EB000A541EC /* DataServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAABA42B189EB000A541EC /* DataServiceDelegate.swift */; };
+		04AAABA72B189F2C00A541EC /* ForecastDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAABA62B189F2C00A541EC /* ForecastDataService.swift */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
 		C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */; };
 		C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */; };
@@ -48,7 +54,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		040AB0362B0DCB8900A1EA78 /* WeatherForecastDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastDataService.swift; sourceTree = "<group>"; };
 		043F174D2B0AEB1800084087 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		043F174F2B0AF10E00084087 /* ForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastModel.swift; sourceTree = "<group>"; };
 		043F17522B0AF30800084087 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -61,6 +66,13 @@
 		04AAAB602B16FFBD00A541EC /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		04AAAB622B171CCF00A541EC /* CollectionReusableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionReusableHeaderView.swift; sourceTree = "<group>"; };
 		04AAAB642B1735CD00A541EC /* UIStackView+convenienceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+convenienceInit.swift"; sourceTree = "<group>"; };
+		04AAAB902B1878EB00A541EC /* DataDownloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDownloadable.swift; sourceTree = "<group>"; };
+		04AAAB922B18792600A541EC /* JSONDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecodable.swift; sourceTree = "<group>"; };
+		04AAAB942B187CF300A541EC /* WeatherDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataService.swift; sourceTree = "<group>"; };
+		04AAAB992B187DCB00A541EC /* ReverseGeocodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseGeocodable.swift; sourceTree = "<group>"; };
+		04AAAB9C2B18935E00A541EC /* JSONFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONFormatter.swift; sourceTree = "<group>"; };
+		04AAABA42B189EB000A541EC /* DataServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServiceDelegate.swift; sourceTree = "<group>"; };
+		04AAABA62B189F2C00A541EC /* ForecastDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastDataService.swift; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -105,7 +117,8 @@
 		040AB0352B0DCB6600A1EA78 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				040AB0362B0DCB8900A1EA78 /* WeatherForecastDataService.swift */,
+				04AAAB9F2B18937200A541EC /* JSONFormatter */,
+				04AAAB9E2B18936500A541EC /* DataService */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -124,7 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				043F17522B0AF30800084087 /* NetworkManager.swift */,
-				043F175D2B0B721F00084087 /* LocationManager.swift */,
+				04AAAB962B187DAB00A541EC /* Location */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -147,6 +160,83 @@
 				04AAAB622B171CCF00A541EC /* CollectionReusableHeaderView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		04AAAB8E2B1878C800A541EC /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				04AAAB902B1878EB00A541EC /* DataDownloadable.swift */,
+				04AAABA42B189EB000A541EC /* DataServiceDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		04AAAB8F2B1878D000A541EC /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				04AAAB942B187CF300A541EC /* WeatherDataService.swift */,
+				04AAABA62B189F2C00A541EC /* ForecastDataService.swift */,
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
+		04AAAB962B187DAB00A541EC /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				04AAAB982B187DBA00A541EC /* Implementations */,
+				04AAAB972B187DB400A541EC /* Protocols */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		04AAAB972B187DB400A541EC /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				04AAAB992B187DCB00A541EC /* ReverseGeocodable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		04AAAB982B187DBA00A541EC /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				043F175D2B0B721F00084087 /* LocationManager.swift */,
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
+		04AAAB9E2B18936500A541EC /* DataService */ = {
+			isa = PBXGroup;
+			children = (
+				04AAAB8F2B1878D000A541EC /* Implementations */,
+				04AAAB8E2B1878C800A541EC /* Protocols */,
+			);
+			path = DataService;
+			sourceTree = "<group>";
+		};
+		04AAAB9F2B18937200A541EC /* JSONFormatter */ = {
+			isa = PBXGroup;
+			children = (
+				04AAABA12B18939800A541EC /* Implementations */,
+				04AAABA02B18939000A541EC /* Protocols */,
+			);
+			path = JSONFormatter;
+			sourceTree = "<group>";
+		};
+		04AAABA02B18939000A541EC /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				04AAAB922B18792600A541EC /* JSONDecodable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		04AAABA12B18939800A541EC /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				04AAAB9C2B18935E00A541EC /* JSONFormatter.swift */,
+			);
+			path = Implementations;
 			sourceTree = "<group>";
 		};
 		C79C8CE725ADDDF200EEE3F1 = {
@@ -351,12 +441,18 @@
 				04AAAB632B171CCF00A541EC /* CollectionReusableHeaderView.swift in Sources */,
 				043F175E2B0B721F00084087 /* LocationManager.swift in Sources */,
 				04AAAB652B1735CD00A541EC /* UIStackView+convenienceInit.swift in Sources */,
-				040AB0372B0DCB8900A1EA78 /* WeatherForecastDataService.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
+				04AAAB952B187CF300A541EC /* WeatherDataService.swift in Sources */,
+				04AAAB912B1878EB00A541EC /* DataDownloadable.swift in Sources */,
+				04AAAB932B18792600A541EC /* JSONDecodable.swift in Sources */,
+				04AAABA72B189F2C00A541EC /* ForecastDataService.swift in Sources */,
 				CB63CCBF2B0B3E03000A2E12 /* ApiName.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
+				04AAABA52B189EB000A541EC /* DataServiceDelegate.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
+				04AAAB9D2B18935E00A541EC /* JSONFormatter.swift in Sources */,
 				043F17562B0AF97300084087 /* Bundle+APIKey.swift in Sources */,
+				04AAAB9A2B187DCB00A541EC /* ReverseGeocodable.swift in Sources */,
 				04AAAB612B16FFBD00A541EC /* UIView.swift in Sources */,
 				043F175C2B0B6C9B00084087 /* ServiceType.swift in Sources */,
 				043F17502B0AF10E00084087 /* ForecastModel.swift in Sources */,

@@ -14,7 +14,7 @@ final class ViewController: UIViewController {
         static let collectionViewDefaultPadding: CGFloat = 6
     }
     
-    //MARK: - View Components
+    // MARK: - View Components
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -24,8 +24,15 @@ final class ViewController: UIViewController {
         return collectionView
     }()
     
-    private lazy var dataService: WeatherForecastDataServiceProtocol = WeatherForecastDataService(dataServiceDelegate: self)
+    // MARK: - Dependencies
+    private lazy var weatherDataService: DataDownloadable = WeatherDataService(dataServiceDelegate: self)
+    private lazy var forecastDataService: DataDownloadable = ForecastDataService(dataServiceDelegate: self)
     private let locationManager: LocationManager = LocationManager()
+    
+    // MARK: - Properties
+    private var weatherModel: WeatherModel? = nil
+    private var forecastModel: ForecastModel? = nil
+    private var currentPlacemark: CLPlacemark? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,12 +48,17 @@ final class ViewController: UIViewController {
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        guard let sectionCount = forecastModel?.list?.count else { return 0 }
+        return sectionCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.reuseIdentifier, for: indexPath) as? CollectionViewCell else {
             return CollectionViewCell()
+        }
+        
+        if let listItem = forecastModel?.list?[indexPath.item] {
+            cell.configureCell(listItem)
         }
         
         return cell
@@ -84,24 +96,25 @@ extension ViewController {
 
 // MARK: DataServiceDelegate Conformation
 extension ViewController: DataServiceDelegate {
-    func notifyWeatherModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?) {
-        
+    func notifyWeatherModelDidUpdate(dataService: DataDownloadable, model: WeatherModel) {
+        weatherModel = model
     }
     
-    func notifyForecastModelDidUpdate(dataService: WeatherForecastDataService, model: Decodable?) {
-        
-    }
-    
-    func notifyPlacemarkDidUpdate(dataService: WeatherForecastDataService, currentPlacemark: CLPlacemark?) {
-        
+    func notifyForecastModelDidUpdate(dataService: DataDownloadable, model: ForecastModel) {
+        forecastModel = model
     }
 }
 
 // MARK: LocationManagerDelegate Conformation
 extension ViewController: LocationManagerDelegate {
+    func didUpdatePlacemark(locationManager: LocationManager, placemark: CLPlacemark) {
+        currentPlacemark = placemark
+    }
+    
     func didUpdateLocation(locationManager: LocationManager, location: CLLocation) {
-        dataService.fetchData(.weather, location: location)
-        dataService.fetchData(.forecast, location: location)
-        dataService.reverseGeocodeLocation(location: location)
+        guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else { return }
+        locationManager.reverseGeocodeLocation(location: location)
+        weatherDataService.downloadData(serviceType: .weather(coordinate: location.coordinate, apiKey: apiKey))
+        forecastDataService.downloadData(serviceType: .forecast(coordinate: location.coordinate, apiKey: apiKey))
     }
 }
