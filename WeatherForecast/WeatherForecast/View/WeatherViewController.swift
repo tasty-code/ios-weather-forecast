@@ -64,4 +64,7 @@ extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
             }
         }
     }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
+    }
 }
