@@ -5,46 +5,32 @@ final class LocationManager: NSObject {
     
     static let shared = LocationManager()
     private let manager = CLLocationManager()
-    weak var delegate: UILocationDelegate?
     
-    override private init() {
+    typealias LocationCompletion = (Result<(CLLocationCoordinate2D, CLPlacemark), LocationError>) -> Void
+    private var locationCompletion: LocationCompletion?
+    
+    override init() {
         super.init()
         
         manager.delegate = self
         manager.distanceFilter = kCLDistanceFilterNone
         manager.desiredAccuracy = kCLLocationAccuracyKilometer
         manager.requestWhenInUseAuthorization()
-        manager.startUpdatingLocation()
     }
     
     func fetchCoordinate() -> CLLocationCoordinate2D? {
-        if let coordinate = manager.location?.coordinate {
-            return coordinate
-        } else {
+        guard let coordinate = manager.location?.coordinate else {
             return nil
         }
+        
+        return coordinate
     }
     
-    func fetchPlacemark() {
-        guard let coordinate = manager.location?.coordinate else {
-            return
-        }
-            
-        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        let geocoder = CLGeocoder()
-        let locale = Locale(identifier: "Ko-kr")
-        
-        geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { [weak self] placemarks, _ in
-            guard let placemarks = placemarks,
-                  let address = placemarks.last else {
-                return
-            }
-            self?.delegate?.update(placemark: address)
-        }
+    func request(completion: @escaping LocationCompletion){
+        manager.startUpdatingLocation()
+        locationCompletion = completion
     }
-}
-
-extension LocationManager: CLLocationManagerDelegate {
+    
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case . denied, .notDetermined:
@@ -57,19 +43,51 @@ extension LocationManager: CLLocationManagerDelegate {
             print("default from LocationManager")
         }
     }
-    
+}
+
+extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let coordinate = manager.location?.coordinate else {
+        guard let completion = self.locationCompletion else {
             return
+        } 
+        
+        if manager.location?.coordinate == nil {
+            completion(.failure(LocationError.cooridnateError))
         }
         
         manager.stopUpdatingLocation()
-        delegate?.update(coordinate: coordinate)
         fetchPlacemark()
     }
     
+    func fetchPlacemark() {
+        guard let completion = self.locationCompletion else {
+            return
+        }
+        
+        guard let coordinate = manager.location?.coordinate else {
+            return completion(.failure(LocationError.cooridnateError))
+        }
+            
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        let geocoder = CLGeocoder()
+        let locale = Locale(identifier: "Ko-kr")
+        
+        geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { placemarks, _ in
+            
+            guard let placemarks = placemarks,
+                  let address = placemarks.last else {
+                return completion(.failure(LocationError.placemarkError))
+            }
+            
+            completion(.success((coordinate, address)))
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("LocationManager - locationManager")
-        print(error)
+        guard let completion = self.locationCompletion else {
+            return
+        }
+        
+        completion(.failure(LocationError.unknownError(error)))
     }
 }
