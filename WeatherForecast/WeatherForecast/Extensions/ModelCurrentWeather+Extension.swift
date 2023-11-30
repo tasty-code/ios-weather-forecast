@@ -49,8 +49,8 @@ extension Model.CurrentWeather {
     }
     
     struct Rain: Decodable {
-        let oneHour: Int?
-        let threeHour: Int?
+        let oneHour: Double?
+        let threeHour: Double?
         
         enum CodingKeys: String, CodingKey {
             case oneHour = "1h"
@@ -59,8 +59,8 @@ extension Model.CurrentWeather {
     }
     
     struct Snow: Decodable {
-        let oneHour: Int?
-        let threeHour: Int?
+        let oneHour: Double?
+        let threeHour: Double?
         
         enum CodingKeys: String, CodingKey {
             case oneHour = "1h"
