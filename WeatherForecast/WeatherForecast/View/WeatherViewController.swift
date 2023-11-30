@@ -14,6 +14,7 @@ final class WeatherViewController: UIViewController {
 extension WeatherViewController {
     private func configuration() {
         location.delegate = self
+        location.desiredAccuracy = kCLLocationAccuracyKilometer
         location.requestWhenInUseAuthorization()
         location.startUpdatingLocation()
     }
