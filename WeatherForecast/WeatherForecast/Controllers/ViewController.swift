@@ -91,6 +91,8 @@ extension ViewController: UICollectionViewDataSource {
             cell.setIconImage(weather.icon)
         }
         
+        cell.addBorder(1, color: .systemGray, alpha: 0.5)
+        
         return cell
     }
 }
