@@ -9,14 +9,19 @@ import UIKit
 class ViewController: UIViewController {
     let weatherManager = WeatherManager()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         view.addSubview(collectionView)
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshWeatherData), for: .valueChanged)
+        refreshControl.tintColor = UIColor(red:0.25, green:0.72, blue:0.85, alpha:1.0)
         
         collectionView.backgroundView = UIImageView(image: UIImage(named: "background"))
         
@@ -30,11 +35,19 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         collectionView.frame = view.bounds
     }
+    
+    @objc private func refreshWeatherData(_ sender: Any) {
+        weatherManager.refreshData()
+    }
 }
 
 extension ViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.size.width, height: 50)
+        return CGSize(width: view.frame.size.width, height: 60)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -79,9 +92,9 @@ extension ViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-//        cell.layer.borderWidth = 1
-//        cell.layer.borderColor = UIColor.red.cgColor
-
+        //        cell.layer.borderWidth = 1
+        //        cell.layer.borderColor = UIColor.red.cgColor
+        
         guard let forecast = weatherManager.cacheData[.forecast] as? FiveDayForecast else { return cell }
         cell.setTimeLabel(forecast.list[indexPath.row].dateTimeText)
         cell.setTemperatureLabel(forecast.list[indexPath.row].main.temp!)
@@ -99,6 +112,14 @@ extension ViewController: UICollectionViewDataSource {
 extension ViewController: UICollectionViewDelegate {}
 
 extension ViewController: WeatherManagerDelegate {
+    func refreshCollectionViewUI() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            self.refreshControl.endRefreshing()
+            self.collectionView.reloadData()
+            print("refresh end")
+        }
+    }
+    
     
     func showAlertWhenNoAuthorization() {
         let alert = UIAlertController(title: nil, message: "설정>앱>위치에서 변경 가능", preferredStyle: .alert)
@@ -114,6 +135,9 @@ extension ViewController: WeatherManagerDelegate {
     }
     
     func updateCollectionViewUI() {
-        self.collectionView.reloadData()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+        
     }
 }

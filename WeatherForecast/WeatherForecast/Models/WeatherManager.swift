@@ -11,6 +11,7 @@ import CoreLocation
 protocol WeatherManagerDelegate: AnyObject {
     func showAlertWhenNoAuthorization()
     func updateCollectionViewUI()
+    func refreshCollectionViewUI()
 }
 
 final class WeatherManager: NSObject {
@@ -48,9 +49,15 @@ final class WeatherManager: NSObject {
         locationManager.stopUpdatingLocation()
     }
     
+    func refreshData() {
+        
+        fetchWeatherData(endpoint: .forecast, expect: FiveDayForecast.self, completionHandler: self.delegate!.refreshCollectionViewUI)
+        fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self, completionHandler: self.delegate!.refreshCollectionViewUI)
+    }
+    
     // MARK: - private method
     
-    private func fetchWeatherData<T: Decodable>(endpoint: Endpoint, expect: T.Type) {
+    private func fetchWeatherData<T: Decodable>(endpoint: Endpoint, expect: T.Type, completionHandler: @escaping () -> Void) {
         guard let latitude = latitude, let longitude = longitude else {
             return
         }
@@ -62,10 +69,7 @@ final class WeatherManager: NSObject {
             switch result {
             case .success(let success):
                 self.cacheData[endpoint] = success
-                
-                DispatchQueue.main.async {
-                    self.delegate?.updateCollectionViewUI()
-                }
+                completionHandler()
                 
             case .failure:
                 print("모델 객체에 넣기 실패", result)
@@ -73,7 +77,6 @@ final class WeatherManager: NSObject {
             }
         }
     }
-
     
     private func getCurrentAddress() {
         var currentAddress = ""
@@ -115,8 +118,8 @@ extension WeatherManager: CLLocationManagerDelegate {
             break
             
         default:
-            fetchWeatherData(endpoint: .forecast, expect: FiveDayForecast.self)
-            fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self)
+            fetchWeatherData(endpoint: .forecast, expect: FiveDayForecast.self, completionHandler: self.delegate!.updateCollectionViewUI)
+            fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self, completionHandler: self.delegate!.updateCollectionViewUI)
             getCurrentAddress()
             
             break

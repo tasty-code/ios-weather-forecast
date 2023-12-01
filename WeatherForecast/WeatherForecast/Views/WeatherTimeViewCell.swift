@@ -78,10 +78,10 @@ class WeatherTimeViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             containerStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             containerStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            containerStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            containerStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            containerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             iconImageView.widthAnchor.constraint(equalToConstant: 40),
-            iconImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            iconImageView.trailingAnchor.constraint(equalTo: containerStack.trailingAnchor),
         ])
     }
     
