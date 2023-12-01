@@ -13,7 +13,7 @@ protocol LocationManagerDelegate: AnyObject {
     func didUpdatePlacemark(locationManager: LocationManager, placemark: CLPlacemark)
 }
 
-final class LocationManager: NSObject, ReverseGeocodable {
+final class LocationManager: NSObject, ReverseGeocodable, LocationRequestable {
     enum LocaleType {
         case korea
         
@@ -33,6 +33,10 @@ final class LocationManager: NSObject, ReverseGeocodable {
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
+    }
+    
+    func requestLocation() {
+        locationManager.requestLocation()
     }
     
     func reverseGeocodeLocation(location: CLLocation) {

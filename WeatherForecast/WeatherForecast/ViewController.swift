@@ -30,13 +30,16 @@ final class ViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.tintColor = .white
+        collectionView.refreshControl?.addTarget(self, action: #selector(refreshCollectionView), for: .valueChanged)
         return collectionView
     }()
     
     // MARK: - Dependencies
     private lazy var weatherDataService: DataDownloadable = WeatherDataService(dataServiceDelegate: self)
     private lazy var forecastDataService: DataDownloadable = ForecastDataService(dataServiceDelegate: self)
-    private let locationManager: LocationManager = LocationManager()
+    private let locationManager = LocationManager()
     
     // MARK: - Properties
     private var weatherModel: WeatherModel? = nil
@@ -55,6 +58,18 @@ final class ViewController: UIViewController {
     }
 }
 
+// MARK: Private Methods
+extension ViewController {
+    @objc private func refreshCollectionView(_ location: CLLocation) {
+        locationManager.requestLocation()
+        
+        DispatchQueue.main.async {
+            self.collectionView.refreshControl?.endRefreshing()
+        }
+    }
+}
+
+// MARK: UICollectionViewDelegate, DataSource Confirmation
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let sectionCount = forecastModel?.list?.count else { return 0 }
