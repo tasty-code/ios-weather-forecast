@@ -30,6 +30,8 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
+        customView.weatherCollectionView.delegate = self
+        customView.weatherCollectionView.dataSource = self
     }
 }
 
@@ -61,5 +63,30 @@ extension ViewController: LocationUpdateDelegate {
         let action = UIAlertAction(title: "확인", style: .default)
         alert.addAction(action)
         self.present(alert, animated: true)
+    }
+}
+
+extension ViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        50
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastCell", for: indexPath) as? ForecastCell
+        else {
+            return ForecastCell()
+        }
+        return cell
+    }
+}
+
+extension ViewController: UICollectionViewDelegate {
+    
+}
+
+extension ViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = CGSize(width: collectionView.frame.width, height: 50)
+        return size
     }
 }

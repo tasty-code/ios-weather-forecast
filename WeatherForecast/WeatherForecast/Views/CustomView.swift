@@ -14,17 +14,20 @@ class CustomView: UIView {
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageView)
+        
         return imageView
     }()
     
-    private lazy var weatherCollectionView: UICollectionView = {
+    lazy var weatherCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
+        collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: "ForecastCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(collectionView)
+        
         return collectionView
     }()
     
