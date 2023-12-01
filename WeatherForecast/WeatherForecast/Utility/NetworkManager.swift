@@ -22,7 +22,7 @@ final class NetworkManager {
             return completion(.failure(NetworkError.urlFormattingError))
         }
         
-        let request = URLRequest(url: url)
+        let request = urlFormatter.makeURLRequest(url: url, httpMethodType: .get)
         
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
