@@ -2,7 +2,7 @@ import UIKit
 import CoreLocation
 
 final class ViewController: UIViewController {
-    private let locationManager = LocationManager.shared
+    private let locationManager = LocationManager()
     private var model: Decodable?
     
     override func viewDidLoad() {
@@ -14,13 +14,13 @@ final class ViewController: UIViewController {
                 print(coordinate)
                 print(placemark)
                 
-                let networker = Networker<Model.CurrentWeather>(request: WeatherAPI.current)
+                let networker = Networker<Model.CurrentWeather>(request: WeatherAPI.current(coordinate))
                 
                 networker.fetchWeatherData { [weak self] weatherResponse in
                     self?.model = weatherResponse
                     print(self?.model)
-                    //        model 받아서 ColletionView로 넘겨준다.
                 }
+                
             case .failure(let error):
                 print(error)
             }

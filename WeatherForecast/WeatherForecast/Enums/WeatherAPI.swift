@@ -1,33 +1,20 @@
 import CoreLocation
 
 enum WeatherAPI {
-    case current
-    case fiveDays
+    case current(_ coordinate: CLLocationCoordinate2D)
+    case fiveDays(_ coordinate: CLLocationCoordinate2D)
 }
 
-extension WeatherAPI: Requestable, KeyAuthenticatable {
+extension WeatherAPI: Requestable {
     
     private func fetchPath() -> URL? {
-        let locationManager = LocationManager.shared
-        var components = URLComponents(string: "https://api.openweathermap.org")
-        
-        let coordinate = locationManager.fetchCoordinate()
-        
-        guard let latitude = coordinate?.latitude, let longitude = coordinate?.longitude, let APIKey = APIKey else {
-            return nil
-        }
-        
-        components?.queryItems = [
-            URLQueryItem(name: "lat", value: "\(latitude)"),
-            URLQueryItem(name: "lon", value: "\(longitude)"),
-            URLQueryItem(name: "appid", value: "\(APIKey)"),
-        ]
-        
         switch self {
-        case .current:
+        case .current(let coordinate):
+            var components = fetchComponent(coordinate)
             components?.path = "/data/2.5/weather"
             return components?.url
-        case .fiveDays:
+        case .fiveDays(let coordinate):
+            var components = fetchComponent(coordinate)
             components?.path = "/data/2.5/forecast"
             return components?.url
         }
@@ -36,5 +23,20 @@ extension WeatherAPI: Requestable, KeyAuthenticatable {
     var path: URL? {
         let result: URL? = fetchPath()
         return result
+    }
+}
+
+extension WeatherAPI: KeyAuthenticatable {
+    
+    private func fetchComponent(_ coordinate: CLLocationCoordinate2D) -> URLComponents? {
+        var components = URLComponents(string: "https://api.openweathermap.org")
+        
+        components?.queryItems = [
+            URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
+            URLQueryItem(name: "lon", value: "\(coordinate.latitude)"),
+            URLQueryItem(name: "appid", value: "\(APIKey)"),
+        ]
+        
+        return components
     }
 }
