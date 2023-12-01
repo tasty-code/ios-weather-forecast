@@ -2,12 +2,14 @@ import Foundation
 
 protocol NetworkServiceable {
     
-    static func handlingDataResponse<T: Decodable>(data: Data?, response: URLResponse?, error: Error?, completionHandler: @escaping (Result<T, NetworkError>) -> Void)
+    func fetch<T: Decodable>(url: URL, completionHandler: @escaping (Result<T, NetworkError>) -> Void)
+    
+    func handlingDataResponse<T: Decodable>(data: Data?, response: URLResponse?, error: Error?, completionHandler: @escaping (Result<T, NetworkError>) -> Void)
 }
 
 extension NetworkServiceable {
     
-    static func handlingDataResponse<T: Decodable>(data: Data?, response: URLResponse?, error: Error?, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
+    func handlingDataResponse<T: Decodable>(data: Data?, response: URLResponse?, error: Error?, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
         guard let data = data, error == nil else {
             return completionHandler(.failure(.invalidData))
         }
@@ -21,9 +23,11 @@ extension NetworkServiceable {
             return completionHandler(.failure(.invalidResponse))
         }
         
-        if let data = try? JSONDecoder().decode(T.self, from: data) {
-            completionHandler(.success(data))
-        } else {
+        do {
+            let decodedData = try JSONDecoder().decode(T.self, from: data)
+            completionHandler(.success(decodedData))
+        } catch {
+            print(error)
             completionHandler(.failure(.decodingError))
         }
     }

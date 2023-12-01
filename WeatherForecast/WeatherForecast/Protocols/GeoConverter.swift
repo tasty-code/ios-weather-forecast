@@ -3,15 +3,15 @@ import CoreLocation
 
 protocol GeoConverter {
     
-    func convertToAddressWith(coordinate: CLLocation, completionHandler: @escaping (Result<String,GeoConverterError>) -> Void)
+    func convertToAddressWith(location: CLLocation, completionHandler: @escaping (Result<String,GeoConverterError>) -> Void)
 }
 
 extension GeoConverter {
     
-    func convertToAddressWith(coordinate: CLLocation, completionHandler: @escaping (Result<String,GeoConverterError>) -> Void) {
+    func convertToAddressWith(location: CLLocation, completionHandler: @escaping (Result<String,GeoConverterError>) -> Void) {
         let geoCoder = CLGeocoder()
         
-        geoCoder.reverseGeocodeLocation(coordinate) { (placemarks, error) in
+        geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
             if error != nil {
                 completionHandler(.failure(.failCovertToAdress))
             }

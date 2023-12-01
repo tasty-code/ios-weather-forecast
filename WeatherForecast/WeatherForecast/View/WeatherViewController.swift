@@ -4,7 +4,7 @@ import CoreLocation
 final class WeatherViewController: UIViewController {
     
     private let locationManager = CLLocationManager()
-    private var coordinate = Coordinate(longitude: 0.0, latitude: 0.0)
+    private let networkServiceProvider = NetworkServiceProvider()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,15 +17,30 @@ extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         
-        let latitude = location.coordinate.latitude
-        let longitude = location.coordinate.longitude
+        let currentWeatherURL = WeatherURLConfigration(weatherType: .current,coordinate: location.coordinate)
+        let forecastWeatherURL = WeatherURLConfigration(weatherType: .forecast, coordinate: location.coordinate)
         
-        coordinate.latitude = latitude
-        coordinate.longitude = longitude
+        currentWeatherURL.checkError { (result: Result<URL,NetworkError>) in
+            switch result {
+            case .success(let success):
+                self.getCurrentWeatherData(url: success)
+            case .failure(let failure):
+                print(failure)
+                
+            }
+        }
         
-        getCurrentWeatherData()
-        getForecastWeatherData()
-        convertToAddressWith(coordinate: location) { (result: Result<String, GeoConverterError>) in
+        forecastWeatherURL.checkError { (result: Result<URL,NetworkError>) in
+            switch result {
+            case .success(let success):
+                self.getForecastWeatherData(url: success)
+            case .failure(let failure):
+                print(failure)
+                
+            }
+        }
+        
+        convertToAddressWith(location: location) { (result: Result<String, GeoConverterError>) in
             switch result {
                 
             case .success:
@@ -50,30 +65,29 @@ extension WeatherViewController {
         locationManager.startUpdatingLocation()
     }
     
-    private func getCurrentWeatherData() {
-        WeatherNetworkService.getWeatherData(weatherType: .current, coordinate: coordinate){ (result: Result<CurrentWeather, NetworkError>) in
+    private func getCurrentWeatherData(url: URL) {
+        networkServiceProvider.fetch(url: url) { (result: Result<CurrentWeather, NetworkError>) in
             switch result {
                 
             case .success:
                 return
             case .failure(let error):
-                return print(error.description)
+                return print(error)
             }
         }
     }
     
-    private func getForecastWeatherData() {
-        WeatherNetworkService.getWeatherData(weatherType: .forecast, coordinate: coordinate) { (result: Result<ForecastWeather, NetworkError>) in
+    private func getForecastWeatherData(url: URL) {
+        networkServiceProvider.fetch(url: url) { (result: Result<ForecastWeather, NetworkError>) in
             switch result {
                 
             case .success:
                 return
             case .failure(let error):
-                return print(error.description)
+                return print(error)
             }
         }
     }
-
 }
 
 
