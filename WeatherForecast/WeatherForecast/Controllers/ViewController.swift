@@ -8,6 +8,8 @@ import UIKit
 import CoreLocation
 
 final class ViewController: UIViewController {
+    private let customView: CustomView = CustomView()
+    
     private let locationManager: LocationManager
     private let networkManager: NetworkManager
     
@@ -19,6 +21,10 @@ final class ViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        self.view = customView
     }
     
     override func viewDidLoad() {
