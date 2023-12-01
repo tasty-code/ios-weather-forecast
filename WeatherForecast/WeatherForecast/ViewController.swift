@@ -29,7 +29,7 @@ extension ViewController: WeatherUpdateDelegate {
                 print("\(error)")
             }
         }
-        currentLocationManger.sendRequest(path: WeatherURL.weekly.path) { (result:Result<CurrentWeather, Error>) in
+        currentLocationManger.sendRequest(path: WeatherURL.weekly.path) { (result:Result<WeeklyWeather, Error>) in
             switch result {
             case .success(let weather):
                 print("\(weather)")
