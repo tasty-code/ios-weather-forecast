@@ -10,17 +10,14 @@ import UIKit
 class ForecastCell: UICollectionViewCell, Reusable {
     
     private lazy var dateLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
+        let label = UILabel(textAlignment: .center)
         addSubview(label)
         
         return label
     }()
     
     private lazy var temperatureLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
+        let label = UILabel(textAlignment: .center)
         
         return label
     }()
@@ -33,12 +30,9 @@ class ForecastCell: UICollectionViewCell, Reusable {
     }()
     
     private lazy var weatherInfoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [temperatureLabel,weatherIconView])
-        stackView.axis = .horizontal
-        stackView.spacing = 5
-        stackView.alignment = .center
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let stackView = UIStackView(axis: .horizontal,
+                                    spacing: 5,
+                                    subViews: [temperatureLabel, weatherIconView])
         addSubview(stackView)
         
         return stackView

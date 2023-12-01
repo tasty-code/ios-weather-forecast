@@ -19,56 +19,41 @@ class WeatherHeaderView: UICollectionReusableView, Reusable {
     }()
     
     private lazy var addressLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = .white
+        let label = UILabel(textAlignment: .center)
         
         return label
     }()
     
     private lazy var minimumTemperatureLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = .white
+        let label = UILabel(textAlignment: .center)
         
         return label
     }()
     
     private lazy var maximumTemperatureLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = .white
+        let label = UILabel(textAlignment: .center)
         
         return label
     }()
     
     private lazy var labelStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [minimumTemperatureLabel,maximumTemperatureLabel])
-        stackView.axis = .horizontal
-        stackView.spacing = 3
-        stackView.distribution = .fillEqually
-        stackView.alignment = .center
+        let stackView = UIStackView(axis: .horizontal,
+                                    spacing: 3,
+                                    subViews: [minimumTemperatureLabel, maximumTemperatureLabel])
         
         return stackView
     }()
     
     private lazy var currentTemperatureLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = .preferredFont(forTextStyle: .title3)
-        label.textColor = .white
+        let label = UILabel(font: .preferredFont(forTextStyle: .title3), textAlignment: .center)
         
         return label
     }()
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            addressLabel,labelStackView,currentTemperatureLabel])
-        stackView.axis = .vertical
-        stackView.spacing = 5
-        stackView.distribution = .fillEqually
-        stackView.alignment = .center
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let stackView = UIStackView(axis: .vertical,
+                                    spacing: 5,
+                                    subViews: [addressLabel, labelStackView, currentTemperatureLabel])
         addSubview(stackView)
         
         return stackView
