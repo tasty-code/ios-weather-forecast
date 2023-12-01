@@ -58,7 +58,7 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        self.locationCompletion?(.failure(LocationError.failedFetchLocationError))
+        self.locationCompletion?(.failure(LocationError.didFailFetchLocationError))
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -68,7 +68,7 @@ extension LocationManager: CLLocationManagerDelegate {
         case . denied, .notDetermined, .restricted:
             self.locationCompletion?(.failure(LocationError.noLocationAuthorizationError))
         default:
-            self.locationCompletion?(.failure(LocationError.unknownAuthorizationError))
+            self.locationCompletion?(.failure(LocationError.unknownLocationAuthorizationError))
         }
     }
 }
