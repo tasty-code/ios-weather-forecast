@@ -64,7 +64,7 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case . authorizedAlways, .authorizedWhenInUse:
-            print("-> yesLocationAuthorization")
+            break
         case . denied, .notDetermined, .restricted:
             self.locationCompletion?(.failure(LocationError.noLocationAuthorizationError))
         default:
