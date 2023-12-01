@@ -25,6 +25,9 @@ class CustomView: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
         collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: ForecastCell.reuseIdentifier)
+        collectionView.register(WeatherHeaderView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: WeatherHeaderView.reuseIdentifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(collectionView)
         

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C340595E2B196D9800AE0703 /* ForecastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C340595D2B196D9800AE0703 /* ForecastCell.swift */; };
+		C34059602B199CAA00AE0703 /* WeatherHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C340595F2B199CAA00AE0703 /* WeatherHeaderView.swift */; };
 		C3E791992B0B3F1F00257AF6 /* Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E791982B0B3F1F00257AF6 /* Current.swift */; };
 		C3FDB0692B0B434200006C49 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FDB0682B0B434200006C49 /* Forecast.swift */; };
 		C3FDB0852B0C402F00006C49 /* WeatherAPI.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3FDB0842B0C402F00006C49 /* WeatherAPI.plist */; };
@@ -51,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		C340595D2B196D9800AE0703 /* ForecastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCell.swift; sourceTree = "<group>"; };
+		C340595F2B199CAA00AE0703 /* WeatherHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherHeaderView.swift; sourceTree = "<group>"; };
 		C3E791982B0B3F1F00257AF6 /* Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Current.swift; path = WeatherForecast/Models/Weather/Current.swift; sourceTree = SOURCE_ROOT; };
 		C3FDB0682B0B434200006C49 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Forecast.swift; path = WeatherForecast/Models/Weather/Forecast.swift; sourceTree = SOURCE_ROOT; };
 		C3FDB0842B0C402F00006C49 /* WeatherAPI.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WeatherAPI.plist; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			children = (
 				DE39524D2B1966FF00E13106 /* CustomView.swift */,
 				C340595D2B196D9800AE0703 /* ForecastCell.swift */,
+				C340595F2B199CAA00AE0703 /* WeatherHeaderView.swift */,
 				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
 			);
 			path = Views;
@@ -375,6 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C34059602B199CAA00AE0703 /* WeatherHeaderView.swift in Sources */,
 				DEE65AB52B0B475000312FBF /* NetworkManager.swift in Sources */,
 				DE39524E2B1966FF00E13106 /* CustomView.swift in Sources */,
 				DE2E8AB42B0C3F80008F1EB5 /* Bundle.swift in Sources */,
