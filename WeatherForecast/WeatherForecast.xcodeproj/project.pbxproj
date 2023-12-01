@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		531424B52B19BA9700DCF22A /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531424B42B19BA9700DCF22A /* HTTPMethod.swift */; };
 		53272AE72B0B3EEF00A73EF7 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53272AE62B0B3EEF00A73EF7 /* CurrentWeather.swift */; };
 		53272AE92B0B43FC00A73EF7 /* WeeklyWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53272AE82B0B43FC00A73EF7 /* WeeklyWeather.swift */; };
 		53B496692B0DD1C600957314 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B496682B0DD1C600957314 /* NetworkManager.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		531424B42B19BA9700DCF22A /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		53272AE62B0B3EEF00A73EF7 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
 		53272AE82B0B43FC00A73EF7 /* WeeklyWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeather.swift; sourceTree = "<group>"; };
 		53B496682B0DD1C600957314 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -101,9 +103,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		531424B32B19BA8A00DCF22A /* HTTP */ = {
+			isa = PBXGroup;
+			children = (
+				531424B42B19BA9700DCF22A /* HTTPMethod.swift */,
+			);
+			path = HTTP;
+			sourceTree = "<group>";
+		};
 		53272AE52B0B3EE300A73EF7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				531424B32B19BA8A00DCF22A /* HTTP */,
 				53E822CC2B18677A00155FB2 /* URL */,
 				53E822CB2B18676600155FB2 /* Error */,
 				53E822CA2B18672000155FB2 /* APIDTO */,
@@ -364,6 +375,7 @@
 				53E822CF2B18688A00155FB2 /* CurrentLocationInfo.swift in Sources */,
 				7FF59F142B0CC18300C6AA24 /* APIBaseURLProtocol.swift in Sources */,
 				7F53C1572B14A1FF0061DD02 /* LocationManager.swift in Sources */,
+				531424B52B19BA9700DCF22A /* HTTPMethod.swift in Sources */,
 				53B4966B2B0E23C400957314 /* NetworkError.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				53272AE92B0B43FC00A73EF7 /* WeeklyWeather.swift in Sources */,
