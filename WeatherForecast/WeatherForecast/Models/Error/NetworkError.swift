@@ -1,12 +1,15 @@
 import Foundation
 
 enum NetworkError: Error {
+    
     case invalidUrl
     case invalidData
     case invalidResponse
     case decodingError
+    case invalidAPIKEYName
     
     var description: String {
+        
         switch self {
             
         case .invalidUrl:
@@ -17,6 +20,8 @@ enum NetworkError: Error {
             return "잘못된 응답입니다."
         case .decodingError:
             return "디코딩 에러입니다."
+        case .invalidAPIKEYName:
+            return "잘못된 API키 이름입니다."
         }
     }
 }

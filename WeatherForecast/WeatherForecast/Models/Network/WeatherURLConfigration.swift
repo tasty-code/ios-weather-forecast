@@ -23,6 +23,7 @@ struct WeatherURLConfigration: APIRequestable {
 }
 
 enum WeatherType: String {
+    
     case current = "weather"
     case forecast = "forecast"
 }

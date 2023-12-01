@@ -6,6 +6,7 @@ protocol NetworkServiceable {
 }
 
 extension NetworkServiceable {
+    
     static func handlingDataResponse<T: Decodable>(data: Data?, response: URLResponse?, error: Error?, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
         guard let data = data, error == nil else {
             return completionHandler(.failure(.invalidData))

@@ -1,6 +1,7 @@
 import Foundation
 
 enum GeoConverterError: Error {
+    
     case failCovertToAdress
     case failCovertToLocation
     

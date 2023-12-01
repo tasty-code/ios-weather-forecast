@@ -2,7 +2,8 @@ import UIKit
 import CoreLocation
 
 final class WeatherViewController: UIViewController {
-    private let location = CLLocationManager()
+    
+    private let locationManager = CLLocationManager()
     private var coordinate = Coordinate(longitude: 0.0, latitude: 0.0)
     
     override func viewDidLoad() {
@@ -11,17 +12,48 @@ final class WeatherViewController: UIViewController {
     }
 }
 
+extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.first else { return }
+        
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        
+        coordinate.latitude = latitude
+        coordinate.longitude = longitude
+        
+        getCurrentWeatherData()
+        getForecastWeatherData()
+        convertToAddressWith(coordinate: location) { (result: Result<String, GeoConverterError>) in
+            switch result {
+                
+            case .success:
+                return
+            case .failure:
+                return
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
+    }
+}
+
 extension WeatherViewController {
+    
     private func configuration() {
-        location.delegate = self
-        location.desiredAccuracy = kCLLocationAccuracyKilometer
-        location.requestWhenInUseAuthorization()
-        location.startUpdatingLocation()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
     }
     
     private func getCurrentWeatherData() {
         WeatherNetworkService.getWeatherData(weatherType: .current, coordinate: coordinate){ (result: Result<CurrentWeather, NetworkError>) in
             switch result {
+                
             case .success:
                 return
             case .failure(let error):
@@ -33,6 +65,7 @@ extension WeatherViewController {
     private func getForecastWeatherData() {
         WeatherNetworkService.getWeatherData(weatherType: .forecast, coordinate: coordinate) { (result: Result<ForecastWeather, NetworkError>) in
             switch result {
+                
             case .success:
                 return
             case .failure(let error):
@@ -40,31 +73,7 @@ extension WeatherViewController {
             }
         }
     }
+
 }
 
-extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        
-        let latitude = location.coordinate.latitude as Double
-        let longitude = location.coordinate.longitude as Double
-        
-        coordinate.latitude = latitude
-        coordinate.longitude = longitude
-        
-        getCurrentWeatherData()
-        getForecastWeatherData()
-        convertToAddressWith(coordinate: location) { (result: Result<String, GeoConverterError>) in
-            switch result {
-            case .success:
-                return
-            case .failure:
-                return
-            }
-        }
-    }
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
-    }
-}
+

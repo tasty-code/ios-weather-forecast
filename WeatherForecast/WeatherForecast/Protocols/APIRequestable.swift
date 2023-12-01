@@ -1,6 +1,7 @@
 import Foundation
 
 protocol APIRequestable {
+    
     var scheme: String { get }
     var host: String { get }
     var path: String { get }
@@ -11,6 +12,7 @@ protocol APIRequestable {
 }
     
 extension APIRequestable {
+    
     func createApiKey(name: String) -> String? {
         let apiKey = Bundle.main.object(forInfoDictionaryKey: name) as? String
         return apiKey
