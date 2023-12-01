@@ -103,15 +103,27 @@ class WeatherTimeViewCell: UICollectionViewCell {
     }
     
     func setIconImage(_ id: String) {
-        let url = URL(string: "https://openweathermap.org/img/wn/\(id)@2x.png")
-        do {
-            let data = try Data(contentsOf: url!)
-            
+        if let image = ImageCacheManager.shared.getCache(id: id) {
             DispatchQueue.main.async {
-                self.iconImageView.image = UIImage(data: data)
+                self.iconImageView.image = image
             }
-        } catch let error {
-            print(error)
+        } else {
+            let url = URL(string: "https://openweathermap.org/img/wn/\(id)@2x.png")
+            do {
+                let data = try Data(contentsOf: url!)
+                guard let image = UIImage(data: data) else { return }
+                
+                DispatchQueue.main.async {
+                    self.iconImageView.image = image
+                }
+                
+                ImageCacheManager.shared.setCache(id: id, data: image)
+                
+                
+            } catch let error {
+                print(error)
+            }
+
         }
     }
 }
