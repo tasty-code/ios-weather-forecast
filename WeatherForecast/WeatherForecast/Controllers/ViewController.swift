@@ -29,6 +29,11 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setDelegate()
+    }
+    
+    private func setDelegate() {
         locationManager.delegate = self
         customView.weatherCollectionView.delegate = self
         customView.weatherCollectionView.dataSource = self
@@ -72,7 +77,7 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastCell", for: indexPath) as? ForecastCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier, for: indexPath) as? ForecastCell
         else {
             return ForecastCell()
         }

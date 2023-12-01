@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ForecastCell: UICollectionViewCell {
+class ForecastCell: UICollectionViewCell, Reusable {
     
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
