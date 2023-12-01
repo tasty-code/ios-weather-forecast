@@ -1,7 +1,7 @@
-import Foundation
-
 enum LocationError: Error {
-    case cooridnateError
-    case placemarkError
-    case unknownError(_ error: Error)
+    case failedFetchLocationError
+    case noLocationError
+    case noPlacemarkError
+    case noLocationAuthorizationError
+    case unknownAuthorizationError
 }

@@ -1,12 +1,11 @@
 import CoreLocation
 import UIKit
 
+typealias LocationCompletion = (Result<(CLLocationCoordinate2D, CLPlacemark), LocationError>) -> Void
+
 final class LocationManager: NSObject {
-    
-    static let shared = LocationManager()
     private let manager = CLLocationManager()
     
-    typealias LocationCompletion = (Result<(CLLocationCoordinate2D, CLPlacemark), LocationError>) -> Void
     private var locationCompletion: LocationCompletion?
     
     override init() {
@@ -18,54 +17,18 @@ final class LocationManager: NSObject {
         manager.requestWhenInUseAuthorization()
     }
     
-    func fetchCoordinate() -> CLLocationCoordinate2D? {
-        guard let coordinate = manager.location?.coordinate else {
-            return nil
-        }
-        
-        return coordinate
-    }
-    
     func request(completion: @escaping LocationCompletion){
         manager.startUpdatingLocation()
         locationCompletion = completion
     }
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case . denied, .notDetermined:
-            print("위치 권한이 없습니다.")
-        case . authorizedAlways, .authorizedWhenInUse:
-            print("위치 권한이 있습니다.")
-        case .restricted:
-            print("위치 권한이 제한되어 있습니다.")
-        default:
-            print("default from LocationManager")
-        }
-    }
-}
-
-extension LocationManager: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let completion = self.locationCompletion else {
-            return
-        } 
-        
-        if manager.location?.coordinate == nil {
-            completion(.failure(LocationError.cooridnateError))
-        }
-        
-        manager.stopUpdatingLocation()
-        fetchPlacemark()
-    }
-    
-    func fetchPlacemark() {
+    private func fetchPlacemark() {
         guard let completion = self.locationCompletion else {
             return
         }
         
         guard let coordinate = manager.location?.coordinate else {
-            return completion(.failure(LocationError.cooridnateError))
+            return completion(.failure(LocationError.noLocationError))
         }
             
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
@@ -76,18 +39,36 @@ extension LocationManager: CLLocationManagerDelegate {
             
             guard let placemarks = placemarks,
                   let address = placemarks.last else {
-                return completion(.failure(LocationError.placemarkError))
+                return completion(.failure(LocationError.noPlacemarkError))
             }
             
             completion(.success((coordinate, address)))
         }
     }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        guard let completion = self.locationCompletion else {
-            return
+}
+
+extension LocationManager: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if manager.location?.coordinate == nil {
+            self.locationCompletion?(.failure(LocationError.noLocationError))
         }
         
-        completion(.failure(LocationError.unknownError(error)))
+        manager.stopUpdatingLocation()
+        fetchPlacemark()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        self.locationCompletion?(.failure(LocationError.failedFetchLocationError))
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case . authorizedAlways, .authorizedWhenInUse:
+            print("-> yesLocationAuthorization")
+        case . denied, .notDetermined, .restricted:
+            self.locationCompletion?(.failure(LocationError.noLocationAuthorizationError))
+        default:
+            self.locationCompletion?(.failure(LocationError.unknownAuthorizationError))
+        }
     }
 }
