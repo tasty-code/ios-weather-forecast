@@ -1,7 +1,7 @@
 enum LocationError: Error {
-    case failedFetchLocationError
+    case didFailFetchLocationError
     case noLocationError
     case noPlacemarkError
     case noLocationAuthorizationError
-    case unknownAuthorizationError
+    case unknownLocationAuthorizationError
 }

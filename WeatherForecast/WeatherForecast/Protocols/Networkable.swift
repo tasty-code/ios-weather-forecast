@@ -1,5 +1,3 @@
-import Foundation
-
 protocol Networkable: AnyObject {
     associatedtype T
     

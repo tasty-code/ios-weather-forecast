@@ -7,6 +7,11 @@ enum WeatherAPI {
 
 extension WeatherAPI: Requestable {
     
+    var path: URL? {
+        let result: URL? = fetchPath()
+        return result
+    }
+    
     private func fetchPath() -> URL? {
         switch self {
         case .current(let coordinate):
@@ -18,11 +23,6 @@ extension WeatherAPI: Requestable {
             components?.path = "/data/2.5/forecast"
             return components?.url
         }
-    }
-    
-    var path: URL? {
-        let result: URL? = fetchPath()
-        return result
     }
 }
 

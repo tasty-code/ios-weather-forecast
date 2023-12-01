@@ -8,7 +8,7 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager.request { [self] result in
+        locationManager.request { result in
             switch result {
             case.success((let coordinate, let placemark)):
                 print(coordinate)
