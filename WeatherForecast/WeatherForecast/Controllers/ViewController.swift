@@ -91,17 +91,16 @@ extension ViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherTimeViewCell.identifier, for: indexPath) as? WeatherTimeViewCell else {
             return UICollectionViewCell()
         }
-        
-        //        cell.layer.borderWidth = 1
-        //        cell.layer.borderColor = UIColor.red.cgColor
-        
+
         guard let forecast = weatherManager.cacheData[.forecast] as? FiveDayForecast else { return cell }
         cell.setTimeLabel(forecast.list[indexPath.row].dateTimeText)
         cell.setTemperatureLabel(forecast.list[indexPath.row].main.temp!)
         
         guard let weather = forecast.list[indexPath.row].weather.first else { return cell }
         DispatchQueue.global().async {
-            cell.setIconImage(weather.icon)
+            print("👉🏻 Idx, iconID: ", indexPath.row, weather.icon) 
+            
+            cell.setIconImage(weather.icon, temp: indexPath.row)
         }
         
         cell.addBorder(1, color: .systemGray, alpha: 0.5)

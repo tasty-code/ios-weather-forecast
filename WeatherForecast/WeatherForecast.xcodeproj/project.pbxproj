@@ -30,7 +30,7 @@
 		E1F5CAD02B0B428E0021B753 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F5CACF2B0B428E0021B753 /* Request.swift */; };
 		E1F5CAD22B0B432D0021B753 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F5CAD12B0B432D0021B753 /* Endpoint.swift */; };
 		E1F5CAD42B0B47900021B753 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F5CAD32B0B47900021B753 /* Environment.swift */; };
-		E1F5CAD62B0B4EDE0021B753 /* ServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F5CAD52B0B4EDE0021B753 /* ServiceManager.swift */; };
+		E1F5CAD62B0B4EDE0021B753 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F5CAD52B0B4EDE0021B753 /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,7 +81,7 @@
 		E1F5CACF2B0B428E0021B753 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		E1F5CAD12B0B432D0021B753 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		E1F5CAD32B0B47900021B753 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		E1F5CAD52B0B4EDE0021B753 /* ServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceManager.swift; sourceTree = "<group>"; };
+		E1F5CAD52B0B4EDE0021B753 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,7 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				E1F5CACF2B0B428E0021B753 /* Request.swift */,
-				E1F5CAD52B0B4EDE0021B753 /* ServiceManager.swift */,
+				E1F5CAD52B0B4EDE0021B753 /* NetworkManager.swift */,
 				E1F5CAD12B0B432D0021B753 /* Endpoint.swift */,
 				D0D2046C2B0DCFE8007E7F6F /* HttpMethod.swift */,
 				E1F5CAD32B0B47900021B753 /* Environment.swift */,
@@ -369,7 +369,7 @@
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				D04179BD2B1877E600251222 /* UIView.swift in Sources */,
-				E1F5CAD62B0B4EDE0021B753 /* ServiceManager.swift in Sources */,
+				E1F5CAD62B0B4EDE0021B753 /* NetworkManager.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				E1F5CAC02B0AF0AB0021B753 /* Weathers.swift in Sources */,
 				D041799B2B17115000251222 /* CurrentWeatherCollectionReusableView.swift in Sources */,

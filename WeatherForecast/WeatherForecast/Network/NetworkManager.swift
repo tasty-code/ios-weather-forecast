@@ -1,5 +1,5 @@
 //
-//  ServiceManager.swift
+//  NetworkManager.swift
 //  WeatherForecast
 //
 //  Created by Janine on 11/20/23.
@@ -7,14 +7,14 @@
 
 import Foundation
 
-final class ServiceManager {
+final class NetworkManager {
     private let session: URLSession
     
     init(session: URLSession) {
         self.session = session
     }
     
-    private enum ServiceError: Error {
+    private enum NetworkError: Error {
         case failedToCreateRequest
         case failedToGetData
     }
@@ -25,13 +25,13 @@ final class ServiceManager {
         completion: @escaping (Result<T, Error>) -> Void) {
             
             guard let urlRequest = request else {
-                completion(.failure(ServiceError.failedToCreateRequest))
+                completion(.failure(NetworkError.failedToCreateRequest))
                 return
             }
             
             let task = session.dataTask(with: urlRequest) { data, _ , error in
                 guard let data = data, error == nil else {
-                    completion(.failure(error ?? ServiceError.failedToGetData))
+                    completion(.failure(error ?? NetworkError.failedToGetData))
                     return
                 }
                 

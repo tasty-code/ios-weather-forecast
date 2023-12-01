@@ -17,7 +17,7 @@ protocol WeatherManagerDelegate: AnyObject {
 final class WeatherManager: NSObject {
     private(set) var cacheData: [Endpoint: Decodable] = [:]
     
-    private var networkManager: ServiceManager = ServiceManager(session: URLSession(configuration: .default))
+    private var networkManager: NetworkManager = NetworkManager(session: URLSession(configuration: .default))
     
     weak var delegate: WeatherManagerDelegate?
     
@@ -68,6 +68,7 @@ final class WeatherManager: NSObject {
         networkManager.execute(request, expecting: expect) { result in
             switch result {
             case .success(let success):
+                print(success)
                 self.cacheData[endpoint] = success
                 completionHandler()
                 
@@ -119,7 +120,7 @@ extension WeatherManager: CLLocationManagerDelegate {
             
         default:
             fetchWeatherData(endpoint: .forecast, expect: FiveDayForecast.self, completionHandler: self.delegate!.updateCollectionViewUI)
-            fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self, completionHandler: self.delegate!.updateCollectionViewUI)
+//            fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self, completionHandler: self.delegate!.updateCollectionViewUI)
             getCurrentAddress()
             
             break

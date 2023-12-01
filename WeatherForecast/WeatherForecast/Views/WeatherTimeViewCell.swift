@@ -57,7 +57,7 @@ class WeatherTimeViewCell: UICollectionViewCell {
     }
     
     // MARK: - initializer
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -102,9 +102,10 @@ class WeatherTimeViewCell: UICollectionViewCell {
         temperatureLabel.text = String(text) + "°"
     }
     
-    func setIconImage(_ id: String) {
+    func setIconImage(_ id: String, temp: Int) {
         if let image = ImageCacheManager.shared.getCache(id: id) {
             DispatchQueue.main.async {
+                print("cached Idx, iconID: ", temp, id)
                 self.iconImageView.image = image
             }
         } else {
@@ -117,13 +118,16 @@ class WeatherTimeViewCell: UICollectionViewCell {
                     self.iconImageView.image = image
                 }
                 
+                print("🔥 no cached Idx, iconID: ", temp, id)
+                
+                
                 ImageCacheManager.shared.setCache(id: id, data: image)
                 
                 
             } catch let error {
                 print(error)
             }
-
+            
         }
     }
 }
