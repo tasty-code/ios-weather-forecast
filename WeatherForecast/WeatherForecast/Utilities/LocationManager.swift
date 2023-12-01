@@ -68,7 +68,7 @@ extension LocationManager: CLLocationManagerDelegate {
         case . denied, .notDetermined, .restricted:
             self.locationCompletion?(.failure(LocationError.noLocationAuthorizationError))
         default:
-            self.locationCompletion?(.failure(LocationError.unknownAuthorizationError))
+            self.locationCompletion?(.failure(LocationError.unknownLocationAuthorizationError))
         }
     }
 }

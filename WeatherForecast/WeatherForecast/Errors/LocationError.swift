@@ -3,5 +3,5 @@ enum LocationError: Error {
     case noLocationError
     case noPlacemarkError
     case noLocationAuthorizationError
-    case unknownAuthorizationError
+    case unknownLocationAuthorizationError
 }
