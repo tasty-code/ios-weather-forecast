@@ -16,8 +16,8 @@
 		A64F0E0B2B0F69DF00FC988F /* RequestSessionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F0E0A2B0F69DF00FC988F /* RequestSessionable.swift */; };
 		A64F0E122B1059E600FC988F /* Requestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F0E112B1059E600FC988F /* Requestable.swift */; };
 		A64F0E192B10679A00FC988F /* RequestDataTaskable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F0E182B10679A00FC988F /* RequestDataTaskable.swift */; };
-		A6891A502B17255E0079BC93 /* UILocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6891A4F2B17255E0079BC93 /* UILocationDelegate.swift */; };
 		A6A891622B0F25C400D2AC27 /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A891612B0F25C400D2AC27 /* Networker.swift */; };
+		A6AA0AEF2B18484F005750B9 /* LocationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA0AEE2B18484F005750B9 /* LocationError.swift */; };
 		A6AFCADF2B0DFBB3004CACBF /* Networkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */; };
 		A6E4DD522B1730220068E00C /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E4DD512B1730220068E00C /* WeatherAPI.swift */; };
 		A6E4DD572B1730570068E00C /* ModelCurrentWeather+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E4DD542B1730570068E00C /* ModelCurrentWeather+Extension.swift */; };
@@ -61,8 +61,8 @@
 		A64F0E0A2B0F69DF00FC988F /* RequestSessionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSessionable.swift; sourceTree = "<group>"; };
 		A64F0E112B1059E600FC988F /* Requestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requestable.swift; sourceTree = "<group>"; };
 		A64F0E182B10679A00FC988F /* RequestDataTaskable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDataTaskable.swift; sourceTree = "<group>"; };
-		A6891A4F2B17255E0079BC93 /* UILocationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILocationDelegate.swift; sourceTree = "<group>"; };
 		A6A891612B0F25C400D2AC27 /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
+		A6AA0AEE2B18484F005750B9 /* LocationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationError.swift; path = WeatherForecast/Errors/LocationError.swift; sourceTree = SOURCE_ROOT; };
 		A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networkable.swift; sourceTree = "<group>"; };
 		A6E4DD512B1730220068E00C /* WeatherAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		A6E4DD542B1730570068E00C /* ModelCurrentWeather+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ModelCurrentWeather+Extension.swift"; sourceTree = "<group>"; };
@@ -126,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				0E468CB22B0DDD6A00201507 /* NetworkError.swift */,
+				A6AA0AEE2B18484F005750B9 /* LocationError.swift */,
 				0E468CB62B0DE86100201507 /* APIError.swift */,
 			);
 			path = Errors;
@@ -180,7 +181,6 @@
 			children = (
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
-				A6891A4F2B17255E0079BC93 /* UILocationDelegate.swift */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
@@ -381,8 +381,8 @@
 				A64F0E122B1059E600FC988F /* Requestable.swift in Sources */,
 				A6A891622B0F25C400D2AC27 /* Networker.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
-				A6891A502B17255E0079BC93 /* UILocationDelegate.swift in Sources */,
 				A6E4DD522B1730220068E00C /* WeatherAPI.swift in Sources */,
+				A6AA0AEF2B18484F005750B9 /* LocationError.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				0E468CB72B0DE86100201507 /* APIError.swift in Sources */,
 				A647C3B02B1431A800D386FB /* LocationManager.swift in Sources */,

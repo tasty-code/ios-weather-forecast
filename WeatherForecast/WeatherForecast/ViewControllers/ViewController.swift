@@ -1,27 +1,29 @@
 import UIKit
 import CoreLocation
 
-final class ViewController: UIViewController, CLLocationManagerDelegate {
-    private let locationManager = LocationManager.shared
-    private let networker = Networker<Model.CurrentWeather>(request: WeatherAPI.current)
+final class ViewController: UIViewController {
+    private let locationManager = LocationManager()
+    private var model: Decodable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager.delegate = self
-    }
-}
-
-extension ViewController: UILocationDelegate {
-    func update(placemark: CLPlacemark) {
-        print(placemark)
-    }
-    
-    func update(coordinate: CLLocationCoordinate2D?) {
-        print(coordinate)
-        
-        networker.fetchWeatherData { weatherResponse in
-            print(weatherResponse)
+        locationManager.request { [self] result in
+            switch result {
+            case.success((let coordinate, let placemark)):
+                print(coordinate)
+                print(placemark)
+                
+                let networker = Networker<Model.CurrentWeather>(request: WeatherAPI.current(coordinate))
+                
+                networker.fetchWeatherData { [weak self] weatherResponse in
+                    self?.model = weatherResponse
+                    print(self?.model)
+                }
+                
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 }

@@ -17,13 +17,13 @@ extension KeyAuthenticatable {
         }
     }
     
-    var APIKey: String? {
+    var APIKey: String {
         switch checkAPIKey() {
         case .success(let APIKey):
             return APIKey
         case .failure(let error):
             print(error)
-            return nil
+            return error.localizedDescription
         }
     }
 }

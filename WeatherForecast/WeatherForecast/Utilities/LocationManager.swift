@@ -1,75 +1,74 @@
 import CoreLocation
 import UIKit
 
+typealias LocationCompletion = (Result<(CLLocationCoordinate2D, CLPlacemark), LocationError>) -> Void
+
 final class LocationManager: NSObject {
-    
-    static let shared = LocationManager()
     private let manager = CLLocationManager()
-    weak var delegate: UILocationDelegate?
     
-    override private init() {
+    private var locationCompletion: LocationCompletion?
+    
+    override init() {
         super.init()
         
         manager.delegate = self
         manager.distanceFilter = kCLDistanceFilterNone
         manager.desiredAccuracy = kCLLocationAccuracyKilometer
         manager.requestWhenInUseAuthorization()
+    }
+    
+    func request(completion: @escaping LocationCompletion){
         manager.startUpdatingLocation()
+        locationCompletion = completion
     }
     
-    func fetchCoordinate() -> CLLocationCoordinate2D? {
-        if let coordinate = manager.location?.coordinate {
-            return coordinate
-        } else {
-            return nil
-        }
-    }
-    
-    func fetchPlacemark() {
-        guard let coordinate = manager.location?.coordinate else {
+    private func fetchPlacemark() {
+        guard let completion = self.locationCompletion else {
             return
+        }
+        
+        guard let coordinate = manager.location?.coordinate else {
+            return completion(.failure(LocationError.noLocationError))
         }
             
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         let geocoder = CLGeocoder()
         let locale = Locale(identifier: "Ko-kr")
         
-        geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { [weak self] placemarks, _ in
+        geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { placemarks, _ in
+            
             guard let placemarks = placemarks,
                   let address = placemarks.last else {
-                return
+                return completion(.failure(LocationError.noPlacemarkError))
             }
-            self?.delegate?.update(placemark: address)
+            
+            completion(.success((coordinate, address)))
         }
     }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case . denied, .notDetermined:
-            print("위치 권한이 없습니다.")
-        case . authorizedAlways, .authorizedWhenInUse:
-            print("위치 권한이 있습니다.")
-        case .restricted:
-            print("위치 권한이 제한되어 있습니다.")
-        default:
-            print("default from LocationManager")
-        }
-    }
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let coordinate = manager.location?.coordinate else {
-            return
+        if manager.location?.coordinate == nil {
+            self.locationCompletion?(.failure(LocationError.noLocationError))
         }
         
         manager.stopUpdatingLocation()
-        delegate?.update(coordinate: coordinate)
         fetchPlacemark()
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("LocationManager - locationManager")
-        print(error)
+        self.locationCompletion?(.failure(LocationError.failedFetchLocationError))
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case . authorizedAlways, .authorizedWhenInUse:
+            print("-> yesLocationAuthorization")
+        case . denied, .notDetermined, .restricted:
+            self.locationCompletion?(.failure(LocationError.noLocationAuthorizationError))
+        default:
+            self.locationCompletion?(.failure(LocationError.unknownAuthorizationError))
+        }
     }
 }
