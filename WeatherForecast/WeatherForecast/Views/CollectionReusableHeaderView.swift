@@ -17,9 +17,9 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
         var text: String {
             switch self {
             case .maxAndMinTemperaturelabelText(let tempMax, let tempMin):
-                "최저 \(String(format: "%.f1", tempMin)) 최고 \(String(format: "%.f1", tempMax))"
+                "최저 \(String(format: "%.1f", tempMin)) 최고 \(String(format: "%.1f", tempMax))"
             case .temperatureLabelText(let temp):
-                String(format: "%.f1", temp)
+                String(format: "%.1f", temp)
             }
         }
         
@@ -38,11 +38,6 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-    }()
-    
-    private lazy var labelsStackView: UIStackView = {
-        let stackView = UIStackView(axis: .vertical, alignment: .fill, distribution: .fill, spacing: Constants.stackViewDefaultSpacing)
-        return stackView
     }()
     
     private lazy var iconImageView: UIImageView = {
@@ -66,15 +61,6 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
         let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .largeTitle), textColor: .white, textAlignment: .left)
         return label
     }()
-    
-    // MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
     
     // MARK: - Public
     func configureHeaderCell(item: WeatherModel, placemark: CLPlacemark) {
@@ -107,8 +93,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
 extension CollectionReusableHeaderView {
     private func setUpLayout() {
         self.addSubview(contentView)
-        contentView.addSubviews([iconImageView, labelsStackView])
-        labelsStackView.addSubviews([addressLabel, maxAndMinTemperatureLabel, temperatureLabel])
+        contentView.addSubviews([iconImageView, addressLabel, maxAndMinTemperatureLabel, temperatureLabel])
     }
     
     private func setUpConstraints() {
@@ -116,7 +101,7 @@ extension CollectionReusableHeaderView {
             contentView.topAnchor.constraint(equalTo: topAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
         
         NSLayoutConstraint.activate([
@@ -126,8 +111,18 @@ extension CollectionReusableHeaderView {
         ])
         
         NSLayoutConstraint.activate([
-            labelsStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
-            labelsStackView.heightAnchor.constraint(equalTo: iconImageView.heightAnchor),
+            addressLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
+            addressLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            addressLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            maxAndMinTemperatureLabel.topAnchor.constraint(equalTo: addressLabel.bottomAnchor),
+            maxAndMinTemperatureLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
+            maxAndMinTemperatureLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            temperatureLabel.topAnchor.constraint(equalTo: maxAndMinTemperatureLabel.bottomAnchor),
+            temperatureLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
+            temperatureLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            temperatureLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
 }

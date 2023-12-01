@@ -18,7 +18,6 @@
 		04AAAB5F2B16FBE500A541EC /* UILabel+convenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB5E2B16FBE500A541EC /* UILabel+convenienceInit.swift */; };
 		04AAAB612B16FFBD00A541EC /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB602B16FFBD00A541EC /* UIView.swift */; };
 		04AAAB632B171CCF00A541EC /* CollectionReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB622B171CCF00A541EC /* CollectionReusableHeaderView.swift */; };
-		04AAAB652B1735CD00A541EC /* UIStackView+convenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB642B1735CD00A541EC /* UIStackView+convenienceInit.swift */; };
 		04AAAB912B1878EB00A541EC /* DataDownloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB902B1878EB00A541EC /* DataDownloadable.swift */; };
 		04AAAB932B18792600A541EC /* JSONDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB922B18792600A541EC /* JSONDecodable.swift */; };
 		04AAAB952B187CF300A541EC /* WeatherDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAAB942B187CF300A541EC /* WeatherDataService.swift */; };
@@ -69,7 +68,6 @@
 		04AAAB5E2B16FBE500A541EC /* UILabel+convenienceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+convenienceInit.swift"; sourceTree = "<group>"; };
 		04AAAB602B16FFBD00A541EC /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		04AAAB622B171CCF00A541EC /* CollectionReusableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionReusableHeaderView.swift; sourceTree = "<group>"; };
-		04AAAB642B1735CD00A541EC /* UIStackView+convenienceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+convenienceInit.swift"; sourceTree = "<group>"; };
 		04AAAB902B1878EB00A541EC /* DataDownloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDownloadable.swift; sourceTree = "<group>"; };
 		04AAAB922B18792600A541EC /* JSONDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecodable.swift; sourceTree = "<group>"; };
 		04AAAB942B187CF300A541EC /* WeatherDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataService.swift; sourceTree = "<group>"; };
@@ -156,7 +154,6 @@
 			children = (
 				043F17552B0AF97300084087 /* Bundle+APIKey.swift */,
 				04AAAB5E2B16FBE500A541EC /* UILabel+convenienceInit.swift */,
-				04AAAB642B1735CD00A541EC /* UIStackView+convenienceInit.swift */,
 				04AAAB602B16FFBD00A541EC /* UIView.swift */,
 			);
 			path = Extensions;
@@ -477,7 +474,6 @@
 				04AAAB632B171CCF00A541EC /* CollectionReusableHeaderView.swift in Sources */,
 				043F175E2B0B721F00084087 /* LocationManager.swift in Sources */,
 				04AAABA92B196AEE00A541EC /* IconDataService.swift in Sources */,
-				04AAAB652B1735CD00A541EC /* UIStackView+convenienceInit.swift in Sources */,
 				04AAABAF2B196E1900A541EC /* DateFormattable.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				04AAAB952B187CF300A541EC /* WeatherDataService.swift in Sources */,
