@@ -87,6 +87,10 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
             temperatureLabel.text = Constants.temperatureLabelText(temp: temp).text
         }
         
+        if let iconCode = item.weather?.first?.icon {
+            iconDataService.downloadData(serviceType: .icon(code: iconCode))
+        }
+        
         var address: String = String()
         if let administrativeArea = placemark.administrativeArea {
             address += administrativeArea

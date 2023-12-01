@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CollectionViewCell: UICollectionViewListCell {
+final class CollectionViewCell: UICollectionViewCell {
     // MARK: - Constants
     private enum Constants {
         static let stackViewDefaultSpacing: CGFloat = 4
@@ -59,11 +59,14 @@ final class CollectionViewCell: UICollectionViewListCell {
             temperatureLabel.text = String(format: "%.1f", temperature)
         }
         
+        if let iconCode = item.weather?.first?.icon {
+            iconDataService.downloadData(serviceType: .icon(code: iconCode))
+        }
+        
         setUpLayout()
         setUpConstraints()
         drawUnderBorder()
-        self.backgroundColor = .clear
-        contentView.backgroundColor = .clear
+        
     }
     
     override func prepareForReuse() {

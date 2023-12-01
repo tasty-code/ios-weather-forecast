@@ -12,7 +12,7 @@ final class ViewController: UIViewController {
     private enum Constants {
         static let collectionReusableHeaderViewHeightRatio: CGFloat = 8
         static let collectionViewCellHeightRatio: CGFloat = 20
-        static let collectionViewDefaultPadding: CGFloat = 6
+        static let collectionViewDefaultPadding: CGFloat = 14
     }
     
     // MARK: - View Components
@@ -123,6 +123,7 @@ extension ViewController {
 extension ViewController: WeatherForecastDataServiceDelegate {
     func notifyWeatherModelDidUpdate(dataService: DataDownloadable, model: WeatherModel?) {
         weatherModel = model
+        collectionView.reloadData()
     }
     
     func notifyForecastModelDidUpdate(dataService: DataDownloadable, model: ForecastModel?) {
@@ -135,12 +136,15 @@ extension ViewController: WeatherForecastDataServiceDelegate {
 extension ViewController: LocationManagerDelegate {
     func didUpdatePlacemark(locationManager: LocationManager, placemark: CLPlacemark) {
         currentPlacemark = placemark
+        collectionView.reloadData()
     }
     
     func didUpdateLocation(locationManager: LocationManager, location: CLLocation) {
         guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else { return }
-        locationManager.reverseGeocodeLocation(location: location)
-        weatherDataService.downloadData(serviceType: .weather(coordinate: location.coordinate, apiKey: apiKey))
-        forecastDataService.downloadData(serviceType: .forecast(coordinate: location.coordinate, apiKey: apiKey))
+        DispatchQueue.global().async { [weak self] in
+            locationManager.reverseGeocodeLocation(location: location)
+            self?.weatherDataService.downloadData(serviceType: .weather(coordinate: location.coordinate, apiKey: apiKey))
+            self?.forecastDataService.downloadData(serviceType: .forecast(coordinate: location.coordinate, apiKey: apiKey))
+        }
     }
 }
