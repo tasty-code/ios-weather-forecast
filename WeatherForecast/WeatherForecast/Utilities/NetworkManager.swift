@@ -3,6 +3,7 @@ import Foundation
 final class NetworkManager<T: Decodable>: Networkable {
     private let request: Requestable?
     private let session: RequestSessionable
+    private var url: URL?
     
     init(request: Requestable?, session: RequestSessionable = URLSession.shared) {
         self.request = request
@@ -18,7 +19,7 @@ final class NetworkManager<T: Decodable>: Networkable {
             if let error = error {
                 return completion(.failure(.unknownError(error)))
             }
-            
+    
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
                 return completion(.failure(.serverError(response)))
@@ -26,11 +27,11 @@ final class NetworkManager<T: Decodable>: Networkable {
             guard let data = data else {
                 return completion(.failure(.dataUnwrappingError(data)))
             }
-
+            
             do {
                 let weatherResponse = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(weatherResponse))
-            } catch {
+            } catch  {
                 completion(.failure(.decodingError(error)))
             }
         }.resume()

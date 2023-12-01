@@ -24,4 +24,14 @@ extension Model {
         let list: [List]?
         let city: City?
     }
+    
+    struct Coordinate {
+        let latitude: String?
+        let longitude: String?
+    }
+    
+    struct Location {
+        let city: String?
+        let way: String?
+    }
 }

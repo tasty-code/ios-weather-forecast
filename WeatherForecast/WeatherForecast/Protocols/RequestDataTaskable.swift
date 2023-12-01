@@ -1,5 +1,6 @@
 import Foundation
-protocol RequestDataTaskable {
+
+protocol RequestDataTaskable: AnyObject {
     func resume()
 }
 
