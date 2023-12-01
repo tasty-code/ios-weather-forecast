@@ -8,53 +8,27 @@
 import UIKit
 
 class CurrentWeatherCollectionReusableView: UICollectionReusableView {
-    static let identifier = "CurrentWeather"
+    static let identifier = "CurrentWeatherCellIdentifier"
     
-    private let mainStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        return stackView
-    }()
+    private let mainStackView: UIStackView = UIStackView(axis: .horizontal)
     
-    private let detailStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        return stackView
-    }()
+    private let detailStackView: UIStackView = UIStackView(axis: .vertical)
     
-    private let iconImageView: UIImageView = {
-        let imageView = UIImageView()
-        return imageView
-    }()
+    private let iconImageView: UIImageView = UIImageView()
     
-    private let addressLabel: UILabel = {
-        let label = UILabel()
-        label.text = "-"
-        label.textColor = .white
-        return label
-    }()
+    private let addressLabel: UILabel = UILabel(text: "-")
     
-    private let maxMinTempertureLabel: UILabel = {
-        let label = UILabel()
-        label.text = "-"
-        label.textColor = .white
-        return label
-    }()
+    private let maxMinTempertureLabel: UILabel = UILabel(text: "-")
     
-    private let tempertureLabel: UILabel = {
-        let label = UILabel()
-        label.text = "-"
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 24)
-        return label
-    }()
+    private let tempertureLabel: UILabel = UILabel(text: "-", fontSize: 24)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        mainStackView.addArrangedSubViews(iconImageView, detailStackView)
-        addSubview(mainStackView)
         
+        mainStackView.addArrangedSubViews(iconImageView, detailStackView)
         detailStackView.addArrangedSubViews(addressLabel, maxMinTempertureLabel, tempertureLabel)
+        
+        addSubview(mainStackView)
         
         NSLayoutConstraint.activate([
             iconImageView.widthAnchor.constraint(equalToConstant: 100)

@@ -120,7 +120,7 @@ extension WeatherManager: CLLocationManagerDelegate {
             
         default:
             fetchWeatherData(endpoint: .forecast, expect: FiveDayForecast.self, completionHandler: self.delegate!.updateCollectionViewUI)
-//            fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self, completionHandler: self.delegate!.updateCollectionViewUI)
+            fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self, completionHandler: self.delegate!.updateCollectionViewUI)
             getCurrentAddress()
             
             break

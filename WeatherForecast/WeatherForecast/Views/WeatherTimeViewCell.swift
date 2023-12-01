@@ -8,53 +8,18 @@
 import UIKit
 
 class WeatherTimeViewCell: UICollectionViewCell {
-    static let identifier = "timeCell"
+    static let identifier = "TimeCellIdentifier"
     
     // MARK: - private property
-    private let timeLabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        return label
-    }()
+    private let timeLabel = UILabel(text: "")
     
-    private let temperatureLabel = {
-        let label = UILabel()
-        label.textColor = .white
-        return label
-    }()
+    private let temperatureLabel = UILabel(text: "")
     
-    private let iconImageView = {
-        let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFit
-        
-        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        return imageView
-    }()
+    private let iconImageView = UIImageView(contentMode: .scaleAspectFit)
     
-    private let temperatureStack = {
-        let stack = UIStackView()
-        
-        stack.axis = .horizontal
-        stack.distribution = .fill
-        
-        return stack
-    }()
+    private let temperatureStack = UIStackView(axis: .horizontal)
     
-    private let containerStack = {
-        let stack = UIStackView()
-        
-        stack.axis = .horizontal
-        stack.distribution = .fill
-        
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
-    
-    private let borderLine = {
-        let line = UIView()
-    }
+    private let containerStack = UIStackView(axis: .horizontal)
     
     // MARK: - initializer
     
@@ -75,6 +40,11 @@ class WeatherTimeViewCell: UICollectionViewCell {
     // MARK: - private method
     
     private func setLayout() {
+        timeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        iconImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
+        containerStack.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             containerStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             containerStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
@@ -87,25 +57,16 @@ class WeatherTimeViewCell: UICollectionViewCell {
     
     // MARK: - public method
     func setTimeLabel(_ text: String) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko-KR")
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        guard let date = dateFormatter.date(from: text) else { return }
-        dateFormatter.dateFormat = "MM/dd(E) HH시"
-        
-        let textString = dateFormatter.string(from: date)
-        timeLabel.text = textString
+        timeLabel.text = text.dateFormatter()
     }
     
     func setTemperatureLabel(_ text: Double) {
-        temperatureLabel.text = String(text) + "°"
+        temperatureLabel.text = text.tempertureFormatter()
     }
     
     func setIconImage(_ id: String, temp: Int) {
         if let image = ImageCacheManager.shared.getCache(id: id) {
             DispatchQueue.main.async {
-                print("cached Idx, iconID: ", temp, id)
                 self.iconImageView.image = image
             }
         } else {
@@ -118,16 +79,11 @@ class WeatherTimeViewCell: UICollectionViewCell {
                     self.iconImageView.image = image
                 }
                 
-                print("🔥 no cached Idx, iconID: ", temp, id)
-                
-                
                 ImageCacheManager.shared.setCache(id: id, data: image)
-                
-                
+
             } catch let error {
                 print(error)
             }
-            
         }
     }
 }

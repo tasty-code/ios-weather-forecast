@@ -6,28 +6,18 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    let weatherManager = WeatherManager()
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+final class ViewController: UIViewController {
+    private let weatherManager = WeatherManager()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(collectionView)
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        
-        collectionView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(refreshWeatherData), for: .valueChanged)
-        refreshControl.tintColor = UIColor(red:0.25, green:0.72, blue:0.85, alpha:1.0)
-        
-        collectionView.backgroundView = UIImageView(image: UIImage(named: "background"))
-        
-        collectionView.register(WeatherTimeViewCell.self, forCellWithReuseIdentifier: WeatherTimeViewCell.identifier)
-        collectionView.register(CurrentWeatherCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherCollectionReusableView.identifier)
-        
+        configureCollectionView()
+        configureRefreshControl()
+
         weatherManager.delegate = self
         weatherManager.startLocationUpdate()
     }
@@ -38,6 +28,22 @@ class ViewController: UIViewController {
     
     @objc private func refreshWeatherData(_ sender: Any) {
         weatherManager.refreshData()
+    }
+    
+    private func configureCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+
+        collectionView.backgroundView = UIImageView(image: UIImage(named: "background"))
+        
+        collectionView.register(WeatherTimeViewCell.self, forCellWithReuseIdentifier: WeatherTimeViewCell.identifier)
+        collectionView.register(CurrentWeatherCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherCollectionReusableView.identifier)
+    }
+    
+    private func configureRefreshControl() {
+        collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshWeatherData), for: .valueChanged)
+        refreshControl.tintColor = UIColor(red:0.25, green:0.72, blue:0.85, alpha:1.0)
     }
 }
 
@@ -98,8 +104,6 @@ extension ViewController: UICollectionViewDataSource {
         
         guard let weather = forecast.list[indexPath.row].weather.first else { return cell }
         DispatchQueue.global().async {
-            print("👉🏻 Idx, iconID: ", indexPath.row, weather.icon) 
-            
             cell.setIconImage(weather.icon, temp: indexPath.row)
         }
         
@@ -115,10 +119,8 @@ extension ViewController: WeatherManagerDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
             self.refreshControl.endRefreshing()
             self.collectionView.reloadData()
-            print("refresh end")
         }
     }
-    
     
     func showAlertWhenNoAuthorization() {
         let alert = UIAlertController(title: nil, message: "설정>앱>위치에서 변경 가능", preferredStyle: .alert)
@@ -137,6 +139,5 @@ extension ViewController: WeatherManagerDelegate {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
-        
     }
 }

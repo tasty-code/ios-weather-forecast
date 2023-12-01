@@ -17,6 +17,10 @@
 		D041799B2B17115000251222 /* CurrentWeatherCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D041799A2B17115000251222 /* CurrentWeatherCollectionReusableView.swift */; };
 		D04179BD2B1877E600251222 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04179BC2B1877E600251222 /* UIView.swift */; };
 		D04179BF2B197CA800251222 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04179BE2B197CA800251222 /* CacheManager.swift */; };
+		D04179C12B19B66700251222 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04179C02B19B66700251222 /* String.swift */; };
+		D04179C32B19B6FE00251222 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04179C22B19B6FE00251222 /* Double.swift */; };
+		D04179C52B19B78D00251222 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04179C42B19B78D00251222 /* UILabel.swift */; };
+		D04179C72B19BB1D00251222 /* UIImageVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04179C62B19BB1D00251222 /* UIImageVIew.swift */; };
 		D0D2046D2B0DCFE8007E7F6F /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2046C2B0DCFE8007E7F6F /* HttpMethod.swift */; };
 		E151C9082B17003200348232 /* WeatherTimeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E151C9072B17003200348232 /* WeatherTimeViewCell.swift */; };
 		E151C90B2B1704BC00348232 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E151C90A2B1704BC00348232 /* UIStackView.swift */; };
@@ -67,6 +71,10 @@
 		D041799A2B17115000251222 /* CurrentWeatherCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCollectionReusableView.swift; sourceTree = "<group>"; };
 		D04179BC2B1877E600251222 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		D04179BE2B197CA800251222 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
+		D04179C02B19B66700251222 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		D04179C22B19B6FE00251222 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		D04179C42B19B78D00251222 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		D04179C62B19BB1D00251222 /* UIImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageVIew.swift; sourceTree = "<group>"; };
 		D0D2046C2B0DCFE8007E7F6F /* HttpMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
 		E151C9072B17003200348232 /* WeatherTimeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTimeViewCell.swift; sourceTree = "<group>"; };
 		E151C90A2B1704BC00348232 /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
@@ -176,6 +184,10 @@
 			children = (
 				E151C90A2B1704BC00348232 /* UIStackView.swift */,
 				D04179BC2B1877E600251222 /* UIView.swift */,
+				D04179C02B19B66700251222 /* String.swift */,
+				D04179C22B19B6FE00251222 /* Double.swift */,
+				D04179C42B19B78D00251222 /* UILabel.swift */,
+				D04179C62B19BB1D00251222 /* UIImageVIew.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -377,11 +389,15 @@
 				E1F5CAC22B0AF5B80021B753 /* Main.swift in Sources */,
 				E1F5CABE2B0AF0150021B753 /* FiveDayForecast.swift in Sources */,
 				D0D2046D2B0DCFE8007E7F6F /* HttpMethod.swift in Sources */,
+				D04179C52B19B78D00251222 /* UILabel.swift in Sources */,
 				E1F5CAC42B0AFA1D0021B753 /* Coordinate.swift in Sources */,
+				D04179C72B19BB1D00251222 /* UIImageVIew.swift in Sources */,
 				E151C90B2B1704BC00348232 /* UIStackView.swift in Sources */,
 				D04179BF2B197CA800251222 /* CacheManager.swift in Sources */,
 				E1F5CAD22B0B432D0021B753 /* Endpoint.swift in Sources */,
+				D04179C12B19B66700251222 /* String.swift in Sources */,
 				E151C9082B17003200348232 /* WeatherTimeViewCell.swift in Sources */,
+				D04179C32B19B6FE00251222 /* Double.swift in Sources */,
 				E1F5CAD02B0B428E0021B753 /* Request.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
