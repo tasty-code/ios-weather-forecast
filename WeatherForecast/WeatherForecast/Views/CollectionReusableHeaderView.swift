@@ -23,7 +23,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
             }
         }
         
-        static let stackViewDefaultSpacing: CGFloat = 8
+        static let stackViewDefaultSpacing: CGFloat = 14
         static let labelDefaultText: String = "-"
     }
     
@@ -41,7 +41,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
     }()
     
     private lazy var labelsStackView: UIStackView = {
-        let stackView = UIStackView(axis: .vertical, alignment: .leading, distribution: .fill, spacing: Constants.stackViewDefaultSpacing)
+        let stackView = UIStackView(axis: .vertical, alignment: .fill, distribution: .fill, spacing: Constants.stackViewDefaultSpacing)
         return stackView
     }()
     
@@ -53,31 +53,27 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
     }()
     
     private lazy var addressLabel: UILabel = {
-        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .white)
+        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .white, textAlignment: .left)
         return label
     }()
     
     private lazy var maxAndMinTemperatureLabel: UILabel = {
-        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .white)
+        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .white, textAlignment: .left)
         return label
     }()
     
     private lazy var temperatureLabel: UILabel = {
-        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .largeTitle), textColor: .white)
+        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .largeTitle), textColor: .white, textAlignment: .left)
         return label
     }()
     
     // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUpLayout()
-        setUpConstraints()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setUpLayout()
-        setUpConstraints()
     }
     
     // MARK: - Public
@@ -101,6 +97,9 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
         }
         
         addressLabel.text = address
+        
+        setUpLayout()
+        setUpConstraints()
     }
 }
 
@@ -114,10 +113,10 @@ extension CollectionReusableHeaderView {
     
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
-            self.topAnchor.constraint(equalTo: contentView.topAnchor),
-            self.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            self.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            self.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -128,8 +127,7 @@ extension CollectionReusableHeaderView {
         
         NSLayoutConstraint.activate([
             labelsStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
-            labelsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            labelsStackView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
+            labelsStackView.heightAnchor.constraint(equalTo: iconImageView.heightAnchor),
         ])
     }
 }
