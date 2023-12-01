@@ -7,7 +7,15 @@
 
 import UIKit
 
-final class CollectionViewCell: UICollectionViewCell {
+protocol CollectionViewCellIdentifyingProtocol {
+    static var reuseIdentifier: String { get }
+}
+
+extension CollectionViewCellIdentifyingProtocol {
+    static var reuseIdentifier: String { String(describing: CollectionViewCell.self) }
+}
+
+final class CollectionViewCell: UICollectionViewCell, CollectionViewCellIdentifyingProtocol {
     // MARK: - Constants
     private enum Constants {
         static let stackViewDefaultSpacing: CGFloat = 4
@@ -15,9 +23,6 @@ final class CollectionViewCell: UICollectionViewCell {
         static let dateTextFormatBefore: String = "yyyy-MM-dd HH:mm:ss"
         static let dateTextFormatAfter: String = "MM/dd(EE) HH시"
     }
-    
-    // MARK: - Static
-    static let reuseIdentifier: String = String(describing: CollectionViewCell.self)
     
     // MARK: - Dependencies
     private lazy var iconDataService: DataDownloadable = IconDataService(delegate: self)

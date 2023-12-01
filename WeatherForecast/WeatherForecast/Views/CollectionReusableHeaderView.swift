@@ -8,7 +8,15 @@
 import UIKit
 import CoreLocation
 
-final class CollectionReusableHeaderView: UICollectionReusableView {
+protocol CollectionReusableHeaderViewIdentifyingProtocol {
+    static var reuseIdentifier: String { get }
+}
+
+extension CollectionReusableHeaderViewIdentifyingProtocol {
+    static var reuseIdentifier: String { String(describing: CollectionReusableHeaderView.self) }
+}
+
+final class CollectionReusableHeaderView: UICollectionReusableView, CollectionReusableHeaderViewIdentifyingProtocol {
     // MARK: - Constants
     private enum Constants {
         case maxAndMinTemperaturelabelText(tempMax: Double, tempMin: Double)
@@ -26,9 +34,6 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
         static let stackViewDefaultSpacing: CGFloat = 14
         static let labelDefaultText: String = "-"
     }
-    
-    // MARK: - Static
-    static let reuseIdentifier: String = String(describing: CollectionReusableHeaderView.self)
     
     // MARK: - Dependencies
     private lazy var iconDataService: DataDownloadable = IconDataService(delegate: self)
