@@ -21,7 +21,7 @@ enum NetworkError: Error {
         case .decodingError:
             return "디코딩 에러입니다."
         case .invalidAPIKEYName:
-            return "잘못된 API키 이름입니다."
+            return "존재하지 않는 API KEY의 이름입니다."
         }
     }
 }
