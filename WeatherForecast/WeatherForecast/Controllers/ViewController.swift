@@ -31,12 +31,20 @@ final class ViewController: UIViewController {
         super.viewDidLoad()
         
         setDelegate()
+        customView.weatherCollectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
     private func setDelegate() {
         locationManager.delegate = self
         customView.weatherCollectionView.delegate = self
         customView.weatherCollectionView.dataSource = self
+    }
+    
+    @objc private func handleRefreshControl() {
+        
+        DispatchQueue.main.async {
+            self.customView.weatherCollectionView.refreshControl?.endRefreshing()
+        }
     }
 }
 

@@ -29,6 +29,10 @@ class CustomView: UIView {
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: WeatherHeaderView.reuseIdentifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.tintColor = .white
+        
         addSubview(collectionView)
         
         return collectionView
