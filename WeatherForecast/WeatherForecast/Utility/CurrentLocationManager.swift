@@ -9,6 +9,17 @@ import CoreLocation
 
 final class CurrentLocationManager {
     private var locationInfo: CurrentLocationInfo?
+    private let networkManager: NetworkManagable
+    
+    init(locationInfo: CurrentLocationInfo? = nil, networkManager: NetworkManagable) {
+        self.locationInfo = locationInfo
+        self.networkManager = networkManager
+    }
+    
+    func sendRequest<T: Decodable>(path: String, completion: @escaping (Result<T, Error>) -> Void) throws {
+        let queries = try makeQueries()
+        networkManager.getData(path: path, with: queries, completion: completion)
+    }
     
     private func makeQueries() throws -> [String: String] {
         guard let longitude = locationInfo?.coordinates?.longitude,
@@ -39,5 +50,4 @@ extension CurrentLocationManager: CurrentLocationManagable {
             district: placemark.subLocality
         )
     }
-    
 }

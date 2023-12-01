@@ -15,7 +15,9 @@ final class NetworkManager {
         self.urlFormatter = urlFormatter
         self.session = session
     }
-    
+}
+
+extension NetworkManager: NetworkManagable {
     func getData<T: Decodable>(path: String, with queries: [String: String], completion: @escaping (Result<T, Error>) -> Void) {
         guard let url = urlFormatter.makeURL(path: path, with: queries)
         else {
