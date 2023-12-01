@@ -7,6 +7,6 @@
 
 import CoreLocation
 
-protocol CurrentLocationManagable {
+protocol CurrentLocationManagable: AnyObject {
     func updateLocationInfo(with placemark: CLPlacemark)
 }

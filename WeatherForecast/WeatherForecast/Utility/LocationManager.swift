@@ -10,7 +10,8 @@ import CoreLocation
 
 final class LocationManager: NSObject {
     private(set) var manager: CLLocationManager!
-    var currentLocationManager: CurrentLocationManagable?
+    weak var currentLocationManager: CurrentLocationManagable?
+    weak var weatherDelgate: WeatherUpdateDelegate?
     
     override init() {
         super.init()
@@ -43,7 +44,7 @@ extension LocationManager: CLLocationManagerDelegate {
             
             guard let placemark = placemarks?.last else { return }
             self?.currentLocationManager?.updateLocationInfo(with: placemark)
-            
+            self?.weatherDelgate?.fetchWeather()
         }
         manager.stopUpdatingLocation()
     }
