@@ -5,9 +5,13 @@
 //  Created by Swain Yun on 11/30/23.
 //
 
-import Foundation
+import UIKit
 
-protocol DataServiceDelegate: AnyObject {
-    func notifyWeatherModelDidUpdate(dataService: DataDownloadable, model: WeatherModel)
-    func notifyForecastModelDidUpdate(dataService: DataDownloadable, model: ForecastModel)
+protocol WeatherForecastDataServiceDelegate: AnyObject {
+    func notifyWeatherModelDidUpdate(dataService: DataDownloadable, model: WeatherModel?)
+    func notifyForecastModelDidUpdate(dataService: DataDownloadable, model: ForecastModel?)
+}
+
+protocol ImageDataServiceDelegate: AnyObject {
+    func notifyImageDidUpdate(dataService: DataDownloadable, image: UIImage)
 }

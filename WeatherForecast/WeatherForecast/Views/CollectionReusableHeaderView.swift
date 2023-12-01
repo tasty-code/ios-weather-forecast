@@ -6,16 +6,32 @@
 //
 
 import UIKit
+import CoreLocation
 
 final class CollectionReusableHeaderView: UICollectionReusableView {
     // MARK: - Constants
     private enum Constants {
-        static let stackViewDefaultSpacing: CGFloat = 4
+        case maxAndMinTemperaturelabelText(tempMax: Double, tempMin: Double)
+        case temperatureLabelText(temp: Double)
+        
+        var text: String {
+            switch self {
+            case .maxAndMinTemperaturelabelText(let tempMax, let tempMin):
+                "최저 \(String(format: "%.f1", tempMin)) 최고 \(String(format: "%.f1", tempMax))"
+            case .temperatureLabelText(let temp):
+                String(format: "%.f1", temp)
+            }
+        }
+        
+        static let stackViewDefaultSpacing: CGFloat = 8
         static let labelDefaultText: String = "-"
     }
     
-    // MARK: - Dependencies
+    // MARK: - Static
     static let reuseIdentifier: String = String(describing: CollectionReusableHeaderView.self)
+    
+    // MARK: - Dependencies
+    private lazy var iconDataService: DataDownloadable = IconDataService(delegate: self)
     
     // MARK: - View Components
     private lazy var contentView: UIView = {
@@ -25,8 +41,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
     }()
     
     private lazy var labelsStackView: UIStackView = {
-        let stackView = UIStackView(axis: .vertical, alignment: .leading, distribution: .fillProportionally, spacing: Constants.stackViewDefaultSpacing)
-        stackView.backgroundColor = .gray
+        let stackView = UIStackView(axis: .vertical, alignment: .leading, distribution: .fill, spacing: Constants.stackViewDefaultSpacing)
         return stackView
     }()
     
@@ -34,25 +49,21 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .orange
         return imageView
     }()
     
     private lazy var addressLabel: UILabel = {
-        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .black)
-        label.backgroundColor = .green
+        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .white)
         return label
     }()
     
     private lazy var maxAndMinTemperatureLabel: UILabel = {
-        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .black)
-        label.backgroundColor = .brown
+        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .white)
         return label
     }()
     
     private lazy var temperatureLabel: UILabel = {
-        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .largeTitle), textColor: .black)
-        label.backgroundColor = .magenta
+        let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .largeTitle), textColor: .white)
         return label
     }()
     
@@ -67,6 +78,25 @@ final class CollectionReusableHeaderView: UICollectionReusableView {
         super.init(coder: coder)
         setUpLayout()
         setUpConstraints()
+    }
+    
+    // MARK: - Public
+    func configureHeaderCell(item: WeatherModel, placemark: CLPlacemark) {
+        if let temp = item.main?.temp, let tempMax = item.main?.tempMax, let tempMin = item.main?.tempMin {
+            maxAndMinTemperatureLabel.text = Constants.maxAndMinTemperaturelabelText(tempMax: tempMax, tempMin: tempMin).text
+            temperatureLabel.text = Constants.temperatureLabelText(temp: temp).text
+        }
+        
+        var address: String = String()
+        if let administrativeArea = placemark.administrativeArea {
+            address += administrativeArea
+        }
+        
+        if let thoroughfare = placemark.thoroughfare {
+            address += thoroughfare
+        }
+        
+        addressLabel.text = address
     }
 }
 
@@ -97,5 +127,12 @@ extension CollectionReusableHeaderView {
             labelsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             labelsStackView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
         ])
+    }
+}
+
+// MARK: ImageDataServiceDelegate Confirmation
+extension CollectionReusableHeaderView: ImageDataServiceDelegate {
+    func notifyImageDidUpdate(dataService: DataDownloadable, image: UIImage) {
+        iconImageView.image = image
     }
 }

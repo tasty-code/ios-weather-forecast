@@ -8,13 +8,14 @@
 import UIKit
 
 extension UIStackView {
-    convenience init(axis: NSLayoutConstraint.Axis, alignment: UIStackView.Alignment = .fill, distribution: UIStackView.Distribution = .fill, spacing: CGFloat = 0.0) {
+    convenience init(axis: NSLayoutConstraint.Axis, alignment: UIStackView.Alignment = .fill, distribution: UIStackView.Distribution = .fill, spacing: CGFloat = 0.0, backgroundColor: UIColor = .clear) {
         self.init()
         
         self.axis = axis
         self.alignment = alignment
         self.distribution = distribution
         self.spacing = spacing
+        self.backgroundColor = backgroundColor
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     

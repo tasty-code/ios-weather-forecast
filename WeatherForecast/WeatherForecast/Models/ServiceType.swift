@@ -9,16 +9,24 @@ import Foundation
 import CoreLocation
 
 enum ServiceType {
-    case weather(coordinate: CLLocationCoordinate2D, apiKey: String), forecast(coordinate: CLLocationCoordinate2D, apiKey: String)
+    case weather(coordinate: CLLocationCoordinate2D, apiKey: String)
+    case forecast(coordinate: CLLocationCoordinate2D, apiKey: String)
+    case icon(code: String)
     
     var urlComponents: URLComponents? {
-        return URLComponents(string: "https://api.openweathermap.org/data/2.5/\(self.urlPath)")
+        switch self {
+        case .weather, .forecast:
+            return URLComponents(string: "https://api.openweathermap.org/data/2.5/\(self.urlPath)")
+        case .icon(let code):
+            return URLComponents(string: "https://openweathermap.org/\(self.urlPath)/\(code)@2x.png")
+        }
     }
     
     var urlPath: String {
         switch self {
         case .weather: "weather"
         case .forecast: "forecast"
+        case .icon: "img/wn/"
         }
     }
     
@@ -38,13 +46,7 @@ enum ServiceType {
                 URLQueryItem(name: "appid", value: apiKey),
                 URLQueryItem(name: "units", value: "metric")
             ]
-        }
-    }
-    
-    var decodingType: Decodable.Type {
-        switch self {
-        case .weather: WeatherModel.self
-        case .forecast: ForecastModel.self
+        default: []
         }
     }
     

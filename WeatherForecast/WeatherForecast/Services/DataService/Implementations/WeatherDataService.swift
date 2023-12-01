@@ -9,9 +9,9 @@ import Foundation
 
 final class WeatherDataService: DataDownloadable {
     private let decoder: JSONDecodable
-    private weak var delegate: DataServiceDelegate?
+    private weak var delegate: WeatherForecastDataServiceDelegate?
     
-    init(dataServiceDelegate: DataServiceDelegate) {
+    init(dataServiceDelegate: WeatherForecastDataServiceDelegate) {
         self.decoder = JSONFormatter(decoder: JSONDecoder())
         self.delegate = dataServiceDelegate
     }
@@ -22,11 +22,10 @@ final class WeatherDataService: DataDownloadable {
         NetworkManager.downloadData(url: url) { [weak self] result in
             switch result {
             case .success(let data):
-                let model = self?.decoder.decodeJSON(serviceType.decodingType, from: data)
+                let model = self?.decoder.decodeJSON(WeatherModel.self, from: data)
                 DispatchQueue.main.async {
                     guard let self = self else { return }
-                    guard let weatherModel = model as? WeatherModel else { return }
-                    self.delegate?.notifyWeatherModelDidUpdate(dataService: self, model: weatherModel)
+                    self.delegate?.notifyWeatherModelDidUpdate(dataService: self, model: model)
                 }
             case .failure(let error):
                 print(error)
