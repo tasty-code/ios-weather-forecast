@@ -5,7 +5,6 @@
 //  Created by 김수경 on 2023/11/30.
 //
 
-import Foundation
 import CoreLocation
 
 struct CurrentLocationInfo {
@@ -13,4 +12,3 @@ struct CurrentLocationInfo {
     var city: String?
     var district: String?
 }
-

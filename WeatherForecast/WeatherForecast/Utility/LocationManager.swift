@@ -10,13 +10,12 @@ import CoreLocation
 
 final class LocationManager: NSObject {
     private(set) var manager: CLLocationManager!
-    private(set) var location: CurrentLocationInfo!
+    var currentLocationManager: CurrentLocationManagable?
     
     override init() {
         super.init()
         self.manager = CLLocationManager()
         self.manager.delegate = self
-        self.location = CurrentLocationInfo()
     }
     
 }
@@ -29,14 +28,13 @@ extension LocationManager: CLLocationManagerDelegate {
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
         case .denied, .restricted:
-            location.coordinates = CLLocationCoordinate2D(latitude: 37.5336584, longitude: 126.9775707)
+            break
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        self.location.coordinates = location.coordinate
-    
+        
         CLGeocoder().reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -44,8 +42,8 @@ extension LocationManager: CLLocationManagerDelegate {
             }
             
             guard let placemark = placemarks?.last else { return }
-            self?.location.city = placemark.locality
-            self?.location.district = placemark.subLocality
+            self?.currentLocationManager?.updateLocationInfo(with: placemark)
+            
         }
         manager.stopUpdatingLocation()
     }
