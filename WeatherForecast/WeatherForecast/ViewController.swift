@@ -138,12 +138,14 @@ extension ViewController {
 extension ViewController: WeatherForecastDataServiceDelegate {
     func notifyWeatherModelDidUpdate(dataService: DataDownloadable, model: WeatherModel?) {
         weatherModel = model
-        collectionView.reloadData()
+        let headerViewIndexPaths = collectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
+        collectionView.reloadItems(at: headerViewIndexPaths)
     }
     
     func notifyForecastModelDidUpdate(dataService: DataDownloadable, model: ForecastModel?) {
         forecastModel = model
-        collectionView.reloadData()
+        let cellIndexPaths = collectionView.indexPathsForVisibleItems
+        collectionView.reloadItems(at: cellIndexPaths)
     }
 }
 
@@ -151,7 +153,8 @@ extension ViewController: WeatherForecastDataServiceDelegate {
 extension ViewController: LocationManagerDelegate {
     func didUpdatePlacemark(locationManager: LocationManager, placemark: CLPlacemark) {
         currentPlacemark = placemark
-        collectionView.reloadData()
+        let headerViewIndexPaths = collectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
+        collectionView.reloadItems(at: headerViewIndexPaths)
     }
     
     func didUpdateLocation(locationManager: LocationManager, location: CLLocation) {
