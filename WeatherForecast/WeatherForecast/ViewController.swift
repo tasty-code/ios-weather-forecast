@@ -139,13 +139,23 @@ extension ViewController: WeatherForecastDataServiceDelegate {
     func notifyWeatherModelDidUpdate(dataService: DataDownloadable, model: WeatherModel?) {
         weatherModel = model
         let headerViewIndexPaths = collectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
-        collectionView.reloadItems(at: headerViewIndexPaths)
+        
+        if headerViewIndexPaths.isEmpty {
+            collectionView.reloadData()
+        } else {
+            collectionView.reloadItems(at: headerViewIndexPaths)
+        }
     }
     
     func notifyForecastModelDidUpdate(dataService: DataDownloadable, model: ForecastModel?) {
         forecastModel = model
         let cellIndexPaths = collectionView.indexPathsForVisibleItems
-        collectionView.reloadItems(at: cellIndexPaths)
+        
+        if cellIndexPaths.isEmpty {
+            collectionView.reloadData()
+        } else {
+            collectionView.reloadItems(at: cellIndexPaths)
+        }
     }
 }
 
