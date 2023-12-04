@@ -11,18 +11,34 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     lazy var horizontalStackView: UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 50
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        stackView.spacing = 15
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
-    lazy var label: UILabel = {
+    lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "time"
         return label
+    }()
+    
+    lazy var temperatureLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "temp"
+        return label
+    }()
+    
+    lazy var weatherIcon: UIImageView = {
+       let icon = UIImageView()
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.image = .actions
+        return icon
     }()
     
     override init(frame: CGRect) {
@@ -38,15 +54,18 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     
     func setUpLayouts() {
         backgroundColor = .systemGreen
-        addSubview(label)
+        horizontalStackView.setCustomSpacing(20, after: .spacerView)
+        horizontalStackView.addArrangedSubviews([timeLabel, temperatureLabel, weatherIcon])
+       
+        addSubview(horizontalStackView)
         
     }
     
     func setUpConstraints() {
         NSLayoutConstraint.activate([
-            label.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            label.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            label.heightAnchor.constraint(equalTo: self.heightAnchor),
+            horizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            horizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            horizontalStackView.heightAnchor.constraint(equalTo: self.heightAnchor),
         ])
     }
 }

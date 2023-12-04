@@ -10,11 +10,54 @@ import UIKit
 class WeatherHeaderCollectionViewCell: UICollectionReusableView {
     var text: String = "없음"
     
-    lazy var label: UILabel = {
+    lazy var horizontalStackView: UIStackView = {
+       let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 5
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    lazy var weatherIcon: UIImageView = {
+       let icon = UIImageView()
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.image = .checkmark
+        return icon
+    }()
+    
+    lazy var verticallStackView: UIStackView = {
+       let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    lazy var addressLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = text
+        label.text = "주소"
+        return label
+    }()
+    
+    lazy var minMaxTemperatureLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "최저최고온도"
+        return label
+    }()
+    
+    lazy var temperatureLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "현재온도"
         return label
     }()
     
@@ -30,14 +73,16 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
     
     func setUpLayouts() {
         backgroundColor = .cyan
-        addSubview(label)
+        verticallStackView.addArrangedSubviews([addressLabel, minMaxTemperatureLabel, temperatureLabel])
+        horizontalStackView.addArrangedSubviews([weatherIcon, verticallStackView])
+        addSubview(horizontalStackView)
     }
     
     func setUpConstraints() {
         NSLayoutConstraint.activate([
-            label.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            label.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            label.heightAnchor.constraint(equalTo: self.heightAnchor),
+            horizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            horizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            horizontalStackView.heightAnchor.constraint(equalTo: self.heightAnchor),
         ])
     }
 }
