@@ -14,10 +14,9 @@ final class DateFormattingService: DateFormattable {
         dateFormatter.dateFormat = format1
         guard let date = dateFormatter.date(from: dateText) else { return String() }
         
-        let newDateFormatter = DateFormatter()
-        newDateFormatter.dateFormat = format2
-        newDateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = format2
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         
-        return newDateFormatter.string(from: date)
+        return dateFormatter.string(from: date)
     }
 }

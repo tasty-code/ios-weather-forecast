@@ -71,7 +71,6 @@ final class CollectionViewCell: UICollectionViewCell, CollectionViewCellIdentify
         setUpLayout()
         setUpConstraints()
         drawUnderBorder()
-        
     }
     
     override func prepareForReuse() {

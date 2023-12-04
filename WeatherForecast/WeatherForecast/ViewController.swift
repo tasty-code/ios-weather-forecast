@@ -168,7 +168,10 @@ extension ViewController: LocationManagerDelegate {
     }
     
     func didUpdateLocation(locationManager: LocationManager, location: CLLocation) {
-        guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else { return }
+        guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else {
+            return
+        }
+        
         DispatchQueue.global().async { [weak self] in
             locationManager.reverseGeocodeLocation(location: location)
             self?.weatherDataService.downloadData(serviceType: .weather(coordinate: location.coordinate, apiKey: apiKey))
