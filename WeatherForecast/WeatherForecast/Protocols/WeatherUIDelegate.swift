@@ -12,3 +12,8 @@ protocol WeatherUIDelegate: UIViewController {
     func loadForecast(_ coordinate: CLLocationCoordinate2D)
     func updateAddress(_ addressString: String)
 }
+
+protocol WeatherCellDelegate: UICollectionViewCell {
+    func setUpLayouts()
+    func setUpConstraints()
+}
