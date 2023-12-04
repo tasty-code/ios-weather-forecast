@@ -32,14 +32,7 @@ enum ServiceType {
     
     var urlQueries: [URLQueryItem] {
         switch self {
-        case .weather(let coordinate, let apiKey):
-            [
-                URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
-                URLQueryItem(name: "lon", value: "\(coordinate.longitude)"),
-                URLQueryItem(name: "appid", value: apiKey),
-                URLQueryItem(name: "units", value: "metric")
-            ]
-        case .forecast(let coordinate, let apiKey):
+        case .weather(let coordinate, let apiKey), .forecast(let coordinate, let apiKey):
             [
                 URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
                 URLQueryItem(name: "lon", value: "\(coordinate.longitude)"),
