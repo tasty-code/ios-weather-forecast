@@ -4,7 +4,7 @@ import CoreLocation
 final class WeatherViewController: UIViewController {
     
     private let locationManager = CLLocationManager()
-    private let networkServiceProvider = NetworkServiceProvider()
+    private let networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
     
     override func viewDidLoad() {
         super.viewDidLoad()

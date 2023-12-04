@@ -9,7 +9,7 @@ struct WeatherURLConfigration: APIRequestable {
     var parameters: [String : String]?
     var apiKey: String?
     
-    init(weatherType: WeatherType,coordinate: CLLocationCoordinate2D){
+    init(weatherType: WeatherType, coordinate: CLLocationCoordinate2D){
         
         self.path = "/data/2.5/\(weatherType.rawValue)"
         self.apiKey = createApiKey(name: "API_KEY")
