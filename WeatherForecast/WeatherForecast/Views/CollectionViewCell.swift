@@ -46,14 +46,6 @@ final class CollectionViewCell: UICollectionViewCell, CollectionViewCellIdentify
         return imageView
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
     // MARK: - Public
     func configureCell(_ item: List) {
         if let dateText = item.dateTxt {
