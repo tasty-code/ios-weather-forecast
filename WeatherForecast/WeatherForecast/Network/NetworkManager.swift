@@ -10,8 +10,8 @@ import Foundation
 final class NetworkManager {
     private let session: URLSession
     
-    init(session: URLSession) {
-        self.session = session
+    init() {
+        self.session = URLSession(configuration: .default)
     }
     
     private enum NetworkError: Error {
@@ -23,7 +23,6 @@ final class NetworkManager {
         _ request: URLRequest?,
         expecting type: T.Type,
         completion: @escaping (Result<T, Error>) -> Void) {
-            
             guard let urlRequest = request else {
                 completion(.failure(NetworkError.failedToCreateRequest))
                 return

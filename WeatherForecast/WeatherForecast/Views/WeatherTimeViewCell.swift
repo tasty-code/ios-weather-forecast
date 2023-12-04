@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherTimeViewCell: UICollectionViewCell {
+final class WeatherTimeViewCell: UICollectionViewCell {
     static let identifier = "TimeCellIdentifier"
     
     // MARK: - private property
@@ -56,6 +56,7 @@ class WeatherTimeViewCell: UICollectionViewCell {
     }
     
     // MARK: - public method
+    
     func setTimeLabel(_ text: String) {
         timeLabel.text = text.dateFormatter()
     }
@@ -64,26 +65,8 @@ class WeatherTimeViewCell: UICollectionViewCell {
         temperatureLabel.text = text.tempertureFormatter()
     }
     
-    func setIconImage(_ id: String, temp: Int) {
-        if let image = ImageCacheManager.shared.getCache(id: id) {
-            DispatchQueue.main.async {
-                self.iconImageView.image = image
-            }
-        } else {
-            let url = URL(string: "https://openweathermap.org/img/wn/\(id)@2x.png")
-            do {
-                let data = try Data(contentsOf: url!)
-                guard let image = UIImage(data: data) else { return }
-                
-                DispatchQueue.main.async {
-                    self.iconImageView.image = image
-                }
-                
-                ImageCacheManager.shared.setCache(id: id, data: image)
-
-            } catch let error {
-                print(error)
-            }
-        }
+    func setIconImage(_ data: Data, temp: Int) {
+        guard let image = UIImage(data: data) else { return }
+        self.iconImageView.image = image
     }
 }

@@ -11,6 +11,7 @@ enum Environment {
     private enum Keys {
         static let API_KEY = "API_KEY"
         static let BASE_URL = "BASE_URL"
+        static let IMAGE_BASE_URL = "IMAGE_BASE_URL"
     }
     
     private static let infoDictionary: [String: Any] = {
@@ -18,6 +19,11 @@ enum Environment {
             fatalError("plist file not found")
         }
         return dict
+    }()
+    
+    static let imageBaseURL: String = {
+        guard let string = Environment.infoDictionary[Keys.IMAGE_BASE_URL] as? String else { fatalError("not exists in plist") }
+        return string
     }()
     
     static let baseURL: String = {

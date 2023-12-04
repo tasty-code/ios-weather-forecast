@@ -10,27 +10,44 @@ import CoreLocation
 
 protocol WeatherManagerDelegate: AnyObject {
     func showAlertWhenNoAuthorization()
-    func updateCollectionViewUI()
-    func refreshCollectionViewUI()
+    func updateCollectionView()
+    func refreshCollectionView()
 }
 
 final class WeatherManager: NSObject {
-    private(set) var cacheData: [Endpoint: Decodable] = [:]
-    
-    private var networkManager: NetworkManager = NetworkManager(session: URLSession(configuration: .default))
     
     weak var delegate: WeatherManagerDelegate?
-    
-    private let locationManager: CLLocationManager
     
     var longitude: String? {
         return locationManager.location?.coordinate.longitude.description
     }
+    
     var latitude: String? {
         return locationManager.location?.coordinate.latitude.description
     }
     
+    // MARK: - Private Property
+    
+    private let locationManager: CLLocationManager
     private(set) var currentAddress: String?
+    
+    private lazy var currentWeatherService: CurrentWeatherService? = {
+        guard let latitude = latitude, let longitude = longitude else { return nil }
+        
+        return CurrentWeatherService(latitude: latitude, longitude: longitude)
+    }()
+    
+    private lazy var forecastService: ForecastWeatherService? = {
+        guard let latitude = latitude, let longitude = longitude else { return nil }
+        
+        return ForecastWeatherService(latitude: latitude, longitude: longitude)
+    }()
+    
+    private(set) lazy var iconService: IconService = IconService()
+    
+    private(set) var cacheData: [Endpoint: Decodable] = [:]
+    
+    // MARK: - Initialize
     
     override init() {
         locationManager = CLLocationManager()
@@ -38,69 +55,13 @@ final class WeatherManager: NSObject {
         
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        startLocationUpdate()
+        
         locationManager.delegate = self
     }
-    
-    func startLocationUpdate() {
-        locationManager.startUpdatingLocation()
-    }
-    
-    func stopLocationUpdate() {
-        locationManager.stopUpdatingLocation()
-    }
-    
-    func refreshData() {
-        
-        fetchWeatherData(endpoint: .forecast, expect: FiveDayForecast.self, completionHandler: self.delegate!.refreshCollectionViewUI)
-        fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self, completionHandler: self.delegate!.refreshCollectionViewUI)
-    }
-    
-    // MARK: - private method
-    
-    private func fetchWeatherData<T: Decodable>(endpoint: Endpoint, expect: T.Type, completionHandler: @escaping () -> Void) {
-        guard let latitude = latitude, let longitude = longitude else {
-            return
-        }
-        
-        let request = GetRequest(endpoint: endpoint, queryParameters: [URLQueryItem(name: "lat", value: latitude), URLQueryItem(name: "lon", value: longitude), URLQueryItem(name: "units", value: "metric"), URLQueryItem(name: "appid", value: Environment.apiKey)]).makeURLrequest()
-        
-        // 통신
-        networkManager.execute(request, expecting: expect) { result in
-            switch result {
-            case .success(let success):
-                print(success)
-                self.cacheData[endpoint] = success
-                completionHandler()
-                
-            case .failure:
-                print("모델 객체에 넣기 실패", result)
-                break
-            }
-        }
-    }
-    
-    private func getCurrentAddress() {
-        var currentAddress = ""
-        
-        let geoCoder: CLGeocoder = CLGeocoder()
-        
-        let locale = Locale(identifier: "Ko-Kr")
-        
-        guard let location = locationManager.location else { return }
-        
-        geoCoder.reverseGeocodeLocation(location, preferredLocale:  locale) { placemark, error in
-            guard error == nil, let place = placemark?.first else { return }
-            
-            if let administrativeArea: String = place.administrativeArea { currentAddress.append(administrativeArea + " ") }
-            
-            if let locality: String = place.locality { currentAddress.append(locality + " ") }
-            if let subLocality: String = place.subLocality { currentAddress.append(subLocality + " ") }
-                        
-            self.currentAddress = currentAddress
-        }
-    }
-    
 }
+
+// MARK: - CLLocation Delegate
 
 extension WeatherManager: CLLocationManagerDelegate {
     @available(iOS 14.0, *)
@@ -109,21 +70,118 @@ extension WeatherManager: CLLocationManagerDelegate {
         
         switch manager.authorizationStatus {
         case .restricted, .denied:
-            DispatchQueue.main.async {
-                self.delegate?.showAlertWhenNoAuthorization()
-            }
-            
-            break
-            
+            self.rejected()
         case .notDetermined:
             break
-            
         default:
-            fetchWeatherData(endpoint: .forecast, expect: FiveDayForecast.self, completionHandler: self.delegate!.updateCollectionViewUI)
-            fetchWeatherData(endpoint: .weather, expect: CurrentWeather.self, completionHandler: self.delegate!.updateCollectionViewUI)
-            getCurrentAddress()
-            
-            break
+            self.permitted {
+                if self.currentWeatherService!.isNetworkingDone && self.forecastService!.isNetworkingDone {
+                    self.iconFetch()
+                    self.delegate?.updateCollectionView()
+                }
+            }
         }
+    }
+}
+
+// MARK: - Public Method(Location)
+
+extension WeatherManager {
+    func startLocationUpdate() {
+        locationManager.startUpdatingLocation()
+    }
+    
+    func stopLocationUpdate() {
+        locationManager.stopUpdatingLocation()
+    }
+    
+    func setCurrentAddress() {
+        var currentAddress = ""
+        
+        let geoCoder: CLGeocoder = CLGeocoder()
+        let locale = Locale(identifier: "Ko-Kr")
+        
+        guard let location = locationManager.location else { return }
+        
+        geoCoder.reverseGeocodeLocation(location, preferredLocale:  locale) { placemark, error in
+            guard error == nil, let place = placemark?.first else { return }
+            
+            if let locality: String = place.locality { currentAddress.append(locality + " ") }
+            if let subLocality: String = place.subLocality { currentAddress.append(subLocality) }
+            
+            self.currentAddress = currentAddress
+        }
+    }
+}
+
+// MARK: - Public Method(Data Fetching)
+
+extension WeatherManager {
+    func rejected() {
+        self.delegate?.showAlertWhenNoAuthorization()
+    }
+    
+    func permitted(_ completion: @escaping () -> Void) {
+        setCurrentAddress()
+        
+        guard let currentWeatherService = currentWeatherService,
+              let forecastService = forecastService else { return }
+        
+        currentWeatherService.fetcher({ data in
+            self.cacheData[.weather] = data
+            completion()
+//            guard let iconId = data.weather.first?.icon else { return }
+//            
+//            self.iconService.fetcher(iconId: iconId) {
+//                completion()
+//            }
+        })
+        
+        forecastService.fetcher({ data in
+            self.cacheData[.forecast] = data
+            completion()
+//            let list = data.list.compactMap { item in
+//                return item.weather.first?.icon
+//            }
+//            
+//            list.forEach { iconId in
+//                self.iconService.fetcher(iconId: iconId) {
+//                    completion()
+//                }
+//            }
+        })
+    }
+    
+    func refreshData() {
+        self.permitted {
+            if self.currentWeatherService!.isNetworkingDone && self.forecastService!.isNetworkingDone {
+                self.iconFetch()
+                self.delegate?.refreshCollectionView()
+            }
+        }
+    }
+    
+    private func iconFetch() {
+        var list: [String] = []
+        
+        let weatherData = self.cacheData[.weather] as! CurrentWeather
+        list += weatherData.weather.compactMap { item in
+            return item.icon
+        }
+        
+        let forecastData = self.cacheData[.forecast] as! FiveDayForecast
+        list += forecastData.list.compactMap { item in
+            return item.weather.first?.icon
+        }
+        
+        let group = DispatchGroup()
+        
+        list.forEach { iconId in
+            DispatchQueue.global().async(group: group) {
+                self.iconService.fetcher(iconId: iconId)
+            }
+        }
+
+        group.wait()
     }
 }

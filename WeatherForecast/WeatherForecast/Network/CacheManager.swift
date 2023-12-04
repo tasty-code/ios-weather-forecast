@@ -5,19 +5,17 @@
 //  Created by Rarla on 2023/12/01.
 //
 
-import UIKit
+import Foundation
 
-class ImageCacheManager {
-    static let shared = ImageCacheManager()
-    private let cache = NSCache<NSString, UIImage>()
-    private init() {}
+final class CacheManager<DataType: NSObject> {
+    private let cache = NSCache<NSString, DataType>()
     
-    func setCache(id: String, data: UIImage) {
+    func setCache(id: String, data: DataType) {
         cache.setObject(data, forKey: id as NSString)
     }
     
-    func getCache(id: String) -> UIImage? {
-        guard let image = cache.object(forKey: id as NSString) else { return nil }
-        return image
+    func getCache(id: String) -> DataType? {
+        guard let cached = cache.object(forKey: id as NSString) else { return nil }
+        return cached
     }
 }
