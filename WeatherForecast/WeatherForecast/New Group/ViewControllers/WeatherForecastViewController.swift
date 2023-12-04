@@ -1,14 +1,20 @@
 import UIKit
 import CoreLocation
 
-final class ViewController: UIViewController {
+final class WeatherForecastViewController: UIViewController {
+    private let weatherForecastView = WeatherForecastView()
     private let locationManager = LocationManager()
     private var model: Decodable?
     private var networker: Networker<Model.CurrentWeather>?
     
+    override func loadView() {
+        view = weatherForecastView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .blue
         locationManager.request { [self] result in
             switch result {
             case.success((let coordinate, let placemark)):
