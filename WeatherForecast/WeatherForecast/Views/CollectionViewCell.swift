@@ -18,7 +18,7 @@ extension CollectionViewCellIdentifyingProtocol {
 final class CollectionViewCell: UICollectionViewCell, CollectionViewCellIdentifyingProtocol {
     // MARK: - Constants
     private enum Constants {
-        static let stackViewDefaultSpacing: CGFloat = 4
+        static let bottomBorderLineHeight: CGFloat = 1
         static let labelDefaultText: String = "-"
         static let dateTextFormatBefore: String = "yyyy-MM-dd HH:mm:ss"
         static let dateTextFormatAfter: String = "MM/dd(EE) HH시"
@@ -102,7 +102,8 @@ extension CollectionViewCell {
     
     private func drawUnderBorder() {
         let border = CALayer()
-        border.frame = CGRect(x: 0, y: frame.height - Constants.stackViewDefaultSpacing, width: frame.width, height: Constants.stackViewDefaultSpacing)
+        border.frame = CGRect(x: frame.origin.x, y: frame.height - Constants.bottomBorderLineHeight, width: frame.width, height: Constants.bottomBorderLineHeight)
+        border.backgroundColor = CGColor(red: 255, green: 255, blue: 255, alpha: 1)
         contentView.layer.addSublayer(border)
     }
 }
