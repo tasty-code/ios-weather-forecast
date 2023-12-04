@@ -6,16 +6,15 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    let manager = LocationManager()
+final class ViewController: UIViewController {
+    let locationManager = LocationManager()
     let currentLocationManger = CurrentLocationManager(networkManager: NetworkManager(urlFormatter: WeatherURLFormatter()))
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        manager.manager.requestLocation()
-        manager.currentLocationManager = currentLocationManger
-        manager.weatherDelgate = self
+        locationManager.manager.requestLocation()
+        locationManager.currentLocationManager = currentLocationManger
+        locationManager.weatherDelgate = self
     }
 }
 

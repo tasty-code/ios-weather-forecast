@@ -5,7 +5,6 @@
 //  Created by BOMBSGIE on 2023/11/27.
 //
 
-import UIKit
 import CoreLocation
 
 final class LocationManager: NSObject {
