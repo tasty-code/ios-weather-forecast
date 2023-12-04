@@ -61,7 +61,7 @@ final class CollectionViewCell: UICollectionViewCell, CollectionViewCellIdentify
         }
         
         if let temperature = item.main?.temp {
-            temperatureLabel.text = String(format: "%.1f", temperature)
+            temperatureLabel.text = "\(String(format: "%.1f", temperature))°"
         }
         
         if let iconCode = item.weather?.first?.icon {

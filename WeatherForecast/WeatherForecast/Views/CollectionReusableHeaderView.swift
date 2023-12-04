@@ -25,9 +25,9 @@ final class CollectionReusableHeaderView: UICollectionReusableView, CollectionRe
         var text: String {
             switch self {
             case .maxAndMinTemperaturelabelText(let tempMax, let tempMin):
-                "최저 \(String(format: "%.1f", tempMin)) 최고 \(String(format: "%.1f", tempMax))"
+                "최저 \(String(format: "%.1f", tempMin))° 최고 \(String(format: "%.1f", tempMax))°"
             case .temperatureLabelText(let temp):
-                String(format: "%.1f", temp)
+                "\(String(format: "%.1f", temp))°"
             }
         }
         
