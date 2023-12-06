@@ -11,6 +11,7 @@ final class WeatherViewController: UIViewController {
     private let locationDataManager = LocationDataManager()
     private var weatherTodayData: WeatherToday?
     private var weatherForecastData: WeatherForecast?
+    private var address: String?
     
     private let collectionView: UICollectionView = {
        let layout = UICollectionViewFlowLayout()
@@ -28,6 +29,7 @@ final class WeatherViewController: UIViewController {
             withReuseIdentifier: WeatherCollectionHeaderView.identifier
         )
         
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -65,15 +67,10 @@ extension WeatherViewController: LocationDataManagerDelegate {
         }
         
         if
-            let country = placemark.country,
-            let administrativeArea = placemark.administrativeArea,
             let locality = placemark.locality,
-            let subLocality = placemark.subLocality,
-            let thoroughfare = placemark.thoroughfare,
-            let subThoroughfare = placemark.subThoroughfare
+            let subLocality = placemark.subLocality
         {
-            let address = "\(country) \(administrativeArea) \(locality) \(subLocality) \(thoroughfare) \(subThoroughfare)"
-            print(address)
+            address = "\(locality) \(subLocality)"
         }
     }
     
@@ -105,7 +102,7 @@ extension WeatherViewController: LocationDataManagerDelegate {
 
 extension WeatherViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 2
+        return 1
     }
 }
 
@@ -113,7 +110,7 @@ extension WeatherViewController: UICollectionViewDelegate {
 
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 50
+        return weatherForecastData?.list.count ?? 20
     }
     
     
@@ -122,27 +119,70 @@ extension WeatherViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.backgroundColor = .systemBlue
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd(E) HH시"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        if 
+            let timeInterval = weatherForecastData?.list[indexPath.row].dt,
+            let icon = weatherForecastData?.list[indexPath.row].weather[0].icon,
+            let temperature = weatherForecastData?.list[indexPath.row].main.temp
+        {
+            let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
+            let strDate = dateFormatter.string(from: date as Date)
+            cell.dateLabel.text = strDate
+            
+            let weatherIconURI = "https://openweathermap.org/img/wn/\(icon)@2x.png"
+            let url = URL(string: weatherIconURI)
+            cell.weatherIconImageView2.load(url: url!) // TODO: 강제 언래핑
+            
+            let strTemperature = temperatureFormat(temperature)
+            cell.temperatureLabel.text = strTemperature
+        }
+
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherCollectionHeaderView.identifier, for: indexPath) as? WeatherCollectionHeaderView else {
-                return WeatherCollectionHeaderView()
-            }
-            header.configure()
-            
-            if let icon = weatherTodayData?.weather[0].icon {
-                let weatherIconURI = "https://openweathermap.org/img/wn/\(icon)@2x.png"
-                let url = URL(string: weatherIconURI)
-                header.weatherIconImageView.load(url: url!)
-            }
-            
-            return header
-        } else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: WeatherCollectionHeaderView.identifier,
+            for: indexPath) as? WeatherCollectionHeaderView else {
             return UICollectionReusableView()
         }
+        header.configure()
+        header.addressLabel.text = address
+        
+        if 
+            let temperature = weatherTodayData?.main.temp,
+            let temperatureMin = weatherTodayData?.main.tempMin,
+            let temperatureMax = weatherTodayData?.main.tempMax,
+            let icon = weatherTodayData?.weather[0].icon
+        {
+            let strTemperature = temperatureFormat(temperature)
+            let strTemperatureMin = temperatureFormat(temperatureMin)
+            let strTemperatureMax = temperatureFormat(temperatureMax)
+            
+            header.currentTemperatureLabel.text = strTemperature
+            header.maxAndMinTemperatureLabel.text = "최저 \(strTemperatureMin) 최고 \(strTemperatureMax)"
+        
+            let weatherIconURI = "https://openweathermap.org/img/wn/\(icon)@2x.png"
+            let url = URL(string: weatherIconURI)
+            header.weatherIconImageView.load(url: url!) // TODO: 강제 언래핑
+        }
+        return header
     }
+    
+    func temperatureFormat(_ temperature: Double?) -> String {
+        let celsius = translateCelsius(kelvin: temperature)
+        return String(format: "%.1f°", celsius)
+    }
+    
+    func translateCelsius(kelvin: Double?) -> Double {
+        guard let kelvin else { return 0 }
+        return kelvin - 273.15
+    }
+    
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -160,15 +200,19 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - UICollectionView UI
 
 extension WeatherViewController {
-    
-    override func viewDidLayoutSubviews() {
-        collectionView.frame = view.bounds
-    }
-    
     private func setUI() {
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
+    }
+    
+    private func setConstraint() {
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+        ])
     }
 }
 

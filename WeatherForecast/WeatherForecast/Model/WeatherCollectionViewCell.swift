@@ -12,10 +12,10 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     
     var dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "12/02(일) 21시"
         label.textAlignment = .center
         label.textColor = .white
         label.font = .systemFont(ofSize: 24)
+        label.textAlignment = .center
         
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -23,7 +23,6 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     
     var temperatureLabel: UILabel = {
         let label = UILabel()
-        label.text = "1.9"
         label.textAlignment = .center
         label.textColor = .white
         label.font = .systemFont(ofSize: 24)
@@ -61,18 +60,20 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             // dateLabel
             dateLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            dateLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             // TODO: 왜 주석을 풀면 에러가 날까?
             // dateLabel.leadingAnchor.constraint(equalTo: self.leftAnchor),
             
             // temperatureLabel
             temperatureLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            temperatureLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             temperatureLabel.trailingAnchor.constraint(equalTo: weatherIconImageView2.leadingAnchor),
             
             // weatherIconImageView
             weatherIconImageView2.topAnchor.constraint(equalTo: self.topAnchor),
             weatherIconImageView2.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            weatherIconImageView2.widthAnchor.constraint(equalToConstant: 60),
+            weatherIconImageView2.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
-    
-    
 }
