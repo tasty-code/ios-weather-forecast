@@ -13,13 +13,11 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
     lazy var weatherIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
         return imageView
     }()
     
-    private let locationLabel: UILabel = {
+    let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = "서울특별시 용산구"
         label.textAlignment = .center
         label.textColor = .white
         label.font = .systemFont(ofSize: 16)
@@ -28,9 +26,8 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
         return label
     }()
     
-    private let maxAndMinTemperatureLabel: UILabel = {
+    let maxAndMinTemperatureLabel: UILabel = {
         let label = UILabel()
-        label.text = "최저 16.9 최고 20.4\n"
         label.textAlignment = .center
         label.textColor = .white
         label.font = .systemFont(ofSize: 16)
@@ -40,9 +37,8 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
         return label
     }()
     
-    private let currentTemperatureLabel: UILabel = {
+    let currentTemperatureLabel: UILabel = {
         let label = UILabel()
-        label.text = "20.4\n"
         label.textAlignment = .center
         label.textColor = .white
         label.font = .systemFont(ofSize: 24)
@@ -54,7 +50,8 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(locationLabel)
+        addSubview(weatherIconImageView)
+        addSubview(addressLabel)
         addSubview(maxAndMinTemperatureLabel)
         addSubview(currentTemperatureLabel)
         
@@ -74,24 +71,29 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
     }
     
     private func setConstraint() {
-        let safeArea = self
         
         NSLayoutConstraint.activate([
             // weatherIconImageView
-            weatherIconImageView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            weatherIconImageView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            weatherIconImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            weatherIconImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            weatherIconImageView.widthAnchor.constraint(equalToConstant: 120),
+            weatherIconImageView.heightAnchor.constraint(equalToConstant: 120),
             
-            // locationLabel
-            locationLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 16),
-            locationLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            // weatherIconImageView
+            weatherIconImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            weatherIconImageView.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor),
+            
+            // addressLabel
+            addressLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            addressLabel.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor),
             
             // maxAndMinTemperatureLabel
-            maxAndMinTemperatureLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 16),
-            maxAndMinTemperatureLabel.leadingAnchor.constraint(equalTo: locationLabel.leadingAnchor),
+            maxAndMinTemperatureLabel.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 16),
+            maxAndMinTemperatureLabel.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor),
             
             // currentTemperatureLabel
             currentTemperatureLabel.topAnchor.constraint(equalTo: maxAndMinTemperatureLabel.bottomAnchor, constant: 16),
-            currentTemperatureLabel.leadingAnchor.constraint(equalTo: locationLabel.leadingAnchor),
+            currentTemperatureLabel.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor),
         ])
     }
 }
