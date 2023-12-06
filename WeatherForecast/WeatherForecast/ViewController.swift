@@ -55,6 +55,7 @@ final class ViewController: UIViewController {
         self.locationManager.delegate = self
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.delaysContentTouches = false
         collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: CollectionViewCell.reuseIdentifier)
         collectionView.register(CollectionReusableHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionReusableHeaderView.reuseIdentifier)
         setUpLayout()
