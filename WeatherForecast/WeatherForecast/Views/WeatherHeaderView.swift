@@ -20,12 +20,14 @@ class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private lazy var addressLabel: UILabel = {
         let label = UILabel(textAlignment: .center)
+        label.text = " - "
         
         return label
     }()
     
     private lazy var minimumTemperatureLabel: UILabel = {
         let label = UILabel(textAlignment: .center)
+        label.text = " - "
         
         return label
     }()

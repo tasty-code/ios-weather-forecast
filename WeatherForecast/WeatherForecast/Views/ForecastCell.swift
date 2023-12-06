@@ -38,15 +38,6 @@ class ForecastCell: UICollectionViewCell, Reusable {
         return stackView
     }()
     
-    private lazy var borderView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .white
-        view.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(view)
-        
-        return view
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setConstraints()
@@ -62,12 +53,7 @@ class ForecastCell: UICollectionViewCell, Reusable {
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             
             weatherInfoStackView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -0.3),
-            weatherInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            
-            borderView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            borderView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            borderView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            borderView.heightAnchor.constraint(equalToConstant: 0.3)
+            weatherInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 }

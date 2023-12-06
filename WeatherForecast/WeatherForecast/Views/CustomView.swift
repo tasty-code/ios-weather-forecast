@@ -10,7 +10,7 @@ import UIKit
 class CustomView: UIView {
     private lazy var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "backgroundImage")
+        imageView.image = UIImage(named: "wallpaper")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageView)
@@ -19,11 +19,13 @@ class CustomView: UIView {
     }()
     
     lazy var weatherCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
+        var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
+        configuration.headerMode = .supplementary
+        configuration.backgroundColor = .clear
+        let compositionalLayout = UICollectionViewCompositionalLayout.list(using: configuration)
         
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.backgroundColor = .clear
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: compositionalLayout)
+        
         collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: ForecastCell.reuseIdentifier)
         collectionView.register(WeatherHeaderView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,

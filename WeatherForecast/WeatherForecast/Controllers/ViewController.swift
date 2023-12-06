@@ -88,7 +88,7 @@ extension ViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier,
                                                             for: indexPath) as? ForecastCell
         else {
-            return ForecastCell()
+            return UICollectionViewCell()
         }
         
         return cell
@@ -101,7 +101,7 @@ extension ViewController: UICollectionViewDataSource {
                                                                          withReuseIdentifier: WeatherHeaderView.reuseIdentifier,
                                                                          for: indexPath) as? WeatherHeaderView
         else {
-            return WeatherHeaderView()
+            return UICollectionReusableView()
         }
         
         return view
