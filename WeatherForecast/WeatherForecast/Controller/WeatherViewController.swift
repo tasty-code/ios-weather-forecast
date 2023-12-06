@@ -12,6 +12,14 @@ final class WeatherViewController: UIViewController {
     private var weatherTodayData: WeatherToday?
     private var weatherForecastData: WeatherForecast?
     private var address: String?
+    var imageView: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.image = UIImage(named: "yongsan2")
+        imageView.alpha = 0.7
+        imageView.contentMode = .scaleToFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     
     private let collectionView: UICollectionView = {
        let layout = UICollectionViewFlowLayout()
@@ -36,8 +44,24 @@ final class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         locationDataManager.locationDelegate = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
+        setRefreshControl()
         setUI()
+    }
+    
+    private func setRefreshControl() {
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+    }
+    
+    @objc
+    private func handleRefreshControl() {
+        collectionView.reloadData()
+        DispatchQueue.main.async {
+           self.collectionView.refreshControl?.endRefreshing()
+        }
     }
 }
 
@@ -51,12 +75,18 @@ extension WeatherViewController: LocationDataManagerDelegate {
         forecastNetworkManager.loadWeatherData(type: WeatherType.forecast, coord: coordinate)
         forecastNetworkManager.responseClosure = { data in
             self.weatherForecastData = data
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         }
         
         let todayNetworkManager = WeatherNetworkManager<WeatherToday>.shared
         todayNetworkManager.loadWeatherData(type: WeatherType.weatherToday, coord: coordinate)
         todayNetworkManager.responseClosure = { data in
             self.weatherTodayData = data
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         }
     }
     
@@ -65,13 +95,8 @@ extension WeatherViewController: LocationDataManagerDelegate {
             print("can't look up current address")
             return
         }
-        
-        if
-            let locality = placemark.locality,
-            let subLocality = placemark.subLocality
-        {
-            address = "\(locality) \(subLocality)"
-        }
+        // TODO: bind 는 한 곳에서 (여기가 viewController니까 여기서 bind 하는게 맞지 않을까?)
+        address = "\(placemark.locality ?? "") \(placemark.subLocality ?? "")"
     }
     
     func viewRequestLocationSettingAlert() {
@@ -118,7 +143,6 @@ extension WeatherViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCollectionViewCell.identifier, for: indexPath) as? WeatherCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.backgroundColor = .systemBlue
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd(E) HH시"
@@ -136,7 +160,7 @@ extension WeatherViewController: UICollectionViewDataSource {
             let url = URL(string: weatherIconURI)
             cell.weatherIconImageView2.load(url: url!) // TODO: 강제 언래핑
             
-            let strTemperature = temperatureFormat(temperature)
+            let strTemperature = Formatter.temperatureFormat(temperature)
             cell.temperatureLabel.text = strTemperature
         }
 
@@ -150,39 +174,16 @@ extension WeatherViewController: UICollectionViewDataSource {
             for: indexPath) as? WeatherCollectionHeaderView else {
             return UICollectionReusableView()
         }
-        header.configure()
-        header.addressLabel.text = address
         
-        if 
-            let temperature = weatherTodayData?.main.temp,
-            let temperatureMin = weatherTodayData?.main.tempMin,
-            let temperatureMax = weatherTodayData?.main.tempMax,
-            let icon = weatherTodayData?.weather[0].icon
+        if
+            let address2 = address,
+            let data = weatherTodayData
         {
-            let strTemperature = temperatureFormat(temperature)
-            let strTemperatureMin = temperatureFormat(temperatureMin)
-            let strTemperatureMax = temperatureFormat(temperatureMax)
-            
-            header.currentTemperatureLabel.text = strTemperature
-            header.maxAndMinTemperatureLabel.text = "최저 \(strTemperatureMin) 최고 \(strTemperatureMax)"
-        
-            let weatherIconURI = "https://openweathermap.org/img/wn/\(icon)@2x.png"
-            let url = URL(string: weatherIconURI)
-            header.weatherIconImageView.load(url: url!) // TODO: 강제 언래핑
+            header.bind(address: address2, weatherData: data)
         }
+        
         return header
     }
-    
-    func temperatureFormat(_ temperature: Double?) -> String {
-        let celsius = translateCelsius(kelvin: temperature)
-        return String(format: "%.1f°", celsius)
-    }
-    
-    func translateCelsius(kelvin: Double?) -> Double {
-        guard let kelvin else { return 0 }
-        return kelvin - 273.15
-    }
-    
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -201,17 +202,26 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
 
 extension WeatherViewController {
     private func setUI() {
+        view.insertSubview(imageView, at: 0)
         view.addSubview(collectionView)
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        
+        collectionView.backgroundColor = UIColor(white: 1, alpha: 0)
+        setConstraint()
     }
     
     private func setConstraint() {
         NSLayoutConstraint.activate([
+            // collectionView
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            
+            // imageView
+            imageView.topAnchor.constraint(equalTo: view.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 }
