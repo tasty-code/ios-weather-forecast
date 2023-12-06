@@ -49,6 +49,10 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
+        guard let clError = error as? CLError else { return }
+        if clError.code == .denied {
+            print("위치 서비스 권한이 없습니다.")
+        }
     }
 }
+
