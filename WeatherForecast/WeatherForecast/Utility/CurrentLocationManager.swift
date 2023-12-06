@@ -11,8 +11,7 @@ final class CurrentLocationManager {
     private var locationInfo: CurrentLocationInfo?
     private let networkManager: NetworkManagable
     
-    init(locationInfo: CurrentLocationInfo? = nil, networkManager: NetworkManagable) {
-        self.locationInfo = locationInfo
+    init(networkManager: NetworkManagable) {
         self.networkManager = networkManager
     }
     
@@ -53,5 +52,13 @@ extension CurrentLocationManager: CurrentLocationManagable {
             city: placemark.locality,
             district: placemark.subLocality
         )
+    }
+    
+    func defaultLocationInfo() {
+        locationInfo = CurrentLocationInfo(
+            coordinates: CLLocationCoordinate2D(latitude: 37.5336766, longitude: 126.9632199),
+            city: "서울시",
+            district: "용산구"
+            )
     }
 }

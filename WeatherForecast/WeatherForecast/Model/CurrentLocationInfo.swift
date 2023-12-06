@@ -8,7 +8,7 @@
 import CoreLocation
 
 struct CurrentLocationInfo {
-    var coordinates: CLLocationCoordinate2D?
-    var city: String?
-    var district: String?
+    let coordinates: CLLocationCoordinate2D?
+    let city: String?
+    let district: String?
 }

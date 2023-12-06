@@ -9,4 +9,5 @@ import CoreLocation
 
 protocol CurrentLocationManagable: AnyObject {
     func updateLocationInfo(with placemark: CLPlacemark)
+    func defaultLocationInfo()
 }

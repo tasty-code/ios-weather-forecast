@@ -8,13 +8,12 @@
 import CoreLocation
 
 final class LocationManager: NSObject {
-    private(set) var manager: CLLocationManager!
+    let manager: CLLocationManager = CLLocationManager()
     weak var currentLocationManager: CurrentLocationManagable?
     weak var weatherDelgate: WeatherUpdateDelegate?
     
     override init() {
         super.init()
-        self.manager = CLLocationManager()
         self.manager.delegate = self
     }
     
@@ -27,8 +26,9 @@ extension LocationManager: CLLocationManagerDelegate {
             manager.startUpdatingLocation()
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
-        case .denied, .restricted:
-            break
+        default:
+            currentLocationManager?.defaultLocationInfo()
+            weatherDelgate?.fetchWeather()
         }
     }
     
@@ -49,5 +49,6 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
     }
 }
