@@ -61,11 +61,8 @@ final class ViewController: UIViewController {
 // MARK: Private Methods
 extension ViewController {
     @objc private func refreshCollectionView(_ location: CLLocation) {
+        collectionView.refreshControl?.beginRefreshing()
         locationManager.requestLocation()
-        
-        DispatchQueue.main.async {
-            self.collectionView.refreshControl?.endRefreshing()
-        }
     }
 }
 
@@ -176,6 +173,10 @@ extension ViewController: LocationManagerDelegate {
             locationManager.reverseGeocodeLocation(location: location)
             self?.weatherDataService.downloadData(serviceType: .weather(coordinate: location.coordinate, apiKey: apiKey))
             self?.forecastDataService.downloadData(serviceType: .forecast(coordinate: location.coordinate, apiKey: apiKey))
+        }
+        
+        if collectionView.refreshControl?.isRefreshing == true {
+            collectionView.refreshControl?.endRefreshing()
         }
     }
 }
