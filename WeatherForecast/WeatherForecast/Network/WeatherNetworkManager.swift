@@ -8,11 +8,14 @@
 import Foundation
 import CoreLocation
 
-final class WeatherNetworkManager: NSObject, URLSessionDelegate {
-    private var receivedData: Data?
-    private var weatherType: WeatherType?
-    weak var weatherDelegate: WeatherNetworkManagerDelegate?
+final class WeatherNetworkManager<T: Decodable>: NSObject, URLSessionDelegate, URLSessionDataDelegate {
+    static var shared: WeatherNetworkManager<T> {
+        return WeatherNetworkManager<T>()
+    }
+    typealias ResponseClosure = (T) -> Void
+    var responseClosure: ResponseClosure?
     
+    private var receivedData: Data?
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
         configuration.waitsForConnectivity = true
@@ -20,7 +23,6 @@ final class WeatherNetworkManager: NSObject, URLSessionDelegate {
     }()
     
     func loadWeatherData(type: WeatherType, coord: CLLocationCoordinate2D) {
-        weatherType = type
         do {
             let request = try WeatherApiClient.makeRequest(weatherType: type, coord: coord)
             let task = session.dataTask(with: request)
@@ -29,11 +31,8 @@ final class WeatherNetworkManager: NSObject, URLSessionDelegate {
             print(error)
         }
     }
-}
-
-// MARK: - URLSessionDataDelegate
-
-extension WeatherNetworkManager: URLSessionDataDelegate {
+    
+    // MARK: - URLSessionDataDelegate
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping @Sendable (URLSession.ResponseDisposition) -> Void) {
         guard
@@ -58,13 +57,12 @@ extension WeatherNetworkManager: URLSessionDataDelegate {
             return
         }
         
-        if
-            let receivedData = self.receivedData,
-            let weatherType = self.weatherType 
-        {
+        if let receivedData = self.receivedData {
             do {
-                let data = try JSONDecoder().decode(weatherType.model, from: receivedData)
-                weatherDelegate?.weather(self, didLoad: data)
+                let data = try JSONDecoder().decode(T.self, from: receivedData)
+                if let responseClosure {
+                    responseClosure(data)
+                }
             } catch {
                 print(error)
             }

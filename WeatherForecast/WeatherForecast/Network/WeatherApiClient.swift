@@ -10,7 +10,7 @@ import CoreLocation
 struct WeatherApiClient {
     private static let baseURL = "https://api.openweathermap.org/data/2.5/"
     
-    static func makeURL(coord: CLLocationCoordinate2D, weatherType: WeatherType) -> URL? {
+    static func makeURL(weatherType: WeatherType, coord: CLLocationCoordinate2D) -> URL? {
         let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String
         var components = URLComponents(string: baseURL)
         components?.path += weatherType.path
@@ -24,7 +24,7 @@ struct WeatherApiClient {
     }
     
     static func makeRequest(weatherType: WeatherType, coord: CLLocationCoordinate2D) throws -> URLRequest {
-        guard let url = makeURL(coord: coord, weatherType: weatherType) else { throw NetworkError.invailedURL }
+        guard let url = makeURL(weatherType: weatherType, coord: coord) else { throw NetworkError.invailedURL }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         return request
