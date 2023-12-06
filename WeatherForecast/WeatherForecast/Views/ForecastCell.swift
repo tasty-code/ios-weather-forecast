@@ -10,14 +10,14 @@ import UIKit
 class ForecastCell: UICollectionViewCell, Reusable {
     
     private lazy var dateLabel: UILabel = {
-        let label = UILabel(textAlignment: .center)
+        let label = UILabel(textAlignment: .left)
         addSubview(label)
         
         return label
     }()
     
     private lazy var temperatureLabel: UILabel = {
-        let label = UILabel(textAlignment: .center)
+        let label = UILabel(textAlignment: .right)
         
         return label
     }()
@@ -31,6 +31,7 @@ class ForecastCell: UICollectionViewCell, Reusable {
     
     private lazy var weatherInfoStackView: UIStackView = {
         let stackView = UIStackView(axis: .horizontal,
+                                    distribution: .fill,
                                     spacing: 5,
                                     subViews: [temperatureLabel, weatherIconView])
         addSubview(stackView)
@@ -49,11 +50,37 @@ class ForecastCell: UICollectionViewCell, Reusable {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -0.3),
+            dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             
-            weatherInfoStackView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -0.3),
-            weatherInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            weatherInfoStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            weatherInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
+    }
+    
+    func configureUI(with data: List) {
+        guard let formattedString = formatDateString(data.TimeOfDataForecastedTxt),
+              let iconID = data.weather.last
+        else {
+            return
+        }
+        let temperature = data.weatherCondition.temperature
+        dateLabel.text = formattedString
+        temperatureLabel.text = "\(temperature)℃"
+        
+    }
+    
+    private func formatDateString(_ input: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.locale = Locale(identifier: "ko-KR")
+        guard let date = dateFormatter.date(from: input) else {
+            return nil
+        }
+        
+        dateFormatter.dateFormat = "MM/dd(E) HH시"
+        let output = dateFormatter.string(from: date)
+        
+        return output
     }
 }

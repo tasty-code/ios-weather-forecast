@@ -59,6 +59,10 @@ extension LocationManager: CLLocationManagerDelegate {
 }
 
 extension LocationManager {
+    func requestLocation() {
+        locationManager.requestLocation()
+    }
+    
     private func combineAddress(with placemark: CLPlacemark) -> String {
         var temp = [String]()
         

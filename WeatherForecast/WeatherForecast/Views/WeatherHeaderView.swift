@@ -11,6 +11,7 @@ class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private lazy var weatherIconView: UIImageView = {
         let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "sun.max.fill")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageView)
@@ -19,41 +20,42 @@ class WeatherHeaderView: UICollectionReusableView, Reusable {
     }()
     
     private lazy var addressLabel: UILabel = {
-        let label = UILabel(textAlignment: .center)
+        let label = UILabel(textAlignment: .left)
         label.text = " - "
         
         return label
     }()
     
     private lazy var minimumTemperatureLabel: UILabel = {
-        let label = UILabel(textAlignment: .center)
+        let label = UILabel(textAlignment: .left)
         label.text = " - "
         
         return label
     }()
     
     private lazy var maximumTemperatureLabel: UILabel = {
-        let label = UILabel(textAlignment: .center)
+        let label = UILabel(textAlignment: .left)
         
         return label
     }()
     
     private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView(axis: .horizontal,
-                                    spacing: 3,
                                     subViews: [minimumTemperatureLabel, maximumTemperatureLabel])
         
         return stackView
     }()
     
     private lazy var currentTemperatureLabel: UILabel = {
-        let label = UILabel(font: .preferredFont(forTextStyle: .title3), textAlignment: .center)
+        let label = UILabel(font: .preferredFont(forTextStyle: .title1), textAlignment: .left)
         
         return label
     }()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(axis: .vertical,
+                                    alignment: .fill,
+                                    distribution: .fill,
                                     spacing: 5,
                                     subViews: [addressLabel, labelStackView, currentTemperatureLabel])
         addSubview(stackView)
@@ -72,14 +74,25 @@ class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            weatherIconView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            weatherIconView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            weatherIconView.topAnchor.constraint(equalTo: topAnchor),
+            weatherIconView.bottomAnchor.constraint(equalTo: bottomAnchor),
             weatherIconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             weatherIconView.widthAnchor.constraint(equalTo: weatherIconView.heightAnchor, multiplier: 1),
             
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: weatherIconView.trailingAnchor, constant: 10)
         ])
+    }
+    
+    func configureUI(with address: String, _ currentWeahter: Current) {
+        guard let iconID = currentWeahter.weather.last else { return }
+        let minimumTemperature = currentWeahter.main.minimumTemperature
+        let maximumTemperature = currentWeahter.main.maximumTemperature
+        let temperature = currentWeahter.main.temperature
+        addressLabel.text = address
+        minimumTemperatureLabel.text = "최저: \(minimumTemperature)℃"
+        maximumTemperatureLabel.text = "최고: \(maximumTemperature)℃"
+        currentTemperatureLabel.text = "\(temperature)℃"
     }
 }

@@ -13,6 +13,8 @@ final class ViewController: UIViewController {
     private let locationManager: LocationManager
     private let networkManager: NetworkManager
     
+    private var forecastModel: Forecast?
+    
     init(locationManager: LocationManager, networkManager: NetworkManager) {
         self.locationManager = locationManager
         self.networkManager = networkManager
@@ -40,8 +42,32 @@ final class ViewController: UIViewController {
         customView.weatherCollectionView.dataSource = self
     }
     
-    @objc private func handleRefreshControl() {
+    private func updateHeaderView(with locationData: LocationData, _ currentWeather: Current) {
+        let indexPaths = customView.weatherCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
         
+        guard let firstIndexPath = indexPaths.first,
+              let headerView = customView.weatherCollectionView
+            .supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: firstIndexPath) as? WeatherHeaderView
+        else {
+            return
+        }
+        
+        headerView.configureUI(with: locationData.address, currentWeather)
+        customView.weatherCollectionView.reloadItems(at: [firstIndexPath])
+    }
+    
+    private func updateCollectionView() {
+        let indexPaths = customView.weatherCollectionView.indexPathsForVisibleItems
+        
+        if indexPaths.isEmpty {
+            customView.weatherCollectionView.reloadData()
+        } else {
+            customView.weatherCollectionView.reloadItems(at: indexPaths)
+        }
+    }
+    
+    @objc private func handleRefreshControl() {
+        locationManager.requestLocation()
         DispatchQueue.main.async {
             self.customView.weatherCollectionView.refreshControl?.endRefreshing()
         }
@@ -55,7 +81,10 @@ extension ViewController: LocationUpdateDelegate {
                                             weatherType: .current)
         networkManager.fetchData(for: weatherRequest) { (result: Result<Current, Error>) in
             switch result {
-            case .success(_): break
+            case .success(let currentWeather):
+                DispatchQueue.main.async { [weak self] in
+                    self?.updateHeaderView(with: data, currentWeather)
+                }
             case .failure(_): break
             }
         }
@@ -63,9 +92,13 @@ extension ViewController: LocationUpdateDelegate {
         let forecastRequest = WeatherRequest(latitude: data.latitude,
                                              longitude: data.longitude,
                                              weatherType: .forecast)
-        networkManager.fetchData(for: forecastRequest) { (result: Result<Forecast, Error>) in
+        networkManager.fetchData(for: forecastRequest) { [weak self] (result: Result<Forecast, Error>) in
             switch result {
-            case .success(_): break
+            case .success(let forecastWeather):
+                self?.forecastModel = forecastWeather
+                DispatchQueue.main.async {
+                    self?.updateCollectionView()
+                }
             case .failure(_): break
             }
         }
@@ -81,7 +114,10 @@ extension ViewController: LocationUpdateDelegate {
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        50
+        guard let forecastModel = forecastModel else {
+            return 0
+        }
+        return forecastModel.list.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -91,6 +127,11 @@ extension ViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
+        guard let forecastModel = forecastModel else {
+            return UICollectionViewCell()
+        }
+        let data = forecastModel.list[indexPath.row]
+        cell.configureUI(with: data)
         return cell
     }
     
@@ -106,10 +147,6 @@ extension ViewController: UICollectionViewDataSource {
         
         return view
     }
-}
-
-extension ViewController: UICollectionViewDelegate {
-    
 }
 
 extension ViewController: UICollectionViewDelegateFlowLayout {
