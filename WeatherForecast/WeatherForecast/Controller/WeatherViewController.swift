@@ -144,27 +144,46 @@ extension WeatherViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
+        bind(cell: cell, indexPath: indexPath)
+        return cell
+    }
+    
+    private func bind(cell: WeatherCollectionViewCell, indexPath: IndexPath) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd(E) HH시"
         dateFormatter.locale = Locale(identifier: "ko_KR")
-        if 
+        
+        if
             let timeInterval = weatherForecastData?.list[indexPath.row].dt,
-            let icon = weatherForecastData?.list[indexPath.row].weather[0].icon,
             let temperature = weatherForecastData?.list[indexPath.row].main.temp
         {
             let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
             let strDate = dateFormatter.string(from: date as Date)
             cell.dateLabel.text = strDate
             
-            let weatherIconURI = "https://openweathermap.org/img/wn/\(icon)@2x.png"
-            let url = URL(string: weatherIconURI)
-            cell.weatherIconImageView2.load(url: url!) // TODO: 강제 언래핑
-            
             let strTemperature = Formatter.temperatureFormat(temperature)
             cell.temperatureLabel.text = strTemperature
         }
-
-        return cell
+        
+        
+        guard let icon = weatherForecastData?.list[indexPath.row].weather[0].icon else { return}
+        guard let weatherIconURI = URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png") else { return }
+        let request = URLRequest(url: weatherIconURI)
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            if let error = error {
+                   print(error)
+                   return
+               }
+            
+            if let data {
+                let image = UIImage(data: data)
+                DispatchQueue.main.async {
+                    if indexPath == self.collectionView.indexPath(for: cell) {
+                        cell.weatherIconImageView2.image = image
+                    }
+                }
+            }
+        }.resume()
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
