@@ -19,20 +19,11 @@ extension CollectionReusableHeaderViewIdentifyingProtocol {
 final class CollectionReusableHeaderView: UICollectionReusableView, CollectionReusableHeaderViewIdentifyingProtocol {
     // MARK: - Constants
     private enum Constants {
-        case maxAndMinTemperaturelabelText(tempMax: Double, tempMin: Double)
-        case temperatureLabelText(temp: Double)
-        
-        var text: String {
-            switch self {
-            case .maxAndMinTemperaturelabelText(let tempMax, let tempMin):
-                "최저 \(String(format: "%.1f", tempMin))° 최고 \(String(format: "%.1f", tempMax))°"
-            case .temperatureLabelText(let temp):
-                "\(String(format: "%.1f", temp))°"
-            }
-        }
-        
         static let stackViewDefaultSpacing: CGFloat = 14
         static let labelDefaultText: String = "-"
+        static let prefix: String = "최고"
+        static let suffix: String = "최저"
+        static let celsiusIcon: String = "°"
     }
     
     // MARK: - Dependencies
@@ -70,8 +61,8 @@ final class CollectionReusableHeaderView: UICollectionReusableView, CollectionRe
     // MARK: - Public
     func configureHeaderCell(item: WeatherModel, placemark: CLPlacemark) {
         if let temp = item.main?.temp, let tempMax = item.main?.tempMax, let tempMin = item.main?.tempMin {
-            maxAndMinTemperatureLabel.text = Constants.maxAndMinTemperaturelabelText(tempMax: tempMax, tempMin: tempMin).text
-            temperatureLabel.text = Constants.temperatureLabelText(temp: temp).text
+            maxAndMinTemperatureLabel.text = "\(Constants.prefix) \(String(format: "%.1f", tempMax))\(Constants.celsiusIcon) \(Constants.suffix) \(String(format: "%.1f", tempMin))\(Constants.celsiusIcon)"
+            temperatureLabel.text = "\(String(format: "%.1f", temp))"
         }
         
         if let iconCode = item.weather?.first?.icon {
