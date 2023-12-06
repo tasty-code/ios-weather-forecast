@@ -13,6 +13,10 @@ final class ViewController: UIViewController {
         static let collectionReusableHeaderViewHeightRatio: CGFloat = 8
         static let collectionViewCellHeightRatio: CGFloat = 20
         static let collectionViewDefaultPadding: CGFloat = 14
+        static let locationChangeAlertTitle: String = "위치변경"
+        static let locationChangeAlertSubscript: String = "날씨를 받아올 위치의 위도와 경도를 입력해주세요."
+        static let locationChangeAlertConfirmButtonName: String = "변경"
+        static let locationChangeAlertCancelButtonName: String = "취소"
     }
     
     // MARK: - View Components
@@ -63,6 +67,19 @@ extension ViewController {
     @objc private func refreshCollectionView(_ location: CLLocation) {
         collectionView.refreshControl?.beginRefreshing()
         locationManager.requestLocation()
+    }
+    
+    @objc private func presentLocationChangeAlert() {
+        let alert = UIAlertController(title: Constants.locationChangeAlertTitle , message: Constants.locationChangeAlertSubscript, preferredStyle: .alert)
+        let changeAction = UIAlertAction(title: Constants.locationChangeAlertConfirmButtonName, style: .default) { _ in
+            print("리로드")
+        }
+        let cancelAction = UIAlertAction(title: Constants.locationChangeAlertCancelButtonName, style: .cancel)
+        
+        alert.addAction(changeAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
 }
 

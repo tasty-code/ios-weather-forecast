@@ -24,6 +24,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView, CollectionRe
         static let prefix: String = "최고"
         static let suffix: String = "최저"
         static let celsiusIcon: String = "°"
+        static let locationChangeButtonLabel: String = "위치변경"
     }
     
     // MARK: - Dependencies
@@ -46,6 +47,20 @@ final class CollectionReusableHeaderView: UICollectionReusableView, CollectionRe
     private lazy var addressLabel: UILabel = {
         let label = UILabel(text: Constants.labelDefaultText, font: .preferredFont(forTextStyle: .callout), textColor: .white, textAlignment: .left)
         return label
+    }()
+    
+    private lazy var locationChangeButton: UIButton = {
+        var configuration = UIButton.Configuration.plain()
+        configuration.buttonSize = .mini
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0.1, leading: 0.1, bottom: 0.1, trailing: 0.1)
+        
+        let button = UIButton(configuration: configuration)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(Constants.locationChangeButtonLabel, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .callout)
+        
+        return button
     }()
     
     private lazy var maxAndMinTemperatureLabel: UILabel = {
@@ -89,7 +104,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView, CollectionRe
 extension CollectionReusableHeaderView {
     private func setUpLayout() {
         self.addSubview(contentView)
-        contentView.addSubviews([iconImageView, addressLabel, maxAndMinTemperatureLabel, temperatureLabel])
+        contentView.addSubviews([iconImageView, addressLabel, locationChangeButton, maxAndMinTemperatureLabel, temperatureLabel])
     }
     
     private func setUpConstraints() {
@@ -109,7 +124,11 @@ extension CollectionReusableHeaderView {
         NSLayoutConstraint.activate([
             addressLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
             addressLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            addressLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//            addressLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+//            locationChangeButton.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
+            locationChangeButton.topAnchor.constraint(equalTo: contentView.topAnchor),
+            locationChangeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
             maxAndMinTemperatureLabel.topAnchor.constraint(equalTo: addressLabel.bottomAnchor),
             maxAndMinTemperatureLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
