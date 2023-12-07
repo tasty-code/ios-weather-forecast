@@ -20,6 +20,8 @@
 		A6AA0AEF2B18484F005750B9 /* LocationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA0AEE2B18484F005750B9 /* LocationError.swift */; };
 		A6AFCADF2B0DFBB3004CACBF /* Networkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */; };
 		A6CACFE12B1D60D400B5FEA5 /* WeatherForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CACFE02B1D60D400B5FEA5 /* WeatherForecastView.swift */; };
+		A6CB06532B1F4A6800A75C37 /* WeatherForecastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CB06522B1F4A6800A75C37 /* WeatherForecastCell.swift */; };
+		A6CB06552B1F4A7200A75C37 /* WeatherForecastHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CB06542B1F4A7200A75C37 /* WeatherForecastHeaderView.swift */; };
 		A6E4DD522B1730220068E00C /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E4DD512B1730220068E00C /* WeatherAPI.swift */; };
 		A6E4DD572B1730570068E00C /* ModelCurrentWeather+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E4DD542B1730570068E00C /* ModelCurrentWeather+Extension.swift */; };
 		A6E4DD582B1730570068E00C /* ModelFiveDaysWeather+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E4DD552B1730570068E00C /* ModelFiveDaysWeather+Extension.swift */; };
@@ -65,6 +67,8 @@
 		A6AA0AEE2B18484F005750B9 /* LocationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationError.swift; path = WeatherForecast/Errors/LocationError.swift; sourceTree = SOURCE_ROOT; };
 		A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networkable.swift; sourceTree = "<group>"; };
 		A6CACFE02B1D60D400B5FEA5 /* WeatherForecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastView.swift; sourceTree = "<group>"; };
+		A6CB06522B1F4A6800A75C37 /* WeatherForecastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastCell.swift; sourceTree = "<group>"; };
+		A6CB06542B1F4A7200A75C37 /* WeatherForecastHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastHeaderView.swift; sourceTree = "<group>"; };
 		A6E4DD512B1730220068E00C /* WeatherAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		A6E4DD542B1730570068E00C /* ModelCurrentWeather+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ModelCurrentWeather+Extension.swift"; sourceTree = "<group>"; };
 		A6E4DD552B1730570068E00C /* ModelFiveDaysWeather+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ModelFiveDaysWeather+Extension.swift"; sourceTree = "<group>"; };
@@ -163,6 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				A6CACFE02B1D60D400B5FEA5 /* WeatherForecastView.swift */,
+				A6CB06522B1F4A6800A75C37 /* WeatherForecastCell.swift */,
+				A6CB06542B1F4A7200A75C37 /* WeatherForecastHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -385,6 +391,7 @@
 			files = (
 				A64F0E0B2B0F69DF00FC988F /* RequestSessionable.swift in Sources */,
 				A6E4DD572B1730570068E00C /* ModelCurrentWeather+Extension.swift in Sources */,
+				A6CB06532B1F4A6800A75C37 /* WeatherForecastCell.swift in Sources */,
 				0E4A84842B0C48F700726F9F /* NetworkManager.swift in Sources */,
 				A64F0E122B1059E600FC988F /* Requestable.swift in Sources */,
 				A6A891622B0F25C400D2AC27 /* Networker.swift in Sources */,
@@ -399,6 +406,7 @@
 				A64F0E192B10679A00FC988F /* RequestDataTaskable.swift in Sources */,
 				A6CACFE12B1D60D400B5FEA5 /* WeatherForecastView.swift in Sources */,
 				0E468CB32B0DDD6A00201507 /* NetworkError.swift in Sources */,
+				A6CB06552B1F4A7200A75C37 /* WeatherForecastHeaderView.swift in Sources */,
 				0EFE826F2B0EE0300021B2EF /* Model.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				A6E4DD592B1730570068E00C /* Model+Extension.swift in Sources */,

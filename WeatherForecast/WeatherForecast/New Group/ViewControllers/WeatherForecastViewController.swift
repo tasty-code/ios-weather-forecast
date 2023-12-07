@@ -14,7 +14,6 @@ final class WeatherForecastViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .blue
         locationManager.request { [self] result in
             switch result {
             case.success((let coordinate, let placemark)):
