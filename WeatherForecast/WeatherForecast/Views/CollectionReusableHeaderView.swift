@@ -13,7 +13,7 @@ protocol CollectionReusableHeaderViewIdentifyingProtocol {
 }
 
 extension CollectionReusableHeaderViewIdentifyingProtocol {
-    static var reuseIdentifier: String { String(describing: CollectionReusableHeaderView.self) }
+    static var reuseIdentifier: String { String(describing: self) }
 }
 
 final class CollectionReusableHeaderView: UICollectionReusableView, CollectionReusableHeaderViewIdentifyingProtocol {
