@@ -8,7 +8,7 @@
 import UIKit
 
 final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate {
-    lazy var horizontalStackView: UIStackView = {
+    lazy var forecastStackView: UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .fill
@@ -18,12 +18,19 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
         return stackView
     }()
     
-    lazy var label: UILabel = {
+    lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    lazy var temperatureLabel: UILabel = {
+           let label = UILabel()
+           label.textAlignment = .right
+           label.translatesAutoresizingMaskIntoConstraints = false
+           return label
+       }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,24 +45,29 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     }
     
     func setUpLayouts() {
-        backgroundColor = .systemGreen
-        addSubview(label)
+        backgroundColor = .tertiarySystemBackground
+        forecastStackView.setCustomSpacing(5, after: .spacerView)
+        forecastStackView.addArrangedSubviews([timeLabel, temperatureLabel])
+               
+        addSubview(forecastStackView)
+
     }
     
     func setUpConstraints() {
         NSLayoutConstraint.activate([
-            label.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            label.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            label.heightAnchor.constraint(equalTo: self.heightAnchor),
+            forecastStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            forecastStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            forecastStackView.heightAnchor.constraint(equalTo: self.heightAnchor),
         ])
     }
     
     func configureCell(to forecast: Forecast) {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko-KR")
-        formatter.dateFormat = "MM/dd(E) hh:mm"
+        formatter.dateFormat = "MM/dd(E) hh시"
         let date = Date(timeIntervalSince1970: TimeInterval(integerLiteral: Int64(forecast.timeOfData)))
         
-        label.text = formatter.string(from: date) + " \(forecast.mainInfo.temperature)🌡️"
+        timeLabel.text = formatter.string(from: date)
+        temperatureLabel.text = String(forecast.mainInfo.temperature) + "°"
     }
 }

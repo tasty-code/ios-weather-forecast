@@ -32,14 +32,14 @@ class ViewController: UIViewController {
     private let compositionaLayout: UICollectionViewCompositionalLayout = {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.15))
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1.0))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.9))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 3, bottom: 5, trailing: 3)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 3, bottom: -5, trailing: 3)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.1))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.08))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10)
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         ]
@@ -77,8 +77,12 @@ class ViewController: UIViewController {
                     guard let cell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as? WeatherHeaderCollectionViewCell else {
                         return WeatherHeaderCollectionViewCell()
                     }
-                    if let test = current {
-                        cell.temperatureLabel.text = "\(test.loc) //// \(test.temp.temperature)"
+                    if let data = current {
+                        cell.addressLabel.text = data.address
+                        cell.temperatureLabel.text = String(data.temp.temperature)
+                        cell.minMaxTemperatureLabel.text = "최저 \(current!.temp.temperatureMin)° 최고 \(current!.temp.temperatureMax)°"
+//                        cell.temperatureLabel.text = "\(test.loc) //// \(test.temp.temperature)"
+                        
                     } else {
                         cell.temperatureLabel.text = "nan"
                     }
@@ -118,20 +122,21 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: WeatherUIDelegate {
-    func loadForecast(_ coordinate: CLLocationCoordinate2D) { }
+    func loadForecast(_ coordinate: CLLocationCoordinate2D) { 
+        
+    }
     
     func updateAddress(_ coordinate: CLLocationCoordinate2D, _ addressString: String) {
-        guard let urlRequest = configureURLRequest(coordinate, apiType: .forecast) else { return }
-        let publisher = URLSession.shared.publisher(request: urlRequest)
-        let p1 = WeatherHTTPClient.publishForecast(from: publisher, forecastType: FiveDayWeatherForecast.self)
-        
-        guard let urlRequest2 = configureURLRequest(coordinate, apiType: .weather) else { return }
-        let publisher2 = URLSession.shared.publisher(request: urlRequest2)
+        guard let weatherURLRequest = configureURLRequest(coordinate, apiType: .weather) else { return }
+        let publisher2 = URLSession.shared.publisher(request: weatherURLRequest)
         let p2 = WeatherHTTPClient.publishForecast(from: publisher2, forecastType: CurrentWeather?.self)
 
+        guard let forecastURLRequest = configureURLRequest(coordinate, apiType: .forecast) else { return }
+        let publisher = URLSession.shared.publisher(request: forecastURLRequest)
+        let p1 = WeatherHTTPClient.publishForecast(from: publisher, forecastType: FiveDayWeatherForecast.self)
         Publishers.Zip(p1, p2)
             .tryMap { (forecast, current) in
-                let test = CurrentWeatherInfo(loc: addressString, temp: current!.mainInfo)
+                let test = CurrentWeatherInfo(address: addressString, temp: current!.mainInfo)
                 return Item(test, forecast.list)
             }
             .handleEvents(receiveCompletion: { completion in
@@ -152,7 +157,7 @@ extension ViewController: WeatherUIDelegate {
 
 extension ViewController {
     struct CurrentWeatherInfo {
-        let loc: String
+        let address: String
         let temp: MainInfo
     }
 }

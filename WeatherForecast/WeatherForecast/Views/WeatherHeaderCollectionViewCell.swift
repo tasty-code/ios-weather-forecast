@@ -56,7 +56,7 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .boldSystemFont(ofSize: 40)
+        label.font = .boldSystemFont(ofSize: 30)
         return label
     }()
     
