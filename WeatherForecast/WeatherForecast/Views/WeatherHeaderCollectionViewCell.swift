@@ -9,6 +9,7 @@ import UIKit
 
 class WeatherHeaderCollectionViewCell: UICollectionReusableView {
     var text: String = "없음"
+    let locationManager = WeatherLocationManager()
     
     lazy var horizontalStackView: UIStackView = {
        let stackView = UIStackView()
@@ -30,9 +31,9 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
     lazy var verticallStackView: UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 8
+        stackView.alignment = .top
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 3
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -41,7 +42,6 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "주소"
         return label
     }()
     
@@ -49,7 +49,6 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "최저최고온도"
         return label
     }()
     
@@ -57,7 +56,7 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "현재온도"
+        label.font = .boldSystemFont(ofSize: 40)
         return label
     }()
     

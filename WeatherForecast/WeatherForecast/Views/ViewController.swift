@@ -9,10 +9,14 @@ import Combine
 import CoreLocation
 
 class ViewController: UIViewController {
-    @IBOutlet weak var countryLabel: UILabel!
-    @IBOutlet weak var addressLabel: UILabel!
     
-    lazy var country: String = ""
+    lazy var address: String = ""
+    lazy var currentTempMin: String = ""
+    lazy var currentTempMax: String = ""
+    lazy var currentTemp: String = ""
+    lazy var currentIcon: String = ""
+    
+    
     var subscriber: AnyCancellable?
     let locationManager = WeatherLocationManager()
     
@@ -24,13 +28,31 @@ class ViewController: UIViewController {
         setUpConstraints()
         
         collectionView.dataSource = self
-        collectionView.delegate = self
-
+        
     }
     
+    private let compositionaLayout: UICollectionViewCompositionalLayout = {
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.15))
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 3, bottom: 5, trailing: 3)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.1))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        ]
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }()
+    
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+        
+        let layout = compositionaLayout
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .darkGray
@@ -41,9 +63,7 @@ class ViewController: UIViewController {
     }()
     
     private func setUpLayouts() {
-        view.backgroundColor = .systemPink
         view.addSubview(collectionView)
-        
     }
     
     private func setUpConstraints() {
@@ -65,17 +85,6 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UICollectionViewDelegateFlowLayout {
-    // MARK: - 몸통
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 50)
-    }
-    // MARK: - 머리	
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 100)
-    }
-}
-
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 40
@@ -86,6 +95,10 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as? WeatherHeaderCollectionViewCell else {
                 return WeatherHeaderCollectionViewCell()
             }
+            
+            header.addressLabel.text = address
+            header.minMaxTemperatureLabel.text = "최저 \(currentTempMin)° 최고 \(currentTempMax)°"
+            header.temperatureLabel.text = currentTemp + "°"
             return header
         }
         return UICollectionReusableView()
@@ -99,7 +112,6 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
         return cell
     }
 }
-
 
 extension ViewController: WeatherUIDelegate {
     func loadForecast(_ coordinate: CLLocationCoordinate2D) {
@@ -115,14 +127,19 @@ extension ViewController: WeatherUIDelegate {
                 case .finished:
                     return
                 case .failure(let error):
-                    self?.countryLabel.text = error.localizedDescription
+                    debugPrint(error.localizedDescription)
                 }
             } receiveValue: { [self] weather in
-                country = weather.system.country
+                currentTempMin = String(weather.mainInfo.temperatureMin)
+                currentTempMax = String(weather.mainInfo.temperatureMax)
+                currentTemp = String(weather.mainInfo.temperature)
+                currentIcon = "https://openweathermap.org/img/wn/" + weather.weathers[0].icon + ".png"
+                print(currentIcon)
+                
             }
     }
     
     func updateAddress(_ addressString: String) {
-//                addressLabel.text = addressString
+        address = addressString
     }
 }
