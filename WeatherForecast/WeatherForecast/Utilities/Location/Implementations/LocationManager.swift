@@ -10,9 +10,20 @@ import CoreLocation
 
 protocol LocationManagerDelegate: AnyObject {
     func didUpdateLocation(locationManager: LocationManager, location: CLLocation)
+    func didUpdatePlacemark(locationManager: LocationManager, placemark: CLPlacemark)
 }
 
-final class LocationManager: NSObject {
+final class LocationManager: NSObject, ReverseGeocodable, LocationRequestable {
+    enum LocaleType {
+        case korea
+        
+        var identifier: String {
+            switch self {
+            case .korea: "ko_KR"
+            }
+        }
+    }
+    
     private let locationManager: CLLocationManager = CLLocationManager()
     weak var delegate: LocationManagerDelegate?
     
@@ -22,6 +33,24 @@ final class LocationManager: NSObject {
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
+    }
+    
+    func requestLocation() {
+        locationManager.requestLocation()
+    }
+    
+    func reverseGeocodeLocation(location: CLLocation) {
+        let geocoder = CLGeocoder()
+        let locale = Locale(identifier: LocaleType.korea.identifier)
+        geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { placemarks, error in
+            guard error == nil else { return }
+            guard let placemark = placemarks?.last else { return }
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.delegate?.didUpdatePlacemark(locationManager: self, placemark: placemark)
+            }
+        }
     }
 }
 
