@@ -31,7 +31,7 @@ final class WeatherManager: NSObject {
     private let locationManager: CLLocationManager
     private(set) var currentAddress: String?
     
-    private(set) lazy var iconService: IconService = IconService()
+    private(set) var iconService: IconService = IconService()
     
     private(set) var cacheData: [Endpoint: Decodable] = [:]
     

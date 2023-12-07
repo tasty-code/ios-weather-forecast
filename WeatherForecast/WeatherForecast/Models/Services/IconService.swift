@@ -10,7 +10,7 @@ import Foundation
 final class IconService {
     typealias serviceType = Data
     
-    private lazy var cache = CacheManager()
+    private let cache = CacheManager()
     private lazy var endpointType: Endpoint = .icon
     
     // MARK: - public Method
