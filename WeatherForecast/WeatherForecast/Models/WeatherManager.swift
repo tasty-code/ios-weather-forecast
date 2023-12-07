@@ -31,21 +31,11 @@ final class WeatherManager: NSObject {
     private let locationManager: CLLocationManager
     private(set) var currentAddress: String?
     
-    private lazy var currentWeatherService: CurrentWeatherService? = {
-        guard let latitude = latitude, let longitude = longitude else { return nil }
-        
-        return CurrentWeatherService(latitude: latitude, longitude: longitude)
-    }()
-    
-    private lazy var forecastService: ForecastWeatherService? = {
-        guard let latitude = latitude, let longitude = longitude else { return nil }
-        
-        return ForecastWeatherService(latitude: latitude, longitude: longitude)
-    }()
-    
     private(set) lazy var iconService: IconService = IconService()
     
     private(set) var cacheData: [Endpoint: Decodable] = [:]
+    
+    private let networkManager = NetworkManager()
     
     // MARK: - Initialize
     
@@ -75,10 +65,8 @@ extension WeatherManager: CLLocationManagerDelegate {
             break
         default:
             self.permitted {
-                if self.currentWeatherService!.isNetworkingDone && self.forecastService!.isNetworkingDone {
-                    self.iconFetch()
-                    self.delegate?.updateCollectionView()
-                }
+                self.delegate?.updateCollectionView()
+                self.iconFetch()
             }
         }
     }
@@ -124,40 +112,37 @@ extension WeatherManager {
     func permitted(_ completion: @escaping () -> Void) {
         setCurrentAddress()
         
-        guard let currentWeatherService = currentWeatherService,
-              let forecastService = forecastService else { return }
+        guard let latitude = latitude, let longitude = longitude else { return }
         
-        currentWeatherService.fetcher({ data in
-            self.cacheData[.weather] = data
-            completion()
-//            guard let iconId = data.weather.first?.icon else { return }
-//            
-//            self.iconService.fetcher(iconId: iconId) {
-//                completion()
-//            }
-        })
+        guard let currentWeatherRequest = GetRequest(endpointType: .weather, queryParameters: .weatherService(latitude: latitude, longitude: longitude)).makeURLrequest(),
+              let forecastRequest = GetRequest(endpointType: .forecast, queryParameters: .weatherService(latitude: latitude, longitude: longitude)).makeURLrequest() else { return }
         
-        forecastService.fetcher({ data in
-            self.cacheData[.forecast] = data
-            completion()
-//            let list = data.list.compactMap { item in
-//                return item.weather.first?.icon
-//            }
-//            
-//            list.forEach { iconId in
-//                self.iconService.fetcher(iconId: iconId) {
-//                    completion()
-//                }
-//            }
-        })
+        networkManager.execute(currentWeatherRequest, expecting: CurrentWeather.self) { data in
+            switch data {
+            case .success(let success):
+                self.cacheData[.weather] = success
+            case .failure:
+                print("forecast weather error")
+                break
+            }
+        }
+        
+        networkManager.execute(forecastRequest, expecting: FiveDayForecast.self) { data in
+            switch data {
+            case .success(let success):
+                self.cacheData[.forecast] = success
+                completion()
+            case .failure:
+                print("forecast weather error")
+                break
+            }
+        }
     }
     
     func refreshData() {
         self.permitted {
-            if self.currentWeatherService!.isNetworkingDone && self.forecastService!.isNetworkingDone {
-                self.iconFetch()
-                self.delegate?.refreshCollectionView()
-            }
+            self.delegate?.refreshCollectionView()
+            self.iconFetch()
         }
     }
     
@@ -177,11 +162,10 @@ extension WeatherManager {
         let group = DispatchGroup()
         
         list.forEach { iconId in
-            DispatchQueue.global().async(group: group) {
-                self.iconService.fetcher(iconId: iconId)
-            }
+            self.iconService.fetchIcon(iconId: iconId, group: group)
         }
-
+            
         group.wait()
+        self.delegate?.updateCollectionView()
     }
 }

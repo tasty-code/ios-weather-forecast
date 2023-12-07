@@ -8,12 +8,6 @@
 import Foundation
 
 final class NetworkManager {
-    private let session: URLSession
-    
-    init() {
-        self.session = URLSession(configuration: .default)
-    }
-    
     private enum NetworkError: Error {
         case failedToCreateRequest
         case failedToGetData
@@ -23,12 +17,13 @@ final class NetworkManager {
         _ request: URLRequest?,
         expecting type: T.Type,
         completion: @escaping (Result<T, Error>) -> Void) {
+            
             guard let urlRequest = request else {
                 completion(.failure(NetworkError.failedToCreateRequest))
                 return
             }
             
-            let task = session.dataTask(with: urlRequest) { data, _ , error in
+            let task = URLSession.shared.dataTask(with: urlRequest) { data, _ , error in
                 guard let data = data, error == nil else {
                     completion(.failure(error ?? NetworkError.failedToGetData))
                     return
@@ -36,9 +31,12 @@ final class NetworkManager {
                 
                 do {
                     let result = try JSONDecoder().decode(type.self, from: data)
+                    print(data)
+                    
                     completion(.success(result))
                 }
                 catch {
+                    print(error)
                     completion(.failure(error))
                 }
             }

@@ -6,7 +6,7 @@
 
 import UIKit
 
-final class ViewController: UIViewController, UICollectionViewDelegate {
+final class WeatherViewController: UIViewController, UICollectionViewDelegate {
     private let weatherManager = WeatherManager()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let refreshControl = UIRefreshControl()
@@ -52,7 +52,7 @@ final class ViewController: UIViewController, UICollectionViewDelegate {
 
 // MARK: - CollectionView Layout
 
-extension ViewController: UICollectionViewDelegateFlowLayout {
+extension WeatherViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.size.width, height: 60)
     }
@@ -68,7 +68,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - CollectionView Data Flow
 
-extension ViewController: UICollectionViewDataSource {
+extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         guard kind == UICollectionView.elementKindSectionHeader,
@@ -136,7 +136,7 @@ extension ViewController: UICollectionViewDataSource {
 
 // MARK: - weatherManager Delegate
 
-extension ViewController: WeatherManagerDelegate {
+extension WeatherViewController: WeatherManagerDelegate {
     func updateCollectionView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()

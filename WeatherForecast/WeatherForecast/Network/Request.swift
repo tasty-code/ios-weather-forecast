@@ -38,7 +38,20 @@ extension Request {
         guard let url = self.url else { return nil }
         var request = URLRequest(url: url)
         request.httpMethod = request.httpMethod
-        
+
         return request
+    }
+}
+
+struct GetRequest: Request {
+    var endpointType: Endpoint
+    
+    var queryParameters: UrlString?
+    
+    var httpMethod: HttpMethod? = .GET
+    
+    init(endpointType: Endpoint, queryParameters: UrlString? = nil) {
+        self.endpointType = endpointType
+        self.queryParameters = queryParameters
     }
 }

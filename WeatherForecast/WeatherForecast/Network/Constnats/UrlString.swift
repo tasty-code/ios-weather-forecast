@@ -8,7 +8,7 @@
 import Foundation
 
 enum UrlString: Decodable {
-    case weather(latitude: String, longitude: String)
+    case weatherService(latitude: String, longitude: String)
     case icon(iconId: String)
 
 }
@@ -16,7 +16,7 @@ enum UrlString: Decodable {
 extension UrlString {
     var parameter: String {
         switch self {
-        case .weather(let latitude, let longitude):
+        case .weatherService(let latitude, let longitude):
             return "?lat=\(latitude)&lon=\(longitude)&units=metric&appid=\(Environment.apiKey)"
         case .icon(let iconId):
             return "\(iconId)@2x.png"

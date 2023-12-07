@@ -51,7 +51,11 @@ final class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     // MARK: - public Method
     
     func setMainIcon(_ icon: Data) {
-        self.iconImageView.image = UIImage(data: icon)
+        UIView.transition(with: self.iconImageView,
+                          duration: 0.5,
+                          options: .transitionCrossDissolve,
+                          animations: { self.iconImageView.image = UIImage(data: icon) },
+                          completion: nil)
     }
     
     func setAddressLabel(_ address: String) {

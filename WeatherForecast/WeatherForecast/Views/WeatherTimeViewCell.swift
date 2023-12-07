@@ -67,6 +67,10 @@ final class WeatherTimeViewCell: UICollectionViewCell {
     
     func setIconImage(_ data: Data, temp: Int) {
         guard let image = UIImage(data: data) else { return }
-        self.iconImageView.image = image
+        UIView.transition(with: self.iconImageView,
+                          duration: 0.5,
+                          options: .transitionCrossDissolve,
+                          animations: { self.iconImageView.image = image },
+                          completion: nil)
     }
 }
