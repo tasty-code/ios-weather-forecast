@@ -137,7 +137,7 @@ extension WeatherViewController: UICollectionViewDataSource {
             let strDate = dateFormatter.string(from: date as Date)
             cell.dateLabel.text = strDate
             
-            let strTemperature = Formatter.temperatureFormat(temperature)
+            let strTemperature = temperatureFormat(temperature)
             cell.temperatureLabel.text = strTemperature
         }
         
@@ -169,15 +169,38 @@ extension WeatherViewController: UICollectionViewDataSource {
             for: indexPath) as? WeatherCollectionHeaderView else {
             return UICollectionReusableView()
         }
-        
-        if
-            let address2 = address,
-            let data = weatherTodayData
-        {
-            header.bind(address: address2, weatherData: data)
+        if address != nil, weatherTodayData != nil {
+            bind(on: header)
         }
-        
         return header
+    }
+    
+    
+    func bind(on header: WeatherCollectionHeaderView) {
+        header.addressLabel.text = address
+        
+        let strTemperature = temperatureFormat(weatherTodayData?.main.temp)
+        let strTemperatureMin = temperatureFormat(weatherTodayData?.main.tempMin)
+        let strTemperatureMax = temperatureFormat(weatherTodayData?.main.tempMax)
+        
+        header.currentTemperatureLabel.text = strTemperature
+        header.maxAndMinTemperatureLabel.text = "최저 \(strTemperatureMin) 최고 \(strTemperatureMax)"
+        
+        let icon = weatherTodayData?.weather[0].icon
+        let weatherIconURI = "https://openweathermap.org/img/wn/\(icon)@2x.png"
+        let url = URL(string: weatherIconURI)
+        header.weatherIconImageView.load(url: url!) // TODO: 강제 언래핑
+    }
+    
+    func temperatureFormat(_ temperature: Double?) -> String {
+        let celsius = translateCelsius(kelvin: temperature)
+        return String(format: "%.1f", celsius)
+    }
+    
+    func translateCelsius(kelvin: Double?) -> Double {
+        guard let kelvin else { return 0.0 }
+        
+        return kelvin - 273.15
     }
 }
 

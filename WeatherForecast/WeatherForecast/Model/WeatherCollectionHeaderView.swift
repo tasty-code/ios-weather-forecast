@@ -92,24 +92,4 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
             currentTemperatureLabel.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor),
         ])
     }
-    
-    func bind(address: String, weatherData: WeatherToday) {
-        addressLabel.text = address
-        
-        // TODO: view에서 format 하는게 맞는가? translate 하는게 맞는가?
-        
-        let strTemperature = Formatter.temperatureFormat(weatherData.main.temp)
-        let strTemperatureMin = Formatter.temperatureFormat(weatherData.main.tempMin)
-        let strTemperatureMax = Formatter.temperatureFormat(weatherData.main.tempMax)
-        
-        currentTemperatureLabel.text = strTemperature
-        maxAndMinTemperatureLabel.text = "최저 \(strTemperatureMin) 최고 \(strTemperatureMax)"
-        
-        let icon = weatherData.weather[0].icon
-        let weatherIconURI = "https://openweathermap.org/img/wn/\(icon)@2x.png"
-        let url = URL(string: weatherIconURI)
-        weatherIconImageView.load(url: url!) // TODO: 강제 언래핑
-        
-    }
-    
 }

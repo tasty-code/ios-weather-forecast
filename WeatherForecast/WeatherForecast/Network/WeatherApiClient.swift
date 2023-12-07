@@ -11,7 +11,8 @@ struct WeatherApiClient {
     private static let baseURL = "https://api.openweathermap.org/data/2.5/"
     
     static func makeURL(weatherType: WeatherType, coord: CLLocationCoordinate2D) -> URL? {
-        let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String
+        // let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String
+        let apiKey = "9025fdb78bf735a4b7287e0dcc03e4fd"
         var components = URLComponents(string: baseURL)
         components?.path += weatherType.path
         
