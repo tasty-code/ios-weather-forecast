@@ -11,38 +11,23 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     lazy var horizontalStackView: UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.spacing = 15
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.spacing = 50
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
-    lazy var timeLabel: UILabel = {
+    lazy var label: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "time"
         return label
-    }()
-    
-    lazy var temperatureLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .right
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "temp"
-        return label
-    }()
-    
-    lazy var weatherIcon: UIImageView = {
-       let icon = UIImageView()
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.image = .actions
-        return icon
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+//        self.backgroundColor = .clear
         setUpLayouts()
         setUpConstraints()
         
@@ -54,18 +39,23 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     
     func setUpLayouts() {
         backgroundColor = .systemGreen
-        horizontalStackView.setCustomSpacing(20, after: .spacerView)
-        horizontalStackView.addArrangedSubviews([timeLabel, temperatureLabel, weatherIcon])
-       
-        addSubview(horizontalStackView)
-        
+        addSubview(label)
     }
     
     func setUpConstraints() {
         NSLayoutConstraint.activate([
-            horizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            horizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            horizontalStackView.heightAnchor.constraint(equalTo: self.heightAnchor),
+            label.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            label.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            label.heightAnchor.constraint(equalTo: self.heightAnchor),
         ])
+    }
+    
+    func configureCell(to forecast: Forecast) {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko-KR")
+        formatter.dateFormat = "MM/dd(E) hh:mm"
+        let date = Date(timeIntervalSince1970: TimeInterval(integerLiteral: Int64(forecast.timeOfData)))
+        
+        label.text = formatter.string(from: date) + " \(forecast.mainInfo.temperature)🌡️"
     }
 }

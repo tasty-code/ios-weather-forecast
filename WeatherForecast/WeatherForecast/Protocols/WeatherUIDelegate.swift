@@ -10,7 +10,7 @@ import UIKit
 
 protocol WeatherUIDelegate: UIViewController {
     func loadForecast(_ coordinate: CLLocationCoordinate2D)
-    func updateAddress(_ addressString: String)
+    func updateAddress(_ coordinate: CLLocationCoordinate2D, _ addressString: String)
 }
 
 protocol WeatherCellDelegate: UICollectionViewCell {

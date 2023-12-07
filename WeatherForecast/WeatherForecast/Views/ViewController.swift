@@ -9,27 +9,25 @@ import Combine
 import CoreLocation
 
 class ViewController: UIViewController {
-    
-    lazy var address: String = ""
-    lazy var currentTempMin: String = ""
-    lazy var currentTempMax: String = ""
-    lazy var currentTemp: String = ""
-    lazy var currentIcon: String = ""
-    
-    
-    var subscriber: AnyCancellable?
-    let locationManager = WeatherLocationManager()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        locationManager.delegate = self
-        
-        setUpLayouts()
-        setUpConstraints()
-        
-        collectionView.dataSource = self
-        
+    typealias Item = (CurrentWeatherInfo?, [Forecast])
+    enum Section {
+        case main
     }
+    
+    @Published private var weatherInfo: Item = (nil, [])
+    private let locationManager = WeatherLocationManager()
+    private var subscribers = Set<AnyCancellable>()
+    private var weatherDataSource: UICollectionViewDiffableDataSource<Section, Forecast>!
+    
+    private lazy var collectionView: UICollectionView = {
+        let layout = compositionaLayout
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .darkGray
+        collectionView.register(WeatherHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
+        collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
     
     private let compositionaLayout: UICollectionViewCompositionalLayout = {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.15))
@@ -50,17 +48,51 @@ class ViewController: UIViewController {
         return layout
     }()
     
-    private lazy var collectionView: UICollectionView = {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        locationManager.delegate = self
+
+        setUpLayouts()
+        setUpConstraints()
         
-        let layout = compositionaLayout
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .darkGray
-        collectionView.register(WeatherHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
-        collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
+        configureDatasource()
+        bind()
+    }
+    
+    private func configureDatasource() {
+        weatherDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? WeatherCollectionViewCell else {
+               return WeatherCollectionViewCell()
+            }
+            cell.configureCell(to: itemIdentifier)
+            return cell
+        })
+    }
+    
+    func bind() {
+        $weatherInfo
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] (current, forecast) in
+                weatherDataSource.supplementaryViewProvider = { collectionView , kind , indexPath in
+                    guard let cell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as? WeatherHeaderCollectionViewCell else {
+                        return WeatherHeaderCollectionViewCell()
+                    }
+                    if let test = current {
+                        cell.temperatureLabel.text = "\(test.loc) //// \(test.temp.temperature)"
+                    } else {
+                        cell.temperatureLabel.text = "nan"
+                    }
+                    return cell
+                }
+                
+                var snapshot = NSDiffableDataSourceSnapshot<Section, Forecast>()
+                snapshot.appendSections([.main])
+                snapshot.appendItems(forecast, toSection: .main)
+                snapshot.reloadSections([.main])
+                weatherDataSource.apply(snapshot)
+            }
+            .store(in: &subscribers)
+    }
     
     private func setUpLayouts() {
         view.addSubview(collectionView)
@@ -74,8 +106,8 @@ class ViewController: UIViewController {
         ])
     }
     
-    func configureURLRequest(_ coordinate: CLLocationCoordinate2D) -> URLRequest? {
-        guard let url = WeatherURLManager().getURL(api: .weather, latitude: coordinate.latitude, longitude: coordinate.longitude) else {
+    func configureURLRequest(_ coordinate: CLLocationCoordinate2D, apiType: WeatherURLManager.ForecastType) -> URLRequest? {
+        guard let url = WeatherURLManager().getURL(api: apiType, latitude: coordinate.latitude, longitude: coordinate.longitude) else {
             return nil
         }
         
@@ -85,61 +117,42 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 40
-    }
-    // MARK: - 머리
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as? WeatherHeaderCollectionViewCell else {
-                return WeatherHeaderCollectionViewCell()
-            }
-            
-            header.addressLabel.text = address
-            header.minMaxTemperatureLabel.text = "최저 \(currentTempMin)° 최고 \(currentTempMax)°"
-            header.temperatureLabel.text = currentTemp + "°"
-            return header
-        }
-        return UICollectionReusableView()
-    }
-    // MARK: - 몸통
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? WeatherCollectionViewCell else {
-            return WeatherCollectionViewCell()
-        }
-        
-        return cell
-    }
-}
-
 extension ViewController: WeatherUIDelegate {
-    func loadForecast(_ coordinate: CLLocationCoordinate2D) {
-        guard let urlRequest = configureURLRequest(coordinate) else {
-            return
-        }
-        
+    func loadForecast(_ coordinate: CLLocationCoordinate2D) { }
+    
+    func updateAddress(_ coordinate: CLLocationCoordinate2D, _ addressString: String) {
+        guard let urlRequest = configureURLRequest(coordinate, apiType: .forecast) else { return }
         let publisher = URLSession.shared.publisher(request: urlRequest)
-        subscriber =  WeatherHTTPClient.publishForecast(from: publisher, forecastType: CurrentWeather.self)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
+        let p1 = WeatherHTTPClient.publishForecast(from: publisher, forecastType: FiveDayWeatherForecast.self)
+        
+        guard let urlRequest2 = configureURLRequest(coordinate, apiType: .weather) else { return }
+        let publisher2 = URLSession.shared.publisher(request: urlRequest2)
+        let p2 = WeatherHTTPClient.publishForecast(from: publisher2, forecastType: CurrentWeather?.self)
+
+        Publishers.Zip(p1, p2)
+            .tryMap { (forecast, current) in
+                let test = CurrentWeatherInfo(loc: addressString, temp: current!.mainInfo)
+                return Item(test, forecast.list)
+            }
+            .handleEvents(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-                    return
+                    break
                 case .failure(let error):
-                    debugPrint(error.localizedDescription)
+                    debugPrint(error)
                 }
-            } receiveValue: { [self] weather in
-                currentTempMin = String(weather.mainInfo.temperatureMin)
-                currentTempMax = String(weather.mainInfo.temperatureMax)
-                currentTemp = String(weather.mainInfo.temperature)
-                currentIcon = "https://openweathermap.org/img/wn/" + weather.weathers[0].icon + ".png"
-                print(currentIcon)
-                
-            }
+            })
+            .replaceError(with: (nil, []))
+            .assign(to: \.weatherInfo, on: self)
+            .store(in: &subscribers)
     }
     
-    func updateAddress(_ addressString: String) {
-        address = addressString
+    func fetchWeatherInfo(_ coordinate: CLLocationCoordinate2D) { }
+}
+
+extension ViewController {
+    struct CurrentWeatherInfo {
+        let loc: String
+        let temp: MainInfo
     }
 }
