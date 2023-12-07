@@ -12,43 +12,19 @@ final class WeatherViewController: UIViewController {
     private var weatherTodayData: WeatherToday?
     private var weatherForecastData: WeatherForecast?
     private var address: String?
-    var imageView: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
-        imageView.image = UIImage(named: "yongsan2")
-        imageView.alpha = 0.7
-        imageView.contentMode = .scaleToFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
     
-    private let collectionView: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.register(
-            WeatherCollectionViewCell.self,
-            forCellWithReuseIdentifier: WeatherCollectionViewCell.identifier
-        )
-        view.register(
-            WeatherCollectionHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: WeatherCollectionHeaderView.identifier
-        )
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private var backgroundImageView: UIImageView!
+    private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUI()
+        setRefreshControl()
+        
         locationDataManager.locationDelegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        setRefreshControl()
-        setUI()
     }
     
     private func setRefreshControl() {
@@ -217,14 +193,41 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - UICollectionView UI
+// MARK: - Set ViewController UI
 
 extension WeatherViewController {
     private func setUI() {
-        view.insertSubview(imageView, at: 0)
-        view.addSubview(collectionView)
+        collectionView = {
+          let layout = UICollectionViewFlowLayout()
+           layout.scrollDirection = .vertical
+           layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+           
+           let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+           view.register(
+               WeatherCollectionViewCell.self,
+               forCellWithReuseIdentifier: WeatherCollectionViewCell.identifier
+           )
+           view.register(
+               WeatherCollectionHeaderView.self,
+               forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+               withReuseIdentifier: WeatherCollectionHeaderView.identifier
+           )
+            view.backgroundColor = UIColor(white: 1, alpha: 0)
+           view.translatesAutoresizingMaskIntoConstraints = false
+           return view
+       }()
         
-        collectionView.backgroundColor = UIColor(white: 1, alpha: 0)
+        backgroundImageView  = {
+            let imageView = UIImageView(frame: .zero)
+            imageView.image = UIImage(named: "yongsan")
+            imageView.alpha = 0.7
+            imageView.contentMode = .scaleToFill
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            return imageView
+        }()
+        
+        view.addSubview(collectionView)
+        view.insertSubview(backgroundImageView, at: 0)
         setConstraint()
     }
     
@@ -237,10 +240,10 @@ extension WeatherViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             
             // imageView
-            imageView.topAnchor.constraint(equalTo: view.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 }
