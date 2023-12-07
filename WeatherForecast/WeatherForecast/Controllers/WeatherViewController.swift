@@ -137,13 +137,13 @@ extension WeatherViewController: UICollectionViewDataSource {
 // MARK: - weatherManager Delegate
 
 extension WeatherViewController: WeatherManagerDelegate {
-    func updateCollectionView() {
+    func updateWeatherDisplay() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
     }
     
-    func refreshCollectionView() {
+    func refreshWeatherDisplay() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
             self.refreshControl.endRefreshing()
             self.collectionView.reloadData()

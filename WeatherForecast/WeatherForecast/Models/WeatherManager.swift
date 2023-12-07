@@ -10,8 +10,8 @@ import CoreLocation
 
 protocol WeatherManagerDelegate: AnyObject {
     func showAlertWhenNoAuthorization()
-    func updateCollectionView()
-    func refreshCollectionView()
+    func updateWeatherDisplay()
+    func refreshWeatherDisplay()
 }
 
 final class WeatherManager: NSObject {
@@ -65,7 +65,7 @@ extension WeatherManager: CLLocationManagerDelegate {
             break
         default:
             self.permitted {
-                self.delegate?.updateCollectionView()
+                self.delegate?.updateWeatherDisplay()
                 self.iconFetch()
             }
         }
@@ -141,7 +141,7 @@ extension WeatherManager {
     
     func refreshData() {
         self.permitted {
-            self.delegate?.refreshCollectionView()
+            self.delegate?.refreshWeatherDisplay()
             self.iconFetch()
         }
     }
@@ -166,6 +166,6 @@ extension WeatherManager {
         }
             
         group.wait()
-        self.delegate?.updateCollectionView()
+        self.delegate?.updateWeatherDisplay()
     }
 }
