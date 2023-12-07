@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            }
            
            window = UIWindow()
-           window?.rootViewController = ViewController()
+           window?.rootViewController = WeatherViewController()
            window?.makeKeyAndVisible()
            return true
        }
