@@ -8,7 +8,6 @@ final class CollectionView: UICollectionView {
         self.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.identifier)
         self.register(HeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionReusableView.identifier)
         
-        self.backgroundView = setImageView(name: "wallpaper.jpg")
     }
     
     required init?(coder: NSCoder) {
@@ -21,7 +20,7 @@ final class CollectionView: UICollectionView {
         self.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.topAnchor.constraint(equalTo: view.topAnchor),
+            self.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             self.leftAnchor.constraint(equalTo: view.leftAnchor),
             self.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             self.rightAnchor.constraint(equalTo: view.rightAnchor)

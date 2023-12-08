@@ -11,6 +11,7 @@ final class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setBackgroundImageView()
         locationManagerConfiguration()
         
         weatherCollectionView.dataSource = self
@@ -174,5 +175,22 @@ extension WeatherViewController {
             weatherCollectionView.reloadItems(at: indexPaths)
         }
 
+    }
+}
+
+extension WeatherViewController {
+    func setBackgroundImageView() {
+        let backgroundImage = UIImage(named: "wallpaper")
+        let backgroundImageView = UIImageView(image: backgroundImage)
+        
+        view.addSubview(backgroundImageView)
+        backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+        backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
+        backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
     }
 }
