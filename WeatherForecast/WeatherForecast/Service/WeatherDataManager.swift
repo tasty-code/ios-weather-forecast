@@ -5,21 +5,26 @@
 //  Created by 김예준 on 12/8/23.
 //
 
-import Foundation
 import UIKit
+import CoreLocation
+import Foundation
 
 final class WeatherDataManager {
     weak var delegate: WeatherDataManagerDelegate?
     
+    // MARK: Private property
+    private let locationDataManager = LocationDataManager()
+    private let forecastDataService = ForecastDataService()
+    private let todayDataService = TodayDataService()
     private let iconDataService = IconDataService()
-    private let networkManager = WeatherNetworkManager()
     
-    let forecastDataService = ForecastDataService()
-    let todayDataService = TodayDataService()
-    var today: WeatherToday?
-    var forecast: WeatherForecast?
+    // MARK: Data
+    private(set) var today: WeatherToday?
+    private(set) var forecast: WeatherForecast?
+    private(set) var address: String?
     
     init() {
+        locationDataManager.locationDelegate = self
         forecastDataService.delegate = self
         todayDataService.delegate = self
         iconDataService.delegate = self
@@ -53,5 +58,28 @@ extension WeatherDataManager: ForecastDataServiceDelegate, TodayDataServiceDeleg
     
     func didCompleteLoad(_ service: IconDataService) {
         delegate?.completedLoadData(self)
+    }
+}
+
+// MARK: - LocationDataManagerDelegate
+
+extension WeatherDataManager: LocationDataManagerDelegate {
+    
+    func location(_ manager: LocationDataManager, didLoadCoordinate coordinate: CLLocationCoordinate2D) {
+        forecastDataService.downloadData(type: .forecast(coordinate: coordinate))
+        todayDataService.downloadData(type: .today(coordinate: coordinate))
+    }
+    
+    func loaction(_ manager: LocationDataManager, didCompletePlcamark placemark: CLPlacemark?) {
+        guard let placemark else {
+            print("can't look up current address")
+            return
+        }
+        
+        address = "\(placemark.locality ?? "") \(placemark.subLocality ?? "")"
+    }
+    
+    func notifyDeniedAuthorization() {
+        delegate?.viewRequestLocationSettingAlert()
     }
 }

@@ -10,4 +10,5 @@ import UIKit
 
 protocol WeatherDataManagerDelegate: AnyObject {
     func completedLoadData(_ manager: WeatherDataManager)
+    func viewRequestLocationSettingAlert()
 }

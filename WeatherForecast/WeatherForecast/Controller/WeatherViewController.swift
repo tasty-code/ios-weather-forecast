@@ -10,7 +10,6 @@ import CoreLocation
 final class WeatherViewController: UIViewController {
     private let locationDataManager = LocationDataManager()
     private let dataManager = WeatherDataManager()
-    private var address: String?
     
     private var backgroundImageView: UIImageView!
     private var collectionView: UICollectionView!
@@ -20,66 +19,9 @@ final class WeatherViewController: UIViewController {
         setUI()
         setRefreshControl()
         
-        locationDataManager.locationDelegate = self
         dataManager.delegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
-        
-    }
-    
-    private func setRefreshControl() {
-        collectionView.refreshControl = UIRefreshControl()
-        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
-    }
-    
-    @objc
-    private func handleRefreshControl() {
-        collectionView.reloadData()
-        DispatchQueue.main.async {
-           self.collectionView.refreshControl?.endRefreshing()
-        }
-    }
-}
-
-// MARK: - LocationDataManagerDelegate
-
-extension WeatherViewController: LocationDataManagerDelegate {
-    
-    func location(_ manager: LocationDataManager, didLoadCoordinate coordinate: CLLocationCoordinate2D) {
-        dataManager.forecastDataService.downloadData(type: .forecast(coordinate: coordinate))
-        dataManager.todayDataService.downloadData(type: .today(coordinate: coordinate))
-    }
-    
-    func loaction(_ manager: LocationDataManager, didCompletePlcamark placemark: CLPlacemark?) {
-        guard let placemark else {
-            print("can't look up current address")
-            return
-        }
-        
-        address = "\(placemark.locality ?? "") \(placemark.subLocality ?? "")"
-    }
-    
-    func viewRequestLocationSettingAlert() {
-        let requestLocationServiceAlert = UIAlertController(
-            title: "위치 정보 이용",
-            message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.",
-            preferredStyle: .alert
-        )
-        let openSettingAction = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
-            if let appSetting = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(appSetting)
-            }
-        }
-        let exitAction = UIAlertAction(title: "종료", style: .destructive) { _ in
-            UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                exit(0)
-            }
-        }
-        
-        requestLocationServiceAlert.addAction(openSettingAction)
-        requestLocationServiceAlert.addAction(exitAction)
-        present(requestLocationServiceAlert, animated: true)
     }
 }
 
@@ -98,32 +40,15 @@ extension WeatherViewController: UICollectionViewDataSource {
         return dataManager.forecast?.list.count ?? 20
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCollectionViewCell.identifier, for: indexPath) as? WeatherCollectionViewCell else {
             return UICollectionViewCell()
         }
-        
-        bind(on: cell, indexPath: indexPath)
-        return cell
-    }
-    
-    private func bind(on cell: WeatherCollectionViewCell, indexPath: IndexPath) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM/dd(E) HH시"
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        
-        if let forecast = dataManager.forecast {
-            let timeInterval = forecast.list[indexPath.row].dt
-            let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-            let temperature = forecast.list[indexPath.row].main.temp.formatCelsius()
-            let code = forecast.list[indexPath.row].weather[0].icon
-            
-            cell.dateLabel.text = dateFormatter.string(from: date as Date)
-            cell.temperatureLabel.text = temperature
-            cell.weatherIconImageView2.image = ImageCacheManager.getCache(forKey: code)
+        if dataManager.forecast != nil {
+            bind(on: cell, indexPath: indexPath)
         }
         
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -133,25 +58,11 @@ extension WeatherViewController: UICollectionViewDataSource {
             for: indexPath) as? WeatherCollectionHeaderView else {
             return UICollectionReusableView()
         }
-        if address != nil, dataManager.today != nil {
+        if dataManager.address != nil, dataManager.today != nil {
             bind(on: header)
         }
         
         return header
-    }
-    
-    func bind(on header: WeatherCollectionHeaderView) {
-        header.addressLabel.text = address
-        if let today = dataManager.today {
-            let temperature = today.main.temp.formatCelsius()
-            let temperatureMin = today.main.tempMin.formatCelsius()
-            let temperatureMax = today.main.tempMax.formatCelsius()
-            let code = today.weather[0].icon
-            
-            header.currentTemperatureLabel.text = temperature
-            header.maxAndMinTemperatureLabel.text = "최저 \(temperatureMin) 최고 \(temperatureMax)"
-            header.weatherIconImageView.image = ImageCacheManager.getCache(forKey: code)
-        }
     }
 }
 
@@ -232,6 +143,81 @@ extension WeatherViewController: WeatherDataManagerDelegate {
     private func updateView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+        }
+    }
+    
+    func viewRequestLocationSettingAlert() {
+        let requestLocationServiceAlert = UIAlertController(
+            title: "위치 정보 이용",
+            message: "위치 서비스를 사용할 수 없습니다.\n디바이스의 '설정 > 개인정보 보호'에서 위치 서비스를 켜주세요.",
+            preferredStyle: .alert
+        )
+        let openSettingAction = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
+            if let appSetting = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(appSetting)
+            }
+        }
+        let exitAction = UIAlertAction(title: "종료", style: .destructive) { _ in
+            UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                exit(0)
+            }
+        }
+        
+        requestLocationServiceAlert.addAction(openSettingAction)
+        requestLocationServiceAlert.addAction(exitAction)
+        present(requestLocationServiceAlert, animated: true)
+    }
+}
+
+// MARK: - Set refreshControl
+
+extension WeatherViewController {
+    private func setRefreshControl() {
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+    }
+    
+    @objc
+    private func handleRefreshControl() {
+        collectionView.reloadData()
+        DispatchQueue.main.async {
+           self.collectionView.refreshControl?.endRefreshing()
+        }
+    }
+}
+
+// MARK: - Bind view
+
+extension WeatherViewController {
+    private func bind(on header: WeatherCollectionHeaderView) {
+        header.addressLabel.text = dataManager.address
+        if let today = dataManager.today {
+            let temperature = today.main.temp.formatCelsius()
+            let temperatureMin = today.main.tempMin.formatCelsius()
+            let temperatureMax = today.main.tempMax.formatCelsius()
+            let code = today.weather[0].icon
+            
+            header.currentTemperatureLabel.text = temperature
+            header.maxAndMinTemperatureLabel.text = "최저 \(temperatureMin) 최고 \(temperatureMax)"
+            header.weatherIconImageView.image = ImageCacheManager.getCache(forKey: code)
+        }
+    }
+    
+    private func bind(on cell: WeatherCollectionViewCell, indexPath: IndexPath) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd(E) HH시"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        
+        if let forecast = dataManager.forecast {
+            let timeInterval = forecast.list[indexPath.row].dt
+            let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
+            let temperature = forecast.list[indexPath.row].main.temp.formatCelsius()
+            let code = forecast.list[indexPath.row].weather[0].icon
+            
+            cell.dateLabel.text = dateFormatter.string(from: date as Date)
+            cell.temperatureLabel.text = temperature
+            cell.weatherIconImageView2.image = ImageCacheManager.getCache(forKey: code)
         }
     }
 }
