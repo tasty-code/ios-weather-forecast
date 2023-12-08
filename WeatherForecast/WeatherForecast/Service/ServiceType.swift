@@ -22,7 +22,6 @@ enum ServiceType {
             return "img/wn/"
         }
     }
-    
     var components: URLComponents? {
         switch self {
         case .forecast, .today:
@@ -45,6 +44,15 @@ enum ServiceType {
         }
     }
     
+    var code: String {
+        switch self {
+        case .icon(code: let code):
+            return code
+        default:
+            return ""
+        }
+    }
+
     func makeURL() -> URL? {
         var components = self.components
         components?.queryItems = self.queryItems
