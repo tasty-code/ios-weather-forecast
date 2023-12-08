@@ -7,7 +7,8 @@
 
 import UIKit
 
-class CustomView: UIView {
+final class CustomView: UIView {
+    
     private lazy var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "wallpaper")

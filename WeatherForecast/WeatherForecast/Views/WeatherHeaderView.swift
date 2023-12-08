@@ -7,11 +7,10 @@
 
 import UIKit
 
-class WeatherHeaderView: UICollectionReusableView, Reusable {
+final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private lazy var weatherIconView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "sun.max.fill")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageView)
@@ -41,6 +40,7 @@ class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView(axis: .horizontal,
+                                    spacing: 10,
                                     subViews: [minimumTemperatureLabel, maximumTemperatureLabel])
         
         return stackView
@@ -85,8 +85,7 @@ class WeatherHeaderView: UICollectionReusableView, Reusable {
         ])
     }
     
-    func configureUI(with address: String, _ currentWeahter: Current) {
-        guard let iconID = currentWeahter.weather.last else { return }
+    func configureUI(with address: String, _ currentWeahter: Current, icon: UIImage?) {
         let minimumTemperature = currentWeahter.main.minimumTemperature
         let maximumTemperature = currentWeahter.main.maximumTemperature
         let temperature = currentWeahter.main.temperature
@@ -94,5 +93,6 @@ class WeatherHeaderView: UICollectionReusableView, Reusable {
         minimumTemperatureLabel.text = "최저: \(minimumTemperature)℃"
         maximumTemperatureLabel.text = "최고: \(maximumTemperature)℃"
         currentTemperatureLabel.text = "\(temperature)℃"
+        weatherIconView.image = icon
     }
 }
