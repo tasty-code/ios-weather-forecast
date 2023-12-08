@@ -79,6 +79,16 @@ extension ViewController {
         
         alert.addAction(changeAction)
         alert.addAction(cancelAction)
+        alert.addTextField { latitudeField in
+            latitudeField.placeholder = "위도"
+            latitudeField.keyboardType = .decimalPad
+            latitudeField.clearButtonMode = .whileEditing
+        }
+        alert.addTextField { longitudeField in
+            longitudeField.placeholder = "경도"
+            longitudeField.keyboardType = .decimalPad
+            longitudeField.clearButtonMode = .whileEditing
+        }
         
         present(alert, animated: true)
     }
