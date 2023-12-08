@@ -7,8 +7,7 @@
 
 import UIKit
 
-class WeeklyWeatherCell: UICollectionViewCell {
-    static let identifier = "WeeklyWeatherCell"
+final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
     
     lazy var dateLabel: UILabel = {
         let label = UILabel()
@@ -50,4 +49,3 @@ class WeeklyWeatherCell: UICollectionViewCell {
         ])
     }
 }
- 
