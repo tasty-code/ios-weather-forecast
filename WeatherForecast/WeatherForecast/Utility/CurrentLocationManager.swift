@@ -44,6 +44,18 @@ final class CurrentLocationManager {
         
         return queries
     }
+    
+    func getAddress() -> String {
+        
+        guard let city = locationInfo?.city else {
+            return ""
+        }
+        guard let district = locationInfo?.district else {
+            return "\(city)"
+        }
+        
+        return "\(city) \(district)"
+    }
 }
 
 extension CurrentLocationManager: CurrentLocationManagable {

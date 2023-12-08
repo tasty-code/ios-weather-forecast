@@ -7,11 +7,13 @@
 import UIKit
 
 final class ViewController: UIViewController {
-    private var mainWeatherView: MainWeatherView!
     
     let locationManager = LocationManager()
     let currentLocationManger = CurrentLocationManager(networkManager: NetworkManager(urlFormatter: WeatherURLFormatter()))
+    
+    private var mainWeatherView: MainWeatherView!
     private var weeklyWeatherData: WeeklyWeather?
+    private var currentWeatherData: CurrentWeather?
     
     override func loadView() {
         super.loadView()
@@ -34,15 +36,15 @@ final class ViewController: UIViewController {
         let convertedString = formatter.string(from: time as Date)
         
         return convertedString
-        
     }
 }
 
 extension ViewController: WeatherUpdateDelegate {
     func fetchWeather() {
-        currentLocationManger.sendRequest(path: WeatherURL.current.path) { (result:Result<CurrentWeather, Error>) in
+        currentLocationManger.sendRequest(path: WeatherURL.current.path) { [weak self] (result:Result<CurrentWeather, Error>) in
             switch result {
             case .success(let weather):
+                self?.currentWeatherData = weather
                 print("\(weather)")
             case .failure(let error):
                 print("\(error)")
@@ -58,7 +60,7 @@ extension ViewController: WeatherUpdateDelegate {
                 print(weather)
             case .failure(let error):
                 print("\(error)")
-            } 
+            }
         }
     }
 }
@@ -88,11 +90,29 @@ extension ViewController: UICollectionViewDataSource {
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CurrentHeaderView.reuseIdentifier, for: indexPath) as? CurrentHeaderView else {
+            return CurrentHeaderView()
+        }
+        
+        if let weatherData = currentWeatherData {
+            let address = currentLocationManger.getAddress()
+            headerView.updateUI(address: address, weather: weatherData)
+        }
+        
+        headerView.headerViewConfigure()
+        return headerView
+    }
 }
 
 extension ViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height / 13)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.width / 2)
     }
 }
 

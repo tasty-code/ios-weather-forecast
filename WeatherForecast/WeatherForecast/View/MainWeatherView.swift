@@ -30,6 +30,7 @@ final class MainWeatherView: UIView {
         collectionView.dataSource = delegate
         collectionView.delegate = delegate
         collectionView.register(WeeklyWeatherCell.self, forCellWithReuseIdentifier: WeeklyWeatherCell.reuseIdentifier)
+        collectionView.register(CurrentHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentHeaderView.reuseIdentifier)
         return collectionView
     }()
     
