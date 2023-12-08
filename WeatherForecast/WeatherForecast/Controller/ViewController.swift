@@ -31,7 +31,11 @@ extension ViewController: WeatherUpdateDelegate {
         currentLocationManger.sendRequest(path: WeatherURL.weekly.path) { (result:Result<WeeklyWeather, Error>) in
             switch result {
             case .success(let weather):
-                print("\(weather)")
+                self.weeklyWeatherData = weather
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+                print(weather)
             case .failure(let error):
                 print("\(error)")
             } 
