@@ -48,10 +48,10 @@ extension WeatherDataManager: ForecastDataServiceDelegate, TodayDataServiceDeleg
     
     func todayDataService(_ service: TodayDataService, didDownload data: WeatherToday) {
         today = data
-        delegate?.didCompleteData(self)
+        delegate?.completedLoadData(self)
     }
     
     func didCompleteLoad(_ service: IconDataService) {
-        delegate?.didCompleteData(self)
+        delegate?.completedLoadData(self)
     }
 }

@@ -9,5 +9,5 @@ import Foundation
 import UIKit
 
 protocol WeatherDataManagerDelegate: AnyObject {
-    func didCompleteData(_ manager: WeatherDataManager)
+    func completedLoadData(_ manager: WeatherDataManager)
 }
