@@ -17,7 +17,6 @@
 		66ABB9DB2B22D86A00983F79 /* ForecastDataServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ABB9DA2B22D86A00983F79 /* ForecastDataServiceDelegate.swift */; };
 		66ABB9DD2B22D8C000983F79 /* TodayDataServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ABB9DC2B22D8C000983F79 /* TodayDataServiceDelegate.swift */; };
 		66ABB9E02B22D8D800983F79 /* IconDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ABB9DF2B22D8D800983F79 /* IconDataService.swift */; };
-		66ABB9E42B22E81D00983F79 /* WeatherNetworkManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ABB9E32B22E81D00983F79 /* WeatherNetworkManagerDelegate.swift */; };
 		66ABB9E62B22E9F300983F79 /* DataServiceable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ABB9E52B22E9F300983F79 /* DataServiceable.swift */; };
 		66ABB9E82B22EBAE00983F79 /* IconDataServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ABB9E72B22EBAE00983F79 /* IconDataServiceDelegate.swift */; };
 		66ABB9EB2B22F28200983F79 /* WeatherDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ABB9EA2B22F28200983F79 /* WeatherDataManager.swift */; };
@@ -67,7 +66,6 @@
 		66ABB9DA2B22D86A00983F79 /* ForecastDataServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastDataServiceDelegate.swift; sourceTree = "<group>"; };
 		66ABB9DC2B22D8C000983F79 /* TodayDataServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDataServiceDelegate.swift; sourceTree = "<group>"; };
 		66ABB9DF2B22D8D800983F79 /* IconDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconDataService.swift; sourceTree = "<group>"; };
-		66ABB9E32B22E81D00983F79 /* WeatherNetworkManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherNetworkManagerDelegate.swift; sourceTree = "<group>"; };
 		66ABB9E52B22E9F300983F79 /* DataServiceable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServiceable.swift; sourceTree = "<group>"; };
 		66ABB9E72B22EBAE00983F79 /* IconDataServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconDataServiceDelegate.swift; sourceTree = "<group>"; };
 		66ABB9EA2B22F28200983F79 /* WeatherDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataManager.swift; sourceTree = "<group>"; };
@@ -200,7 +198,6 @@
 		66FD8CF32B0C7051008B698D /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				66ABB9E32B22E81D00983F79 /* WeatherNetworkManagerDelegate.swift */,
 				66FD8CF62B0C7388008B698D /* WeatherNetworkManager.swift */,
 				66ABB9EC2B22F52C00983F79 /* ImageCacheManager.swift */,
 			);
@@ -399,7 +396,6 @@
 				66B5D6992B21BAF500F19F93 /* WeatherCollectionHeaderView.swift in Sources */,
 				66ABB9DD2B22D8C000983F79 /* TodayDataServiceDelegate.swift in Sources */,
 				66ABB9EB2B22F28200983F79 /* WeatherDataManager.swift in Sources */,
-				66ABB9E42B22E81D00983F79 /* WeatherNetworkManagerDelegate.swift in Sources */,
 				66ABB9F42B23126A00983F79 /* Double.swift in Sources */,
 				66FD8CF72B0C7388008B698D /* WeatherNetworkManager.swift in Sources */,
 				669283592B0B4EB000BF1FFF /* WeatherToday.swift in Sources */,
