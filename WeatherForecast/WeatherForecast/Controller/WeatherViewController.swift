@@ -113,18 +113,14 @@ extension WeatherViewController: UICollectionViewDataSource {
         dateFormatter.dateFormat = "MM/dd(E) HH시"
         dateFormatter.locale = Locale(identifier: "ko_KR")
         
-        if
-            let timeInterval = dataManager.forecast?.list[indexPath.row].dt,
-            let temperature = dataManager.forecast?.list[indexPath.row].main.temp
-        {
+        if let forecast = dataManager.forecast {
+            let timeInterval = forecast.list[indexPath.row].dt
             let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-            let strDate = dateFormatter.string(from: date as Date)
-            cell.dateLabel.text = strDate
+            let temperature = forecast.list[indexPath.row].main.temp.formatCelsius()
+            let code = forecast.list[indexPath.row].weather[0].icon
             
-            let strTemperature = temperatureFormat(temperature)
-            cell.temperatureLabel.text = strTemperature
-            
-            guard let code = dataManager.forecast?.list[indexPath.row].weather[0].icon else { return }
+            cell.dateLabel.text = dateFormatter.string(from: date as Date)
+            cell.temperatureLabel.text = temperature
             cell.weatherIconImageView2.image = ImageCacheManager.getCache(forKey: code)
         }
         
@@ -144,30 +140,18 @@ extension WeatherViewController: UICollectionViewDataSource {
         return header
     }
     
-    
     func bind(on header: WeatherCollectionHeaderView) {
         header.addressLabel.text = address
-        
-        let strTemperature = temperatureFormat(dataManager.today?.main.temp)
-        let strTemperatureMin = temperatureFormat(dataManager.today?.main.tempMin)
-        let strTemperatureMax = temperatureFormat(dataManager.today?.main.tempMax)
-        
-        header.currentTemperatureLabel.text = strTemperature
-        header.maxAndMinTemperatureLabel.text = "최저 \(strTemperatureMin) 최고 \(strTemperatureMax)"
-        
-        guard let code = dataManager.today?.weather[0].icon else { return }
-        header.weatherIconImageView.image = ImageCacheManager.getCache(forKey: code)
-    }
-    
-    func temperatureFormat(_ temperature: Double?) -> String {
-        let celsius = translateCelsius(kelvin: temperature)
-        return String(format: "%.1f", celsius)
-    }
-    
-    func translateCelsius(kelvin: Double?) -> Double {
-        guard let kelvin else { return 0.0 }
-        
-        return kelvin - 273.15
+        if let today = dataManager.today {
+            let temperature = today.main.temp.formatCelsius()
+            let temperatureMin = today.main.tempMin.formatCelsius()
+            let temperatureMax = today.main.tempMax.formatCelsius()
+            let code = today.weather[0].icon
+            
+            header.currentTemperatureLabel.text = temperature
+            header.maxAndMinTemperatureLabel.text = "최저 \(temperatureMin) 최고 \(temperatureMax)"
+            header.weatherIconImageView.image = ImageCacheManager.getCache(forKey: code)
+        }
     }
 }
 
