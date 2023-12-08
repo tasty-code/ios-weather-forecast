@@ -4,10 +4,17 @@ class ForecastWeatherCell: UICollectionViewCell {
     
     static let identifier = "ForecastCell"
     
+    let horizontalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
     let dateLabel: UILabel = {
         let label = UILabel()
         label.text = "12/06(수) 00시"
-        label.textAlignment = .left
         return label
     }()
     
@@ -18,21 +25,12 @@ class ForecastWeatherCell: UICollectionViewCell {
     }()
     
     let weatherImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "sunny"))
-        imageView.contentMode = .scaleAspectFit
-        imageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        let imageView = UIImageView(image: UIImage(named: "test"))
+        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
         return imageView
     }()
     
-    let horizontalStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        return stackView
-    }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,27 +42,30 @@ class ForecastWeatherCell: UICollectionViewCell {
     }
     
     private func setupViews() {
-        horizontalStackView.addArrangedSubview(dateLabel)
-        horizontalStackView.addSpacer()
         horizontalStackView.addArrangedSubview(temperatureLabel)
         horizontalStackView.addArrangedSubview(weatherImageView)
         
         addSubview(horizontalStackView)
+        addSubview(dateLabel)
         
         horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             horizontalStackView.topAnchor.constraint(equalTo: topAnchor),
-            horizontalStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            horizontalStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            horizontalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             horizontalStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+        
+        NSLayoutConstraint.activate([
+            dateLabel.topAnchor.constraint(equalTo: topAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 16),
+            dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
     }
-}
-
-extension UIStackView {
-    func addSpacer() {
-        let spacerView = UIView()
-        spacerView.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        addArrangedSubview(spacerView)
+    
+    func updateContent(_ forecastWeather: ForecastWeather, indexPath: IndexPath) {
+        dateLabel.text = "\(forecastWeather.fiveDaysForecast[indexPath.row].dt)"
+        temperatureLabel.text = "\(forecastWeather.fiveDaysForecast[indexPath.row].temperature.temp)°"
     }
 }

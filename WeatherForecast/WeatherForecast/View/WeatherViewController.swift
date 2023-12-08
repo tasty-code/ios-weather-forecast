@@ -1,34 +1,23 @@
 import UIKit
 import CoreLocation
 
-
-
 final class WeatherViewController: UIViewController {
     
-    lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createBasicListLayout())
-        
-        return collectionView
-    }()
-    
-    
-    private let locationManager = CLLocationManager()
-    private let networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
-    
+    private lazy var weatherCollectionView: CollectionView = CollectionView(frame: .zero, collectionViewLayout: createBasicListLayout())
+    private lazy var locationManager = CLLocationManager()
+    private lazy var networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        configuration()
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        setConstraints()
+        locationManagerConfiguration()
         
-        collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.identifier)
-        collectionView.register(HeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionReusableView.identifier)
-        collectionView.backgroundView = setImage()
-        
+        weatherCollectionView.dataSource = self
+        weatherCollectionView.delegate = self
+        weatherCollectionView.setCollectionViewConstraints(view: view)
     }
 }
 
+//MARK: - CLLocationManagerDelegate , GeoConverter
 extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -42,7 +31,7 @@ extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
             case .success(let success):
                 self.getCurrentWeatherData(url: success)
             case .failure(let failure):
-                print(failure)
+                print(failure.description)
                 
             }
         }
@@ -52,7 +41,7 @@ extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
             case .success(let success):
                 self.getForecastWeatherData(url: success)
             case .failure(let failure):
-                print(failure)
+                print(failure.description)
                 
             }
         }
@@ -75,7 +64,7 @@ extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
 
 extension WeatherViewController {
     
-    private func configuration() {
+    private func locationManagerConfiguration() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.requestWhenInUseAuthorization()
@@ -86,10 +75,13 @@ extension WeatherViewController {
         networkServiceProvider.fetch(url: url) { (result: Result<CurrentWeather, NetworkError>) in
             switch result {
                 
-            case .success:
+            case .success(let currentWeatherData):
+                DispatchQueue.main.async {
+                    self.updateHeaderUI(currentWeatherData)
+                }
                 return
             case .failure(let error):
-                return print(error)
+                return print(error.description)
             }
         }
     }
@@ -98,61 +90,35 @@ extension WeatherViewController {
         networkServiceProvider.fetch(url: url) { (result: Result<ForecastWeather, NetworkError>) in
             switch result {
                 
-            case .success:
+            case .success(let forecastWeatherData):
+//                DispatchQueue.main.async {
+//                    self.updateCollectionViewCellUI(forecastWeatherData)
+//                }
                 return
             case .failure(let error):
-                return print(error)
+                return print(error.description)
             }
         }
     }
-    
-    func createBasicListLayout() -> UICollectionViewCompositionalLayout {
-        var layoutConfig = UICollectionLayoutListConfiguration(appearance: .grouped)
-        layoutConfig.backgroundColor = .clear
-        layoutConfig.headerMode = .supplementary
-        
-        let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
-        
-        return listLayout
-    }
-    
-    func setConstraints() {
-        view.addSubview(collectionView)
-        
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true 
-        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-    }
-    
-    func setImage() -> UIImageView? {
-        guard let image = UIImage(named: "nod2.png") else { return nil}
-        let imageView = UIImageView(image: image)
-        
-        return imageView
-    }
-    
-
-
 }
 
+// MARK: - UICollectionViewDataSource
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return 40
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.identifier, for: indexPath) as! ForecastWeatherCell
-        
-        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.identifier, for: indexPath) as? ForecastWeatherCell else { return UICollectionViewCell() }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.identifier, for: indexPath) as! HeaderCollectionReusableView
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.identifier, for: indexPath) as? HeaderCollectionReusableView else { return UICollectionReusableView() }
+        
+
     
         return header
     }
@@ -162,5 +128,42 @@ extension WeatherViewController: UICollectionViewDelegate{
     
 }
 
+//MARK: - Layout
+extension WeatherViewController {
+    
+    private func createBasicListLayout() -> UICollectionViewCompositionalLayout {
+        var layoutConfig = UICollectionLayoutListConfiguration(appearance: .grouped)
+        layoutConfig.backgroundColor = .clear
+        layoutConfig.headerMode = .supplementary
+        
+        let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
+        
+        return listLayout
+    }
+}
 
-
+extension WeatherViewController {
+    
+    func updateHeaderUI(_ currentWeather: CurrentWeather) {
+        let indexPaths = weatherCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
+        guard let indexPath = indexPaths.first else { return }
+        
+        guard let header = weatherCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: indexPath) as? HeaderCollectionReusableView else { return }
+        
+        header.updateContent(currentWeather)
+        weatherCollectionView.reloadItems(at: indexPaths)
+    }
+    
+    func updateCollectionViewCellUI(_ forecastWeather: ForecastWeather) {
+        let indexPaths = weatherCollectionView.indexPathsForVisibleItems
+        
+        
+        
+        if indexPaths.isEmpty {
+            weatherCollectionView.reloadData()
+        } else {
+            weatherCollectionView.reloadItems(at: indexPaths)
+        }
+        
+    }
+}

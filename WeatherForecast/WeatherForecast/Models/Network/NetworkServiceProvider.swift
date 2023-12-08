@@ -14,4 +14,6 @@ final class NetworkServiceProvider: NetworkServiceable {
         }.resume()
     }
     
+//    UIImage(data)
+    
 }
