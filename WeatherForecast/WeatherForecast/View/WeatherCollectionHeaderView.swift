@@ -67,7 +67,6 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
     }
     
     private func setConstraint() {
-        
         NSLayoutConstraint.activate([
             // weatherIconImageView
             weatherIconImageView.topAnchor.constraint(equalTo: self.topAnchor),

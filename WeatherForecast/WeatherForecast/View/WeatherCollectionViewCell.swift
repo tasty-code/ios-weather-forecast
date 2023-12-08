@@ -51,18 +51,11 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // TODO: 필요한가? 정확한 역할 알아내기
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-    
     private func setConstraint() {
         NSLayoutConstraint.activate([
             // dateLabel
             dateLabel.topAnchor.constraint(equalTo: self.topAnchor),
             dateLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            // TODO: 왜 주석을 풀면 에러가 날까?
-            // dateLabel.leadingAnchor.constraint(equalTo: self.leftAnchor),
             
             // temperatureLabel
             temperatureLabel.topAnchor.constraint(equalTo: self.topAnchor),
