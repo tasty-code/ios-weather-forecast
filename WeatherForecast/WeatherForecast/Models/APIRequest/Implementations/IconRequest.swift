@@ -15,7 +15,7 @@ struct IconRequest: APIRequest {
     var path: String
     var parameters: [String : String]?
     
-    init(id: String) {
+    init(_ id: String) {
         self.path = "/img/wn/\(id)@2x.png"
         self.parameters = nil
     }

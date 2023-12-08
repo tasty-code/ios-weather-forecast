@@ -85,10 +85,10 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
         ])
     }
     
-    func configureUI(with address: String, _ currentWeahter: Current, icon: UIImage?) {
-        let minimumTemperature = currentWeahter.main.minimumTemperature
-        let maximumTemperature = currentWeahter.main.maximumTemperature
-        let temperature = currentWeahter.main.temperature
+    func configureUI(with address: String, weather: Current, icon: UIImage?) {
+        let minimumTemperature = weather.main.minimumTemperature
+        let maximumTemperature = weather.main.maximumTemperature
+        let temperature = weather.main.temperature
         addressLabel.text = address
         minimumTemperatureLabel.text = "최저: \(minimumTemperature)℃"
         maximumTemperatureLabel.text = "최고: \(maximumTemperature)℃"

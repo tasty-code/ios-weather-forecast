@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CustomView: UIView {
+final class WeatherView: UIView {
     
     private lazy var backgroundImageView: UIImageView = {
         let imageView = UIImageView()

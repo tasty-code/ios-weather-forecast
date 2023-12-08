@@ -8,9 +8,9 @@
 import Foundation
 
 extension DateFormatter {
-    func formattingStringToString(dateString: String) -> String? {
+    func formatDateString(_ dateString: String) -> String? {
         self.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        self.locale = Locale(identifier: "ko-KR")
+        self.locale = Locale(identifier: "ko_KR")
         guard let date = self.date(from: dateString) else {
             return nil
         }
