@@ -9,11 +9,7 @@ import CoreLocation
 
 final class WeatherViewController: UIViewController {
     private let locationDataManager = LocationDataManager()
-    private let forecastDataService = ForecastDataService()
-    private let todayDataService = TodayDataService()
-    
-    private var weatherTodayData: WeatherToday?
-    private var weatherForecastData: WeatherForecast?
+    private let dataManager = WeatherDataManager()
     private var address: String?
     
     private var backgroundImageView: UIImageView!
@@ -25,9 +21,7 @@ final class WeatherViewController: UIViewController {
         setRefreshControl()
         
         locationDataManager.locationDelegate = self
-        forecastDataService.delegate = self
-        todayDataService.delegate = self
-        
+        dataManager.delegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -52,9 +46,8 @@ final class WeatherViewController: UIViewController {
 extension WeatherViewController: LocationDataManagerDelegate {
     
     func location(_ manager: LocationDataManager, didLoadCoordinate coordinate: CLLocationCoordinate2D) {
-        // TODO: 네트워크 downlaodData 할 때 ServiceType(enum)으로 coordinate와 객체 타입을 같이 넘겨줌
-        forecastDataService.downloadData(type: .forecast(coordinate: coordinate))
-        todayDataService.downloadData(type: .today(coordinate: coordinate))
+        dataManager.forecastDataService.downloadData(type: .forecast(coordinate: coordinate))
+        dataManager.todayDataService.downloadData(type: .today(coordinate: coordinate))
     }
     
     func loaction(_ manager: LocationDataManager, didCompletePlcamark placemark: CLPlacemark?) {
@@ -102,7 +95,7 @@ extension WeatherViewController: UICollectionViewDelegate {
 
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weatherForecastData?.list.count ?? 20
+        return dataManager.forecast?.list.count ?? 20
     }
     
     
@@ -111,18 +104,18 @@ extension WeatherViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        bind(cell: cell, indexPath: indexPath)
+        bind(on: cell, indexPath: indexPath)
         return cell
     }
     
-    private func bind(cell: WeatherCollectionViewCell, indexPath: IndexPath) {
+    private func bind(on cell: WeatherCollectionViewCell, indexPath: IndexPath) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd(E) HH시"
         dateFormatter.locale = Locale(identifier: "ko_KR")
         
         if
-            let timeInterval = weatherForecastData?.list[indexPath.row].dt,
-            let temperature = weatherForecastData?.list[indexPath.row].main.temp
+            let timeInterval = dataManager.forecast?.list[indexPath.row].dt,
+            let temperature = dataManager.forecast?.list[indexPath.row].main.temp
         {
             let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
             let strDate = dateFormatter.string(from: date as Date)
@@ -130,27 +123,11 @@ extension WeatherViewController: UICollectionViewDataSource {
             
             let strTemperature = temperatureFormat(temperature)
             cell.temperatureLabel.text = strTemperature
+            
+            guard let code = dataManager.forecast?.list[indexPath.row].weather[0].icon else { return }
+            cell.weatherIconImageView2.image = ImageCacheManager.getCache(forKey: code)
         }
         
-        
-        guard let icon = weatherForecastData?.list[indexPath.row].weather[0].icon else { return}
-        guard let weatherIconURI = URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png") else { return }
-        let request = URLRequest(url: weatherIconURI)
-        URLSession.shared.dataTask(with: request) { data, _, error in
-            if let error = error {
-                   print(error)
-                   return
-               }
-            
-            if let data {
-                let image = UIImage(data: data)
-                DispatchQueue.main.async {
-                    if indexPath == self.collectionView.indexPath(for: cell) {
-                        cell.weatherIconImageView2.image = image
-                    }
-                }
-            }
-        }.resume()
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -160,9 +137,10 @@ extension WeatherViewController: UICollectionViewDataSource {
             for: indexPath) as? WeatherCollectionHeaderView else {
             return UICollectionReusableView()
         }
-        if address != nil, weatherTodayData != nil {
+        if address != nil, dataManager.today != nil {
             bind(on: header)
         }
+        
         return header
     }
     
@@ -170,17 +148,15 @@ extension WeatherViewController: UICollectionViewDataSource {
     func bind(on header: WeatherCollectionHeaderView) {
         header.addressLabel.text = address
         
-        let strTemperature = temperatureFormat(weatherTodayData?.main.temp)
-        let strTemperatureMin = temperatureFormat(weatherTodayData?.main.tempMin)
-        let strTemperatureMax = temperatureFormat(weatherTodayData?.main.tempMax)
+        let strTemperature = temperatureFormat(dataManager.today?.main.temp)
+        let strTemperatureMin = temperatureFormat(dataManager.today?.main.tempMin)
+        let strTemperatureMax = temperatureFormat(dataManager.today?.main.tempMax)
         
         header.currentTemperatureLabel.text = strTemperature
         header.maxAndMinTemperatureLabel.text = "최저 \(strTemperatureMin) 최고 \(strTemperatureMax)"
         
-        let icon = weatherTodayData?.weather[0].icon
-        let weatherIconURI = "https://openweathermap.org/img/wn/\(icon)@2x.png"
-        let url = URL(string: weatherIconURI)
-        header.weatherIconImageView.load(url: url!) // TODO: 강제 언래핑
+        guard let code = dataManager.today?.weather[0].icon else { return }
+        header.weatherIconImageView.image = ImageCacheManager.getCache(forKey: code)
     }
     
     func temperatureFormat(_ temperature: Double?) -> String {
@@ -262,32 +238,14 @@ extension WeatherViewController {
     }
 }
 
-extension UIImageView {
-    func load(url: URL) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                    }
-                }
-            }
-        }
-    }
-}
+// MARK: - WeatherDataManagerDelegate
 
-// MARK: - ForecastDataServiceDelegate, TodayDataServiceDelegate
-
-extension WeatherViewController: ForecastDataServiceDelegate, TodayDataServiceDelegate {
-    func forecastData(_ service: ForecastDataService, didDownload data: WeatherForecast) {
-        weatherForecastData = data
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+extension WeatherViewController: WeatherDataManagerDelegate {
+    func completedLoadData(_ manager: WeatherDataManager) {
+        updateView()
     }
     
-    func todayData(_ service: TodayDataService, didDownload data: WeatherToday) {
-        weatherTodayData = data
+    private func updateView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
