@@ -10,7 +10,7 @@ import UIKit
 class WeatherCollectionHeaderView: UICollectionReusableView {
     static let identifier = "CustomCollectionHeaderView"
     
-    lazy var weatherIconImageView: UIImageView = {
+    lazy var headerIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -50,7 +50,7 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(weatherIconImageView)
+        addSubview(headerIconImageView)
         addSubview(addressLabel)
         addSubview(maxAndMinTemperatureLabel)
         addSubview(currentTemperatureLabel)
@@ -68,27 +68,23 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
     
     private func setConstraint() {
         NSLayoutConstraint.activate([
-            // weatherIconImageView
-            weatherIconImageView.topAnchor.constraint(equalTo: self.topAnchor),
-            weatherIconImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            weatherIconImageView.widthAnchor.constraint(equalToConstant: 120),
-            weatherIconImageView.heightAnchor.constraint(equalToConstant: 120),
-            
-            // weatherIconImageView
-            weatherIconImageView.topAnchor.constraint(equalTo: self.topAnchor),
-            weatherIconImageView.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor),
+            // headerIconImageView
+            headerIconImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            headerIconImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            headerIconImageView.widthAnchor.constraint(equalToConstant: 120),
+            headerIconImageView.heightAnchor.constraint(equalToConstant: 120),
             
             // addressLabel
             addressLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            addressLabel.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor),
+            addressLabel.leadingAnchor.constraint(equalTo: headerIconImageView.trailingAnchor),
             
             // maxAndMinTemperatureLabel
             maxAndMinTemperatureLabel.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 16),
-            maxAndMinTemperatureLabel.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor),
+            maxAndMinTemperatureLabel.leadingAnchor.constraint(equalTo: headerIconImageView.trailingAnchor),
             
             // currentTemperatureLabel
             currentTemperatureLabel.topAnchor.constraint(equalTo: maxAndMinTemperatureLabel.bottomAnchor, constant: 16),
-            currentTemperatureLabel.leadingAnchor.constraint(equalTo: weatherIconImageView.trailingAnchor),
+            currentTemperatureLabel.leadingAnchor.constraint(equalTo: headerIconImageView.trailingAnchor),
         ])
     }
 }

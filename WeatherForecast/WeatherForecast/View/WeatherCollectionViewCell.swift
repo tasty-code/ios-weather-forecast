@@ -31,7 +31,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    lazy var weatherIconImageView2: UIImageView = {
+    lazy var cellIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -42,7 +42,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         
         addSubview(dateLabel)
         addSubview(temperatureLabel)
-        addSubview(weatherIconImageView2)
+        addSubview(cellIconImageView)
         
         setConstraint()
     }
@@ -61,13 +61,13 @@ class WeatherCollectionViewCell: UICollectionViewCell {
             // temperatureLabel
             temperatureLabel.topAnchor.constraint(equalTo: self.topAnchor),
             temperatureLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            temperatureLabel.trailingAnchor.constraint(equalTo: weatherIconImageView2.leadingAnchor),
+            temperatureLabel.trailingAnchor.constraint(equalTo: cellIconImageView.leadingAnchor),
             
-            // weatherIconImageView
-            weatherIconImageView2.topAnchor.constraint(equalTo: self.topAnchor),
-            weatherIconImageView2.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            weatherIconImageView2.widthAnchor.constraint(equalToConstant: 60),
-            weatherIconImageView2.heightAnchor.constraint(equalToConstant: 60),
+            // cellIconImageView
+            cellIconImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            cellIconImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            cellIconImageView.widthAnchor.constraint(equalToConstant: 60),
+            cellIconImageView.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
 }

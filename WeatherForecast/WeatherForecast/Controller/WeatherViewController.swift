@@ -103,7 +103,7 @@ extension WeatherViewController {
         
         backgroundImageView  = {
             let imageView = UIImageView(frame: .zero)
-            imageView.image = UIImage(named: "yongsan")
+            imageView.image = UIImage(named: "isaiah")
             imageView.alpha = 0.7
             imageView.contentMode = .scaleToFill
             imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -199,7 +199,7 @@ extension WeatherViewController {
             
             header.currentTemperatureLabel.text = temperature
             header.maxAndMinTemperatureLabel.text = "최저 \(temperatureMin) 최고 \(temperatureMax)"
-            header.weatherIconImageView.image = ImageCacheManager.getCache(forKey: code)
+            header.headerIconImageView.image = ImageCacheManager.getCache(forKey: code)
         }
     }
     
@@ -216,7 +216,7 @@ extension WeatherViewController {
             
             cell.dateLabel.text = dateFormatter.string(from: date as Date)
             cell.temperatureLabel.text = temperature
-            cell.weatherIconImageView2.image = ImageCacheManager.getCache(forKey: code)
+            cell.cellIconImageView.image = ImageCacheManager.getCache(forKey: code)
         }
     }
 }
