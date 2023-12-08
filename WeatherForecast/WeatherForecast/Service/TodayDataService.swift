@@ -7,9 +7,7 @@
 
 import Foundation
 
-final class TodayDataService {
-    let decoder = JSONDecoder()
-    let networkManager = WeatherNetworkManager()
+final class TodayDataService: DataServiceable {
     weak var delegate: TodayDataServiceDelegate?
     
     func downloadData(type service: ServiceType) {
