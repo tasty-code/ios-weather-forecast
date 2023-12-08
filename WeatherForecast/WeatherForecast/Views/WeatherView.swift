@@ -9,6 +9,8 @@ import UIKit
 
 final class WeatherView: UIView {
     
+    private weak var delegate: UICollectionViewDataSource?
+    
     private lazy var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "wallpaper")
@@ -19,13 +21,14 @@ final class WeatherView: UIView {
         return imageView
     }()
     
-    lazy var weatherCollectionView: UICollectionView = {
+    private lazy var weatherCollectionView: UICollectionView = {
         var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
         configuration.headerMode = .supplementary
         configuration.backgroundColor = .clear
         let compositionalLayout = UICollectionViewCompositionalLayout.list(using: configuration)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: compositionalLayout)
+        collectionView.dataSource = delegate
         
         collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: ForecastCell.reuseIdentifier)
         collectionView.register(WeatherHeaderView.self,
@@ -41,9 +44,10 @@ final class WeatherView: UIView {
         return collectionView
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setConstraints()
+    init(delegate: UICollectionViewDataSource) {
+        self.delegate = delegate
+        super.init(frame: .zero)
+        self.setConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -63,5 +67,34 @@ final class WeatherView: UIView {
             weatherCollectionView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 10),
             weatherCollectionView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10)
         ])
+    }
+    
+    func updateCollectionView() {
+        let indexPaths = weatherCollectionView.indexPathsForVisibleItems
+        
+        if indexPaths.isEmpty {
+            weatherCollectionView.reloadData()
+        } else {
+            weatherCollectionView.reloadItems(at: indexPaths)
+        }
+    }
+    
+    func endRefreshing() {
+        weatherCollectionView.refreshControl?.endRefreshing()
+    }
+    
+    func findHeaderView() -> UICollectionReusableView? {
+        let indexPaths = weatherCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
+        
+        guard let firstIndexPath = indexPaths.first,
+              let headerView = weatherCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: firstIndexPath)
+        else {
+            return nil
+        }
+        return headerView
+    }
+    
+    func addRefreshControl(refreshControl: UIRefreshControl) {
+        weatherCollectionView.refreshControl = refreshControl
     }
 }

@@ -7,11 +7,11 @@
 import UIKit
 import CoreLocation
 
-final class ViewController: UIViewController, AlertDisplayable {
+final class WeatherViewController: UIViewController, AlertDisplayable {
     
     // MARK: - Properties
 
-    private let weatherView: WeatherView = WeatherView()
+    private var weatherView: WeatherView!
     
     private let locationManager: LocationManager
     private let networkManager: NetworkManager
@@ -33,6 +33,7 @@ final class ViewController: UIViewController, AlertDisplayable {
     // MARK: - LifeCycle
 
     override func loadView() {
+        weatherView = WeatherView(delegate: self)
         self.view = weatherView
     }
     
@@ -40,64 +41,55 @@ final class ViewController: UIViewController, AlertDisplayable {
         super.viewDidLoad()
         
         configureDelegate()
-        weatherView.weatherCollectionView.refreshControl?
-            .addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        configureRefreshControl()
     }
     
     // MARK: - Private Methods
 
     private func configureDelegate() {
         locationManager.delegate = self
-        weatherView.weatherCollectionView.dataSource = self
+    }
+    
+    private func configureRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        weatherView.addRefreshControl(refreshControl: refreshControl)
     }
     
     private func updateHeaderView(with locationData: LocationData, _ currentWeather: Current?) {
-        let indexPaths = weatherView.weatherCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
         guard let currentWeather = currentWeather else {
             displayAlert(title: String(describing: NetworkError.decodingError))
             return
         }
         
-        guard let firstIndexPath = indexPaths.first,
-              let headerView = weatherView.weatherCollectionView
-            .supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: firstIndexPath) as? WeatherHeaderView
-        else {
-            return
-        }
+        guard let headerView = weatherView.findHeaderView() as? WeatherHeaderView else { return }
+        
         guard let iconID = currentWeather.weather.last?.icon else { return }
-        networkManager.fetchData(for: IconRequest(iconID)) { result in
+        networkManager.fetchData(for: IconRequest(iconID)) { [weak self] result in
             switch result {
             case .success(let rawData):
                 let icon = UIImage(data: rawData)
                 DispatchQueue.main.async {
                     headerView.configureUI(with: locationData.address, weather: currentWeather, icon: icon)
                 }
-            case .failure(let networkError): print(networkError)
+            case .failure(let networkError):
+                self?.displayAlert(title: String(describing: networkError))
             }
         }
     }
     
-    private func updateCollectionView() {
-        let indexPaths = weatherView.weatherCollectionView.indexPathsForVisibleItems
-        
-        if indexPaths.isEmpty {
-            weatherView.weatherCollectionView.reloadData()
-        } else {
-            weatherView.weatherCollectionView.reloadItems(at: indexPaths)
-        }
-    }
-    
-    @objc private func handleRefreshControl() {
+    @objc 
+    private func handleRefreshControl() {
         locationManager.requestLocation()
-        DispatchQueue.main.async {
-            self.weatherView.weatherCollectionView.refreshControl?.endRefreshing()
+        DispatchQueue.main.async { [weak self] in
+            self?.weatherView.endRefreshing()
         }
     }
 }
 
 // MARK: - LocationUpdateDelegate
 
-extension ViewController: LocationUpdateDelegate {
+extension WeatherViewController: LocationUpdateDelegate {
     func updateWeather(with locationData: LocationData) {
         let weatherRequest = WeatherRequest(latitude: locationData.latitude,
                                             longitude: locationData.longitude,
@@ -122,7 +114,7 @@ extension ViewController: LocationUpdateDelegate {
             case .success(let rawData):
                 self?.forecastModel = try? JSONDecoder().decode(Forecast.self, from: rawData)
                 DispatchQueue.main.async {
-                    self?.updateCollectionView()
+                    self?.weatherView.updateCollectionView()
                 }
             case .failure(let networkError):
                 self?.displayAlert(title: String(describing: networkError))
@@ -137,7 +129,7 @@ extension ViewController: LocationUpdateDelegate {
 
 // MARK: - UICollectionViewDataSource
 
-extension ViewController: UICollectionViewDataSource {
+extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let forecastModel = forecastModel else {
             return 0
