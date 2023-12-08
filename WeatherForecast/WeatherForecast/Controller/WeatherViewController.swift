@@ -9,6 +9,9 @@ import CoreLocation
 
 final class WeatherViewController: UIViewController {
     private let locationDataManager = LocationDataManager()
+    private let forecastDataService = ForecastDataService()
+    private let todayDataService = TodayDataService()
+    
     private var weatherTodayData: WeatherToday?
     private var weatherForecastData: WeatherForecast?
     private var address: String?
@@ -22,6 +25,9 @@ final class WeatherViewController: UIViewController {
         setRefreshControl()
         
         locationDataManager.locationDelegate = self
+        forecastDataService.delegate = self
+        todayDataService.delegate = self
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -46,24 +52,9 @@ final class WeatherViewController: UIViewController {
 extension WeatherViewController: LocationDataManagerDelegate {
     
     func location(_ manager: LocationDataManager, didLoadCoordinate coordinate: CLLocationCoordinate2D) {
-        
-        let forecastNetworkManager = WeatherNetworkManager<WeatherForecast>.shared
-        forecastNetworkManager.loadWeatherData(type: WeatherType.forecast, coord: coordinate)
-        forecastNetworkManager.responseClosure = { data in
-            self.weatherForecastData = data
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        }
-        
-        let todayNetworkManager = WeatherNetworkManager<WeatherToday>.shared
-        todayNetworkManager.loadWeatherData(type: WeatherType.weatherToday, coord: coordinate)
-        todayNetworkManager.responseClosure = { data in
-            self.weatherTodayData = data
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        }
+        // TODO: 네트워크 downlaodData 할 때 ServiceType(enum)으로 coordinate와 객체 타입을 같이 넘겨줌
+        forecastDataService.downloadData(type: .forecast(coordinate: coordinate))
+        todayDataService.downloadData(type: .today(coordinate: coordinate))
     }
     
     func loaction(_ manager: LocationDataManager, didCompletePlcamark placemark: CLPlacemark?) {
@@ -71,7 +62,7 @@ extension WeatherViewController: LocationDataManagerDelegate {
             print("can't look up current address")
             return
         }
-        // TODO: bind 는 한 곳에서 (여기가 viewController니까 여기서 bind 하는게 맞지 않을까?)
+        
         address = "\(placemark.locality ?? "") \(placemark.subLocality ?? "")"
     }
     
@@ -281,6 +272,24 @@ extension UIImageView {
                     }
                 }
             }
+        }
+    }
+}
+
+// MARK: - ForecastDataServiceDelegate, TodayDataServiceDelegate
+
+extension WeatherViewController: ForecastDataServiceDelegate, TodayDataServiceDelegate {
+    func forecastData(_ service: ForecastDataService, didDownload data: WeatherForecast) {
+        weatherForecastData = data
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func todayData(_ service: TodayDataService, didDownload data: WeatherToday) {
+        weatherTodayData = data
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
         }
     }
 }
