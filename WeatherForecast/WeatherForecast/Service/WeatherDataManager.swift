@@ -35,7 +35,11 @@ final class WeatherDataManager {
         forecast?.list.forEach { list in
             let code = list.weather[0].icon
             DispatchQueue.global().async(group: group) {
-                self.iconDataService.downloadData(type: .icon(code: code))
+                do {
+                    try self.iconDataService.downloadData(type: .icon(code: code))
+                } catch {
+                    print(error)
+                }
             }
         }
         
@@ -66,8 +70,12 @@ extension WeatherDataManager: ForecastDataServiceDelegate, TodayDataServiceDeleg
 extension WeatherDataManager: LocationDataManagerDelegate {
     
     func location(_ manager: LocationDataManager, didLoadCoordinate coordinate: CLLocationCoordinate2D) {
-        forecastDataService.downloadData(type: .forecast(coordinate: coordinate))
-        todayDataService.downloadData(type: .today(coordinate: coordinate))
+        do {
+            try forecastDataService.downloadData(type: .forecast(coordinate: coordinate))
+            try todayDataService.downloadData(type: .today(coordinate: coordinate))
+        } catch {
+            print(error)
+        }
     }
     
     func loaction(_ manager: LocationDataManager, didCompletePlcamark placemark: CLPlacemark?) {

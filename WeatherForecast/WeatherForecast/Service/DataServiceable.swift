@@ -11,7 +11,7 @@ protocol DataServiceable: AnyObject {
     var decoder: JSONDecoder { get }
     var networkManager: WeatherNetworkManager { get }
     
-    func downloadData(type service: ServiceType)
+    func downloadData(type service: ServiceType) throws
 }
 
 extension DataServiceable {

@@ -10,9 +10,8 @@ import Foundation
 final class TodayDataService: DataServiceable {
     weak var delegate: TodayDataServiceDelegate?
     
-    func downloadData(type service: ServiceType) {
-        // TODO: throw error catching
-        guard let url = service.makeURL() else { return }
+    func downloadData(type service: ServiceType) throws {
+        guard let url = service.makeURL() else { throw NetworkError.invailedURL }
         networkManager.downloadData(url: url) { result in
             switch result {
             case .success(let data):
