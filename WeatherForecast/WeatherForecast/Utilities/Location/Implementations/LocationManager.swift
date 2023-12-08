@@ -9,8 +9,8 @@ import Foundation
 import CoreLocation
 
 protocol LocationManagerDelegate: AnyObject {
-    func didUpdateLocation(locationManager: LocationManager, location: CLLocation)
-    func didUpdatePlacemark(locationManager: LocationManager, placemark: CLPlacemark)
+    func didUpdateLocation(locationManager: LocationManager?, location: CLLocation)
+    func didUpdatePlacemark(locationManager: LocationManager?, placemark: CLPlacemark)
 }
 
 final class LocationManager: NSObject, ReverseGeocodable, LocationRequestable {

@@ -16,6 +16,10 @@ extension CollectionReusableHeaderViewIdentifyingProtocol {
     static var reuseIdentifier: String { String(describing: self) }
 }
 
+protocol AlertPresentingDelegate: AnyObject {
+    func presentAlert(collectionViewHeader: UICollectionReusableView)
+}
+
 final class CollectionReusableHeaderView: UICollectionReusableView, CollectionReusableHeaderViewIdentifyingProtocol {
     // MARK: - Constants
     private enum Constants {
@@ -29,6 +33,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView, CollectionRe
     
     // MARK: - Dependencies
     private lazy var iconDataService: DataDownloadable = IconDataService(delegate: self)
+    weak var delegate: AlertPresentingDelegate?
     
     // MARK: - View Components
     private lazy var contentView: UIView = {
@@ -59,6 +64,7 @@ final class CollectionReusableHeaderView: UICollectionReusableView, CollectionRe
         button.setTitle(Constants.locationChangeButtonLabel, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .callout)
+        button.addTarget(self, action: #selector(presentAlert), for: .touchUpInside)
         
         return button
     }()
@@ -100,6 +106,13 @@ final class CollectionReusableHeaderView: UICollectionReusableView, CollectionRe
     }
 }
 
+// MARK: Private Methods
+extension CollectionReusableHeaderView {
+    @objc private func presentAlert() {
+        delegate?.presentAlert(collectionViewHeader: self)
+    }
+}
+
 // MARK: Autolayout Methods
 extension CollectionReusableHeaderView {
     private func setUpLayout() {
@@ -124,9 +137,7 @@ extension CollectionReusableHeaderView {
         NSLayoutConstraint.activate([
             addressLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
             addressLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            addressLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-//            locationChangeButton.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor),
             locationChangeButton.topAnchor.constraint(equalTo: contentView.topAnchor),
             locationChangeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
