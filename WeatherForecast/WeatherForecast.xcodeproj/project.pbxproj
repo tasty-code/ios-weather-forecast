@@ -15,6 +15,7 @@
 		53272AE92B0B43FC00A73EF7 /* WeeklyWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53272AE82B0B43FC00A73EF7 /* WeeklyWeather.swift */; };
 		53B496692B0DD1C600957314 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B496682B0DD1C600957314 /* NetworkManager.swift */; };
 		53B4966B2B0E23C400957314 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B4966A2B0E23C400957314 /* NetworkError.swift */; };
+		53D4E0DD2B22AAA700902214 /* WeeklyWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D4E0DC2B22AAA700902214 /* WeeklyWeatherCell.swift */; };
 		53E822CF2B18688A00155FB2 /* CurrentLocationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E822CE2B18688A00155FB2 /* CurrentLocationInfo.swift */; };
 		7F53C1572B14A1FF0061DD02 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F53C1562B14A1FF0061DD02 /* LocationManager.swift */; };
 		7F71CBF02B1054F90096D278 /* CommonWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71CBEF2B1054F90096D278 /* CommonWeatherDTO.swift */; };
@@ -60,6 +61,7 @@
 		53272AE82B0B43FC00A73EF7 /* WeeklyWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeather.swift; sourceTree = "<group>"; };
 		53B496682B0DD1C600957314 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		53B4966A2B0E23C400957314 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		53D4E0DC2B22AAA700902214 /* WeeklyWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherCell.swift; sourceTree = "<group>"; };
 		53E822CE2B18688A00155FB2 /* CurrentLocationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationInfo.swift; sourceTree = "<group>"; };
 		7F53C1562B14A1FF0061DD02 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7F71CBEF2B1054F90096D278 /* CommonWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWeatherDTO.swift; sourceTree = "<group>"; };
@@ -129,6 +131,22 @@
 				53E822CE2B18688A00155FB2 /* CurrentLocationInfo.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		53D4E0D82B22A5CC00902214 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				53D4E0DC2B22AAA700902214 /* WeeklyWeatherCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		53D4E0D92B22A5D300902214 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		53E822CA2B18672000155FB2 /* APIDTO */ = {
@@ -212,13 +230,14 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				53D4E0D92B22A5D300902214 /* Controller */,
+				53D4E0D82B22A5CC00902214 /* View */,
 				7FF59F102B0C796F00C6AA24 /* Protocol */,
 				7FF59F0D2B0C793F00C6AA24 /* Utility */,
 				7FF59F002B0C481400C6AA24 /* Extension */,
 				53272AE52B0B3EE300A73EF7 /* Model */,
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
-				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
 				C79C8CFC25ADDDF300EEE3F1 /* Assets.xcassets */,
 				C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */,
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
@@ -378,6 +397,7 @@
 				7FF59F0C2B0C78DC00C6AA24 /* WeatherURL.swift in Sources */,
 				7FF59F162B0CC1AB00C6AA24 /* WeatherURLFormatter.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
+				53D4E0DD2B22AAA700902214 /* WeeklyWeatherCell.swift in Sources */,
 				7FF59F022B0C484B00C6AA24 /* Bundle+Extension.swift in Sources */,
 				53B496692B0DD1C600957314 /* NetworkManager.swift in Sources */,
 				7FF59F122B0C797D00C6AA24 /* URLFormattable.swift in Sources */,
