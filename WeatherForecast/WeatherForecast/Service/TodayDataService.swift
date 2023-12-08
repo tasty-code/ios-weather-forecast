@@ -18,7 +18,7 @@ final class TodayDataService: DataServiceable {
             case .success(let data):
                 do {
                     let decodeData = try self.decoder.decode(WeatherToday.self, from: data)
-                    self.delegate?.todayData(self, didDownload: decodeData)
+                    self.delegate?.todayDataService(self, didDownload: decodeData)
                 } catch {
                     print(error)
                 }

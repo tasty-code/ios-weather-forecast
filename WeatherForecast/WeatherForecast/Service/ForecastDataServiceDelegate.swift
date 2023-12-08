@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ForecastDataServiceDelegate: AnyObject {
-    func forecastData(_ service: ForecastDataService, didDownload data: WeatherForecast)
+    func forecastDataService(_ service: ForecastDataService, didDownload data: WeatherForecast)
 }

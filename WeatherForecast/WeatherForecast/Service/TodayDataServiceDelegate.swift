@@ -8,5 +8,5 @@
 import Foundation
 
 protocol TodayDataServiceDelegate: AnyObject {
-    func todayData(_ service: TodayDataService, didDownload data: WeatherToday)
+    func todayDataService(_ service: TodayDataService, didDownload data: WeatherToday)
 }
