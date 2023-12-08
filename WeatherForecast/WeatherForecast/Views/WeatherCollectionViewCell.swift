@@ -32,6 +32,9 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
            return label
        }()
     
+    
+    let imageView = UIImageView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
 //        self.backgroundColor = .clear
@@ -47,7 +50,7 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     func setUpLayouts() {
         backgroundColor = .systemBackground
         forecastStackView.setCustomSpacing(5, after: .spacerView)
-        forecastStackView.addArrangedSubviews([timeLabel, temperatureLabel])
+        forecastStackView.addArrangedSubviews([timeLabel, temperatureLabel, imageView])
                
         addSubview(forecastStackView)
 

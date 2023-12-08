@@ -78,6 +78,9 @@ class ViewController: UIViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? WeatherCollectionViewCell else {
                 return WeatherCollectionViewCell()
             }
+            WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(itemIdentifier.weather.first!.icon)@2x.png")!) { image in
+                cell.imageView.image = image
+            }
             cell.configureCell(to: itemIdentifier)
             return cell
         })
@@ -94,9 +97,10 @@ class ViewController: UIViewController {
                     if let data = current {
                         cell.addressLabel.text = data.address
                         cell.temperatureLabel.text = String(data.temp.temperature)
-                        cell.minMaxTemperatureLabel.text = "최저 \(current!.temp.temperatureMin)° 최고 \(current!.temp.temperatureMax)°"
-                        //                        cell.temperatureLabel.text = "\(test.loc) //// \(test.temp.temperature)"
-                        
+                        cell.minMaxTemperatureLabel.text = "최저 \(data.temp.temperatureMin)° 최고 \(data.temp.temperatureMax)°"
+                        WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(data.icon)@2x.png")!, completion: { image in
+                            cell.weatherIcon.image = image
+                        })
                     } else {
                         cell.temperatureLabel.text = "nan"
                     }
@@ -150,7 +154,7 @@ extension ViewController: WeatherUIDelegate {
         let p1 = WeatherHTTPClient.publishForecast(from: publisher, forecastType: FiveDayWeatherForecast.self)
         Publishers.Zip(p1, p2)
             .tryMap { (forecast, current) in
-                let test = CurrentWeatherInfo(address: addressString, temp: current!.mainInfo)
+                let test = CurrentWeatherInfo(address: addressString, icon: current!.weathers.first!.icon, temp: current!.mainInfo)
                 return Item(test, forecast.list)
             }
             .handleEvents(receiveCompletion: { completion in
@@ -172,6 +176,7 @@ extension ViewController: WeatherUIDelegate {
 extension ViewController {
     struct CurrentWeatherInfo {
         let address: String
+        let icon: String
         let temp: MainInfo
     }
 }
