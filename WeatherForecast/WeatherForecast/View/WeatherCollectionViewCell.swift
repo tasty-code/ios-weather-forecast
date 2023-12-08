@@ -56,6 +56,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
             // dateLabel
             dateLabel.topAnchor.constraint(equalTo: self.topAnchor),
             dateLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             
             // temperatureLabel
             temperatureLabel.topAnchor.constraint(equalTo: self.topAnchor),
@@ -64,7 +65,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
             
             // weatherIconImageView
             weatherIconImageView2.topAnchor.constraint(equalTo: self.topAnchor),
-            weatherIconImageView2.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            weatherIconImageView2.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             weatherIconImageView2.widthAnchor.constraint(equalToConstant: 60),
             weatherIconImageView2.heightAnchor.constraint(equalToConstant: 60),
         ])
