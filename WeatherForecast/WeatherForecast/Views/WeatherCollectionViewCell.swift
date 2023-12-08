@@ -45,7 +45,7 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     }
     
     func setUpLayouts() {
-        backgroundColor = .tertiarySystemBackground
+        backgroundColor = .systemBackground
         forecastStackView.setCustomSpacing(5, after: .spacerView)
         forecastStackView.addArrangedSubviews([timeLabel, temperatureLabel])
                

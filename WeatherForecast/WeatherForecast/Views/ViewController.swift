@@ -26,17 +26,18 @@ class ViewController: UIViewController {
         collectionView.register(WeatherHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
         collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.refreshControl = refreshWeather
         return collectionView
     }()
     
     private let compositionaLayout: UICollectionViewCompositionalLayout = {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.15))
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.9))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.6))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 3, bottom: -5, trailing: 3)
+        item.contentInsets = NSDirectionalEdgeInsets(top: -10, leading: 3, bottom: -10, trailing: 3)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.08))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.07))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10)
@@ -48,10 +49,17 @@ class ViewController: UIViewController {
         return layout
     }()
     
+    private lazy var refreshWeather: UIRefreshControl = {
+        let refresher = UIRefreshControl()
+        refresher.tintColor = UIColor.systemCyan
+        refresher.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        return refresher
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
-
+        
         setUpLayouts()
         setUpConstraints()
         
@@ -59,10 +67,16 @@ class ViewController: UIViewController {
         bind()
     }
     
+    @objc private func handleRefreshControl() {
+        refreshWeather.beginRefreshing()
+        locationManager.locationManger.requestLocation()
+        refreshWeather.endRefreshing()
+    }
+    
     private func configureDatasource() {
         weatherDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? WeatherCollectionViewCell else {
-               return WeatherCollectionViewCell()
+                return WeatherCollectionViewCell()
             }
             cell.configureCell(to: itemIdentifier)
             return cell
@@ -81,7 +95,7 @@ class ViewController: UIViewController {
                         cell.addressLabel.text = data.address
                         cell.temperatureLabel.text = String(data.temp.temperature)
                         cell.minMaxTemperatureLabel.text = "최저 \(current!.temp.temperatureMin)° 최고 \(current!.temp.temperatureMax)°"
-//                        cell.temperatureLabel.text = "\(test.loc) //// \(test.temp.temperature)"
+                        //                        cell.temperatureLabel.text = "\(test.loc) //// \(test.temp.temperature)"
                         
                     } else {
                         cell.temperatureLabel.text = "nan"
@@ -122,7 +136,7 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: WeatherUIDelegate {
-    func loadForecast(_ coordinate: CLLocationCoordinate2D) { 
+    func loadForecast(_ coordinate: CLLocationCoordinate2D) {
         
     }
     
@@ -130,7 +144,7 @@ extension ViewController: WeatherUIDelegate {
         guard let weatherURLRequest = configureURLRequest(coordinate, apiType: .weather) else { return }
         let publisher2 = URLSession.shared.publisher(request: weatherURLRequest)
         let p2 = WeatherHTTPClient.publishForecast(from: publisher2, forecastType: CurrentWeather?.self)
-
+        
         guard let forecastURLRequest = configureURLRequest(coordinate, apiType: .forecast) else { return }
         let publisher = URLSession.shared.publisher(request: forecastURLRequest)
         let p1 = WeatherHTTPClient.publishForecast(from: publisher, forecastType: FiveDayWeatherForecast.self)
