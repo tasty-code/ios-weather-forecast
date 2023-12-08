@@ -35,6 +35,7 @@ extension WeatherAPI: KeyAuthenticatable {
             URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
             URLQueryItem(name: "lon", value: "\(coordinate.longitude)"),
             URLQueryItem(name: "appid", value: "\(APIKey)"),
+            URLQueryItem(name: "units", value: "metric")
         ]
         
         return components

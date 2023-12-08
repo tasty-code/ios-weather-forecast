@@ -19,11 +19,12 @@ final class NetworkManager<T: Decodable>: Networkable {
             if let error = error {
                 return completion(.failure(.unknownError(error)))
             }
-    
+            
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
                 return completion(.failure(.serverError(response)))
             }
+            
             guard let data = data else {
                 return completion(.failure(.dataUnwrappingError(data)))
             }

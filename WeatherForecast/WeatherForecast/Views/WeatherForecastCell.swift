@@ -8,30 +8,126 @@ extension WeatherForecastCellIdentifying {
     static var identifier: String { String(describing: WeatherForecastCell.self) }
 }
 
-final class WeatherForecastCell: UICollectionViewCell {
+final class WeatherForecastCell: UICollectionViewListCell {
+    private let dateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    private let temperatureCurrentLabel: UILabel = {
+        let label = UILabel()
+        
+        return label
+    }()
+    
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        
+        return imageView
+    }()
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
+        stackView.addArrangedSubview(temperatureCurrentLabel)
+        stackView.addArrangedSubview(imageView)
+        
+        return stackView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUI()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+        configureUI()
+        configureConstraint()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
-    private func setUI() {
-        contentView.backgroundColor = .gray
+    override func layoutSubviews() {
+        super.layoutSubviews()
     }
     
-    func configure(with model: String) {
+    override func prepareForReuse() {
+        super.prepareForReuse()
         
+    }
+    
+    private func configureUI() {
+        backgroundConfiguration = .clear()
+        addSubview(dateLabel)
+        addSubview(stackView)
+    }
+    
+    private func configureConstraint() {
+        setDateLabelConstraint()
+        setStackViewConstraint()
+        self.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    private func setDateLabelConstraint() {
+        let safeArea = safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            dateLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            dateLabel.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            dateLabel.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+        ])
+    }
+    
+    private func setStackViewConstraint() {
+        let safeArea = safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+        ])
+    }
+    
+    func configure(date: String) {
+        dateLabel.text = date
+    }
+    
+    func configure(temperatureCurrent: Double) {
+        temperatureCurrentLabel.text = String(format: "%.1fº", temperatureCurrent)
+    }
+    
+    func configure(image: UIImage) {
+        imageView.image = image
     }
 }
 
 extension WeatherForecastCell: WeatherForecastCellIdentifying {
     
 }
+
+#if DEBUG
+import SwiftUI
+
+struct ViewControllerRepresentable: UIViewControllerRepresentable {
+    
+    // update
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        
+    }
+    
+    // makeui
+    @available(iOS 13.0, *)
+    func makeUIViewController(context: Context) -> UIViewController {
+        WeatherForecastViewController()
+    }
+}
+
+struct ViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        ViewControllerRepresentable().previewDisplayName("iPhone 15")
+    }
+}
+#endif

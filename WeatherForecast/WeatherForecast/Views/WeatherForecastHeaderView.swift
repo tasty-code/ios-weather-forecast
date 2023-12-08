@@ -11,29 +11,26 @@ extension WeatherForecastHeaderViewIdentifying {
 final class WeatherForecastHeaderView: UICollectionReusableView {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         
         return imageView
     }()
     
     private let locationLabel: UILabel = {
         let label = UILabel()
-        label.text = "OO시 OO로"
         
         return label
     }()
     
-    private let minMaxTemperatureLabel: UILabel = {
+    private let temperatureMinMaxLabel: UILabel = {
         let label = UILabel()
-        label.text = "최저 OO도 최고 OO도"
         
         return label
     }()
     
-    private let currentTemperatureLabel: UILabel = {
+    private let temperatureCurrentLabel: UILabel = {
         let label = UILabel()
-        label.text = "OO도"
+        label.font = .systemFont(ofSize: 30, weight: .bold)
         
         return label
     }()
@@ -44,8 +41,8 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.addArrangedSubview(locationLabel)
-        stackView.addArrangedSubview(minMaxTemperatureLabel)
-        stackView.addArrangedSubview(currentTemperatureLabel)
+        stackView.addArrangedSubview(temperatureMinMaxLabel)
+        stackView.addArrangedSubview(temperatureCurrentLabel)
         
         return stackView
     }()
@@ -55,7 +52,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(infoStackView)
         
@@ -64,8 +61,8 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUI()
-        setConstraint()
+        configureUI()
+        configureConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -76,23 +73,42 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         super.layoutSubviews()
     }
     
-    private func setUI() {
-        backgroundColor = .red
+    private func configureUI() {
+        backgroundColor = .clear
         addSubview(stackView)
     }
     
-    private func setConstraint() {
-
+    private func configureConstraints() {
+        stackViewConstraint()
+        imageViewConstraint()
+    }
+    
+    private func stackViewConstraint() {
+        let safeArea = safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            topAnchor.constraint(equalTo: stackView.topAnchor),
-            bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            stackView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
         ])
     }
     
-    func configure(with image: UIImage) {
+    private func imageViewConstraint() {
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 80)
+        ])
+    }
+    
+    func configure(image: UIImage) {
         imageView.image = image
+    }
+    
+    func configure(locality: String, subLocality: String) {
+        locationLabel.text = locality + " " + subLocality
+    }
+    
+    func configure(temperatureMin: Double, temperatureMax: Double, temperatureCurrent: Double) {
+        temperatureMinMaxLabel.text = "최저 " + String(format: "%.1fº", temperatureMin) +  "최고 " + String(format: "%.1fº", temperatureMax)
+        temperatureCurrentLabel.text = String(format: "%.1fº", temperatureCurrent)
     }
 }
 
