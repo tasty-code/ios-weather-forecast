@@ -24,7 +24,6 @@ enum ServiceType {
     }
     
     var components: URLComponents? {
-        let components = URLComponents()
         switch self {
         case .forecast, .today:
             return URLComponents(string: "https://api.openweathermap.org/data/2.5/\(self.urlPath)")
