@@ -23,7 +23,7 @@ enum ServiceType {
         }
     }
     
-    var componenets: URLComponents? {
+    var components: URLComponents? {
         let components = URLComponents()
         switch self {
         case .forecast, .today:
@@ -47,8 +47,8 @@ enum ServiceType {
     }
     
     func makeURL() -> URL? {
-        var compoenets = self.componenets
-        compoenets?.queryItems = queryItems
-        return componenets?.url
+        var components = self.components
+        components?.queryItems = self.queryItems
+        return components?.url
     }
 }
