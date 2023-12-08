@@ -7,7 +7,7 @@
 import Foundation
 import CoreLocation
 
-enum WeatherApiClient {
+enum ServiceType {
     case forecast(coordinate: CLLocationCoordinate2D)
     case today(coordinate: CLLocationCoordinate2D)
     case icon(code: String)
