@@ -8,7 +8,6 @@ import UIKit
 import CoreLocation
 
 final class WeatherViewController: UIViewController {
-    private let locationDataManager = LocationDataManager()
     private let dataManager = WeatherDataManager()
     
     private var backgroundImageView: UIImageView!
