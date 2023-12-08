@@ -18,7 +18,8 @@ struct WeatherURLConfigration: APIRequestable {
             "lon": "\(coordinate.longitude)",
             "lat": "\(coordinate.latitude)",
             "appid": apiKey,
-            "units": "metric"
+            "units": "metric",
+            "lang": "kr"
         ]
     }
 }

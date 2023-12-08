@@ -12,21 +12,11 @@ class ForecastWeatherCell: UICollectionViewCell {
         return stackView
     }()
     
-    let dateLabel: UILabel = {
-        let label = UILabel()
-        label.text = "12/06(수) 00시"
-        return label
-    }()
-    
-    let temperatureLabel: UILabel = {
-        let label = UILabel()
-        label.text = "45도"
-        return label
-    }()
-    
+    let dateLabel: UILabel = UILabel()
+    let temperatureLabel: UILabel = UILabel()
+
     let weatherImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "test"))
-        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
         return imageView
     }()
     
@@ -47,14 +37,13 @@ class ForecastWeatherCell: UICollectionViewCell {
         
         addSubview(horizontalStackView)
         addSubview(dateLabel)
-        
         horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             horizontalStackView.topAnchor.constraint(equalTo: topAnchor),
             horizontalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            horizontalStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            horizontalStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
         
         NSLayoutConstraint.activate([
@@ -62,10 +51,31 @@ class ForecastWeatherCell: UICollectionViewCell {
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 16),
             dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+        
+        NSLayoutConstraint.activate([
+            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor),
+            weatherImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.9)
+        ])
     }
     
     func updateContent(_ forecastWeather: ForecastWeather, indexPath: IndexPath) {
-        dateLabel.text = "\(forecastWeather.fiveDaysForecast[indexPath.row].dt)"
+        
+        let date = forecastWeather.fiveDaysForecast[indexPath.row].dtTxt
+        guard let formattedDate = dateFormatter(date) else { return }
+        
+        dateLabel.text = formattedDate
         temperatureLabel.text = "\(forecastWeather.fiveDaysForecast[indexPath.row].temperature.temp)°"
+    }
+    
+    private func dateFormatter(_ date: String) -> String?{
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        guard let date = dateFormatter.date(from: date) else { return nil }
+        dateFormatter.dateFormat = "MM/dd(E) HH시"
+        
+        return dateFormatter.string(from: date)
+        
     }
 }

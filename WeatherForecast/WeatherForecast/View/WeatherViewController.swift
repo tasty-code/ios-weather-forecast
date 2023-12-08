@@ -7,6 +7,8 @@ final class WeatherViewController: UIViewController {
     private lazy var locationManager = CLLocationManager()
     private lazy var networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
 
+    private var forecast: ForecastWeather?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManagerConfiguration()
@@ -91,9 +93,10 @@ extension WeatherViewController {
             switch result {
                 
             case .success(let forecastWeatherData):
-//                DispatchQueue.main.async {
-//                    self.updateCollectionViewCellUI(forecastWeatherData)
-//                }
+                self.forecast = forecastWeatherData
+                DispatchQueue.main.async {
+                    self.updateCollectionViewCellUI(forecastWeatherData)
+                }
                 return
             case .failure(let error):
                 return print(error.description)
@@ -105,13 +108,16 @@ extension WeatherViewController {
 // MARK: - UICollectionViewDataSource
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
+//        guard let forecast = forecast else { return 0 }
+//        return forecast.fiveDaysForecast.count
         return 40
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.identifier, for: indexPath) as? ForecastWeatherCell else { return UICollectionViewCell() }
         
+        guard let forecast = forecast else { return cell }
+        cell.updateContent(forecast, indexPath: indexPath)
         return cell
     }
     
@@ -156,14 +162,17 @@ extension WeatherViewController {
     
     func updateCollectionViewCellUI(_ forecastWeather: ForecastWeather) {
         let indexPaths = weatherCollectionView.indexPathsForVisibleItems
-        
-        
-        
+
+        for indexPath in indexPaths {
+           guard let cell = weatherCollectionView.cellForItem(at: indexPath) as? ForecastWeatherCell else { return }
+            cell.updateContent(forecastWeather, indexPath: indexPath)
+        }
+
         if indexPaths.isEmpty {
             weatherCollectionView.reloadData()
         } else {
             weatherCollectionView.reloadItems(at: indexPaths)
         }
-        
+
     }
 }

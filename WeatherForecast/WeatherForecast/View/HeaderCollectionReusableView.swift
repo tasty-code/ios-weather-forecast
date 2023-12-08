@@ -6,16 +6,12 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
     let headerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.alignment = .center
         stackView.spacing = 8
         return stackView
     }()
     
     let headerImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "sunny"))
-        imageView.contentMode = .scaleAspectFit
-        imageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        let imageView = UIImageView(image: UIImage(named: "test"))
         return imageView
     }()
     
@@ -44,7 +40,7 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
     
     let currentTemperatureLabel: UILabel = {
         let label = UILabel()
-        label.text = "10°"
+    
         label.textColor = .black
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 24)
