@@ -8,15 +8,12 @@
 import UIKit
 
 class WeatherHeaderCollectionViewCell: UICollectionReusableView {
-    var text: String = "없음"
-    let locationManager = WeatherLocationManager()
-    
     lazy var horizontalStackView: UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .fillProportionally
-        stackView.spacing = 5
+        stackView.spacing = 2
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -24,7 +21,7 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
     lazy var weatherIcon: UIImageView = {
        let icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.image = .checkmark
+        icon.image = UIImage(systemName: "apple.logo")
         return icon
     }()
     
@@ -71,7 +68,6 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     func setUpLayouts() {
-        backgroundColor = .cyan
         verticallStackView.addArrangedSubviews([addressLabel, minMaxTemperatureLabel, temperatureLabel])
         horizontalStackView.addArrangedSubviews([weatherIcon, verticallStackView])
         addSubview(horizontalStackView)

@@ -19,10 +19,17 @@ class ViewController: UIViewController {
     private var subscribers = Set<AnyCancellable>()
     private var weatherDataSource: UICollectionViewDiffableDataSource<Section, Forecast>!
     
+    private lazy var backgroundImage: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.image = UIImage(named: "background")
+        return image
+    }()
+    
     private lazy var collectionView: UICollectionView = {
         let layout = compositionaLayout
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .darkGray
+        collectionView.backgroundColor = .none
         collectionView.register(WeatherHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
         collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +58,7 @@ class ViewController: UIViewController {
     
     private lazy var refreshWeather: UIRefreshControl = {
         let refresher = UIRefreshControl()
-        refresher.tintColor = UIColor.systemCyan
+        refresher.tintColor = UIColor.systemPink
         refresher.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
         return refresher
     }()
@@ -78,8 +85,8 @@ class ViewController: UIViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? WeatherCollectionViewCell else {
                 return WeatherCollectionViewCell()
             }
-            WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(itemIdentifier.weather.first!.icon)@2x.png")!) { image in
-                cell.imageView.image = image
+            WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(itemIdentifier.weather.first!.icon).png")!) { image in
+                cell.weatherIcon.image = image
             }
             cell.configureCell(to: itemIdentifier)
             return cell
@@ -102,7 +109,7 @@ class ViewController: UIViewController {
                             cell.weatherIcon.image = image
                         })
                     } else {
-                        cell.temperatureLabel.text = "nan"
+                        cell.temperatureLabel.text = "날씨 정보 없음"
                     }
                     return cell
                 }
@@ -117,11 +124,16 @@ class ViewController: UIViewController {
     }
     
     private func setUpLayouts() {
+        view.addSubview(backgroundImage)
         view.addSubview(collectionView)
     }
     
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
+            backgroundImage.topAnchor.constraint(equalTo: self.view.topAnchor),
+            backgroundImage.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            backgroundImage.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+            
             collectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             collectionView.widthAnchor.constraint(equalTo: self.view.widthAnchor),

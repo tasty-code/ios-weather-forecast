@@ -9,11 +9,10 @@ import UIKit
 
 final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate {
     lazy var forecastStackView: UIStackView = {
-       let stackView = UIStackView()
+        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 50
+        stackView.spacing = 5
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -26,21 +25,24 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     }()
     
     lazy var temperatureLabel: UILabel = {
-           let label = UILabel()
-           label.textAlignment = .right
-           label.translatesAutoresizingMaskIntoConstraints = false
-           return label
-       }()
+        let label = UILabel()
+        label.textAlignment = .right
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    
-    let imageView = UIImageView()
+    lazy var weatherIcon: UIImageView = {
+        let icon = UIImageView()
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.image = UIImage(systemName: "airtag.fill")
+        icon.sizeThatFits(CGSize(width: 5, height: 5))
+        return icon
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        self.backgroundColor = .clear
         setUpLayouts()
         setUpConstraints()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -48,12 +50,9 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     }
     
     func setUpLayouts() {
-        backgroundColor = .systemBackground
-        forecastStackView.setCustomSpacing(5, after: .spacerView)
-        forecastStackView.addArrangedSubviews([timeLabel, temperatureLabel, imageView])
-               
+        forecastStackView.setCustomSpacing(0, after: .spacerView)
+        forecastStackView.addArrangedSubviews([timeLabel, temperatureLabel, weatherIcon])
         addSubview(forecastStackView)
-
     }
     
     func setUpConstraints() {
