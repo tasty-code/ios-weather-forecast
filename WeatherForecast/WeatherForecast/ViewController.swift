@@ -50,11 +50,7 @@ final class ViewController: UIViewController {
     // MARK: - Properties
     private var weatherModel: WeatherModel? = nil
     private var forecastModel: ForecastModel? = nil
-    private var currentPlacemark: CLPlacemark? = nil {
-        didSet {
-            print("placemark    바뀜")
-        }
-    }
+    private var currentPlacemark: CLPlacemark? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
