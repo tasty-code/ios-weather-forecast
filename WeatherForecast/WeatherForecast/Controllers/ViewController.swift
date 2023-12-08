@@ -7,7 +7,10 @@
 import UIKit
 import CoreLocation
 
-final class ViewController: UIViewController {
+final class ViewController: UIViewController, AlertDisplayable {
+    
+    // MARK: - Properties
+
     private let customView: CustomView = CustomView()
     
     private let locationManager: LocationManager
@@ -15,6 +18,8 @@ final class ViewController: UIViewController {
     
     private var forecastModel: Forecast?
     
+    // MARK: - Initializer
+
     init(locationManager: LocationManager, networkManager: NetworkManager) {
         self.locationManager = locationManager
         self.networkManager = networkManager
@@ -25,6 +30,8 @@ final class ViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - LifeCycle
+
     override func loadView() {
         self.view = customView
     }
@@ -33,17 +40,23 @@ final class ViewController: UIViewController {
         super.viewDidLoad()
         
         setDelegate()
-        customView.weatherCollectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        customView.weatherCollectionView.refreshControl?
+            .addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
+    // MARK: - Private Methods
+
     private func setDelegate() {
         locationManager.delegate = self
-        customView.weatherCollectionView.delegate = self
         customView.weatherCollectionView.dataSource = self
     }
     
-    private func updateHeaderView(with locationData: LocationData, _ currentWeather: Current) {
+    private func updateHeaderView(with locationData: LocationData, _ currentWeather: Current?) {
         let indexPaths = customView.weatherCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
+        guard let currentWeather = currentWeather else {
+            displayAlert(title: String(describing: NetworkError.decodingError))
+            return
+        }
         
         guard let firstIndexPath = indexPaths.first,
               let headerView = customView.weatherCollectionView
@@ -51,9 +64,17 @@ final class ViewController: UIViewController {
         else {
             return
         }
-        
-        headerView.configureUI(with: locationData.address, currentWeather)
-        customView.weatherCollectionView.reloadItems(at: [firstIndexPath])
+        guard let iconID = currentWeather.weather.last?.icon else { return }
+        networkManager.fetchData(for: IconRequest(id: iconID)) { result in
+            switch result {
+            case .success(let data):
+                let icon = UIImage(data: data)
+                DispatchQueue.main.async {
+                    headerView.configureUI(with: locationData.address, currentWeather, icon: icon)
+                }
+            case .failure(let error): print(error)
+            }
+        }
     }
     
     private func updateCollectionView() {
@@ -74,43 +95,48 @@ final class ViewController: UIViewController {
     }
 }
 
+// MARK: - LocationUpdateDelegate
+
 extension ViewController: LocationUpdateDelegate {
     func updateWeather(with data: LocationData) {
         let weatherRequest = WeatherRequest(latitude: data.latitude,
                                             longitude: data.longitude,
                                             weatherType: .current)
-        networkManager.fetchData(for: weatherRequest) { (result: Result<Current, Error>) in
+        networkManager.fetchData(for: weatherRequest) { [weak self] result in
             switch result {
-            case .success(let currentWeather):
-                DispatchQueue.main.async { [weak self] in
+            case .success(let undecodedData):
+                let currentWeather = try? JSONDecoder().decode(Current.self, from: undecodedData)
+                DispatchQueue.main.async {
                     self?.updateHeaderView(with: data, currentWeather)
                 }
-            case .failure(_): break
+            case .failure(let error):
+                self?.displayAlert(title: String(describing: error))
             }
         }
         
         let forecastRequest = WeatherRequest(latitude: data.latitude,
                                              longitude: data.longitude,
                                              weatherType: .forecast)
-        networkManager.fetchData(for: forecastRequest) { [weak self] (result: Result<Forecast, Error>) in
+        networkManager.fetchData(for: forecastRequest) { [weak self] result in
             switch result {
-            case .success(let forecastWeather):
+            case .success(let undecodedData):
+                let forecastWeather = try? JSONDecoder().decode(Forecast.self, from: undecodedData)
                 self?.forecastModel = forecastWeather
                 DispatchQueue.main.async {
                     self?.updateCollectionView()
                 }
-            case .failure(_): break
+            case .failure(let error):
+                self?.displayAlert(title: String(describing: error))
             }
         }
     }
     
     func notifyLocationErrorAlert() {
-        let alert = UIAlertController(title: "위치 정보 오류", message: "사용자의 위치 정보를 가져 올 수 없습니다", preferredStyle: .alert)
-        let action = UIAlertAction(title: "확인", style: .default)
-        alert.addAction(action)
-        self.present(alert, animated: true)
+        displayAlert(title: "위치 정보 오류", message: "사용자의 위치 정보를 가져올 수 없습니다.")
     }
 }
+
+// MARK: - UICollectionViewDataSource
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -130,8 +156,22 @@ extension ViewController: UICollectionViewDataSource {
         guard let forecastModel = forecastModel else {
             return UICollectionViewCell()
         }
-        let data = forecastModel.list[indexPath.row]
-        cell.configureUI(with: data)
+        
+        let listData = forecastModel.list[indexPath.row]
+        guard let iconID = listData.weather.last?.icon else {
+            return cell
+        }
+        networkManager.fetchData(for: IconRequest(id: iconID)) { [weak self] result in
+            switch result {
+            case .success(let data):
+                let icon = UIImage(data: data)
+                DispatchQueue.main.async {
+                    cell.configureUI(with: listData, icon: icon)
+                }
+            case .failure(let error):
+                self?.displayAlert(title: String(describing: error))
+            }
+        }
         return cell
     }
     
@@ -146,21 +186,5 @@ extension ViewController: UICollectionViewDataSource {
         }
         
         return view
-    }
-}
-
-extension ViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return CGSize(width: collectionView.frame.width, height: view.frame.height / 20)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
-        return CGSize(width: collectionView.frame.width, height: view.frame.height / 10)
     }
 }
