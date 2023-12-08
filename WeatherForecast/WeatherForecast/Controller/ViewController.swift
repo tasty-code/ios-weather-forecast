@@ -26,10 +26,6 @@ final class ViewController: UIViewController {
         locationManager.weatherDelgate = self
     }
     
-    private func kelvinToCelsius(_ temperature: Double) -> String {
-        return String(format: "%.1f", temperature - 273.15)
-    }
-    
     private func formattingDate(with dataTime: Int) -> String {
         let time = NSDate(timeIntervalSince1970: TimeInterval(dataTime))
         let formatter = DateFormatter()
@@ -87,7 +83,7 @@ extension ViewController: UICollectionViewDataSource {
         }
         
         cell.dateLabel.text = formattingDate(with: date)
-        cell.temperatureLabel.text = kelvinToCelsius(temperature)
+        cell.temperatureLabel.text = "\(temperature)"
         cell.configure()
         
         return cell

@@ -38,7 +38,8 @@ final class CurrentLocationManager {
         let queries = [
             "lon": "\(longitude)",
             "lat": "\(latitude)",
-            "appid": appid
+            "appid": appid,
+            "units": "metric"
         ]
         
         return queries
