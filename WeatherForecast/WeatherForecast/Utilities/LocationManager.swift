@@ -5,7 +5,6 @@ typealias LocationCompletion = (Result<(CLLocationCoordinate2D, CLPlacemark), Lo
 
 final class LocationManager: NSObject {
     private let manager = CLLocationManager()
-    
     private var locationCompletion: LocationCompletion?
     
     override init() {
@@ -23,7 +22,7 @@ final class LocationManager: NSObject {
     }
     
     private func fetchPlacemark() {
-        guard let completion = self.locationCompletion else {
+        guard let completion = locationCompletion else {
             return
         }
         

@@ -3,11 +3,12 @@ import CoreLocation
 
 final class WeatherForecastViewController: UIViewController {
     private let weatherForecastView = WeatherForecastView()
-    private let locationManager = LocationManager()
+    private let locator = Locator()
     private var networker: Networker?
     
     private var currentWeathermodel: Model.CurrentWeather?
     private var fiveDaysWeatherModel: Model.FiveDaysWeather?
+    private var coordinate: CLLocationCoordinate2D?
     private var placemark: CLPlacemark?
     
     override func loadView() {
@@ -20,39 +21,44 @@ final class WeatherForecastViewController: UIViewController {
         weatherForecastView.collectionView.delegate = self
         weatherForecastView.collectionView.dataSource = self
         
-        self.locationManager.request { [weak self] result in
-            switch result {
-            case.success((let coordinate, let placemark)):
-                self?.placemark = placemark
-                
-                let group = DispatchGroup()
-                group.enter()
-                DispatchQueue.global(qos: .userInteractive).async {
-                    self?.networker = Networker(request: WeatherAPI.current(coordinate))
-                    self?.networker?.fetchWeatherData { (result: Model.CurrentWeather) in
-                        self?.currentWeathermodel = result
-                        group.leave()
-                    }
+        let group = DispatchGroup()
+        
+        group.enter()
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.locator.requestData { coordinate, placemark in
+                self.coordinate = coordinate
+                self.placemark = placemark
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .global(qos: .userInteractive)) {
+            guard let coordinate = self.coordinate else {
+                return
+            }
+            
+            group.enter()
+            DispatchQueue.global(qos: .userInteractive).async {
+                self.networker = Networker(request: WeatherAPI.current(coordinate))
+                self.networker?.fetchWeatherData { (result: Model.CurrentWeather) in
+                    self.currentWeathermodel = result
+                    group.leave()
                 }
-                
-                group.enter()
-                DispatchQueue.global(qos: .userInteractive).async {
-                    self?.networker = Networker(request: WeatherAPI.fiveDays(coordinate))
-                    self?.networker?.fetchWeatherData { (result: Model.FiveDaysWeather) in
-                        self?.fiveDaysWeatherModel = result
-                        group.leave()
-                    }
+            }
+            
+            group.enter()
+            DispatchQueue.global(qos: .userInteractive).async {
+                self.networker = Networker(request: WeatherAPI.fiveDays(coordinate))
+                self.networker?.fetchWeatherData { (result: Model.FiveDaysWeather) in
+                    self.fiveDaysWeatherModel = result
+                    group.leave()
                 }
-                
-                group.wait()
-                
-                DispatchQueue.main.async {
-                    self?.weatherForecastView.collectionView.reloadData()
-                }
-                
-                
-            case .failure(let error):
-                print(error)
+            }
+            
+            group.wait()
+            
+            DispatchQueue.main.async {
+                self.weatherForecastView.collectionView.reloadData()
             }
         }
     }
