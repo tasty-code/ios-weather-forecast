@@ -1,6 +1,7 @@
 import Foundation
+import UIKit
 
-final class NetworkManager<T: Decodable>: Networkable {
+final class NetworkManager: Networkable {
     private let request: Requestable?
     private let session: RequestSessionable
     private var url: URL?
@@ -10,7 +11,7 @@ final class NetworkManager<T: Decodable>: Networkable {
         self.session = session
     }
     
-    func fetch(completion: @escaping (Result<T, NetworkError>) -> Void) {
+    func fetch<T: Decodable>(completion: @escaping (Result<T, NetworkError>) -> Void) {
         guard let url = self.request?.path else {
             return
         }
@@ -32,7 +33,7 @@ final class NetworkManager<T: Decodable>: Networkable {
             do {
                 let weatherResponse = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(weatherResponse))
-            } catch  {
+            } catch {
                 completion(.failure(.decodingError(error)))
             }
         }.resume()

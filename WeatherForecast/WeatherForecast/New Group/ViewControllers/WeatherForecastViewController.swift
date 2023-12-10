@@ -4,8 +4,11 @@ import CoreLocation
 final class WeatherForecastViewController: UIViewController {
     private let weatherForecastView = WeatherForecastView()
     private let locationManager = LocationManager()
-    private var currentWeatherNetworker: Networker<Model.CurrentWeather>?
-    private var fiveDaysWeatherNetworker: Networker<Model.FiveDaysWeather>?
+    private var networker: Networker?
+    
+    private var currentWeathermodel: Model.CurrentWeather?
+    private var fiveDaysWeatherModel: Model.FiveDaysWeather?
+    private var placemark: CLPlacemark?
     
     override func loadView() {
         view = weatherForecastView
@@ -14,27 +17,39 @@ final class WeatherForecastViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager.request { [weak self] result in
+        weatherForecastView.collectionView.delegate = self
+        weatherForecastView.collectionView.dataSource = self
+        
+        self.locationManager.request { [weak self] result in
             switch result {
             case.success((let coordinate, let placemark)):
-                self?.weatherForecastView.sendLocation(placemark.locality, placemark.subLocality)
+                self?.placemark = placemark
                 
-                self?.currentWeatherNetworker = Networker<Model.CurrentWeather>(request: WeatherAPI.current(coordinate))
-   
-
-                self?.currentWeatherNetworker?.fetchWeatherData { [weak self] weatherResponse in
-                    print(weatherResponse)
-                    self?.weatherForecastView.sendCurrentWeatherModel(model: weatherResponse, placemark: placemark)
-                }
-                
-                self?.fiveDaysWeatherNetworker = Networker<Model.FiveDaysWeather>(request: WeatherAPI.fiveDays(coordinate))
-                self?.fiveDaysWeatherNetworker?.fetchWeatherData { [weak self] weatherResponse in
-                    print(weatherResponse)
-                    self?.weatherForecastView.sendFiveDaysWeatherModel(model: weatherResponse)
-                    DispatchQueue.main.async {
-                        self?.weatherForecastView.collectionView.reloadData()
+                let group = DispatchGroup()
+                group.enter()
+                DispatchQueue.global(qos: .userInteractive).async {
+                    self?.networker = Networker(request: WeatherAPI.current(coordinate))
+                    self?.networker?.fetchWeatherData { (result: Model.CurrentWeather) in
+                        self?.currentWeathermodel = result
+                        group.leave()
                     }
                 }
+                
+                group.enter()
+                DispatchQueue.global(qos: .userInteractive).async {
+                    self?.networker = Networker(request: WeatherAPI.fiveDays(coordinate))
+                    self?.networker?.fetchWeatherData { (result: Model.FiveDaysWeather) in
+                        self?.fiveDaysWeatherModel = result
+                        group.leave()
+                    }
+                }
+                
+                group.wait()
+                
+                DispatchQueue.main.async {
+                    self?.weatherForecastView.collectionView.reloadData()
+                }
+                
                 
             case .failure(let error):
                 print(error)
@@ -43,3 +58,69 @@ final class WeatherForecastViewController: UIViewController {
     }
 }
 
+extension WeatherForecastViewController: UICollectionViewDelegate {
+    
+}
+
+extension WeatherForecastViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let count = fiveDaysWeatherModel?.list?.count else {
+            return .zero
+        }
+        return count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: WeatherForecastCell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherForecastCell.identifier, for: indexPath) as! WeatherForecastCell
+        
+        // 아래 로직 view에서 처리.
+        // MVC가 다소 어긋나기는 하지만 이정도 편의는 가져갈 수 있다.
+        if let date = fiveDaysWeatherModel?.list?[indexPath.row].dt {
+            let date = NSDate(timeIntervalSince1970: TimeInterval(date))
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier:"ko_KR")
+            dateFormatter.dateFormat = "MM/dd(E) HH시"
+            let time = dateFormatter.string(from: date as Date)
+            cell.configure(date: time)
+        }
+        
+        if let temperatureCurrent = fiveDaysWeatherModel?.list?[indexPath.row].main?.temp {
+            cell.configure(temperatureCurrent: temperatureCurrent)
+        }
+        
+        if let imageType = fiveDaysWeatherModel?.list?[indexPath.row].weather?[0].icon {
+            //            networker?.fetchWeatherData { <#Decodable#> in
+            //                <#code#>
+            //            }
+            //            cell.configure(image: image)
+        }
+        //        if let image = UIImage(systemName: "square.and.arrow.up") {
+        //            cell.configure(image: image)
+        //        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: WeatherForecastHeaderView.identifier, for: indexPath) as? WeatherForecastHeaderView else {
+            return WeatherForecastHeaderView()
+        }
+        
+        if let image = UIImage(systemName: "pencil") {
+            header.configure(image: image)
+        }
+        
+        if let locality = placemark?.locality,
+           let subLocality = placemark?.subLocality {
+            header.configure(locality: locality, subLocality: subLocality)
+        }
+        
+        if let temperatureMin = currentWeathermodel?.main?.tempMin,
+           let temperatureMax = currentWeathermodel?.main?.tempMax,
+           let temperatureCurrent = currentWeathermodel?.main?.temp {
+            header.configure(temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
+        }
+        
+        return header
+    }
+}
