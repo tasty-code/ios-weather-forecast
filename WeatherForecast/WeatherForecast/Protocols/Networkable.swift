@@ -1,5 +1,3 @@
 protocol Networkable: AnyObject {
-    associatedtype T
-    
-    func fetch(completion: @escaping (Result<T, NetworkError>) -> Void)
+    func fetch<T: Decodable>(completion: @escaping (Result<T, NetworkError>) -> Void)
 }

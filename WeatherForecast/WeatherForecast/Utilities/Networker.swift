@@ -1,14 +1,16 @@
 import Foundation
+import UIKit
 
-struct Networker<T: Decodable> {
-    private let networkManager: NetworkManager<T>
+struct Networker {
+    private let networkManager: NetworkManager
 
     init(request: Requestable) {
-        self.networkManager = NetworkManager<T>(request: request)
+        self.networkManager = NetworkManager(request: request)
     }
     
-    func fetchWeatherData(completion: @escaping (T) -> Void) {
-        networkManager.fetch { result in
+    func fetchWeatherData<T: Decodable>(completion: @escaping (T) -> Void) {
+        
+        networkManager.fetch { (result: Result<T, NetworkError>) in
             switch result {
             case .success(let weatherResponse):
                 completion(weatherResponse)
