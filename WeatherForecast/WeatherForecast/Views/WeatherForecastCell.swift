@@ -12,19 +12,21 @@ final class WeatherForecastCell: UICollectionViewListCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
         
         return label
     }()
     
     private let temperatureCurrentLabel: UILabel = {
         let label = UILabel()
-        
+        label.textColor = .white
+
         return label
     }()
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         
         return imageView
     }()
@@ -34,8 +36,8 @@ final class WeatherForecastCell: UICollectionViewListCell {
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
+        stackView.distribution = .fill
+        stackView.spacing = 20
         stackView.addArrangedSubview(temperatureCurrentLabel)
         stackView.addArrangedSubview(imageView)
         
@@ -58,7 +60,7 @@ final class WeatherForecastCell: UICollectionViewListCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+        imageView.image = nil
     }
     
     private func configureUI() {
@@ -87,10 +89,11 @@ final class WeatherForecastCell: UICollectionViewListCell {
         NSLayoutConstraint.activate([
             stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
         ])
     }
     
+    // configure 하나로 처리
     func configure(date: String) {
         dateLabel.text = date
     }
@@ -100,9 +103,16 @@ final class WeatherForecastCell: UICollectionViewListCell {
     }
     
     func configure(image: UIImage) {
+//        imageView.load()
         imageView.image = image
     }
 }
+
+//extension UIImageView {
+//    func load() {
+//        networker?.networkManager.request
+//    }
+//}
 
 extension WeatherForecastCell: WeatherForecastCellIdentifying {
     
