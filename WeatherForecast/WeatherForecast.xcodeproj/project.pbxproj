@@ -12,6 +12,7 @@
 		0E4A84842B0C48F700726F9F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4A84832B0C48F700726F9F /* NetworkManager.swift */; };
 		0EFE826F2B0EE0300021B2EF /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE826E2B0EE0300021B2EF /* Model.swift */; };
 		0EFE82712B0EE2A00021B2EF /* KeyAuthenticatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */; };
+		A62E3DC62B23358A00F79A8C /* ImageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62E3DC52B23358A00F79A8C /* ImageAPI.swift */; };
 		A647C3B02B1431A800D386FB /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A647C3AF2B1431A800D386FB /* LocationManager.swift */; };
 		A64F0E0B2B0F69DF00FC988F /* RequestSessionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F0E0A2B0F69DF00FC988F /* RequestSessionable.swift */; };
 		A64F0E122B1059E600FC988F /* Requestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F0E112B1059E600FC988F /* Requestable.swift */; };
@@ -59,6 +60,7 @@
 		0E4A84832B0C48F700726F9F /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0EFE826E2B0EE0300021B2EF /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAuthenticatable.swift; sourceTree = "<group>"; };
+		A62E3DC52B23358A00F79A8C /* ImageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
 		A647C3AF2B1431A800D386FB /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		A64F0E0A2B0F69DF00FC988F /* RequestSessionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSessionable.swift; sourceTree = "<group>"; };
 		A64F0E112B1059E600FC988F /* Requestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requestable.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				A6E4DD512B1730220068E00C /* WeatherAPI.swift */,
+				A62E3DC52B23358A00F79A8C /* ImageAPI.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A64F0E0B2B0F69DF00FC988F /* RequestSessionable.swift in Sources */,
+				A62E3DC62B23358A00F79A8C /* ImageAPI.swift in Sources */,
 				A6E4DD572B1730570068E00C /* ModelCurrentWeather+Extension.swift in Sources */,
 				A6CB06532B1F4A6800A75C37 /* WeatherForecastCell.swift in Sources */,
 				0E4A84842B0C48F700726F9F /* NetworkManager.swift in Sources */,
