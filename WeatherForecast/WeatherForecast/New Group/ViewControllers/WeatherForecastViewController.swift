@@ -112,19 +112,10 @@ extension WeatherForecastViewController: UICollectionViewDataSource {
             return WeatherForecastHeaderView()
         }
         
-        if let image = UIImage(systemName: "pencil") {
-            header.configure(image: image)
-        }
-        
-        if let locality = placemark?.locality,
-           let subLocality = placemark?.subLocality {
-            header.configure(locality: locality, subLocality: subLocality)
-        }
-        
-        if let temperatureMin = currentWeathermodel?.main?.tempMin,
-           let temperatureMax = currentWeathermodel?.main?.tempMax,
-           let temperatureCurrent = currentWeathermodel?.main?.temp {
-            header.configure(temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
+        do {
+            try header.startConfigure(placemark, using: currentWeathermodel)
+        } catch {
+            print(error.localizedDescription)
         }
         
         return header

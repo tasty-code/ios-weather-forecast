@@ -1,4 +1,5 @@
 import UIKit
+import CoreLocation
 
 protocol WeatherForecastHeaderViewIdentifying {
     static var identifier: String { get }
@@ -6,6 +7,10 @@ protocol WeatherForecastHeaderViewIdentifying {
 
 extension WeatherForecastHeaderViewIdentifying {
     static var identifier: String { String(describing: WeatherForecastHeaderView.self) }
+}
+
+protocol WeatherForecastHeaderViewConfigurable {
+    func startConfigure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) throws
 }
 
 final class WeatherForecastHeaderView: UICollectionReusableView {
@@ -43,7 +48,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-//        stackView.heightAnchor.constraint(equalTo: totalInfoStackView.heightAnchor).isActive = true
+        //        stackView.heightAnchor.constraint(equalTo: totalInfoStackView.heightAnchor).isActive = true
         stackView.addArrangedSubview(locationLabel)
         stackView.addArrangedSubview(temperatureMinMaxLabel)
         
@@ -83,10 +88,6 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         super.init(coder: coder)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-    
     private func configureUI() {
         backgroundColor = .clear
         addSubview(stackView)
@@ -111,21 +112,42 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
             imageView.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
-    
-    func configure(image: UIImage) {
-        imageView.image = image
-    }
-    
-    func configure(locality: String, subLocality: String) {
-        locationLabel.text = locality + " " + subLocality
-    }
-    
-    func configure(temperatureMin: Double, temperatureMax: Double, temperatureCurrent: Double) {
-        temperatureMinMaxLabel.text = "최저 " + String(format: "%.1fº", temperatureMin) +  " 최고 " + String(format: "%.1fº", temperatureMax)
-        temperatureCurrentLabel.text = String(format: "%.1fº", temperatureCurrent)
-    }
 }
 
 extension WeatherForecastHeaderView: WeatherForecastHeaderViewIdentifying {
     
+}
+
+extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
+    func startConfigure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) throws {
+        
+        guard let model = model,
+              let placemark = placemark else {
+            throw WeatherForecastHeaderViewError.didFailFetchHeaderData
+        }
+        
+        guard let image = UIImage(systemName: "pencil") else {
+            throw WeatherForecastHeaderViewError.noExistedImage
+        }
+        
+        guard let locality = placemark.locality,
+              let subLocality = placemark.subLocality else {
+            throw WeatherForecastHeaderViewError.noExistedLocality
+        }
+        
+        guard let temperatureMin = model.main?.tempMin,
+              let temperatureMax = model.main?.tempMax,
+              let temperatureCurrent = model.main?.temp else {
+            throw WeatherForecastHeaderViewError.noExistedTemperature
+        }
+                
+        configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
+    }
+    
+    private func configure(image: UIImage, locality: String, subLocality: String, temperatureMin: Double, temperatureMax: Double, temperatureCurrent: Double) {
+        imageView.image = image
+        locationLabel.text = locality + " " + subLocality
+        temperatureMinMaxLabel.text = "최저 " + String(format: "%.1fº", temperatureMin) +  " 최고 " + String(format: "%.1fº", temperatureMax)
+        temperatureCurrentLabel.text = String(format: "%.1fº", temperatureCurrent)
+    }
 }
