@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "#boj.png",
+      "filename" : "backgroundImage.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
