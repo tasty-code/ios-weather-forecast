@@ -3,6 +3,7 @@ import CoreLocation
 
 final class WeatherForecastViewController: UIViewController {
     private let weatherForecastView = WeatherForecastView()
+    
     private let locator = Locator()
     private var networker: Networker?
     
@@ -77,32 +78,15 @@ extension WeatherForecastViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: WeatherForecastCell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherForecastCell.identifier, for: indexPath) as! WeatherForecastCell
-        
-        // 아래 로직 view에서 처리.
-        // MVC가 다소 어긋나기는 하지만 이정도 편의는 가져갈 수 있다.
-        if let date = fiveDaysWeatherModel?.list?[indexPath.row].dt {
-            let date = NSDate(timeIntervalSince1970: TimeInterval(date))
-            let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier:"ko_KR")
-            dateFormatter.dateFormat = "MM/dd(E) HH시"
-            let time = dateFormatter.string(from: date as Date)
-            cell.configure(date: time)
+        guard let cell: WeatherForecastCell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherForecastCell.identifier, for: indexPath) as? WeatherForecastCell else {
+            return WeatherForecastCell()
         }
         
-        if let temperatureCurrent = fiveDaysWeatherModel?.list?[indexPath.row].main?.temp {
-            cell.configure(temperatureCurrent: temperatureCurrent)
+        do {
+            try cell.startConfigure(using: fiveDaysWeatherModel?.list?[indexPath.row])
+        } catch {
+            print(error.localizedDescription)
         }
-        
-        if let imageType = fiveDaysWeatherModel?.list?[indexPath.row].weather?[0].icon {
-            //            networker?.fetchWeatherData { <#Decodable#> in
-            //                <#code#>
-            //            }
-            //            cell.configure(image: image)
-        }
-        //        if let image = UIImage(systemName: "square.and.arrow.up") {
-        //            cell.configure(image: image)
-        //        }
         
         return cell
     }
