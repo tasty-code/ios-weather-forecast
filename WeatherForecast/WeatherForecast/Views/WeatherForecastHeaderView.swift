@@ -18,12 +18,14 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     
     private let locationLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .white
         
         return label
     }()
     
     private let temperatureMinMaxLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .white
         
         return label
     }()
@@ -31,17 +33,29 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     private let temperatureCurrentLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 30, weight: .bold)
+        label.textColor = .white
         
         return label
     }()
     
-    private lazy var infoStackView: UIStackView = {
+    private lazy var partialInfoStackView: UIStackView = {
         let stackView = UIStackView()
         
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
+//        stackView.heightAnchor.constraint(equalTo: totalInfoStackView.heightAnchor).isActive = true
         stackView.addArrangedSubview(locationLabel)
         stackView.addArrangedSubview(temperatureMinMaxLabel)
+        
+        return stackView
+    }()
+    
+    private lazy var totalInfoStackView: UIStackView = {
+        let stackView = UIStackView()
+        
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.addArrangedSubview(partialInfoStackView)
         stackView.addArrangedSubview(temperatureCurrentLabel)
         
         return stackView
@@ -54,7 +68,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         stackView.axis = .horizontal
         stackView.distribution = .fill
         stackView.addArrangedSubview(imageView)
-        stackView.addArrangedSubview(infoStackView)
+        stackView.addArrangedSubview(totalInfoStackView)
         
         return stackView
     }()
@@ -107,7 +121,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     }
     
     func configure(temperatureMin: Double, temperatureMax: Double, temperatureCurrent: Double) {
-        temperatureMinMaxLabel.text = "최저 " + String(format: "%.1fº", temperatureMin) +  "최고 " + String(format: "%.1fº", temperatureMax)
+        temperatureMinMaxLabel.text = "최저 " + String(format: "%.1fº", temperatureMin) +  " 최고 " + String(format: "%.1fº", temperatureMax)
         temperatureCurrentLabel.text = String(format: "%.1fº", temperatureCurrent)
     }
 }
