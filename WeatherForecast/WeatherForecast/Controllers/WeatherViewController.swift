@@ -11,7 +11,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     
     // MARK: - Properties
     
-    private var weatherView: WeatherView?
+    private lazy var weatherView: WeatherView = WeatherView(delegate: self)
     
     private let locationManager: LocationManager
     private let networkManager: NetworkManager
@@ -33,7 +33,6 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     // MARK: - LifeCycle
     
     override func loadView() {
-        weatherView = WeatherView(delegate: self)
         self.view = weatherView
     }
     
