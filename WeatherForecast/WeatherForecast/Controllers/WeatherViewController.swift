@@ -148,7 +148,6 @@ extension WeatherViewController: WeatherManagerDelegate {
     func refreshWeatherDisplay() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
             self.refreshControl.endRefreshing()
-            self.collectionView.reloadData()
         }
     }
     

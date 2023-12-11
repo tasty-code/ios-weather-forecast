@@ -152,8 +152,8 @@ extension WeatherManager {
     
     func refreshData() {
         self.permitted {
-            self.delegate?.refreshWeatherDisplay()
             self.iconFetch()
+            self.delegate?.refreshWeatherDisplay()
         }
     }
     
