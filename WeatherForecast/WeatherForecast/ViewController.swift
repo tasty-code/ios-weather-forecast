@@ -75,6 +75,8 @@ extension ViewController {
     @objc private func presentLocationChangeAlert() {
         let alert = UIAlertController(title: Constants.locationChangeAlertTitle , message: Constants.locationChangeAlertSubscript, preferredStyle: .alert)
         let changeAction = UIAlertAction(title: Constants.locationChangeAlertConfirmButtonName, style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            
             guard let latitudeText = alert.textFields?.first?.text,
                   let longitudeText = alert.textFields?.last?.text,
                   let latitude: CLLocationDegrees = Double(latitudeText),
@@ -84,7 +86,7 @@ extension ViewController {
             }
             
             let location: CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-            self?.didUpdateLocation(locationManager: self?.locationManager, location: location)
+            didUpdateLocation(locationManager: locationManager, location: location)
         }
         let cancelAction = UIAlertAction(title: Constants.locationChangeAlertCancelButtonName, style: .cancel)
         
@@ -199,18 +201,18 @@ extension ViewController: WeatherForecastDataServiceDelegate {
 
 // MARK: LocationManagerDelegate Conformation
 extension ViewController: LocationManagerDelegate {
-    func didUpdatePlacemark(locationManager: LocationManager?, placemark: CLPlacemark) {
+    func didUpdatePlacemark(locationManager: LocationManager, placemark: CLPlacemark) {
         currentPlacemark = placemark
         collectionView.reloadData()
     }
     
-    func didUpdateLocation(locationManager: LocationManager?, location: CLLocation) {
+    func didUpdateLocation(locationManager: LocationManager, location: CLLocation) {
         guard let apiKey = Bundle.getAPIKey(for: ApiName.openWeatherMap.name) else {
             return
         }
         
         DispatchQueue.global().async { [weak self] in
-            locationManager?.reverseGeocodeLocation(location: location)
+            locationManager.reverseGeocodeLocation(location: location)
             self?.weatherDataService.downloadData(serviceType: .weather(coordinate: location.coordinate, apiKey: apiKey))
             self?.forecastDataService.downloadData(serviceType: .forecast(coordinate: location.coordinate, apiKey: apiKey))
         }
