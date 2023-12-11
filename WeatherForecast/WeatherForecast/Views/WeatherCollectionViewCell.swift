@@ -43,6 +43,7 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
         super.init(frame: frame)
         setUpLayouts()
         setUpConstraints()
+        layer.addBorder([.bottom], color: .systemBrown, width: 1)
     }
     
     required init?(coder: NSCoder) {
@@ -66,10 +67,9 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     func configureCell(to forecast: Forecast) {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko-KR")
-        formatter.dateFormat = "MM/dd(E) hh시"
+        formatter.dateFormat = "MM/dd(E) HH시"
         let date = Date(timeIntervalSince1970: TimeInterval(integerLiteral: Int64(forecast.timeOfData)))
-        
         timeLabel.text = formatter.string(from: date)
-        temperatureLabel.text = String(forecast.mainInfo.temperature) + "°"
+        temperatureLabel.text = forecast.mainInfo.temperature.tempFormatter() + "°"
     }
 }

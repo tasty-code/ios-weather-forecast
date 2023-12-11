@@ -44,6 +44,7 @@ class ViewController: UIViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: -10, leading: 3, bottom: -10, trailing: 3)
         
+        
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.07))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
@@ -103,8 +104,8 @@ class ViewController: UIViewController {
                     }
                     if let data = current {
                         cell.addressLabel.text = data.address
-                        cell.temperatureLabel.text = String(data.temp.temperature)
-                        cell.minMaxTemperatureLabel.text = "최저 \(data.temp.temperatureMin)° 최고 \(data.temp.temperatureMax)°"
+                        cell.temperatureLabel.text = data.temp.temperature.tempFormatter() + "°"
+                        cell.minMaxTemperatureLabel.text = "최저 \(data.temp.temperatureMin.tempFormatter())° 최고 \(data.temp.temperatureMax.tempFormatter())°"
                         WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(data.icon)@2x.png")!, completion: { image in
                             cell.weatherIcon.image = image
                         })
