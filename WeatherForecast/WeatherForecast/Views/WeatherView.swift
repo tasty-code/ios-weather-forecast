@@ -9,6 +9,17 @@ import UIKit
 
 final class WeatherView: UIView {
     
+    var headerView: WeatherHeaderView? {
+        let indexPaths = weatherCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
+        
+        guard let firstIndexPath = indexPaths.first,
+              let headerView = weatherCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: firstIndexPath) as? WeatherHeaderView
+        else {
+            return nil
+        }
+        return headerView
+    }
+    
     private weak var delegate: UICollectionViewDataSource?
     
     private lazy var backgroundImageView: UIImageView = {
@@ -81,17 +92,6 @@ final class WeatherView: UIView {
     
     func endRefreshing() {
         weatherCollectionView.refreshControl?.endRefreshing()
-    }
-    
-    func findHeaderView() -> UICollectionReusableView? {
-        let indexPaths = weatherCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
-        
-        guard let firstIndexPath = indexPaths.first,
-              let headerView = weatherCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: firstIndexPath)
-        else {
-            return nil
-        }
-        return headerView
     }
     
     func addRefreshControl(refreshControl: UIRefreshControl) {

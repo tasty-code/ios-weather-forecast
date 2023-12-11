@@ -18,21 +18,21 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
         return imageView
     }()
     
-    private lazy var addressLabel: UILabel = {
+    private let addressLabel: UILabel = {
         let label = UILabel(textAlignment: .left)
         label.text = " - "
         
         return label
     }()
     
-    private lazy var minimumTemperatureLabel: UILabel = {
+    private let minimumTemperatureLabel: UILabel = {
         let label = UILabel(textAlignment: .left)
         label.text = " - "
         
         return label
     }()
     
-    private lazy var maximumTemperatureLabel: UILabel = {
+    private let maximumTemperatureLabel: UILabel = {
         let label = UILabel(textAlignment: .left)
         
         return label
@@ -46,7 +46,7 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
         return stackView
     }()
     
-    private lazy var currentTemperatureLabel: UILabel = {
+    private let currentTemperatureLabel: UILabel = {
         let label = UILabel(font: .preferredFont(forTextStyle: .title1), textAlignment: .left)
         
         return label

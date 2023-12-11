@@ -16,13 +16,13 @@ final class ForecastCell: UICollectionViewCell, Reusable {
         return label
     }()
     
-    private lazy var temperatureLabel: UILabel = {
+    private let temperatureLabel: UILabel = {
         let label = UILabel(textAlignment: .right)
         
         return label
     }()
     
-    private lazy var weatherIconView: UIImageView = {
+    private let weatherIconView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         

@@ -10,8 +10,8 @@ import CoreLocation
 final class WeatherViewController: UIViewController, AlertDisplayable {
     
     // MARK: - Properties
-
-    private var weatherView: WeatherView!
+    
+    private var weatherView: WeatherView?
     
     private let locationManager: LocationManager
     private let networkManager: NetworkManager
@@ -19,7 +19,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     private var forecastModel: Forecast?
     
     // MARK: - Initializer
-
+    
     init(locationManager: LocationManager, networkManager: NetworkManager) {
         self.locationManager = locationManager
         self.networkManager = networkManager
@@ -31,7 +31,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     }
     
     // MARK: - LifeCycle
-
+    
     override func loadView() {
         weatherView = WeatherView(delegate: self)
         self.view = weatherView
@@ -45,7 +45,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     }
     
     // MARK: - Private Methods
-
+    
     private func configureDelegate() {
         locationManager.delegate = self
     }
@@ -53,6 +53,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     private func configureRefreshControl() {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        guard let weatherView = weatherView else { return }
         weatherView.addRefreshControl(refreshControl: refreshControl)
     }
     
@@ -61,8 +62,8 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
             displayAlert(title: String(describing: NetworkError.decodingError))
             return
         }
-        
-        guard let headerView = weatherView.findHeaderView() as? WeatherHeaderView else { return }
+        guard let weatherView = weatherView else { return }
+        guard let headerView = weatherView.headerView else { return }
         
         guard let iconID = currentWeather.weather.last?.icon else { return }
         networkManager.fetchData(for: IconRequest(iconID)) { [weak self] result in
@@ -78,12 +79,10 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
         }
     }
     
-    @objc 
+    @objc
     private func handleRefreshControl() {
         locationManager.requestLocation()
-        DispatchQueue.main.async { [weak self] in
-            self?.weatherView.endRefreshing()
-        }
+        weatherView?.endRefreshing()
     }
 }
 
@@ -114,7 +113,8 @@ extension WeatherViewController: LocationUpdateDelegate {
             case .success(let rawData):
                 self?.forecastModel = try? JSONDecoder().decode(Forecast.self, from: rawData)
                 DispatchQueue.main.async {
-                    self?.weatherView.updateCollectionView()
+                    guard let weatherView = self?.weatherView else { return }
+                    weatherView.updateCollectionView()
                 }
             case .failure(let networkError):
                 self?.displayAlert(title: String(describing: networkError))
@@ -122,8 +122,8 @@ extension WeatherViewController: LocationUpdateDelegate {
         }
     }
     
-    func notifyLocationErrorAlert() {
-        displayAlert(title: "위치 정보 오류", message: "사용자의 위치 정보를 가져올 수 없습니다.")
+    func didFailedUpdateLocaion(error: Error) {
+        displayAlert(title: "위치 정보 오류", message: "사용자의 위치 정보를 가져올 수 없습니다.\(error.localizedDescription)")
     }
 }
 
