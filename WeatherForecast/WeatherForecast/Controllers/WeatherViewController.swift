@@ -84,6 +84,8 @@ extension WeatherViewController: UICollectionViewDataSource {
                 return header
         }
         
+        header.delegate = self
+        
         let minTemp = weather.main.tempMin
         let maxTemp = weather.main.tempMax
         let temp = weather.main.temp
@@ -155,6 +157,36 @@ extension WeatherViewController: WeatherManagerDelegate {
         let okAction = UIAlertAction(title: "설정으로 이동", style: .default)  { _ in
             guard let url = URL(string:UIApplication.openSettingsURLString) else { return }
             UIApplication.shared.open(url)
+        }
+        let noAction = UIAlertAction(title: "취소", style: .cancel)
+        
+        alert.addAction(okAction)
+        alert.addAction(noAction)
+        present(alert, animated: true, completion: nil)
+    }
+}
+
+
+extension WeatherViewController: AlertDelegate {
+    func setAlert() {
+        let alert = UIAlertController(title: "위치 변경", message: "날씨를 받아올 위치의 위도와 경도를 입력하세요", preferredStyle: .alert)
+        
+        alert.addTextField { (textField: UITextField) -> Void in
+            textField.placeholder = "위도 입력"
+        }
+        
+        alert.addTextField { (textField: UITextField) -> Void in
+            textField.placeholder = "경도 입력"
+        }
+        
+        let okAction = UIAlertAction(title: "변경", style: .default)  { _ in
+            guard let textFields = alert.textFields,
+                  let latitude = textFields[0].text,
+                  let longitude = textFields[1].text,
+                  let lat = Double(latitude),
+                  let lon = Double(longitude) else { return }
+            
+            print(lat, lon)
         }
         let noAction = UIAlertAction(title: "취소", style: .cancel)
         

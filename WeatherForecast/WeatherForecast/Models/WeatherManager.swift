@@ -105,6 +105,10 @@ extension WeatherManager {
 // MARK: - Public Method(Data Fetching)
 
 extension WeatherManager {
+    func changeLocation(lat: Double, lon: Double) {
+        
+    }
+    
     func rejected() {
         self.delegate?.showAlertWhenNoAuthorization()
     }
