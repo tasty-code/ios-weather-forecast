@@ -88,13 +88,24 @@ enum PartOfDay: String, Codable {
 struct ForecastWeather: Codable {
     let id: Int?
     let main: MainEnum?
-    let description, icon: String?
+    let description: Description?
+    let icon: String?
+}
+
+enum Description: String, Codable {
+    case brokenClouds = "broken clouds"
+    case clearSky = "clear sky"
+    case lightRain = "light rain"
+    case lightSnow = "light snow"
+    case moderateRain = "moderate rain"
+    case overcastClouds = "overcast clouds"
 }
 
 enum MainEnum: String, Codable {
     case clear = "Clear"
     case clouds = "Clouds"
     case rain = "Rain"
+    case snow = "Snow"
 }
 
 struct ForecastWind: Codable {
