@@ -13,6 +13,12 @@ final class ViewController: UIViewController {
         static let collectionReusableHeaderViewHeightRatio: CGFloat = 8
         static let collectionViewCellHeightRatio: CGFloat = 20
         static let collectionViewDefaultPadding: CGFloat = 14
+        static let locationChangeAlertTitle: String = "위치변경"
+        static let locationChangeAlertSubscript: String = "날씨를 받아올 위치의 위도와 경도를 입력해주세요."
+        static let locationChangeAlertConfirmButtonName: String = "변경"
+        static let locationChangeAlertCancelButtonName: String = "취소"
+        static let latitudeTextFieldPlaceholder: String = "위도"
+        static let longitudeTextFieldPlaceholder: String = "갱도"
     }
     
     // MARK: - View Components
@@ -51,6 +57,7 @@ final class ViewController: UIViewController {
         self.locationManager.delegate = self
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.delaysContentTouches = false
         collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: CollectionViewCell.reuseIdentifier)
         collectionView.register(CollectionReusableHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionReusableHeaderView.reuseIdentifier)
         setUpLayout()
@@ -63,6 +70,40 @@ extension ViewController {
     @objc private func refreshCollectionView(_ location: CLLocation) {
         collectionView.refreshControl?.beginRefreshing()
         locationManager.requestLocation()
+    }
+    
+    @objc private func presentLocationChangeAlert() {
+        let alert = UIAlertController(title: Constants.locationChangeAlertTitle , message: Constants.locationChangeAlertSubscript, preferredStyle: .alert)
+        let changeAction = UIAlertAction(title: Constants.locationChangeAlertConfirmButtonName, style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            
+            guard let latitudeText = alert.textFields?.first?.text,
+                  let longitudeText = alert.textFields?.last?.text,
+                  let latitude: CLLocationDegrees = Double(latitudeText),
+                  let longitude: CLLocationDegrees = Double(longitudeText)
+            else {
+                return
+            }
+            
+            let location: CLLocation = CLLocation(latitude: latitude, longitude: longitude)
+            didUpdateLocation(locationManager: locationManager, location: location)
+        }
+        let cancelAction = UIAlertAction(title: Constants.locationChangeAlertCancelButtonName, style: .cancel)
+        
+        alert.addAction(changeAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { latitudeField in
+            latitudeField.placeholder = Constants.latitudeTextFieldPlaceholder
+            latitudeField.keyboardType = .decimalPad
+            latitudeField.clearButtonMode = .whileEditing
+        }
+        alert.addTextField { longitudeField in
+            longitudeField.placeholder = Constants.longitudeTextFieldPlaceholder
+            longitudeField.keyboardType = .decimalPad
+            longitudeField.clearButtonMode = .whileEditing
+        }
+        
+        present(alert, animated: true)
     }
 }
 
@@ -91,6 +132,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         if let weatherModel = weatherModel, let placemark = currentPlacemark {
             header.configureHeaderCell(item: weatherModel, placemark: placemark)
         }
+        
+        header.delegate = self
         
         return header
     }
@@ -160,8 +203,7 @@ extension ViewController: WeatherForecastDataServiceDelegate {
 extension ViewController: LocationManagerDelegate {
     func didUpdatePlacemark(locationManager: LocationManager, placemark: CLPlacemark) {
         currentPlacemark = placemark
-        let headerViewIndexPaths = collectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
-        collectionView.reloadItems(at: headerViewIndexPaths)
+        collectionView.reloadData()
     }
     
     func didUpdateLocation(locationManager: LocationManager, location: CLLocation) {
@@ -178,5 +220,12 @@ extension ViewController: LocationManagerDelegate {
         if collectionView.refreshControl?.isRefreshing == true {
             collectionView.refreshControl?.endRefreshing()
         }
+    }
+}
+
+// MARK: AlertPresentingDelegate Confirmation
+extension ViewController: AlertPresentingDelegate {
+    func presentAlert(collectionViewHeader: UICollectionReusableView) {
+        presentLocationChangeAlert()
     }
 }

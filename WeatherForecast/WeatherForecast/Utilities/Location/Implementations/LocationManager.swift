@@ -29,7 +29,7 @@ final class LocationManager: NSObject, ReverseGeocodable, LocationRequestable {
     
     override init() {
         super.init()
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self

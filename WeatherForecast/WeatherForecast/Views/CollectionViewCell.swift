@@ -12,7 +12,7 @@ protocol CollectionViewCellIdentifyingProtocol {
 }
 
 extension CollectionViewCellIdentifyingProtocol {
-    static var reuseIdentifier: String { String(describing: CollectionViewCell.self) }
+    static var reuseIdentifier: String { String(describing: self) }
 }
 
 final class CollectionViewCell: UICollectionViewCell, CollectionViewCellIdentifyingProtocol {
