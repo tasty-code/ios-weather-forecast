@@ -8,6 +8,10 @@ extension WeatherForecastCellIdentifying {
     static var identifier: String { String(describing: WeatherForecastCell.self) }
 }
 
+protocol WeatherForecastCellConfigurable {
+    func startConfigure(using model: Model.FiveDaysWeather.List?) throws
+}
+
 final class WeatherForecastCell: UICollectionViewListCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
@@ -93,18 +97,42 @@ final class WeatherForecastCell: UICollectionViewListCell {
         ])
     }
     
-    // configure 하나로 처리
-    func configure(date: String) {
-        dateLabel.text = date
+}
+
+extension WeatherForecastCell: WeatherForecastCellConfigurable {
+    func startConfigure(using model: Model.FiveDaysWeather.List?) throws {
+        guard let model = model else {
+            throw WeatherForecastCellError.didFailFetchCellData
+        }
+        
+        guard let date = model.dt else {
+            throw WeatherForecastCellError.noExistedDate
+        }
+        
+        let dateString = DateFormatter.toString(by: date)
+        
+        guard let temperatureCurrent = model.main?.temp else {
+            throw WeatherForecastCellError.noExistedTemperature
+        }
+        
+        guard let image = UIImage(systemName: "pencil") else {
+            throw WeatherForecastCellError.noExistedImage
+        }
+        
+//        if let imageType = model.weather?[0].icon {
+//            //            networker?.fetchWeatherData { <#Decodable#> in
+//            //                <#code#>
+//            //            }
+//            //            cell.configure(image: image)
+//        }
+        
+        configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
     }
-    
-    func configure(temperatureCurrent: Double) {
-        temperatureCurrentLabel.text = String(format: "%.1fº", temperatureCurrent)
-    }
-    
-    func configure(image: UIImage) {
-//        imageView.load()
+
+    private func configure(image: UIImage, date: String, temperatureCurrent: Double) {
         imageView.image = image
+        dateLabel.text = date
+        temperatureCurrentLabel.text = String(format: "%.1fº", temperatureCurrent)
     }
 }
 
