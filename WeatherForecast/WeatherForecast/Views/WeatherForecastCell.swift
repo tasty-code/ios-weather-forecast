@@ -115,15 +115,14 @@ extension WeatherForecastCell: WeatherForecastCellConfigurable {
             throw WeatherForecastCellError.noExistedTemperature
         }
         
-        guard let image = UIImage(systemName: "pencil") else {
+        guard let imageType = model.weather?[0].icon else {
             throw WeatherForecastCellError.noExistedImage
         }
         
-//        if let imageType = model.weather?[0].icon {
-//            //            networker?.fetchWeatherData { <#Decodable#> in
-//            //                <#code#>
-//            //            }
-//            //            cell.configure(image: image)
+        let image = UIImage.load(from: imageType)
+        
+//        guard let image = UIImage(systemName: "pencil") else {
+//            throw WeatherForecastHeaderViewError.noExistedImage
 //        }
         
         configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
@@ -135,12 +134,6 @@ extension WeatherForecastCell: WeatherForecastCellConfigurable {
         temperatureCurrentLabel.text = String(format: "%.1fº", temperatureCurrent)
     }
 }
-
-//extension UIImageView {
-//    func load() {
-//        networker?.networkManager.request
-//    }
-//}
 
 extension WeatherForecastCell: WeatherForecastCellIdentifying {
     

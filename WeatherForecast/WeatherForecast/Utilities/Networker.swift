@@ -19,4 +19,15 @@ struct Networker {
             }
         }
     }
+    
+    func fetchImage(completion: @escaping (UIImage) -> Void) {
+        networkManager.fetchImage { result in
+            switch result {
+            case .success(let image):
+                completion(image)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }

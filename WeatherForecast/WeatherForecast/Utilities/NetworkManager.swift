@@ -38,4 +38,33 @@ final class NetworkManager: Networkable {
             }
         }.resume()
     }
+    
+    func fetchImage(completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
+        guard let url = self.request?.path else {
+            return
+        }
+        
+        session.dataTask(with: url) { data, response, error in
+            if let error = error {
+                return completion(.failure(.unknownError(error)))
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                return completion(.failure(.serverError(response)))
+            }
+            
+            guard let data = data else {
+                return completion(.failure(.dataUnwrappingError(data)))
+            }
+            
+            do {
+                if let weatherResponse = UIImage(data: data) {
+                    completion(.success(weatherResponse))
+                }
+            } catch {
+                completion(.failure(.decodingError(error)))
+            }
+        }.resume()
+    }
 }
