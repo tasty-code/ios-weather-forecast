@@ -52,7 +52,6 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     private func configureRefreshControl() {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
-        guard let weatherView = weatherView else { return }
         weatherView.addRefreshControl(refreshControl: refreshControl)
     }
     
@@ -61,7 +60,6 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
             displayAlert(title: String(describing: NetworkError.decodingError))
             return
         }
-        guard let weatherView = weatherView else { return }
         guard let headerView = weatherView.headerView else { return }
         
         guard let iconID = currentWeather.weather.last?.icon else { return }
@@ -81,7 +79,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     @objc
     private func handleRefreshControl() {
         locationManager.requestLocation()
-        weatherView?.endRefreshing()
+        weatherView.endRefreshing()
     }
 }
 
