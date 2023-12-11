@@ -85,7 +85,7 @@ extension WeatherForecastViewController: UICollectionViewDataSource {
         do {
             try cell.startConfigure(using: fiveDaysWeatherModel?.list?[indexPath.row])
         } catch {
-            print(error.localizedDescription)
+            print(error)
         }
         
         return cell
@@ -99,9 +99,34 @@ extension WeatherForecastViewController: UICollectionViewDataSource {
         do {
             try header.startConfigure(placemark, using: currentWeathermodel)
         } catch {
-            print(error.localizedDescription)
+            print(error)
         }
         
         return header
+    }
+}
+
+extension UIImage {
+    static func load(from imageType: String) -> UIImage {
+        let networker = Networker(request: ImageAPI(iconType: imageType))
+        var image: UIImage?
+        
+        let group = DispatchGroup()
+        
+        group.enter()
+        DispatchQueue.global().async {
+            networker.fetchImage { tempImage in
+                image = tempImage
+                group.leave()
+            }
+        }
+        
+        group.wait()
+        
+        guard let image = image else {
+            return UIImage()
+        }
+        
+        return image
     }
 }

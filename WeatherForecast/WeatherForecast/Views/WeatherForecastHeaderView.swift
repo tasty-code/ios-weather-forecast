@@ -126,9 +126,15 @@ extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
             throw WeatherForecastHeaderViewError.didFailFetchHeaderData
         }
         
-        guard let image = UIImage(systemName: "pencil") else {
-            throw WeatherForecastHeaderViewError.noExistedImage
+        guard let imageType = model.weather?[0].icon else {
+            throw WeatherForecastCellError.noExistedImage
         }
+        
+//        guard let image = UIImage(systemName: "pencil") else {
+//            throw WeatherForecastHeaderViewError.noExistedImage
+//        }
+        
+        let image = UIImage.load(from: imageType)
         
         guard let locality = placemark.locality,
               let subLocality = placemark.subLocality else {
