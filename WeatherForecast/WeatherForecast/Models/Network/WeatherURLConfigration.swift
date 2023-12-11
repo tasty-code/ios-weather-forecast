@@ -28,4 +28,18 @@ enum WeatherType: String {
     
     case current = "weather"
     case forecast = "forecast"
+    
+}
+
+struct WeatherIconURLConfigration: APIRequestable {
+    
+    var scheme: String = "https"
+    var host: String = "openweathermap.org"
+    var path: String
+    var parameters: [String : String]?
+    var apiKey: String?
+    
+    init(weatherIcon: String){
+        self.path = "/img/wn/\(weatherIcon)@2x.png"
+    }
 }

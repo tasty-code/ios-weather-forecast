@@ -8,6 +8,7 @@ final class WeatherViewController: UIViewController {
     private lazy var networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
 
     private var forecast: ForecastWeather?
+    private var current: CurrentWeather?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +46,7 @@ extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
                 self.getForecastWeatherData(url: success)
             case .failure(let failure):
                 print(failure.description)
-                
+
             }
         }
         
@@ -75,29 +76,43 @@ extension WeatherViewController {
     }
     
     private func getCurrentWeatherData(url: URL) {
-        networkServiceProvider.fetch(url: url) { (result: Result<CurrentWeather, NetworkError>) in
+        networkServiceProvider.fetch(url: url) { (result: Result<Data, NetworkError>) in
             switch result {
                 
             case .success(let currentWeatherData):
+                
+                guard let decodedCurrentWeather = self.networkServiceProvider.decoder(weatherType: self.current, data: currentWeatherData),
+                      let decodedCurrentWeather = decodedCurrentWeather else { return }
+                
                 DispatchQueue.main.async {
-                    self.updateHeaderUI(currentWeatherData)
+                    self.updateHeaderUI(decodedCurrentWeather)
                 }
+                
                 return
             case .failure(let error):
                 return print(error.description)
             }
         }
+
     }
     
     private func getForecastWeatherData(url: URL) {
-        networkServiceProvider.fetch(url: url) { (result: Result<ForecastWeather, NetworkError>) in
+        networkServiceProvider.fetch(url: url) { (result: Result<Data, NetworkError>) in
             switch result {
                 
             case .success(let forecastWeatherData):
-                self.forecast = forecastWeatherData
+                
+                guard let decodedForecastWeather = self.networkServiceProvider.decoder(weatherType: self.forecast, data: forecastWeatherData),
+                      let decodedForecastWeather = decodedForecastWeather else { return }
+                
+                self.forecast = decodedForecastWeather
+                
+                guard let forecastData = self.forecast else { return }
+                
                 DispatchQueue.main.async {
-                    self.updateCollectionViewCellUI(forecastWeatherData)
+                    self.updateCollectionViewCellUI(forecastData)
                 }
+                
                 return
             case .failure(let error):
                 return print(error.description)
@@ -109,9 +124,8 @@ extension WeatherViewController {
 // MARK: - UICollectionViewDataSource
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        guard let forecast = forecast else { return 0 }
-//        return forecast.fiveDaysForecast.count
-        return 40
+        guard let forecast = forecast else { return 0 }
+        return forecast.fiveDaysForecast.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -125,8 +139,6 @@ extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.identifier, for: indexPath) as? HeaderCollectionReusableView else { return UICollectionReusableView() }
         
-
-    
         return header
     }
 }
@@ -157,6 +169,9 @@ extension WeatherViewController {
         
         guard let header = weatherCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: indexPath) as? HeaderCollectionReusableView else { return }
         
+        guard let image = currentWeather.weather.first?.icon else { return }
+        guard let imageURL = WeatherIconURLConfigration(weatherIcon: image).makeURL() else { return }
+        //fetch 사용해야됨
         header.updateContent(currentWeather)
         weatherCollectionView.reloadItems(at: indexPaths)
     }
