@@ -45,12 +45,21 @@ final class ViewController: UIViewController {
     // MARK: - Dependencies
     private lazy var weatherDataService: DataDownloadable = WeatherDataService(dataServiceDelegate: self)
     private lazy var forecastDataService: DataDownloadable = ForecastDataService(dataServiceDelegate: self)
-    private let locationManager = LocationManager()
+    private let locationManager: LocationManager
     
     // MARK: - Properties
     private var weatherModel: WeatherModel? = nil
     private var forecastModel: ForecastModel? = nil
     private var currentPlacemark: CLPlacemark? = nil
+    
+    init(locationManager: LocationManager) {
+        self.locationManager = locationManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("Failed to initialize ViewController")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

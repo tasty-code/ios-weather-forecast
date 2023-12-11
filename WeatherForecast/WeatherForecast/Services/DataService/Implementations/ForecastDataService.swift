@@ -19,8 +19,6 @@ final class ForecastDataService: DataDownloadable {
     func downloadData(serviceType: ServiceType) {
         guard let url = serviceType.makeURL() else { return }
         
-        print(url)
-        
         NetworkManager.downloadData(url: url) { [weak self] result in
             switch result {
             case .success(let data):
