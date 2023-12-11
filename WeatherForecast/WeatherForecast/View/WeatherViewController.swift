@@ -6,7 +6,7 @@ final class WeatherViewController: UIViewController {
     private lazy var weatherCollectionView: CollectionView = CollectionView(frame: .zero, collectionViewLayout: createBasicListLayout())
     private lazy var locationManager = CLLocationManager()
     private lazy var networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
-
+    
     private var forecast: ForecastWeather?
     private var current: CurrentWeather?
     
@@ -14,6 +14,8 @@ final class WeatherViewController: UIViewController {
         super.viewDidLoad()
         setBackgroundImageView()
         locationManagerConfiguration()
+        
+        weatherCollectionView.backgroundColor = .clear
         
         weatherCollectionView.dataSource = self
         weatherCollectionView.delegate = self
@@ -46,7 +48,7 @@ extension WeatherViewController: CLLocationManagerDelegate, GeoConverter{
                 self.getForecastWeatherData(url: success)
             case .failure(let failure):
                 print(failure.description)
-
+                
             }
         }
         
@@ -93,7 +95,7 @@ extension WeatherViewController {
                 return print(error.description)
             }
         }
-
+        
     }
     
     private func getForecastWeatherData(url: URL) {
@@ -105,11 +107,13 @@ extension WeatherViewController {
                 guard let decodedForecastWeather = self.networkServiceProvider.decoder(weatherType: self.forecast, data: forecastWeatherData),
                       let decodedForecastWeather = decodedForecastWeather else { return }
                 
+             
                 self.forecast = decodedForecastWeather
                 
                 guard let forecastData = self.forecast else { return }
                 
                 DispatchQueue.main.async {
+                    
                     self.updateCollectionViewCellUI(forecastData)
                 }
                 
@@ -132,7 +136,26 @@ extension WeatherViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.identifier, for: indexPath) as? ForecastWeatherCell else { return UICollectionViewCell() }
         
         guard let forecast = forecast else { return cell }
-        cell.updateContent(forecast, indexPath: indexPath)
+//        cell.updateContent(forecast, indexPath: indexPath)
+        
+        guard let image = forecast.fiveDaysForecast[indexPath.row].weather.first?.icon else { return cell}
+        guard let imageURL = WeatherIconURLConfigration(weatherIcon: image).makeURL() else { return cell}
+        let indexPaths = weatherCollectionView.indexPathsForVisibleItems
+        
+        //fetch 사용해야됨
+        networkServiceProvider.fetch(url:imageURL) { (result: Result<Data, NetworkError>) in
+            switch result {
+                
+            case .success(let iconData):
+                guard let fetchedIcon = UIImage(data: iconData) else { return }
+                cell.updateContent(forecast, indexPath: indexPath, icon: fetchedIcon)
+                return
+            case .failure(let error):
+               
+                return print(error.description)
+            }
+            
+        }
         return cell
     }
     
@@ -141,6 +164,10 @@ extension WeatherViewController: UICollectionViewDataSource {
         
         return header
     }
+    
+    
+    
+    
 }
 
 extension WeatherViewController: UICollectionViewDelegate{
@@ -155,14 +182,21 @@ extension WeatherViewController {
         layoutConfig.backgroundColor = .clear
         layoutConfig.headerMode = .supplementary
         
-        let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
-        
-        return listLayout
-    }
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.1))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.15))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        section.boundarySupplementaryItems = [header]
+        let layout = UICollectionViewCompositionalLayout(section: section)
+              
+        return layout
+        }
 }
 
 extension WeatherViewController {
-    
     func updateHeaderUI(_ currentWeather: CurrentWeather) {
         let indexPaths = weatherCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
         guard let indexPath = indexPaths.first else { return }
@@ -172,24 +206,39 @@ extension WeatherViewController {
         guard let image = currentWeather.weather.first?.icon else { return }
         guard let imageURL = WeatherIconURLConfigration(weatherIcon: image).makeURL() else { return }
         //fetch 사용해야됨
-        header.updateContent(currentWeather)
-        weatherCollectionView.reloadItems(at: indexPaths)
+        networkServiceProvider.fetch(url:imageURL) { (result: Result<Data, NetworkError>) in
+            switch result {
+                
+            case .success(let iconData):
+                guard let fetchedIcon = UIImage(data: iconData) else { return }
+                DispatchQueue.main.async {
+                    header.updateContent(currentWeather, icon: fetchedIcon)
+                }
+                return
+            case .failure(let error):
+               
+                return print(error.description)
+            }
+        }
+//        self.weatherCollectionView.reloadData()
+//        weatherCollectionView.reloadData()
     }
     
     func updateCollectionViewCellUI(_ forecastWeather: ForecastWeather) {
         let indexPaths = weatherCollectionView.indexPathsForVisibleItems
-
+        
         for indexPath in indexPaths {
-           guard let cell = weatherCollectionView.cellForItem(at: indexPath) as? ForecastWeatherCell else { return }
-            cell.updateContent(forecastWeather, indexPath: indexPath)
+            print("for")
+            guard let cell = weatherCollectionView.cellForItem(at: indexPath) as? ForecastWeatherCell else { return }
         }
-
+        
+        
         if indexPaths.isEmpty {
             weatherCollectionView.reloadData()
         } else {
             weatherCollectionView.reloadItems(at: indexPaths)
         }
-
+        
     }
 }
 
@@ -202,10 +251,11 @@ extension WeatherViewController {
         backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-        backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
-        backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
 }
+    

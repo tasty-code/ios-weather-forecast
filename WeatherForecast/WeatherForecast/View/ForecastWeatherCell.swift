@@ -8,7 +8,7 @@ class ForecastWeatherCell: UICollectionViewCell {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.distribution = .fillEqually
+        
         return stackView
     }()
     
@@ -16,7 +16,7 @@ class ForecastWeatherCell: UICollectionViewCell {
     let temperatureLabel: UILabel = UILabel()
 
     let weatherImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "test"))
+        let imageView = UIImageView()
         return imageView
     }()
     
@@ -44,8 +44,9 @@ class ForecastWeatherCell: UICollectionViewCell {
             horizontalStackView.topAnchor.constraint(equalTo: topAnchor),
             horizontalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             horizontalStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
         ])
-        
+                                                
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(equalTo: topAnchor),
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 16),
@@ -53,17 +54,21 @@ class ForecastWeatherCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor)
+            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor, multiplier: 1),
+
         ])
     }
     
-    func updateContent(_ forecastWeather: ForecastWeather, indexPath: IndexPath) {
+    func updateContent(_ forecastWeather: ForecastWeather, indexPath: IndexPath, icon: UIImage) {
         
         let date = forecastWeather.fiveDaysForecast[indexPath.row].dtTxt
         guard let formattedDate = dateFormatter(date) else { return }
         
-        dateLabel.text = formattedDate
-        temperatureLabel.text = "\(forecastWeather.fiveDaysForecast[indexPath.row].temperature.temp)°"
+        DispatchQueue.main.async { [self] in
+            dateLabel.text = formattedDate
+            temperatureLabel.text = "\(forecastWeather.fiveDaysForecast[indexPath.row].temperature.temp)°"
+            weatherImageView.image = icon
+        }
     }
     
     private func dateFormatter(_ date: String) -> String?{

@@ -11,7 +11,7 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
     }()
     
     let headerImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "test"))
+        let imageView = UIImageView()
         return imageView
     }()
     
@@ -19,6 +19,7 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 8
+        stackView.distribution = .fillEqually
         return stackView
     }()
     
@@ -79,10 +80,10 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
         infoStackView.addArrangedSubview(currentTemperatureLabel)
     }
     
-    func updateContent(_ currentWeather: CurrentWeather) {
+    func updateContent(_ currentWeather: CurrentWeather, icon: UIImage) {
         locationLabel.text = currentWeather.name
-        minMaxTemperatureLabel.text = "최고: \(currentWeather.temperature.tempMax)  최저: \(currentWeather.temperature.tempMin)"
+        minMaxTemperatureLabel.text = "최고: \(currentWeather.temperature.tempMax)°  최저: \(currentWeather.temperature.tempMin)°"
         currentTemperatureLabel.text = "\(currentWeather.temperature.temp)°"
-//        headerImageView.image = icon
+        headerImageView.image = icon
     }
 }
