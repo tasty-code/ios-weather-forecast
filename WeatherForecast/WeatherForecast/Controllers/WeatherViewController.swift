@@ -179,14 +179,14 @@ extension WeatherViewController: AlertDelegate {
             textField.placeholder = "경도 입력"
         }
         
-        let okAction = UIAlertAction(title: "변경", style: .default)  { _ in
+        let okAction = UIAlertAction(title: "변경", style: .default)  { [self] _ in
             guard let textFields = alert.textFields,
-                  let latitude = textFields[0].text,
-                  let longitude = textFields[1].text,
-                  let lat = Double(latitude),
-                  let lon = Double(longitude) else { return }
+                  let lat = textFields[0].text,
+                  let lon = textFields[1].text,
+                  let latitude = Double(lat),
+                  let longitude = Double(lon) else { return }
             
-            print(lat, lon)
+            weatherManager.changeLocation(lat: latitude, lon: longitude)
         }
         let noAction = UIAlertAction(title: "취소", style: .cancel)
         

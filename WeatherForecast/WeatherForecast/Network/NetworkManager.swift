@@ -18,6 +18,7 @@ final class NetworkManager {
         expecting type: T.Type,
         completion: @escaping (Result<T, Error>) -> Void) {
             
+            
             guard let urlRequest = request else {
                 completion(.failure(NetworkError.failedToCreateRequest))
                 return

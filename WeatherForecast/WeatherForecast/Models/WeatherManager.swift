@@ -18,13 +18,8 @@ final class WeatherManager: NSObject {
     
     weak var delegate: WeatherManagerDelegate?
     
-    var longitude: String? {
-        return locationManager.location?.coordinate.longitude.description
-    }
-    
-    var latitude: String? {
-        return locationManager.location?.coordinate.latitude.description
-    }
+    var longitude: Double?
+    var latitude: Double?
     
     // MARK: - Private Property
     
@@ -77,6 +72,14 @@ extension WeatherManager: CLLocationManagerDelegate {
 extension WeatherManager {
     func startLocationUpdate() {
         locationManager.startUpdatingLocation()
+        
+        guard let lat = locationManager.location?.coordinate.latitude.description,
+              let lon = locationManager.location?.coordinate.longitude.description,
+              let latitude = Double(lat),
+              let longitude = Double(lon) else { return }
+        
+        self.latitude = latitude
+        self.longitude = longitude
     }
     
     func stopLocationUpdate() {
@@ -89,7 +92,9 @@ extension WeatherManager {
         let geoCoder: CLGeocoder = CLGeocoder()
         let locale = Locale(identifier: "Ko-Kr")
         
-        guard let location = locationManager.location else { return }
+        guard let latitude = latitude, let longitude = longitude else { return }
+        
+        let location = CLLocation(latitude: latitude, longitude: longitude)
         
         geoCoder.reverseGeocodeLocation(location, preferredLocale:  locale) { placemark, error in
             guard error == nil, let place = placemark?.first else { return }
@@ -106,7 +111,9 @@ extension WeatherManager {
 
 extension WeatherManager {
     func changeLocation(lat: Double, lon: Double) {
-        
+        latitude = lat
+        longitude = lon
+        refreshData()
     }
     
     func rejected() {
@@ -118,8 +125,8 @@ extension WeatherManager {
         
         guard let latitude = latitude, let longitude = longitude else { return }
         
-        guard let currentWeatherRequest = GetRequest(endpointType: .weather, queryParameters: .weatherService(latitude: latitude, longitude: longitude)).makeURLrequest(),
-              let forecastRequest = GetRequest(endpointType: .forecast, queryParameters: .weatherService(latitude: latitude, longitude: longitude)).makeURLrequest() else { return }
+        guard let currentWeatherRequest = GetRequest(endpointType: .weather, queryParameters: .weatherService(latitude: "\(latitude)", longitude: "\(longitude)")).makeURLrequest(),
+              let forecastRequest = GetRequest(endpointType: .forecast, queryParameters: .weatherService(latitude: "\(latitude)", longitude: "\(longitude)")).makeURLrequest() else { return }
         
         networkManager.execute(currentWeatherRequest, expecting: CurrentWeather.self) { data in
             switch data {
@@ -168,7 +175,7 @@ extension WeatherManager {
         list.forEach { iconId in
             self.iconService.fetchIcon(iconId: iconId, group: group)
         }
-            
+        
         group.wait()
         self.delegate?.updateWeatherDisplay()
     }
