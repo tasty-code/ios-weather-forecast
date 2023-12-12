@@ -140,10 +140,6 @@ extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
             throw WeatherForecastCellError.noExistedImage
         }
         
-//        guard let image = UIImage(systemName: "pencil") else {
-//            throw WeatherForecastHeaderViewError.noExistedImage
-//        }
-        
         let image = UIImage.load(from: imageType)
         
         guard let locality = placemark.locality,

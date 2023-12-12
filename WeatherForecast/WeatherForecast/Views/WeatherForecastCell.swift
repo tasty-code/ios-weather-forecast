@@ -37,6 +37,18 @@ final class WeatherForecastCell: UICollectionViewListCell {
         return imageView
     }()
     
+    private lazy var mystackView: UIStackView = {
+        let stackView = UIStackView()
+        
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+//        stackView.spacing = 20
+        stackView.addArrangedSubview(temperatureCurrentLabel)
+        stackView.addArrangedSubview(imageView)
+        
+        return stackView
+    }()
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         
@@ -49,6 +61,7 @@ final class WeatherForecastCell: UICollectionViewListCell {
         
         return stackView
     }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -76,36 +89,18 @@ final class WeatherForecastCell: UICollectionViewListCell {
     }
     
     private func configureConstraint() {
-        setDateLabelConstraint()
         setStackViewConstraint()
-//        self.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    private func imageLabelConstraint() {
-        NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalTo: temperatureCurrentLabel.heightAnchor),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
-        ])
-    }
-    
-    private func setDateLabelConstraint() {
-        let safeArea = safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            dateLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            dateLabel.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            dateLabel.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-        ])
     }
     
     private func setStackViewConstraint() {
         let safeArea = safeAreaLayoutGuide
         NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+            stackView.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
-    
 }
 
 extension WeatherForecastCell: WeatherForecastCellConfigurable {
@@ -129,10 +124,6 @@ extension WeatherForecastCell: WeatherForecastCellConfigurable {
         }
         
         let image = UIImage.load(from: imageType)
-        
-//        guard let image = UIImage(systemName: "pencil") else {
-//            throw WeatherForecastHeaderViewError.noExistedImage
-//        }
         
         configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
     }
