@@ -115,7 +115,6 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     
     private func imageViewConstraint() {
         NSLayoutConstraint.activate([
-            //            imageView.widthAnchor.constraint(equalToConstant: 80)
             imageView.topAnchor.constraint(equalTo: stackView.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             imageView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),

@@ -16,7 +16,6 @@ final class WeatherForecastCell: UICollectionViewListCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -24,7 +23,6 @@ final class WeatherForecastCell: UICollectionViewListCell {
     private let temperatureCurrentLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
 
         return label
     }()
@@ -32,31 +30,29 @@ final class WeatherForecastCell: UICollectionViewListCell {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
     }()
     
-    private lazy var mystackView: UIStackView = {
+    private lazy var cellRightStackView: UIStackView = {
         let stackView = UIStackView()
         
         stackView.axis = .horizontal
         stackView.distribution = .fill
-//        stackView.spacing = 20
+        stackView.spacing = 10
         stackView.addArrangedSubview(temperatureCurrentLabel)
         stackView.addArrangedSubview(imageView)
         
         return stackView
     }()
     
-    private lazy var stackView: UIStackView = {
+    private lazy var cellTotalStackView: UIStackView = {
         let stackView = UIStackView()
         
         stackView.axis = .horizontal
         stackView.distribution = .fill
-        stackView.spacing = 20
-        stackView.addArrangedSubview(temperatureCurrentLabel)
-        stackView.addArrangedSubview(imageView)
+        stackView.addArrangedSubview(dateLabel)
+        stackView.addArrangedSubview(cellRightStackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
@@ -85,20 +81,21 @@ final class WeatherForecastCell: UICollectionViewListCell {
     private func configureUI() {
         backgroundConfiguration = .clear()
         addSubview(dateLabel)
-        addSubview(stackView)
+        addSubview(cellTotalStackView)
     }
     
     private func configureConstraint() {
         setStackViewConstraint()
+        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
     }
     
     private func setStackViewConstraint() {
         let safeArea = safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            stackView.heightAnchor.constraint(equalToConstant: 30)
+            cellTotalStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            cellTotalStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            cellTotalStackView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            cellTotalStackView.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
 }

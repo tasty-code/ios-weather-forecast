@@ -9,7 +9,7 @@ final class WeatherForecastView: UIView {
             configuration.backgroundColor = .clear
             
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: environment)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 20)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
             
             let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.15))
             let header = NSCollectionLayoutBoundarySupplementaryItem(
@@ -22,8 +22,12 @@ final class WeatherForecastView: UIView {
         }
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(WeatherForecastCell.self, forCellWithReuseIdentifier: WeatherForecastCell.identifier)
+        collectionView.register(
+            WeatherForecastCell.self,
+            forCellWithReuseIdentifier: WeatherForecastCell.identifier
+        )
         collectionView.register(
             WeatherForecastHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -52,10 +56,10 @@ final class WeatherForecastView: UIView {
     private func configureConstraint() {
         let safeArea = self.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
