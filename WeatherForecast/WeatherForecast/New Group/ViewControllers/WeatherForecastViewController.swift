@@ -14,6 +14,7 @@ final class WeatherForecastViewController: UIViewController {
     
     override func loadView() {
         view = weatherForecastView
+        
     }
     
     override func viewDidLoad() {
@@ -62,6 +63,9 @@ final class WeatherForecastViewController: UIViewController {
                 self.weatherForecastView.collectionView.reloadData()
             }
         }
+        
+        
+        self.weatherForecastView.configureRefreshControl()
     }
 }
 
