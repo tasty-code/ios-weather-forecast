@@ -123,10 +123,6 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     }
 }
 
-extension WeatherForecastHeaderView: WeatherForecastHeaderViewIdentifying {
-    
-}
-
 extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
     func startConfigure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) throws {
         
@@ -139,8 +135,6 @@ extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
             throw WeatherForecastCellError.noExistedImage
         }
         
-        let image = UIImage.load(from: imageType)
-        
         guard let locality = placemark.locality,
               let subLocality = placemark.subLocality else {
             throw WeatherForecastHeaderViewError.noExistedLocality
@@ -151,8 +145,10 @@ extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
               let temperatureCurrent = model.main?.temp else {
             throw WeatherForecastHeaderViewError.noExistedTemperature
         }
-                
-        configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
+
+        UIImage.load(from: imageType) { image in
+            self.configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
+        }
     }
     
     private func configure(image: UIImage, locality: String, subLocality: String, temperatureMin: Double, temperatureMax: Double, temperatureCurrent: Double) {
@@ -161,4 +157,8 @@ extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
         temperatureMinMaxLabel.text = "최저 " + String(format: "%.1fº", temperatureMin) +  " 최고 " + String(format: "%.1fº", temperatureMax)
         temperatureCurrentLabel.text = String(format: "%.1fº", temperatureCurrent)
     }
+}
+
+extension WeatherForecastHeaderView: WeatherForecastHeaderViewIdentifying {
+    
 }

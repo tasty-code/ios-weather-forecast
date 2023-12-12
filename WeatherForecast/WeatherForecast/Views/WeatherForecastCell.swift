@@ -58,7 +58,6 @@ final class WeatherForecastCell: UICollectionViewListCell {
         return stackView
     }()
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
@@ -106,6 +105,10 @@ extension WeatherForecastCell: WeatherForecastCellConfigurable {
             throw WeatherForecastCellError.didFailFetchCellData
         }
         
+        guard let imageType = model.weather?[0].icon else {
+            throw WeatherForecastCellError.noExistedImage
+        }
+
         guard let date = model.dt else {
             throw WeatherForecastCellError.noExistedDate
         }
@@ -116,13 +119,9 @@ extension WeatherForecastCell: WeatherForecastCellConfigurable {
             throw WeatherForecastCellError.noExistedTemperature
         }
         
-        guard let imageType = model.weather?[0].icon else {
-            throw WeatherForecastCellError.noExistedImage
+        UIImage.load(from: imageType) { image in
+            self.configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
         }
-        
-        let image = UIImage.load(from: imageType)
-        
-        configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
     }
 
     private func configure(image: UIImage, date: String, temperatureCurrent: Double) {
@@ -135,27 +134,3 @@ extension WeatherForecastCell: WeatherForecastCellConfigurable {
 extension WeatherForecastCell: WeatherForecastCellIdentifying {
     
 }
-
-#if DEBUG
-import SwiftUI
-
-struct ViewControllerRepresentable: UIViewControllerRepresentable {
-    
-    // update
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        
-    }
-    
-    // makeui
-    @available(iOS 13.0, *)
-    func makeUIViewController(context: Context) -> UIViewController {
-        WeatherForecastViewController()
-    }
-}
-
-struct ViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        ViewControllerRepresentable().previewDisplayName("iPhone 15")
-    }
-}
-#endif
