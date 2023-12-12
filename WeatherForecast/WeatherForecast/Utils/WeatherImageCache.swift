@@ -1,5 +1,5 @@
 //
-//  ImageCache.swift
+//  WeatherImageCache.swift
 //  WeatherForecast
 //
 //  Created by 김준성 on 12/8/23.

@@ -9,8 +9,9 @@ import Foundation
 import Combine
 
 struct WeatherHTTPClient {
-    static func publishForecast<T: Decodable>(from publisher: AnyPublisher<(Data, HTTPURLResponse), Error>, forecastType: T.Type) -> AnyPublisher<T, Error>  {
-            return publisher.tryMap { (data, httpResponse) in
+    static func publishForecast<T: Decodable>(from request: URLRequest, forecastType: T.Type) -> AnyPublisher<T, Error>  {
+        return URLSession.shared.publisher(request: request)
+            .tryMap { (data, httpResponse) in
                 guard (200..<300).contains(httpResponse.statusCode)
                 else {
                     throw StatusCodeError.httpError(httpResponse.statusCode)

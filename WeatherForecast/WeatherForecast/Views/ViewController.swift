@@ -102,15 +102,11 @@ class ViewController: UIViewController {
                     guard let cell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as? WeatherHeaderCollectionViewCell else {
                         return WeatherHeaderCollectionViewCell()
                     }
-                    if let current = current {
-                        cell.addressLabel.text = current.address
-                        cell.temperatureLabel.text = current.mainInfo.temperature.temperatureFormatter() + "°"
-                        cell.minMaxTemperatureLabel.text = "최저 \(current.mainInfo.temperatureMin.temperatureFormatter())° 최고 \(current.mainInfo.temperatureMax.temperatureFormatter())°"
-                        WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(current.icon)@2x.png")!, completion: { image in
-                            cell.weatherIcon.image = image
+                    cell.configureCell(current)
+                    if let icon = current?.icon {
+                        WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png")!, completion: { image in
+                            cell.image = image
                         })
-                    } else {
-                        cell.temperatureLabel.text = "날씨 정보 없음"
                     }
                     return cell
                 }
@@ -140,31 +136,17 @@ class ViewController: UIViewController {
             collectionView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
         ])
     }
-    
-    func configureURLRequest(_ coordinate: CLLocationCoordinate2D, apiType: WeatherURLManager.ForecastType) -> URLRequest? {
-        guard let url = WeatherURLManager().getURL(api: apiType, latitude: coordinate.latitude, longitude: coordinate.longitude) else {
-            return nil
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "GET"
-        return urlRequest
-    }
 }
 
 extension ViewController: WeatherUIDelegate {
-    func loadForecast(_ coordinate: CLLocationCoordinate2D) {
+    func updateLocationWeather(_ coordinate: CLLocationCoordinate2D, _ addressString: String) {
+        let urlManager = WeatherURLManager()
+        guard let weatherURLRequest = urlManager.configureURLRequest(lat: coordinate.latitude, lon: coordinate.longitude, apiType: .weather) else { return }
+        let weatherInfoPublisher = WeatherHTTPClient.publishForecast(from: weatherURLRequest, forecastType: CurrentWeather?.self)
         
-    }
-    
-    func updateAddress(_ coordinate: CLLocationCoordinate2D, _ addressString: String) {
-        guard let weatherURLRequest = configureURLRequest(coordinate, apiType: .weather) else { return }
-        let weatherRequestPublisher = URLSession.shared.publisher(request: weatherURLRequest)
-        let weatherInfoPublisher = WeatherHTTPClient.publishForecast(from: weatherRequestPublisher, forecastType: CurrentWeather?.self)
+        guard let forecastURLRequest = urlManager.configureURLRequest(lat: coordinate.latitude, lon: coordinate.longitude, apiType: .forecast) else { return }
+        let forecastInfoPublisher = WeatherHTTPClient.publishForecast(from: forecastURLRequest, forecastType: FiveDayWeatherForecast.self)
         
-        guard let forecastURLRequest = configureURLRequest(coordinate, apiType: .forecast) else { return }
-        let forecastRequestPublisher = URLSession.shared.publisher(request: forecastURLRequest)
-        let forecastInfoPublisher = WeatherHTTPClient.publishForecast(from: forecastRequestPublisher, forecastType: FiveDayWeatherForecast.self)
         Publishers.Zip(forecastInfoPublisher, weatherInfoPublisher)
             .tryMap { (forecast, current) in
                 let test = CurrentWeatherInfo(address: addressString, icon: current!.weathers.first!.icon, mainInfo: current!.mainInfo)
@@ -181,15 +163,5 @@ extension ViewController: WeatherUIDelegate {
             .replaceError(with: (nil, []))
             .assign(to: \.weatherInfo, on: self)
             .store(in: &subscribers)
-    }
-    
-    func fetchWeatherInfo(_ coordinate: CLLocationCoordinate2D) { }
-}
-
-extension ViewController {
-    struct CurrentWeatherInfo {
-        let address: String
-        let icon: String
-        let mainInfo: MainInfo
     }
 }
