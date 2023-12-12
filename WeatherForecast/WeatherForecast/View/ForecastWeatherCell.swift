@@ -8,19 +8,23 @@ class ForecastWeatherCell: UICollectionViewCell {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
-        
         return stackView
     }()
-    
-    let dateLabel: UILabel = UILabel()
-    let temperatureLabel: UILabel = UILabel()
 
     let weatherImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
     }()
     
+    let dateLabel: UILabel = {
+        let dateLabel = UILabel()
+        return dateLabel
+    }()
     
+    let temperatureLabel: UILabel = {
+        let temperatureLabel = UILabel()
+        return temperatureLabel
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -79,6 +83,5 @@ class ForecastWeatherCell: UICollectionViewCell {
         dateFormatter.dateFormat = "MM/dd(E) HH시"
         
         return dateFormatter.string(from: date)
-        
     }
 }

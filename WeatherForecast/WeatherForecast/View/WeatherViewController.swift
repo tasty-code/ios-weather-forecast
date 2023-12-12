@@ -19,7 +19,6 @@ final class WeatherViewController: UIViewController {
         
         weatherCollectionView.dataSource = self
         weatherCollectionView.setCollectionViewConstraints(view: view)
-        
     }
 }
 
@@ -34,6 +33,7 @@ extension WeatherViewController: CLLocationManagerDelegate{
         
         currentWeatherURL.checkError { (result: Result<URL,NetworkError>) in
             switch result {
+                
             case .success(let success):
                 self.getCurrentWeatherData(url: success)
             case .failure(let failure):
@@ -44,6 +44,7 @@ extension WeatherViewController: CLLocationManagerDelegate{
         
         forecastWeatherURL.checkError { (result: Result<URL,NetworkError>) in
             switch result {
+                
             case .success(let success):
                 self.getForecastWeatherData(url: success)
             case .failure(let failure):
@@ -59,20 +60,19 @@ extension WeatherViewController: CLLocationManagerDelegate{
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
+            
         case .authorizedWhenInUse:
             manager.startUpdatingLocation()
             break
-            
         case .restricted, .denied:
             showSettingsAlert()
             break
-            
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
             break
-            
         default:
             break
+            
         }
     }
     
@@ -84,13 +84,13 @@ extension WeatherViewController: CLLocationManagerDelegate{
         )
         
         let cancelAction = UIAlertAction(title: "취소", style: .destructive, handler: nil)
-        alert.addAction(cancelAction)
-        
         let settingsAction = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+                UIApplication.shared.open(settingsURL)
             }
         }
+        
+        alert.addAction(cancelAction)
         alert.addAction(settingsAction)
         
         self.present(alert, animated: true, completion: nil)
@@ -104,17 +104,16 @@ extension WeatherViewController {
             switch result {
                 
             case .success(let currentWeatherData):
-                
                 guard let decodedCurrentWeather = self.networkServiceProvider.decoder(weatherType: self.current, data: currentWeatherData),
                       let decodedCurrentWeather = decodedCurrentWeather else { return }
                 
                 DispatchQueue.main.async {
                     self.updateHeaderUI(decodedCurrentWeather)
                 }
-                
                 return
             case .failure(let error):
                 return print(error.description)
+                
             }
         }
     }
@@ -134,10 +133,10 @@ extension WeatherViewController {
                 DispatchQueue.main.async {
                     self.weatherCollectionView.reloadData()
                 }
-                
                 return
             case .failure(let error):
                 return print(error.description)
+                
             }
         }
     }
@@ -176,8 +175,8 @@ extension WeatherViewController: UICollectionViewDataSource {
                 cell.updateContent(forecast, indexPath: indexPath, icon: fetchedIcon)
                 return
             case .failure(let error):
-                
                 return print(error.description)
+                
             }
         }
         return cell
@@ -213,6 +212,7 @@ extension WeatherViewController: GeoConverter {
                 return
             case .failure(let fail):
                 return print(fail.description)
+                
             }
         }
         
@@ -226,8 +226,8 @@ extension WeatherViewController: GeoConverter {
                 }
                 return
             case .failure(let error):
-                
                 return print(error.description)
+                
             }
         }
     }

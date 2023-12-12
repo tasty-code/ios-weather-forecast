@@ -3,19 +3,19 @@ import UIKit
 final class HeaderCollectionReusableView: UICollectionReusableView {
     static let identifier = "Header"
     
-    let headerStackView: UIStackView = {
+    private let headerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 8
         return stackView
     }()
     
-    let headerImageView: UIImageView = {
+    private let headerImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
     }()
     
-    let infoStackView: UIStackView = {
+    private let infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 8
@@ -23,7 +23,7 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
         return stackView
     }()
     
-    let locationLabel: UILabel = {
+    private let locationLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
@@ -31,7 +31,7 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
         return label
     }()
     
-    let minMaxTemperatureLabel: UILabel = {
+    private let minMaxTemperatureLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
@@ -39,9 +39,8 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
         return label
     }()
     
-    let currentTemperatureLabel: UILabel = {
+    private let currentTemperatureLabel: UILabel = {
         let label = UILabel()
-    
         label.textColor = .black
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 24)
@@ -81,7 +80,6 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
     }
     
     func updateContent(_ currentWeather: CurrentWeather, icon: UIImage) {
-        
         minMaxTemperatureLabel.text = "최고: \(currentWeather.temperature.tempMax)°  최저: \(currentWeather.temperature.tempMin)°"
         currentTemperatureLabel.text = "\(currentWeather.temperature.temp)°"
         headerImageView.image = icon
