@@ -65,11 +65,8 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
     }
     
     func configureCell(to forecast: Forecast) {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko-KR")
-        formatter.dateFormat = "MM/dd(E) HH시"
         let date = Date(timeIntervalSince1970: TimeInterval(integerLiteral: Int64(forecast.timeOfData)))
-        timeLabel.text = formatter.string(from: date)
+        timeLabel.text = date.asFormattedString()
         temperatureLabel.text = forecast.mainInfo.temperature.temperatureFormatter() + "°"
     }
 }
