@@ -62,4 +62,22 @@ final class WeatherForecastView: UIView {
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
+    
+    func configureRefreshControl () {
+       // Add the refresh control to your UIScrollView object.
+       collectionView.refreshControl = UIRefreshControl()
+       collectionView.refreshControl?.addTarget(self, action:
+                                          #selector(handleRefreshControl),
+                                          for: .valueChanged)
+    }
+    
+    @objc func handleRefreshControl() {
+       // Update your content…
+
+
+       // Dismiss the refresh control.
+       DispatchQueue.main.async {
+          self.collectionView.refreshControl?.endRefreshing()
+       }
+    }
 }
