@@ -10,9 +10,9 @@ import Foundation
 final class DateFormattingService: DateFormattable {
     private let dateFormatter = DateFormatter()
     
-    func format(with dateText: String, from format1: String, to format2: String) -> String {
+    func format(with timestamp: Int, from format1: String, to format2: String) -> String {
         dateFormatter.dateFormat = format1
-        guard let date = dateFormatter.date(from: dateText) else { return String() }
+        let date = Date(timeIntervalSince1970: Double(timestamp))
         
         dateFormatter.dateFormat = format2
         dateFormatter.locale = Locale(identifier: "ko_KR")

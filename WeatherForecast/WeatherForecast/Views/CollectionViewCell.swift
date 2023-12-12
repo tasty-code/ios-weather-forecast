@@ -48,8 +48,8 @@ final class CollectionViewCell: UICollectionViewCell, CollectionViewCellIdentify
     
     // MARK: - Public
     func configureCell(_ item: List) {
-        if let dateText = item.dateTxt {
-            dateAndHourLabel.text = dateFormattingService.format(with: dateText, from: Constants.dateTextFormatBefore, to: Constants.dateTextFormatAfter)
+        if let date = item.date {
+            dateAndHourLabel.text = dateFormattingService.format(with: date, from: Constants.dateTextFormatBefore, to: Constants.dateTextFormatAfter)
         }
         
         if let temperature = item.main?.temp {

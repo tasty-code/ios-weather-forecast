@@ -194,6 +194,10 @@ extension ViewController: WeatherForecastDataServiceDelegate {
         } else {
             collectionView.reloadItems(at: headerViewIndexPaths)
         }
+        
+        if collectionView.refreshControl?.isRefreshing == true {
+            collectionView.refreshControl?.endRefreshing()
+        }
     }
     
     func notifyForecastModelDidUpdate(dataService: DataDownloadable, model: ForecastModel?) {
@@ -204,6 +208,10 @@ extension ViewController: WeatherForecastDataServiceDelegate {
             collectionView.reloadData()
         } else {
             collectionView.reloadItems(at: cellIndexPaths)
+        }
+        
+        if collectionView.refreshControl?.isRefreshing == true {
+            collectionView.refreshControl?.endRefreshing()
         }
     }
 }
@@ -224,10 +232,6 @@ extension ViewController: LocationManagerDelegate {
             locationManager.reverseGeocodeLocation(location: location)
             self?.weatherDataService.downloadData(serviceType: .weather(coordinate: location.coordinate, apiKey: apiKey))
             self?.forecastDataService.downloadData(serviceType: .forecast(coordinate: location.coordinate, apiKey: apiKey))
-        }
-        
-        if collectionView.refreshControl?.isRefreshing == true {
-            collectionView.refreshControl?.endRefreshing()
         }
     }
 }
