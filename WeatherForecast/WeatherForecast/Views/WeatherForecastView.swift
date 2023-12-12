@@ -4,9 +4,10 @@ final class WeatherForecastView: UIView {
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { section, environment in
-            var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
-            configuration.headerMode = .supplementary
+            var configuration =
+            UICollectionLayoutListConfiguration(appearance: .plain)
             configuration.backgroundColor = .clear
+            configuration.separatorConfiguration.color = .white
             
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: environment)
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
@@ -24,6 +25,7 @@ final class WeatherForecastView: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.register(
             WeatherForecastCell.self,
             forCellWithReuseIdentifier: WeatherForecastCell.identifier
@@ -38,6 +40,7 @@ final class WeatherForecastView: UIView {
     }()
     
     override init(frame: CGRect) {
+
         super.init(frame: frame)
         configureUI()
         configureConstraint()
@@ -49,35 +52,17 @@ final class WeatherForecastView: UIView {
     
     private func configureUI() {
         self.backgroundColor = .clear
+        
         self.addSubview(collectionView)
         collectionView.backgroundView = UIImageView(image: UIImage(named: "backgroundImage"))
     }
     
     private func configureConstraint() {
-        let safeArea = self.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-    }
-    
-    func configureRefreshControl () {
-       // Add the refresh control to your UIScrollView object.
-       collectionView.refreshControl = UIRefreshControl()
-       collectionView.refreshControl?.addTarget(self, action:
-                                          #selector(handleRefreshControl),
-                                          for: .valueChanged)
-    }
-    
-    @objc func handleRefreshControl() {
-       // Update your content…
-
-
-       // Dismiss the refresh control.
-       DispatchQueue.main.async {
-          self.collectionView.refreshControl?.endRefreshing()
-       }
     }
 }

@@ -23,6 +23,11 @@ final class WeatherForecastViewController: UIViewController {
         weatherForecastView.collectionView.delegate = self
         weatherForecastView.collectionView.dataSource = self
         
+        configureWeatherData()
+        configureRefreshControl()
+    }
+    
+    private func configureWeatherData() {
         let group = DispatchGroup()
         
         group.enter()
@@ -33,7 +38,6 @@ final class WeatherForecastViewController: UIViewController {
                 group.leave()
             }
         }
-        
         group.notify(queue: .global(qos: .userInteractive)) {
             guard let coordinate = self.coordinate else {
                 return
@@ -53,6 +57,7 @@ final class WeatherForecastViewController: UIViewController {
                 self.networker = Networker(request: WeatherAPI.fiveDays(coordinate))
                 self.networker?.fetchWeatherData { (result: Model.FiveDaysWeather) in
                     self.fiveDaysWeatherModel = result
+                    //                    print(result)
                     group.leave()
                 }
             }
@@ -63,9 +68,24 @@ final class WeatherForecastViewController: UIViewController {
                 self.weatherForecastView.collectionView.reloadData()
             }
         }
+    }
+    
+    private func configureRefreshControl () {
+        weatherForecastView.collectionView.refreshControl = UIRefreshControl()
+        weatherForecastView.collectionView.refreshControl?.addTarget(
+            self,
+            action: #selector(handleRefreshControl),
+            for: .valueChanged
+        )
+    }
+    
+    @objc
+    private func handleRefreshControl() {
+        configureWeatherData()
         
-        
-        self.weatherForecastView.configureRefreshControl()
+        DispatchQueue.main.async {
+            self.weatherForecastView.collectionView.refreshControl?.endRefreshing()
+        }
     }
 }
 
@@ -107,30 +127,5 @@ extension WeatherForecastViewController: UICollectionViewDataSource {
         }
         
         return header
-    }
-}
-
-extension UIImage {
-    static func load(from imageType: String) -> UIImage {
-        let networker = Networker(request: ImageAPI(iconType: imageType))
-        var image: UIImage?
-        
-        let group = DispatchGroup()
-        
-        group.enter()
-        DispatchQueue.global().async {
-            networker.fetchImage { tempImage in
-                image = tempImage
-                group.leave()
-            }
-        }
-        
-        group.wait()
-        
-        guard let image = image else {
-            return UIImage()
-        }
-        
-        return image
     }
 }
