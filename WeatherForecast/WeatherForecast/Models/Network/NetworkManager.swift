@@ -15,8 +15,8 @@ final class NetworkManager {
         self.session = session
     }
     
-    func fetchData<T: Decodable>(for request: APIRequest?,
-                                 completion: @escaping (Result<T, Error>)-> Void) {
+    func fetchData(for request: APIRequest?,
+                                 completion: @escaping (Result<Data, NetworkError>)-> Void) {
         guard let request = request else {
             completion(.failure(NetworkError.invalidAPIKey))
             return
@@ -43,13 +43,7 @@ final class NetworkManager {
                 completion(.failure(NetworkError.noDataError))
                 return
             }
-            
-            do {
-                let weather = try JSONDecoder().decode(T.self, from: data)
-                completion(.success(weather))
-            } catch {
-                completion(.failure(NetworkError.decodingError))
-            }
+            completion(.success(data))
         }
         dataTask.resume()
     }

@@ -51,7 +51,7 @@ struct CurrentWeather: Decodable {
 // MARK: - WeatherCondition
 
 struct WeatherCondition: Decodable {
-    let temperature, feelsLike, minimumTemperature, maxTemperature: Double
+    let temperature, feelsLike, minimumTemperature, maximumTemperature: Double
     let pressure, humidity: Int
     let seaLevel, groundLevel: Int?
     
@@ -59,7 +59,7 @@ struct WeatherCondition: Decodable {
         case temperature = "temp"
         case feelsLike = "feels_like"
         case minimumTemperature = "temp_min"
-        case maxTemperature = "temp_max"
+        case maximumTemperature = "temp_max"
         case pressure, humidity
         case seaLevel = "sea_level"
         case groundLevel = "grnd_level"
