@@ -15,8 +15,8 @@ protocol WeatherForecastCellConfigurable {
 final class WeatherForecastCell: UICollectionViewListCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -24,13 +24,15 @@ final class WeatherForecastCell: UICollectionViewListCell {
     private let temperatureCurrentLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
 
         return label
     }()
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
     }()
@@ -38,12 +40,12 @@ final class WeatherForecastCell: UICollectionViewListCell {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fill
         stackView.spacing = 20
         stackView.addArrangedSubview(temperatureCurrentLabel)
         stackView.addArrangedSubview(imageView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
     }()
@@ -76,7 +78,14 @@ final class WeatherForecastCell: UICollectionViewListCell {
     private func configureConstraint() {
         setDateLabelConstraint()
         setStackViewConstraint()
-        self.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        self.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    private func imageLabelConstraint() {
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalTo: temperatureCurrentLabel.heightAnchor),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
+        ])
     }
     
     private func setDateLabelConstraint() {

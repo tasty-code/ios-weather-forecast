@@ -24,6 +24,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     private let locationLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -31,6 +32,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     private let temperatureMinMaxLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -39,41 +41,40 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 30, weight: .bold)
         label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
     private lazy var partialInfoStackView: UIStackView = {
         let stackView = UIStackView()
-        
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        //        stackView.heightAnchor.constraint(equalTo: totalInfoStackView.heightAnchor).isActive = true
         stackView.addArrangedSubview(locationLabel)
         stackView.addArrangedSubview(temperatureMinMaxLabel)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
     }()
     
     private lazy var totalInfoStackView: UIStackView = {
         let stackView = UIStackView()
-        
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.addArrangedSubview(partialInfoStackView)
         stackView.addArrangedSubview(temperatureCurrentLabel)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
     }()
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fill
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(totalInfoStackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
     }()
@@ -95,6 +96,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     
     private func configureConstraints() {
         stackViewConstraint()
+        totalInfoStackViewConstraint()
         imageViewConstraint()
     }
     
@@ -107,9 +109,17 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         ])
     }
     
+    private func totalInfoStackViewConstraint() {
+        totalInfoStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
+    }
+    
     private func imageViewConstraint() {
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: 80)
+            //            imageView.widthAnchor.constraint(equalToConstant: 80)
+            imageView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
         ])
     }
 }

@@ -4,9 +4,6 @@ final class WeatherForecastView: UIView {
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { section, environment in
-            //            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
-            //            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1))
-            //            let item = NSCollectionLayoutItem(layoutSize: itemSize)
             var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
             configuration.headerMode = .supplementary
             configuration.backgroundColor = .clear
