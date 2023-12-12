@@ -91,7 +91,9 @@ final class WeatherView: UIView {
     }
     
     func endRefreshing() {
-        weatherCollectionView.refreshControl?.endRefreshing()
+        if weatherCollectionView.refreshControl?.isRefreshing == true {
+            weatherCollectionView.refreshControl?.endRefreshing()
+        }
     }
     
     func addRefreshControl(refreshControl: UIRefreshControl) {

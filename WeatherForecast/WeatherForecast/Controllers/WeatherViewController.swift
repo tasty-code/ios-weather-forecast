@@ -79,7 +79,6 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     @objc
     private func handleRefreshControl() {
         locationManager.requestLocation()
-        weatherView.endRefreshing()
     }
 }
 
@@ -87,6 +86,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
 
 extension WeatherViewController: LocationUpdateDelegate {
     func updateWeather(with locationData: LocationData) {
+        weatherView.endRefreshing()
         let weatherRequest = WeatherRequest(latitude: locationData.latitude,
                                             longitude: locationData.longitude,
                                             weatherType: .current)

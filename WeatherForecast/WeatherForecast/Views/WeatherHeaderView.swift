@@ -48,6 +48,7 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private let currentTemperatureLabel: UILabel = {
         let label = UILabel(font: .preferredFont(forTextStyle: .title1), textAlignment: .left)
+        label.text = ""
         
         return label
     }()
