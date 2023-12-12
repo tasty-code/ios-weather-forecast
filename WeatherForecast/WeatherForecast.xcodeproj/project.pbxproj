@@ -37,6 +37,8 @@
 		C79C8D0B25ADDDF400EEE3F1 /* WeatherForecastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8D0A25ADDDF400EEE3F1 /* WeatherForecastTests.swift */; };
 		C79C8D1625ADDDF400EEE3F1 /* WeatherForecastUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */; };
 		CB63CCBF2B0B3E03000A2E12 /* ApiName.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB63CCBE2B0B3E03000A2E12 /* ApiName.swift */; };
+		CBEC24DE2B27E96500371D7D /* Cacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEC24DD2B27E96500371D7D /* Cacheable.swift */; };
+		CBEC24E02B27EAA700371D7D /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEC24DF2B27EAA700371D7D /* CacheManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +95,8 @@
 		C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastUITests.swift; sourceTree = "<group>"; };
 		C79C8D1725ADDDF400EEE3F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB63CCBE2B0B3E03000A2E12 /* ApiName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiName.swift; sourceTree = "<group>"; };
+		CBEC24DD2B27E96500371D7D /* Cacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacheable.swift; sourceTree = "<group>"; };
+		CBEC24DF2B27EAA700371D7D /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +149,7 @@
 			children = (
 				043F17522B0AF30800084087 /* NetworkManager.swift */,
 				04AAAB962B187DAB00A541EC /* Location */,
+				CBEC24E12B27EAB000371D7D /* CacheManager */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -338,6 +343,31 @@
 			path = Namespaces;
 			sourceTree = "<group>";
 		};
+		CBEC24E12B27EAB000371D7D /* CacheManager */ = {
+			isa = PBXGroup;
+			children = (
+				CBEC24E32B27EAEF00371D7D /* Implementation */,
+				CBEC24E22B27EAE200371D7D /* Protocol */,
+			);
+			path = CacheManager;
+			sourceTree = "<group>";
+		};
+		CBEC24E22B27EAE200371D7D /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				CBEC24DD2B27E96500371D7D /* Cacheable.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		CBEC24E32B27EAEF00371D7D /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				CBEC24DF2B27EAA700371D7D /* CacheManager.swift */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -478,8 +508,10 @@
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				04AAAB952B187CF300A541EC /* WeatherDataService.swift in Sources */,
 				04AAAB912B1878EB00A541EC /* DataDownloadable.swift in Sources */,
+				CBEC24E02B27EAA700371D7D /* CacheManager.swift in Sources */,
 				04AAAB932B18792600A541EC /* JSONDecodable.swift in Sources */,
 				04AAABB62B19A58900A541EC /* LocationRequestable.swift in Sources */,
+				CBEC24DE2B27E96500371D7D /* Cacheable.swift in Sources */,
 				04AAABA72B189F2C00A541EC /* ForecastDataService.swift in Sources */,
 				CB63CCBF2B0B3E03000A2E12 /* ApiName.swift in Sources */,
 				04AAABB12B196EEA00A541EC /* DateFormattingService.swift in Sources */,
