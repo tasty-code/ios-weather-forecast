@@ -23,5 +23,4 @@ final class NetworkServiceProvider: NetworkServiceable {
             }
         }.resume()
     }
-    
 }

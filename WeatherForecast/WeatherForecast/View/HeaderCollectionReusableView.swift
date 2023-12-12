@@ -81,9 +81,13 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
     }
     
     func updateContent(_ currentWeather: CurrentWeather, icon: UIImage) {
-        locationLabel.text = currentWeather.name
+        
         minMaxTemperatureLabel.text = "최고: \(currentWeather.temperature.tempMax)°  최저: \(currentWeather.temperature.tempMin)°"
         currentTemperatureLabel.text = "\(currentWeather.temperature.temp)°"
         headerImageView.image = icon
+    }
+    
+    func updateAddress(covertedName: String) {
+        locationLabel.text = covertedName
     }
 }
