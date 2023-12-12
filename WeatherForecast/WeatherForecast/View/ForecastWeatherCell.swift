@@ -61,7 +61,7 @@ class ForecastWeatherCell: UICollectionViewCell {
     
     func updateContent(_ forecastWeather: ForecastWeather, indexPath: IndexPath, icon: UIImage) {
         
-        let date = forecastWeather.fiveDaysForecast[indexPath.row].dtTxt
+        let date = forecastWeather.fiveDaysForecast[indexPath.row].dt
         guard let formattedDate = dateFormatter(date) else { return }
         
         DispatchQueue.main.async { [self] in
@@ -71,12 +71,11 @@ class ForecastWeatherCell: UICollectionViewCell {
         }
     }
     
-    private func dateFormatter(_ date: String) -> String?{
+    private func dateFormatter(_ date: Int) -> String?{
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        guard let date = dateFormatter.date(from: date) else { return nil }
+        let date = Date(timeIntervalSince1970: TimeInterval(date))
         dateFormatter.dateFormat = "MM/dd(E) HH시"
         
         return dateFormatter.string(from: date)
