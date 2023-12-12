@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate {
+final class WeatherCollectionViewCell: UICollectionViewCell {
     lazy var forecastStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
