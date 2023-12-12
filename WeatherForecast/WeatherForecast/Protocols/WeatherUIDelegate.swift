@@ -9,11 +9,5 @@ import CoreLocation
 import UIKit
 
 protocol WeatherUIDelegate: UIViewController {
-    func loadForecast(_ coordinate: CLLocationCoordinate2D)
-    func updateAddress(_ coordinate: CLLocationCoordinate2D, _ addressString: String)
-}
-
-protocol WeatherCellDelegate: UICollectionViewCell {
-    func setUpLayouts()
-    func setUpConstraints()
+    func updateLocationWeather(_ coordinate: CLLocationCoordinate2D, _ addressString: String)
 }

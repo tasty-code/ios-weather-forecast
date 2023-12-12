@@ -37,7 +37,7 @@ final class WeatherLocationManager: NSObject {
             if let administrativeArea = placemark.administrativeArea { address += "\(administrativeArea) " }
             if let subThoroughfare = placemark.name { address += "\(subThoroughfare) " }
             DispatchQueue.main.async {
-                self.delegate?.updateAddress(coordinate, address)
+                self.delegate?.updateLocationWeather(coordinate, address)
             }
         })
     }
@@ -47,7 +47,6 @@ extension WeatherLocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            delegate?.loadForecast(location.coordinate)
             getAddress(from: location.coordinate)
             locationManger.stopUpdatingLocation()
         }
