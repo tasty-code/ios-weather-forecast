@@ -82,9 +82,7 @@ final class WeatherForecastViewController: UIViewController {
     private func handleRefreshControl() {
         configureWeatherData()
         
-        DispatchQueue.main.async {
-            self.weatherForecastView.collectionView.refreshControl?.endRefreshing()
-        }
+        self.weatherForecastView.collectionView.refreshControl?.endRefreshing()
     }
 }
 
