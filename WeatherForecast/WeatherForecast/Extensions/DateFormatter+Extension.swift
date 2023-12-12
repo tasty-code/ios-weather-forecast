@@ -2,7 +2,7 @@ import Foundation
 
 extension DateFormatter {
     
-    convenience init(date: NSDate) {
+    private convenience init(date: Date) {
         self.init()
         
         self.locale = Locale(identifier:"ko_KR")
@@ -10,9 +10,9 @@ extension DateFormatter {
     }
     
     static func toString(by date: Int) -> String {
-        let date = NSDate(timeIntervalSince1970: TimeInterval(date))
+        let date = Date(timeIntervalSince1970: TimeInterval(date))
         let dateFormatter = DateFormatter(date: date)
-        let dateString = dateFormatter.string(from: date as Date)
+        let dateString = dateFormatter.string(from: date)
         
         return dateString
     }
