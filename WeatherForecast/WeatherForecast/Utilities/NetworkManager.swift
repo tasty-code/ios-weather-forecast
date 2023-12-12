@@ -58,12 +58,8 @@ final class NetworkManager: Networkable {
                 return completion(.failure(.dataUnwrappingError(data)))
             }
             
-            do {
-                if let weatherResponse = UIImage(data: data) {
-                    completion(.success(weatherResponse))
-                }
-            } catch {
-                completion(.failure(.decodingError(error)))
+            if let weatherResponse = UIImage(data: data) {
+                completion(.success(weatherResponse))
             }
         }.resume()
     }
