@@ -97,16 +97,16 @@ class ViewController: UIViewController {
     func bind() {
         $weatherInfo
             .receive(on: DispatchQueue.main)
-            .sink { [unowned self] (current, forecast) in
-                weatherDataSource.supplementaryViewProvider = { collectionView , kind , indexPath in
+            .sink { [weak self] (current, forecast) in
+                self?.weatherDataSource.supplementaryViewProvider = { collectionView , kind , indexPath in
                     guard let cell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as? WeatherHeaderCollectionViewCell else {
                         return WeatherHeaderCollectionViewCell()
                     }
-                    if let data = current {
-                        cell.addressLabel.text = data.address
-                        cell.temperatureLabel.text = data.temp.temperature.tempFormatter() + "°"
-                        cell.minMaxTemperatureLabel.text = "최저 \(data.temp.temperatureMin.tempFormatter())° 최고 \(data.temp.temperatureMax.tempFormatter())°"
-                        WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(data.icon)@2x.png")!, completion: { image in
+                    if let current = current {
+                        cell.addressLabel.text = current.address
+                        cell.temperatureLabel.text = current.mainInfo.temperature.temperatureFormatter() + "°"
+                        cell.minMaxTemperatureLabel.text = "최저 \(current.mainInfo.temperatureMin.temperatureFormatter())° 최고 \(current.mainInfo.temperatureMax.temperatureFormatter())°"
+                        WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(current.icon)@2x.png")!, completion: { image in
                             cell.weatherIcon.image = image
                         })
                     } else {
@@ -119,7 +119,7 @@ class ViewController: UIViewController {
                 snapshot.appendSections([.main])
                 snapshot.appendItems(forecast, toSection: .main)
                 snapshot.reloadSections([.main])
-                weatherDataSource.apply(snapshot)
+                self?.weatherDataSource.apply(snapshot)
             }
             .store(in: &subscribers)
     }
@@ -159,15 +159,15 @@ extension ViewController: WeatherUIDelegate {
     
     func updateAddress(_ coordinate: CLLocationCoordinate2D, _ addressString: String) {
         guard let weatherURLRequest = configureURLRequest(coordinate, apiType: .weather) else { return }
-        let publisher2 = URLSession.shared.publisher(request: weatherURLRequest)
-        let p2 = WeatherHTTPClient.publishForecast(from: publisher2, forecastType: CurrentWeather?.self)
+        let weatherRequestPublisher = URLSession.shared.publisher(request: weatherURLRequest)
+        let weatherInfoPublisher = WeatherHTTPClient.publishForecast(from: weatherRequestPublisher, forecastType: CurrentWeather?.self)
         
         guard let forecastURLRequest = configureURLRequest(coordinate, apiType: .forecast) else { return }
-        let publisher = URLSession.shared.publisher(request: forecastURLRequest)
-        let p1 = WeatherHTTPClient.publishForecast(from: publisher, forecastType: FiveDayWeatherForecast.self)
-        Publishers.Zip(p1, p2)
+        let forecastRequestPublisher = URLSession.shared.publisher(request: forecastURLRequest)
+        let forecastInfoPublisher = WeatherHTTPClient.publishForecast(from: forecastRequestPublisher, forecastType: FiveDayWeatherForecast.self)
+        Publishers.Zip(forecastInfoPublisher, weatherInfoPublisher)
             .tryMap { (forecast, current) in
-                let test = CurrentWeatherInfo(address: addressString, icon: current!.weathers.first!.icon, temp: current!.mainInfo)
+                let test = CurrentWeatherInfo(address: addressString, icon: current!.weathers.first!.icon, mainInfo: current!.mainInfo)
                 return Item(test, forecast.list)
             }
             .handleEvents(receiveCompletion: { completion in
@@ -190,6 +190,6 @@ extension ViewController {
     struct CurrentWeatherInfo {
         let address: String
         let icon: String
-        let temp: MainInfo
+        let mainInfo: MainInfo
     }
 }

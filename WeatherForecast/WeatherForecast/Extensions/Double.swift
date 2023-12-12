@@ -8,7 +8,7 @@
 import Foundation
 
 extension Double {
-    func tempFormatter() -> String {
+    func temperatureFormatter() -> String {
         return String(format: "%.1f", self)
     }
 }

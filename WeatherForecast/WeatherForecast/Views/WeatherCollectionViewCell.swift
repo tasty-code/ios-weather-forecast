@@ -70,6 +70,6 @@ final class WeatherCollectionViewCell: UICollectionViewCell, WeatherCellDelegate
         formatter.dateFormat = "MM/dd(E) HH시"
         let date = Date(timeIntervalSince1970: TimeInterval(integerLiteral: Int64(forecast.timeOfData)))
         timeLabel.text = formatter.string(from: date)
-        temperatureLabel.text = forecast.mainInfo.temperature.tempFormatter() + "°"
+        temperatureLabel.text = forecast.mainInfo.temperature.temperatureFormatter() + "°"
     }
 }
