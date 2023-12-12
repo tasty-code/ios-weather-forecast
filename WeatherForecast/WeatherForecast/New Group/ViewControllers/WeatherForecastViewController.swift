@@ -57,7 +57,6 @@ final class WeatherForecastViewController: UIViewController {
                 self.networker = Networker(request: WeatherAPI.fiveDays(coordinate))
                 self.networker?.fetchWeatherData { (result: Model.FiveDaysWeather) in
                     self.fiveDaysWeatherModel = result
-                    //                    print(result)
                     group.leave()
                 }
             }
