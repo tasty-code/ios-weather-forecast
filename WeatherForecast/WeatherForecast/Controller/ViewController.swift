@@ -28,15 +28,6 @@ final class ViewController: UIViewController {
         locationManager.weatherDelgate = self
     }
     
-    private func formattingDate(with dataTime: Int) -> String {
-        let time = NSDate(timeIntervalSince1970: TimeInterval(dataTime))
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd(E) HH시"
-        
-        let convertedString = formatter.string(from: time as Date)
-        
-        return convertedString
-    }
 }
 
 extension ViewController: WeatherUpdateDelegate {
@@ -65,7 +56,6 @@ extension ViewController: WeatherUpdateDelegate {
     }
 }
 
-
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let cellCount = weeklyWeatherData?.list?.count else {
@@ -84,7 +74,7 @@ extension ViewController: UICollectionViewDataSource {
             return WeeklyWeatherCell()
         }
         
-        cell.dateLabel.text = formattingDate(with: date)
+        cell.dateLabel.text = DateFormatter.convertTimeToString(with: date)
         cell.temperatureLabel.text = "\(temperature)"
         cell.configure()
         
@@ -115,5 +105,3 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.width / 2)
     }
 }
-
-
