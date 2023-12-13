@@ -28,7 +28,7 @@ extension LocationManager: CLLocationManagerDelegate {
             manager.requestWhenInUseAuthorization()
         default:
             currentLocationManager?.defaultLocationInfo()
-            weatherDelgate?.fetchWeather()
+            weatherDelgate?.fetchAllWeather()
         }
     }
     
@@ -43,7 +43,7 @@ extension LocationManager: CLLocationManagerDelegate {
             
             guard let placemark = placemarks?.last else { return }
             self?.currentLocationManager?.updateLocationInfo(with: placemark)
-            self?.weatherDelgate?.fetchWeather()
+            self?.weatherDelgate?.fetchAllWeather()
         }
         manager.stopUpdatingLocation()
     }

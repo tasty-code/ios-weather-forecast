@@ -25,6 +25,8 @@
 		7FA62DD42B19F1170083744C /* NetworkManagable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA62DD32B19F1170083744C /* NetworkManagable.swift */; };
 		7FA62DD62B19F65D0083744C /* WeatherUpdateDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA62DD52B19F65D0083744C /* WeatherUpdateDelegate.swift */; };
 		7FD972452B27F8BF00DBDF63 /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD972442B27F8BF00DBDF63 /* DateFormatter+Extension.swift */; };
+		7FD972472B2813B700DBDF63 /* UIUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD972462B2813B700DBDF63 /* UIUpdatable.swift */; };
+		7FD972492B2813DA00DBDF63 /* WeatherDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD972482B2813DA00DBDF63 /* WeatherDataManager.swift */; };
 		7FF59F022B0C484B00C6AA24 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF59F012B0C484B00C6AA24 /* Bundle+Extension.swift */; };
 		7FF59F0C2B0C78DC00C6AA24 /* WeatherURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF59F0B2B0C78DC00C6AA24 /* WeatherURL.swift */; };
 		7FF59F122B0C797D00C6AA24 /* URLFormattable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF59F112B0C797D00C6AA24 /* URLFormattable.swift */; };
@@ -75,6 +77,8 @@
 		7FA62DD32B19F1170083744C /* NetworkManagable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagable.swift; sourceTree = "<group>"; };
 		7FA62DD52B19F65D0083744C /* WeatherUpdateDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherUpdateDelegate.swift; sourceTree = "<group>"; };
 		7FD972442B27F8BF00DBDF63 /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
+		7FD972462B2813B700DBDF63 /* UIUpdatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUpdatable.swift; sourceTree = "<group>"; };
+		7FD972482B2813DA00DBDF63 /* WeatherDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataManager.swift; sourceTree = "<group>"; };
 		7FF59EFF2B0C3EF700C6AA24 /* OpenWeather.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = OpenWeather.xcconfig; sourceTree = "<group>"; };
 		7FF59F012B0C484B00C6AA24 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		7FF59F0B2B0C78DC00C6AA24 /* WeatherURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherURL.swift; sourceTree = "<group>"; };
@@ -202,6 +206,7 @@
 				53B496682B0DD1C600957314 /* NetworkManager.swift */,
 				7F53C1562B14A1FF0061DD02 /* LocationManager.swift */,
 				531424B62B19BE4600DCF22A /* CurrentLocationManager.swift */,
+				7FD972482B2813DA00DBDF63 /* WeatherDataManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -215,6 +220,7 @@
 				7FA62DD32B19F1170083744C /* NetworkManagable.swift */,
 				7FA62DD52B19F65D0083744C /* WeatherUpdateDelegate.swift */,
 				7F2DE4F92B22EF8500F2AD8F /* ReuseIdentifiable.swift */,
+				7FD972462B2813B700DBDF63 /* UIUpdatable.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -412,8 +418,10 @@
 				53D4E0DD2B22AAA700902214 /* WeeklyWeatherCell.swift in Sources */,
 				7FF59F022B0C484B00C6AA24 /* Bundle+Extension.swift in Sources */,
 				53B496692B0DD1C600957314 /* NetworkManager.swift in Sources */,
+				7FD972472B2813B700DBDF63 /* UIUpdatable.swift in Sources */,
 				7FF59F122B0C797D00C6AA24 /* URLFormattable.swift in Sources */,
 				531424B92B19BEC700DCF22A /* CurrentLocationManagable.swift in Sources */,
+				7FD972492B2813DA00DBDF63 /* WeatherDataManager.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				53272AE72B0B3EEF00A73EF7 /* CurrentWeather.swift in Sources */,
 				53E822CF2B18688A00155FB2 /* CurrentLocationInfo.swift in Sources */,

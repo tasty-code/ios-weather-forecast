@@ -9,22 +9,8 @@ import CoreLocation
 
 final class CurrentLocationManager {
     private var locationInfo: CurrentLocationInfo?
-    private let networkManager: NetworkManagable
     
-    init(networkManager: NetworkManagable) {
-        self.networkManager = networkManager
-    }
-    
-    func sendRequest<T: Decodable>(path: String, completion: @escaping (Result<T, Error>) -> Void) {
-        do {
-            let queries = try makeQueries()
-            networkManager.getData(path: path, with: queries, completion: completion)
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
-    private func makeQueries() throws -> [String: String] {
+    func makeQueries() throws -> [String: String] {
         guard let longitude = locationInfo?.coordinates?.longitude,
               let latitude = locationInfo?.coordinates?.latitude
         else {
@@ -46,7 +32,6 @@ final class CurrentLocationManager {
     }
     
     func getAddress() -> String {
-        
         guard let city = locationInfo?.city else {
             return ""
         }

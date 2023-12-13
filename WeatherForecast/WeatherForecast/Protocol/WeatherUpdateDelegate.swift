@@ -8,5 +8,5 @@
 import Foundation
 
 protocol WeatherUpdateDelegate: AnyObject {
-    func fetchWeather()
+    func fetchAllWeather()
 }
