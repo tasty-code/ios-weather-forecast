@@ -60,7 +60,6 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
             displayAlert(title: String(describing: NetworkError.decodingError))
             return
         }
-        guard let headerView = weatherView.headerView else { return }
         
         guard let iconID = currentWeather.weather.last?.icon else { return }
         networkManager.fetchData(for: IconRequest(iconID)) { [weak self] result in
@@ -68,6 +67,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
             case .success(let rawData):
                 let icon = UIImage(data: rawData)
                 DispatchQueue.main.async {
+                    guard let headerView = self?.weatherView.headerView else { return }
                     headerView.configureUI(with: locationData.address, weather: currentWeather, icon: icon)
                 }
             case .failure(let networkError):
@@ -94,9 +94,7 @@ extension WeatherViewController: LocationUpdateDelegate {
             switch result {
             case .success(let rawData):
                 let currentWeather = try? JSONDecoder().decode(Current.self, from: rawData)
-                DispatchQueue.main.async {
-                    self?.updateHeaderView(with: locationData, currentWeather)
-                }
+                self?.updateHeaderView(with: locationData, currentWeather)
             case .failure(let networkError):
                 self?.displayAlert(title: String(describing: networkError))
             }
