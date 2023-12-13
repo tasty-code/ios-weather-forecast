@@ -1,6 +1,6 @@
 import UIKit
 
-extension UIImage {
+extension UIImageView {
     static func load(from imageType: String, completion: @escaping (UIImage) -> Void) {
         let networker = Networker(request: ImageAPI(iconType: imageType))
         
