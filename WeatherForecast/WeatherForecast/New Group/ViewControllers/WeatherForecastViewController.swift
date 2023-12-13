@@ -82,7 +82,7 @@ final class WeatherForecastViewController: UIViewController {
     private func handleRefreshControl() {
         configureWeatherData()
         
-        self.weatherForecastView.collectionView.refreshControl?.endRefreshing()
+        
     }
 }
 
@@ -117,12 +117,9 @@ extension WeatherForecastViewController: UICollectionViewDataSource {
             return WeatherForecastHeaderView()
         }
         
-        do {
-            try header.startConfigure(placemark, using: currentWeathermodel)
-        } catch {
-            print(error)
-        }
-        
+        header.startConfigure(placemark, using: currentWeathermodel)
+      
         return header
     }
 }
+
