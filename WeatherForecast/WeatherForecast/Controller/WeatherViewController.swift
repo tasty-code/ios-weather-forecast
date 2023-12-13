@@ -9,6 +9,7 @@ import CoreLocation
 
 final class WeatherViewController: UIViewController {
     private let dataManager = WeatherDataManager()
+    private let imageFileManager = ImageFileManager()
     
     private var backgroundImageView: UIImageView!
     private var collectionView: UICollectionView!
@@ -199,7 +200,7 @@ extension WeatherViewController {
             
             header.currentTemperatureLabel.text = temperature
             header.maxAndMinTemperatureLabel.text = "최저 \(temperatureMin) 최고 \(temperatureMax)"
-            header.headerIconImageView.image = ImageCacheManager.getCache(forKey: code)
+            bindImage(imageView: header.headerIconImageView, code: code)
         }
     }
     
@@ -216,7 +217,20 @@ extension WeatherViewController {
             
             cell.dateLabel.text = dateFormatter.string(from: date as Date)
             cell.temperatureLabel.text = temperature
-            cell.cellIconImageView.image = ImageCacheManager.getCache(forKey: code)
+            bindImage(imageView: cell.cellIconImageView, code: code)
+        }
+    }
+    
+    private func bindImage(imageView: UIImageView, code: String) {
+        if let image = ImageCacheManager.getCache(forKey: code) {
+            imageView.image = image
+        } else {
+            guard let image = imageFileManager.getImage(forKey: code) else {
+                print("fileManager에 해당 image 없음")
+                return
+            }
+            ImageCacheManager.setCache(image: image, forKey: code)
+            imageView.image = image
         }
     }
 }
