@@ -124,29 +124,21 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
 }
 
 extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
-    func startConfigure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) throws {
+    func startConfigure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) {
         
         guard let model = model,
-              let placemark = placemark else {
-            throw WeatherForecastHeaderViewError.didFailFetchHeaderData
-        }
+              let placemark = placemark else { return }
         
-        guard let imageType = model.weather?[0].icon else {
-            throw WeatherForecastCellError.noExistedImage
-        }
+        guard let imageType = model.weather?[0].icon else { return }
         
         guard let locality = placemark.locality,
-              let subLocality = placemark.subLocality else {
-            throw WeatherForecastHeaderViewError.noExistedLocality
-        }
+              let subLocality = placemark.subLocality else { return }
         
         guard let temperatureMin = model.main?.tempMin,
               let temperatureMax = model.main?.tempMax,
-              let temperatureCurrent = model.main?.temp else {
-            throw WeatherForecastHeaderViewError.noExistedTemperature
-        }
+              let temperatureCurrent = model.main?.temp else { return }
 
-        UIImage.load(from: imageType) { image in
+        UIImageView.load(from: imageType) { image in
             self.configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
         }
     }

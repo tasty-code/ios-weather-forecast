@@ -9,7 +9,7 @@ extension WeatherForecastCellIdentifying {
 }
 
 protocol WeatherForecastCellConfigurable {
-    func startConfigure(using model: Model.FiveDaysWeather.List?) throws
+    func configure(using model: Model.FiveDaysWeather.List?) throws
 }
 
 final class WeatherForecastCell: UICollectionViewListCell {
@@ -100,26 +100,26 @@ final class WeatherForecastCell: UICollectionViewListCell {
 }
 
 extension WeatherForecastCell: WeatherForecastCellConfigurable {
-    func startConfigure(using model: Model.FiveDaysWeather.List?) throws {
+    func configure(using model: Model.FiveDaysWeather.List?) {
         guard let model = model else {
-            throw WeatherForecastCellError.didFailFetchCellData
+            return
         }
         
         guard let imageType = model.weather?[0].icon else {
-            throw WeatherForecastCellError.noExistedImage
+            return
         }
 
         guard let date = model.dt else {
-            throw WeatherForecastCellError.noExistedDate
+            return
         }
         
         let dateString = DateFormatter.toString(by: date)
         
         guard let temperatureCurrent = model.main?.temp else {
-            throw WeatherForecastCellError.noExistedTemperature
+            return
         }
         
-        UIImage.load(from: imageType) { image in
+        UIImageView.load(from: imageType) { image in
             self.configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
         }
     }
