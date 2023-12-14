@@ -89,7 +89,7 @@ final class WeatherForecastViewController: UIViewController {
 extension WeatherForecastViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let count = fiveDaysWeatherModel?.list?.count else {
-            return .zero
+            return 20
         }
         return count
     }

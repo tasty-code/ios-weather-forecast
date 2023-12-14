@@ -23,25 +23,25 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     
     private let locationLabel: UILabel = {
         let label = UILabel()
+        label.text = "-"
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
     private let temperatureMinMaxLabel: UILabel = {
         let label = UILabel()
+        label.text = "-"
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
     private let temperatureCurrentLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 30, weight: .bold)
+        label.text = "-"
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 30, weight: .bold)
         
         return label
     }()
@@ -52,7 +52,6 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         stackView.distribution = .fillEqually
         stackView.addArrangedSubview(locationLabel)
         stackView.addArrangedSubview(temperatureMinMaxLabel)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
     }()
@@ -63,7 +62,6 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         stackView.distribution = .fillEqually
         stackView.addArrangedSubview(partialInfoStackView)
         stackView.addArrangedSubview(temperatureCurrentLabel)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
     }()
