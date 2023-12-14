@@ -167,7 +167,7 @@ extension WeatherViewController: UICollectionViewDataSource {
               let image = forecast.fiveDaysForecast[indexPath.row].weather.first?.icon,
               let imageURL = WeatherIconURLConfigration(weatherIcon: image).makeURL() else { return cell}
         
-        networkServiceProvider.fetch(url:imageURL) { (result: Result<Data, NetworkError>) in
+        networkServiceProvider.fetch(url: imageURL) { (result: Result<Data, NetworkError>) in
             switch result {
                 
             case .success(let iconData):
@@ -216,7 +216,7 @@ extension WeatherViewController: GeoConverter {
             }
         }
         
-        networkServiceProvider.fetch(url:imageURL) { (result: Result<Data, NetworkError>) in
+        networkServiceProvider.fetch(url: imageURL) { (result: Result<Data, NetworkError>) in
             switch result {
                 
             case .success(let iconData):

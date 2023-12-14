@@ -2,7 +2,7 @@ import Foundation
 
 protocol NetworkServiceable {
     
-    func fetch<T>(url: URL, completionHandler: @escaping (Result<T, NetworkError>) -> Void)
+    func fetch<T> (url: URL, completionHandler: @escaping (Result<T, NetworkError>) -> Void)
     
     func handlingDataResponse(data: Data?, response: URLResponse?, error: Error?, completionHandler: @escaping (Result<Data, NetworkError>) -> Void)
 }
@@ -26,7 +26,7 @@ extension NetworkServiceable {
         completionHandler(.success(data))
     }
     
-    func decoder<T:Decodable>(weatherType: T,data: Data) -> T?{
+    func decoder<T: Decodable> (weatherType: T, data: Data) -> T? {
         do {
             let decodedData = try JSONDecoder().decode(T.self, from: data)
             return decodedData

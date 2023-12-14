@@ -1,6 +1,6 @@
 import UIKit
 
-class ForecastWeatherCell: UICollectionViewCell {
+final class ForecastWeatherCell: UICollectionViewCell {
     
     static let identifier = "ForecastCell"
     
@@ -47,8 +47,7 @@ class ForecastWeatherCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             horizontalStackView.topAnchor.constraint(equalTo: topAnchor),
             horizontalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            horizontalStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-
+            horizontalStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
                                                 
         NSLayoutConstraint.activate([
@@ -58,13 +57,11 @@ class ForecastWeatherCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor, multiplier: 1),
-
+            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor, multiplier: 1)
         ])
     }
     
     func updateContent(_ forecastWeather: ForecastWeather, indexPath: IndexPath, icon: UIImage) {
-        
         let date = forecastWeather.fiveDaysForecast[indexPath.row].dt
         guard let formattedDate = dateFormatter(date) else { return }
         

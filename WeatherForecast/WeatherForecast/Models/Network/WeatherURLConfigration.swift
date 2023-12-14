@@ -6,7 +6,7 @@ struct WeatherURLConfigration: APIRequestable {
     var scheme: String = "https"
     var host: String = "api.openweathermap.org"
     var path: String
-    var parameters: [String : String]?
+    var parameters: [String: String]?
     var apiKey: String?
     
     init(weatherType: WeatherType, coordinate: CLLocationCoordinate2D){
@@ -36,7 +36,7 @@ struct WeatherIconURLConfigration: APIRequestable {
     var scheme: String = "https"
     var host: String = "openweathermap.org"
     var path: String
-    var parameters: [String : String]?
+    var parameters: [String: String]?
     var apiKey: String?
     
     init(weatherIcon: String){
