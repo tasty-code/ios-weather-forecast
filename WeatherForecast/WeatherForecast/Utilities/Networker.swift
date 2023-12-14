@@ -9,7 +9,6 @@ struct Networker {
     }
     
     func fetchWeatherData<T: Decodable>(completion: @escaping (T) -> Void) {
-        
         networkManager.fetch { (result: Result<T, NetworkError>) in
             switch result {
             case .success(let weatherResponse):

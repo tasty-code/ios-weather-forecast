@@ -6,7 +6,8 @@ typealias LocationCompletion = (Result<(CLLocationCoordinate2D, CLPlacemark), Lo
 final class LocationManager: NSObject {
     private let manager = CLLocationManager()
     private var locationCompletion: LocationCompletion?
-    
+    private var didFindLocation: Bool = false
+
     override init() {
         super.init()
         
@@ -17,10 +18,14 @@ final class LocationManager: NSObject {
     }
     
     func request(completion: @escaping LocationCompletion){
-        manager.startUpdatingLocation()
+        if !didFindLocation {
+            manager.requestLocation()
+            didFindLocation = true
+        }
+        
         locationCompletion = completion
     }
-    
+
     private func fetchPlacemark() {
         guard let completion = locationCompletion else {
             return
@@ -35,12 +40,11 @@ final class LocationManager: NSObject {
         let locale = Locale(identifier: "Ko-kr")
         
         geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { placemarks, _ in
-            
             guard let placemarks = placemarks,
                   let address = placemarks.last else {
                 return completion(.failure(LocationError.noPlacemarkError))
             }
-            
+    
             completion(.success((coordinate, address)))
         }
     }
@@ -49,15 +53,17 @@ final class LocationManager: NSObject {
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if manager.location?.coordinate == nil {
-            self.locationCompletion?(.failure(LocationError.noLocationError))
+            locationCompletion?(.failure(LocationError.noLocationError))
         }
         
-        manager.stopUpdatingLocation()
-        fetchPlacemark()
+        if didFindLocation {
+            didFindLocation = false
+            fetchPlacemark()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        self.locationCompletion?(.failure(LocationError.didFailFetchLocationError))
+        locationCompletion?(.failure(LocationError.didFailFetchLocationError))
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -65,9 +71,9 @@ extension LocationManager: CLLocationManagerDelegate {
         case . authorizedAlways, .authorizedWhenInUse:
             break
         case . denied, .notDetermined, .restricted:
-            self.locationCompletion?(.failure(LocationError.noLocationAuthorizationError))
+            locationCompletion?(.failure(LocationError.noLocationAuthorizationError))
         default:
-            self.locationCompletion?(.failure(LocationError.unknownLocationAuthorizationError))
+            locationCompletion?(.failure(LocationError.unknownLocationAuthorizationError))
         }
     }
 }
