@@ -9,6 +9,7 @@ final class WeatherViewController: UIViewController {
     
     private var forecast: ForecastWeather?
     private var current: CurrentWeather?
+    private let jsonLoader = JsonLoader()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,7 +105,7 @@ extension WeatherViewController {
             switch result {
                 
             case .success(let currentWeatherData):
-                guard let decodedCurrentWeather = self.networkServiceProvider.decoder(weatherType: self.current, data: currentWeatherData),
+                guard let decodedCurrentWeather = self.jsonLoader.decode(weatherType: self.current, data: currentWeatherData),
                       let decodedCurrentWeather = decodedCurrentWeather else { return }
                 
                 DispatchQueue.main.async {
@@ -124,7 +125,7 @@ extension WeatherViewController {
                 
             case .success(let forecastWeatherData):
                 
-                guard let decodedForecastWeather = self.networkServiceProvider.decoder(weatherType: self.forecast,
+                guard let decodedForecastWeather = self.jsonLoader.decode(weatherType: self.forecast,
                                                                                        data: forecastWeatherData),
                       let decodedForecastWeather = decodedForecastWeather else { return }
                 
@@ -215,7 +216,7 @@ extension WeatherViewController: GeoConverter {
                 
             }
         }
-        
+
         networkServiceProvider.fetch(url: imageURL) { (result: Result<Data, NetworkError>) in
             switch result {
                 

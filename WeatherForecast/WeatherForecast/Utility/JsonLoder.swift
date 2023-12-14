@@ -24,12 +24,13 @@ private enum JsonLoaderError: Error {
 
 final class JsonLoader {
     
-    static func load<T:Decodable>(type: T.Type, fileName: String) -> T? {
+    
+    func load<T:Decodable>(type: T, fileName: String) -> T? {
         do {
            let fileURL = try fileURL(of: fileName)
             let data = try fileData(of: fileURL)
             try checkIsJsonData(of: data)
-            let decodingData = try decode(of: data, to: type)
+            let decodingData = decode(weatherType: type, data: data)
             return decodingData
         } catch {
             print(error.localizedDescription)
@@ -37,7 +38,7 @@ final class JsonLoader {
         }
     }
     
-    static func data(fileName: String) -> Data? {
+    func data(fileName: String) -> Data? {
         do {
             let fileURL = try fileURL(of: fileName)
             let data = try fileData(of: fileURL)
@@ -48,8 +49,8 @@ final class JsonLoader {
         }
     }
     
-    private static func fileURL(of fileName: String) throws -> URL {
-        let testBundle = Bundle(for: self)
+    private func fileURL(of fileName: String) throws -> URL {
+        let testBundle = Bundle(for: JsonLoader.self)
         let filePath = testBundle.path(forResource: fileName, ofType: "json")
         guard let filePath = filePath else {
             throw JsonLoaderError.unknownFile
@@ -58,23 +59,26 @@ final class JsonLoader {
         return fileURL
     }
     
-    private static func fileData(of fileURL: URL) throws -> Data {
+    private func fileData(of fileURL: URL) throws -> Data {
         guard let data = try? Data(contentsOf: fileURL) else {
             throw JsonLoaderError.dataConvertFail
         }
         return data
     }
     
-    private static func checkIsJsonData(of data: Data) throws {
+    private func checkIsJsonData(of data: Data) throws {
         guard let _ = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else {
             throw JsonLoaderError.notJsonData
         }
     }
     
-    private static func decode<T:Decodable>(of data: Data, to type: T.Type) throws -> T {
-        guard let decodedData = try? JSONDecoder().decode(T.self, from: data) else {
-            throw JsonLoaderError.decodingFail
+    func decode<T: Decodable> (weatherType: T, data: Data) -> T? {
+            do {
+                let decodedData = try JSONDecoder().decode(T.self, from: data)
+                return decodedData
+            } catch {
+                print(NetworkError.decodingError.description)
+                return nil
+            }
         }
-        return decodedData
-    }
 }

@@ -6,12 +6,13 @@ final class WeatherForecastTests: XCTestCase {
     
     var url: URL!
     var data: Data!
+    let jsonLoader = JsonLoader()
     
     override func setUpWithError() throws {
         
         let coordinate = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
         url = WeatherURLConfigration(weatherType: .current, coordinate: coordinate).makeURL()
-        data = JsonLoader.data(fileName: "MockWeather")
+        data = jsonLoader.data(fileName: "MockWeather")
     }
     
     override func tearDownWithError() throws {
@@ -25,16 +26,16 @@ final class WeatherForecastTests: XCTestCase {
         let sut = NetworkServiceProvider(session: mockURLSession)
         
         // when
-        var weather: (CurrentWeather)?
+        var weather: CurrentWeather?
         sut.fetch(url: url) { (response: Result<CurrentWeather,NetworkError>) in
             if case let .success(weatherdata) = response {
                 weather = weatherdata
             }
         }
-        
+        guard let weather = weather else { return }
         // then
-        let expectation: (CurrentWeather?) = JsonLoader.load(type: CurrentWeather.self, fileName: "MockWeather")
-        XCTAssertEqual(weather?.coordinate.latitude, expectation?.coordinate.latitude)
+        let expectation: CurrentWeather? = jsonLoader.load(type: weather , fileName: "MockWeather")
+        XCTAssertEqual(weather.coordinate.latitude, expectation?.coordinate.latitude)
     }
     
     func test_fetchData_Data가_있고_statusCode가_404일때() {
