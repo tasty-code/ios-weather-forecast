@@ -8,20 +8,19 @@
 import CoreLocation
 import UIKit
 
-final class LocationDataManager : NSObject {
-    private var locationManager = CLLocationManager()
+final class LocationDataManager: CLLocationManager {
     weak var locationDelegate: LocationDataManagerDelegate?
     
     override init() {
         super.init()
         
         configurePowerSaving()
-        locationManager.delegate = self
+        self.delegate = self
     }
     
     private func configurePowerSaving() {
-        locationManager.distanceFilter = CLLocationDistanceMax
-        locationManager.allowsBackgroundLocationUpdates = false
+        self.distanceFilter = CLLocationDistanceMax
+        self.allowsBackgroundLocationUpdates = false
     }
 }
 
@@ -55,7 +54,7 @@ extension LocationDataManager: CLLocationManagerDelegate {
             }
         }
         
-        locationManager.stopUpdatingLocation()
+        self.stopUpdatingLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -67,7 +66,7 @@ extension LocationDataManager: CLLocationManagerDelegate {
 
 extension LocationDataManager {
     private func lookUpCurrentAddress(completionHandler: @escaping (CLPlacemark?) -> Void ) {
-        guard let lastLocation = locationManager.location else { return completionHandler(nil) }
+        guard let lastLocation = self.location else { return completionHandler(nil) }
         let geocoder = CLGeocoder()
         
         geocoder.reverseGeocodeLocation(lastLocation) { (placemarks, error) in

@@ -40,7 +40,7 @@ extension WeatherViewController: UICollectionViewDelegate {
 
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataManager.forecast?.list.count ?? 20
+        return dataManager.forecast?.list.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -187,6 +187,7 @@ extension WeatherViewController: WeatherDataManagerDelegate {
     private func updateView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+            self.collectionView.refreshControl?.endRefreshing()
         }
     }
 }
@@ -201,10 +202,7 @@ extension WeatherViewController {
     
     @objc
     private func handleRefreshControl() {
-        collectionView.reloadData()
-        DispatchQueue.main.async {
-           self.collectionView.refreshControl?.endRefreshing()
-        }
+        locationDataManager.startUpdatingLocation()
     }
 }
 
