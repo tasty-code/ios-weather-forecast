@@ -17,7 +17,7 @@ final class ViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        mainWeatherView = MainWeatherView(weatherDataDelegate: weatherManager, imageDelegate: weatherImageManager)
+        mainWeatherView = MainWeatherView(weatherDataDelegate: weatherManager, imageDelegate: weatherImageManager, locationDelegate: locationManager)
         weatherManager.delegate = mainWeatherView
         view = mainWeatherView
     }

@@ -10,10 +10,12 @@ import UIKit
 final class MainWeatherView: UIView {
     private weak var weatherDataDelegate: WeatherDataDelegate?
     private weak var imageDelegate: ImageUpdatable?
+    private weak var locationDelegate: LocationRequestDelegate?
     
-    init(weatherDataDelegate: WeatherDataDelegate?, imageDelegate: ImageUpdatable?) {
+    init(weatherDataDelegate: WeatherDataDelegate?, imageDelegate: ImageUpdatable?, locationDelegate: LocationRequestDelegate?) {
         self.weatherDataDelegate = weatherDataDelegate
         self.imageDelegate = imageDelegate
+        self.locationDelegate = locationDelegate
         super.init(frame: .zero)
         collectionViewConfigure()
     }
@@ -32,6 +34,9 @@ final class MainWeatherView: UIView {
         collectionView.delegate = self
         collectionView.register(WeeklyWeatherCell.self, forCellWithReuseIdentifier: WeeklyWeatherCell.reuseIdentifier)
         collectionView.register(CurrentHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentHeaderView.reuseIdentifier)
+//        collectionView.backgroundColor = .clear
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
         return collectionView
     }()
     
@@ -45,6 +50,10 @@ final class MainWeatherView: UIView {
             collectionView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
             collectionView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
         ])
+    }
+    
+    @objc private func handleRefreshControl() {
+        locationDelegate?.updateLocation()
     }
 }
 
@@ -86,8 +95,9 @@ extension MainWeatherView: UICollectionViewDataSource {
             return headerView
         }
         
-        imageDelegate?.requestImage(name: icon) { image in
+        imageDelegate?.requestImage(name: icon) { [weak self] image in
             headerView.updateUI(address: address, weather: weatherData, image: image)
+            self?.collectionView.refreshControl?.endRefreshing()
         }
         
         return headerView

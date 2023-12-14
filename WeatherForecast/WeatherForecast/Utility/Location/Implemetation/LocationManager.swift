@@ -16,7 +16,6 @@ final class LocationManager: NSObject {
         super.init()
         self.manager.delegate = self
     }
-    
 }
 
 extension LocationManager: CLLocationManagerDelegate {
@@ -53,6 +52,12 @@ extension LocationManager: CLLocationManagerDelegate {
         if clError.code == .denied {
             print("위치 서비스 권한이 없습니다.")
         }
+    }
+}
+
+extension LocationManager: LocationRequestDelegate {
+    func updateLocation() {
+        manager.startUpdatingLocation()
     }
 }
 

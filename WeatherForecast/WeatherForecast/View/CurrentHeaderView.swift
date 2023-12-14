@@ -22,7 +22,6 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         let imageView = UIImageView()
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
         return imageView
     }()
     
@@ -47,7 +46,6 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         return label
     }()
     
-    
     private func headerViewConfigure() {
         addSubview(cellImage)
         addSubview(locationLabel)
@@ -62,7 +60,6 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
             cellImage.widthAnchor.constraint(equalTo: cellImage.heightAnchor, multiplier: 1.0),
             
             locationLabel.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            //            locationLabel.centerYAnchor.constraint(equalTo: cellImage.centerYAnchor),
             locationLabel.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor),
             locationLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             
