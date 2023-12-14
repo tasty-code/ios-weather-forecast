@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 final class IconDataService: DataServiceable {
-    weak var delegate: IconDataServiceDelegate?
     
     func downloadData(type service: ServiceType) throws {
         guard let url = service.makeURL() else { throw NetworkError.invailedURL }
@@ -21,7 +20,6 @@ final class IconDataService: DataServiceable {
                     return
                 }
                 ImageFileManager.saveImage(image: image, forKey: service.code)
-                self.delegate?.didCompleteLoad(self)
             case .failure(let error):
                 print(error)
             }
