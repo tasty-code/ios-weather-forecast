@@ -36,6 +36,30 @@ final class WeatherManager: NSObject {
         
         locationManager.delegate = self
     }
+    
+    private func iconFetch() {
+        var list: [String] = []
+        
+        let weatherData = self.cacheData[.weather] as! CurrentWeather
+        list += weatherData.weather.compactMap { item in
+            return item.icon
+        }
+        
+        let forecastData = self.cacheData[.forecast] as! FiveDayForecast
+        list += forecastData.list.compactMap { item in
+            return item.weather.first?.icon
+        }
+        
+        let group = DispatchGroup()
+        
+        list.forEach { iconId in
+            self.iconService.fetchIcon(iconId: iconId, group: group)
+        }
+        
+        group.wait()
+        
+        NotificationCenter.default.post(name: Notification.Name("WeatherNetworkChanged"), object: nil)
+    }
 }
 
 // MARK: - CLLocation Delegate
@@ -147,30 +171,5 @@ extension WeatherManager {
             self.iconFetch()
             NotificationCenter.default.post(name: Notification.Name("WeatherDataRefreshed"), object: nil)
         }
-    }
-    
-    private func iconFetch() {
-        var list: [String] = []
-        
-        let weatherData = self.cacheData[.weather] as! CurrentWeather
-        list += weatherData.weather.compactMap { item in
-            return item.icon
-        }
-        
-        let forecastData = self.cacheData[.forecast] as! FiveDayForecast
-        list += forecastData.list.compactMap { item in
-            return item.weather.first?.icon
-        }
-        
-        let group = DispatchGroup()
-        
-        list.forEach { iconId in
-            self.iconService.fetchIcon(iconId: iconId, group: group)
-        }
-        
-        group.wait()
-        
-        NotificationCenter.default.post(name: Notification.Name("WeatherNetworkChanged"), object: nil)
-//        self.delegate?.updateWeatherDisplay()
     }
 }
