@@ -51,7 +51,7 @@ extension LocationDataManager: CLLocationManagerDelegate {
         if let coordinate = locations.last?.coordinate {
             locationDelegate.location(self, didLoadCoordinate: coordinate)
             lookUpCurrentAddress { placemark in
-                locationDelegate.loaction(self, didCompletePlcamark: placemark)
+                locationDelegate.loaction(self, didCompletePlacemark: placemark)
             }
         }
         

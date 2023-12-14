@@ -144,7 +144,7 @@ extension WeatherViewController: LocationDataManagerDelegate {
         dataManager.downloadData(with: coordinate)
     }
     
-    func loaction(_ manager: LocationDataManager, didCompletePlcamark placemark: CLPlacemark?) {
+    func loaction(_ manager: LocationDataManager, didCompletePlacemark placemark: CLPlacemark?) {
         guard let placemark else {
             print("can't look up current address")
             return

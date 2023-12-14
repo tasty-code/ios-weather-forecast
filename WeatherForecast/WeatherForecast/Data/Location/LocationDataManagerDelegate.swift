@@ -9,6 +9,6 @@ import CoreLocation
 
 protocol LocationDataManagerDelegate: AnyObject {
     func location(_ manager: LocationDataManager, didLoadCoordinate location: CLLocationCoordinate2D)
-    func loaction(_ manager: LocationDataManager, didCompletePlcamark location: CLPlacemark?)
+    func loaction(_ manager: LocationDataManager, didCompletePlacemark location: CLPlacemark?)
     func viewRequestLocationSettingAlert()
 }
