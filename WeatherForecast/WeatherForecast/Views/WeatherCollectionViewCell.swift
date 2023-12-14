@@ -31,13 +31,19 @@ final class WeatherCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private(set) lazy var weatherIcon: UIImageView = {
+    private lazy var weatherIcon: UIImageView = {
         let icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.image = UIImage(systemName: "airtag.fill")
         icon.sizeThatFits(CGSize(width: 5, height: 5))
         return icon
     }()
+    
+    var weatherImage: UIImage? {
+        didSet {
+            weatherIcon.image = weatherImage
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         let layout = compositionaLayout
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .none
-        collectionView.register(WeatherHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
+        collectionView.register(WeatherHeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
         collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.refreshControl = refreshWeather
@@ -87,7 +87,7 @@ class ViewController: UIViewController {
                 return WeatherCollectionViewCell()
             }
             WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(itemIdentifier.weather.first!.icon).png")!) { image in
-                cell.weatherIcon.image = image
+                cell.weatherImage = image
             }
             cell.configureCell(to: itemIdentifier)
             return cell
@@ -99,13 +99,13 @@ class ViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (current, forecast) in
                 self?.weatherDataSource.supplementaryViewProvider = { collectionView , kind , indexPath in
-                    guard let cell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as? WeatherHeaderCollectionViewCell else {
-                        return WeatherHeaderCollectionViewCell()
+                    guard let cell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as? WeatherHeaderCollectionView else {
+                        return WeatherHeaderCollectionView()
                     }
                     cell.configureCell(current)
                     if let icon = current?.icon {
                         WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png")!, completion: { image in
-                            cell.image = image
+                            cell.weatherImage = image
                         })
                     }
                     return cell

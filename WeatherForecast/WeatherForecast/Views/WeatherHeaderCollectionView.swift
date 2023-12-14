@@ -1,5 +1,5 @@
 //
-//  WeatherHeaderCollectionViewCell.swift
+//  WeatherHeaderCollectionView.swift
 //  WeatherForecast
 //
 //  Created by Wonji Ha on 12/1/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherHeaderCollectionViewCell: UICollectionReusableView {
+class WeatherHeaderCollectionView: UICollectionReusableView {
     private lazy var horizontalStackView: UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -24,6 +24,12 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
         icon.image = UIImage(systemName: "apple.logo")
         return icon
     }()
+    
+    var weatherImage: UIImage? {
+        didSet {
+            weatherIcon.image = weatherImage
+        }
+    }
     
     private lazy var verticallStackView: UIStackView = {
        let stackView = UIStackView()
@@ -57,13 +63,8 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
         return label
     }()
     
-    var image: UIImage? {
-        didSet {
-            weatherIcon.image = image
-        }
-    }
     
-    override init(frame: CGRect) {
+    private override init(frame: CGRect) {
         super.init(frame: frame)
         setUpLayouts()
         setUpConstraints()
@@ -73,13 +74,13 @@ class WeatherHeaderCollectionViewCell: UICollectionReusableView {
         super.init(coder: coder)
     }
     
-    func setUpLayouts() {
+    private func setUpLayouts() {
         verticallStackView.addArrangedSubviews([addressLabel, minMaxTemperatureLabel, temperatureLabel])
         horizontalStackView.addArrangedSubviews([weatherIcon, verticallStackView])
         addSubview(horizontalStackView)
     }
     
-    func setUpConstraints() {
+    private func setUpConstraints() {
         NSLayoutConstraint.activate([
             horizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             horizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
