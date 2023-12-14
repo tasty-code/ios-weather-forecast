@@ -7,11 +7,19 @@
 
 import UIKit
 
+protocol CurrentWeatherCollectionReusableViewDelegate: AnyObject {
+    func locationChangeButtonTapped()
+}
+
+
 final class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     static let identifier = "CurrentWeatherCellIdentifier"
     
+    weak var delegate: CurrentWeatherCollectionReusableViewDelegate?
+    
     private let mainStackView: UIStackView = UIStackView(axis: .horizontal)
     private let detailStackView: UIStackView = UIStackView(axis: .vertical)
+    private let headerStackView: UIStackView = UIStackView(axis: .horizontal)
     
     private let iconImageView: UIImageView = UIImageView()
     
@@ -19,12 +27,26 @@ final class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     private let maxMinTempertureLabel: UILabel = UILabel(text: "-")
     private let tempertureLabel: UILabel = UILabel(text: "-", fontSize: 24)
     
+    private let paddingBox: UIView = UIView()
+    
+    private let locationChangeButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("위치설정", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
+        return button
+    }()
+    
     // MARK: - Initialize
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setLayout()
+        locationChangeButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -39,12 +61,15 @@ final class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     // MARK: - private Method
     
     private func setLayout() {
+
+        headerStackView.addArrangedSubViews(addressLabel, locationChangeButton, paddingBox)
         mainStackView.addArrangedSubViews(iconImageView, detailStackView)
-        detailStackView.addArrangedSubViews(addressLabel, maxMinTempertureLabel, tempertureLabel)
+        detailStackView.addArrangedSubViews(headerStackView, maxMinTempertureLabel, tempertureLabel)
         addSubview(mainStackView)
         
         NSLayoutConstraint.activate([
-            iconImageView.widthAnchor.constraint(equalToConstant: 100)
+            iconImageView.widthAnchor.constraint(equalToConstant: 100),
+            paddingBox.widthAnchor.constraint(equalToConstant: 16)
         ])
     }
     
@@ -70,5 +95,9 @@ final class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     func setTempertureLabel(_ temp: Double?) {
         guard let temp = temp else { return }
         tempertureLabel.text = "\(temp)°"
+    }
+    
+    @objc func changeButtonTapped() {
+        delegate?.locationChangeButtonTapped()
     }
 }

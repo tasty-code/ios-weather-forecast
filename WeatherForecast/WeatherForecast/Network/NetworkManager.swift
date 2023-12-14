@@ -18,6 +18,7 @@ final class NetworkManager {
         expecting type: T.Type,
         completion: @escaping (Result<T, Error>) -> Void) {
             
+            
             guard let urlRequest = request else {
                 completion(.failure(NetworkError.failedToCreateRequest))
                 return
@@ -31,12 +32,9 @@ final class NetworkManager {
                 
                 do {
                     let result = try JSONDecoder().decode(type.self, from: data)
-                    print(data)
-                    
                     completion(.success(result))
                 }
                 catch {
-                    print(error)
                     completion(.failure(error))
                 }
             }
