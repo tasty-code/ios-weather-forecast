@@ -10,7 +10,7 @@ extension WeatherForecastHeaderViewIdentifying {
 }
 
 protocol WeatherForecastHeaderViewConfigurable {
-    func startConfigure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) throws
+    func configure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?)
 }
 
 final class WeatherForecastHeaderView: UICollectionReusableView {
@@ -124,8 +124,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
 }
 
 extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
-    func startConfigure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) {
-        
+    func configure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) {
         guard let model = model,
               let placemark = placemark else { return }
         

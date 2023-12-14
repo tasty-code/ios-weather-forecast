@@ -82,12 +82,7 @@ final class WeatherForecastViewController: UIViewController {
     @objc
     private func handleRefreshControl() {
         configureWeatherData()
-<<<<<<< Updated upstream
-        
-        
-=======
         weatherForecastView.collectionView.refreshControl?.endRefreshing()
->>>>>>> Stashed changes
     }
 }
 
@@ -104,11 +99,7 @@ extension WeatherForecastViewController: UICollectionViewDataSource {
             return WeatherForecastCell()
         }
         
-        do {
-            try cell.startConfigure(using: fiveDaysWeatherModel?.list?[indexPath.row])
-        } catch {
-            print(error)
-        }
+        cell.configure(using: fiveDaysWeatherModel?.list?[indexPath.row])
         
         return cell
     }
@@ -118,15 +109,12 @@ extension WeatherForecastViewController: UICollectionViewDataSource {
             return WeatherForecastHeaderView()
         }
         
-        header.startConfigure(placemark, using: currentWeathermodel)
+        header.configure(placemark, using: currentWeathermodel)
       
         return header
     }
 }
 
-<<<<<<< Updated upstream
-=======
 extension WeatherForecastViewController: UICollectionViewDelegate {
     
 }
->>>>>>> Stashed changes
