@@ -8,7 +8,7 @@
 import UIKit
 
 final class WeatherCollectionViewCell: UICollectionViewCell {
-    lazy var forecastStackView: UIStackView = {
+    private lazy var forecastStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .fill
@@ -17,21 +17,21 @@ final class WeatherCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    lazy var timeLabel: UILabel = {
+    private lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    lazy var temperatureLabel: UILabel = {
+    private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    lazy var weatherIcon: UIImageView = {
+    private(set) lazy var weatherIcon: UIImageView = {
         let icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.image = UIImage(systemName: "airtag.fill")
@@ -50,13 +50,13 @@ final class WeatherCollectionViewCell: UICollectionViewCell {
         super.init(coder: coder)
     }
     
-    func setUpLayouts() {
+    private func setUpLayouts() {
         forecastStackView.setCustomSpacing(0, after: .spacerView)
         forecastStackView.addArrangedSubviews([timeLabel, temperatureLabel, weatherIcon])
         addSubview(forecastStackView)
     }
     
-    func setUpConstraints() {
+    private func setUpConstraints() {
         NSLayoutConstraint.activate([
             forecastStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             forecastStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
