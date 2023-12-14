@@ -15,6 +15,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     
     private let locationManager: LocationManager
     private let networkManager: NetworkManager
+    private let cacheManager: IconCacheManager
     
     private var locationData: LocationData?
     private var currentModel: Current?
@@ -22,9 +23,10 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     
     // MARK: - Initializer
     
-    init(locationManager: LocationManager, networkManager: NetworkManager) {
+    init(locationManager: LocationManager, networkManager: NetworkManager, cacheManager: IconCacheManager) {
         self.locationManager = locationManager
         self.networkManager = networkManager
+        self.cacheManager = cacheManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -107,11 +109,17 @@ extension WeatherViewController: WeatherViewDelegate {
         return forecastModel
     }
     
-    func fetchIcon(with iconID: String, completion: @escaping (UIImage?) -> Void) {
+    func fetchIcon(with iconID: String, completion: @escaping (UIImage) -> Void) {
+        if let icon = cacheManager.getIcon(with: iconID) {
+            completion(icon)
+            return
+        }
+        
         networkManager.fetchData(for: IconRequest(iconID)) { [weak self] result in
             switch result {
             case .success(let rawData):
-                let icon = UIImage(data: rawData)
+                guard let icon = UIImage(data: rawData) else { return }
+                self?.cacheManager.store(with: iconID, icon: icon)
                 DispatchQueue.main.async {
                     completion(icon)
                 }

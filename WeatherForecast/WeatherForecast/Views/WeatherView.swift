@@ -11,7 +11,7 @@ protocol WeatherViewDelegate: AnyObject {
     func fetchAddress() -> String?
     func fetchCurrentWeather() -> Current?
     func fetchForecastWeather() -> Forecast?
-    func fetchIcon(with iconID: String, completion: @escaping (UIImage?) -> Void)
+    func fetchIcon(with iconID: String, completion: @escaping (UIImage) -> Void)
 }
 
 final class WeatherView: UIView {

@@ -10,7 +10,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private let locationManager = LocationManager()
     private let networkManager = NetworkManager()
-
+    private let cacheManager = IconCacheManager()
+    
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -18,7 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = WeatherViewController(
             locationManager: locationManager,
-            networkManager: networkManager
+            networkManager: networkManager,
+            cacheManager: cacheManager
         )
         window?.makeKeyAndVisible()
     }
