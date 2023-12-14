@@ -33,7 +33,7 @@ final class WeatherDataManager: WeatherUpdateDelegate {
             }
         }
     }
-
+    
     private func fetchCurrentWeather<T: Decodable>(completion: @escaping (T) -> Void) {
         sendRequest(path: WeatherURL.current.path) { (result: Result<T, Error>) in
             switch result {
@@ -57,11 +57,7 @@ final class WeatherDataManager: WeatherUpdateDelegate {
     }
     
     private func sendRequest<T: Decodable>(path: String, completion: @escaping (Result<T, Error>) -> Void) {
-        do {
-            let queries = try currentLocationManager.makeQueries()
-            networkManager.getData(path: path, with: queries, completion: completion)
-        } catch {
-            completion(.failure(error))
-        }
+        let queries = currentLocationManager.makeQueries()
+        networkManager.getData(path: path, with: queries, completion: completion)
     }
 }
