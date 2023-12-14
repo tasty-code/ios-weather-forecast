@@ -27,11 +27,7 @@ final class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     private let maxMinTempertureLabel: UILabel = UILabel(text: "-")
     private let tempertureLabel: UILabel = UILabel(text: "-", fontSize: 24)
     
-    private let paddingBox: UIView = {
-        let view = UIView()
-        
-        return view
-    }()
+    private let paddingBox: UIView = UIView()
     
     private let locationChangeButton: UIButton = {
         let button = UIButton()

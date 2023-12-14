@@ -16,10 +16,17 @@ final class WeatherViewController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        weatherManager.delegate = self
-        
         configureCollectionView()
         configureRefreshControl()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWeatherDisplay), name: Notification.Name("WeatherNetworkChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshWeatherDisplay), name: Notification.Name("WeatherDataRefreshed"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showAlertWhenNoAuthorization), name: Notification.Name("NoAuthorization"), object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLayoutSubviews() {
@@ -136,22 +143,22 @@ extension WeatherViewController: UICollectionViewDataSource {
     }
 }
 
-// MARK: - weatherManager Delegate
+// MARK: - weatherManager Notification
 
-extension WeatherViewController: WeatherManagerDelegate {
-    func updateWeatherDisplay() {
+extension WeatherViewController {
+    @objc func updateWeatherDisplay() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
     }
     
-    func refreshWeatherDisplay() {
+    @objc func refreshWeatherDisplay() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
             self.refreshControl.endRefreshing()
         }
     }
     
-    func showAlertWhenNoAuthorization() {
+    @objc func showAlertWhenNoAuthorization() {
         let alert = UIAlertController(title: nil, message: "설정>앱>위치에서 변경 가능", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "설정으로 이동", style: .default)  { _ in
             guard let url = URL(string:UIApplication.openSettingsURLString) else { return }

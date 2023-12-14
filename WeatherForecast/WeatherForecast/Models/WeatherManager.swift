@@ -8,16 +8,8 @@
 import Foundation
 import CoreLocation
 
-protocol WeatherManagerDelegate: AnyObject {
-    func showAlertWhenNoAuthorization()
-    func updateWeatherDisplay()
-    func refreshWeatherDisplay()
-}
-
 final class WeatherManager: NSObject {
-    
-    weak var delegate: WeatherManagerDelegate?
-    
+
     var longitude: Double?
     var latitude: Double?
     
@@ -41,8 +33,6 @@ final class WeatherManager: NSObject {
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         startLocationUpdate()
-        
-        locationManager.delegate = self
     }
 }
 
@@ -60,7 +50,7 @@ extension WeatherManager: CLLocationManagerDelegate {
             break
         default:
             self.permitted {
-                self.delegate?.updateWeatherDisplay()
+                NotificationCenter.default.post(name: Notification.Name("WeatherNetworkChanged"), object: nil)
                 self.iconFetch()
             }
         }
@@ -117,7 +107,7 @@ extension WeatherManager {
     }
     
     func rejected() {
-        self.delegate?.showAlertWhenNoAuthorization()
+        NotificationCenter.default.post(name: Notification.Name("NoAuthorization"), object: nil)
     }
     
     func permitted(_ completion: @escaping () -> Void) {
@@ -153,7 +143,7 @@ extension WeatherManager {
     func refreshData() {
         self.permitted {
             self.iconFetch()
-            self.delegate?.refreshWeatherDisplay()
+            NotificationCenter.default.post(name: Notification.Name("WeatherDataRefreshed"), object: nil)
         }
     }
     
@@ -177,6 +167,8 @@ extension WeatherManager {
         }
         
         group.wait()
-        self.delegate?.updateWeatherDisplay()
+        
+        NotificationCenter.default.post(name: Notification.Name("WeatherNetworkChanged"), object: nil)
+//        self.delegate?.updateWeatherDisplay()
     }
 }
