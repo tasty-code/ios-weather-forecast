@@ -42,24 +42,12 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
         super.viewDidLoad()
         
         configureDelegate()
-        configureRefreshControl()
     }
     
     // MARK: - Private Methods
     
     private func configureDelegate() {
         locationManager.delegate = self
-    }
-    
-    private func configureRefreshControl() {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
-        weatherView.addRefreshControl(refreshControl: refreshControl)
-    }
-    
-    @objc
-    private func handleRefreshControl() {
-        locationManager.requestLocation()
     }
 }
 
@@ -102,7 +90,11 @@ extension WeatherViewController: LocationUpdateDelegate {
     }
 }
 
-extension WeatherViewController: UIUpdatable {
+extension WeatherViewController: WeatherViewDelegate {
+    func requestLocation() {
+        locationManager.requestLocation()
+    }
+    
     func fetchAddress() -> String? {
         return locationData?.address
     }

@@ -6,8 +6,8 @@
 //
 
 import UIKit
-protocol UIUpdatable: AnyObject {
-    
+protocol WeatherViewDelegate: AnyObject {
+    func requestLocation()
     func fetchAddress() -> String?
     func fetchCurrentWeather() -> Current?
     func fetchForecastWeather() -> Forecast?
@@ -19,7 +19,7 @@ final class WeatherView: UIView {
         case main
     }
     
-    private weak var delegate: UIUpdatable?
+    private weak var delegate: WeatherViewDelegate?
     private var dataSource: UICollectionViewDiffableDataSource<Section, List>?
     
     // MARK: - UI Components
@@ -42,19 +42,23 @@ final class WeatherView: UIView {
         collectionView.register(WeatherHeaderView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: WeatherHeaderView.reuseIdentifier)
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        collectionView.refreshControl = UIRefreshControl()
-        collectionView.refreshControl?.tintColor = .white
-        
         addSubview(collectionView)
         
         return collectionView
     }()
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .white
+        refreshControl.addTarget(self, action: #selector(startRefreshing), for: .valueChanged)
+        return refreshControl
+    }()
+    
     // MARK: - Initializer
 
-    init(delegate: UIUpdatable) {
+    init(delegate: WeatherViewDelegate) {
         self.delegate = delegate
         super.init(frame: .zero)
         self.setConstraints()
@@ -82,7 +86,12 @@ final class WeatherView: UIView {
         ])
     }
     
-    // MARK: - Configure Method
+    // MARK: - Private Methods
+    
+    @objc
+    private func startRefreshing() {
+        delegate?.requestLocation()
+    }
 
     private func makeCompositionalLayout() -> UICollectionViewCompositionalLayout {
         var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
@@ -94,6 +103,8 @@ final class WeatherView: UIView {
     }
     
     private func configureWeatherCollectionView() {
+        weatherCollectionView.refreshControl = refreshControl
+        
         configureCell()
         configureHeaderView()
     }
@@ -127,10 +138,7 @@ final class WeatherView: UIView {
     }
     
     private func configureHeaderView() {
-        guard let dataSource = dataSource
-        else {
-            return
-        }
+        guard let dataSource = dataSource else { return }
         
         dataSource.supplementaryViewProvider = { [weak self]
             collectionView, kind, indexPath in
@@ -155,7 +163,7 @@ final class WeatherView: UIView {
         }
     }
     
-    // MARK: - Public Method
+    // MARK: - Public Methods
 
     func reload(with forecast: Forecast?) {
         guard let forecast = forecast,
@@ -177,9 +185,5 @@ final class WeatherView: UIView {
         if weatherCollectionView.refreshControl?.isRefreshing == true {
             weatherCollectionView.refreshControl?.endRefreshing()
         }
-    }
-    
-    func addRefreshControl(refreshControl: UIRefreshControl) {
-        weatherCollectionView.refreshControl = refreshControl
     }
 }
