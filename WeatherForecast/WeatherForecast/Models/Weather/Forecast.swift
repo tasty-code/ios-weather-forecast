@@ -30,7 +30,16 @@ struct City: Decodable {
 
 // MARK: - List
 
-struct List: Decodable {
+struct List: Decodable, Hashable {
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(timeOfDataForecasted)
+    }
+    
+    static func == (lhs: List, rhs: List) -> Bool {
+        return lhs.timeOfDataForecasted == rhs.timeOfDataForecasted
+    }
+    
     let weatherCondition: ForecastWeatherCondition
     let weather: [ForecastWeather]
     let clouds: ForecastClouds
@@ -39,13 +48,13 @@ struct List: Decodable {
     let partOfDay: PartOfDay
     let visibility: Int
     let rainfallProbability: Double
-    let TimeOfDataForecasted: Int
-    let TimeOfDataForecastedTxt: String
+    let timeOfDataForecasted: Int
+    let timeOfDataForecastedTxt: String
     
     enum CodingKeys: String, CodingKey {
         case weather, clouds, wind, visibility, rain
-        case TimeOfDataForecasted = "dt"
-        case TimeOfDataForecastedTxt = "dt_txt"
+        case timeOfDataForecasted = "dt"
+        case timeOfDataForecastedTxt = "dt_txt"
         case partOfDay = "sys"
         case weatherCondition = "main"
         case rainfallProbability = "pop"

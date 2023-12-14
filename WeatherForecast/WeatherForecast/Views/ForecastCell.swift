@@ -64,7 +64,7 @@ final class ForecastCell: UICollectionViewCell, Reusable {
     }
     
     func configureUI(with data: List, icon: UIImage?) {
-        dateLabel.text = DateFormatter().toString(by: data.TimeOfDataForecasted)
+        dateLabel.text = DateFormatter().toString(by: data.timeOfDataForecasted)
         temperatureLabel.text = "\(data.weatherCondition.temperature)℃"
         weatherIconView.image = icon
     }
