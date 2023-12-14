@@ -48,4 +48,10 @@ final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
             weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor, multiplier: 1.0)
         ])
     }
+    
+    func updateUI(date: String, temperature: String, image: UIImage?) {
+        dateLabel.text = date
+        temperatureLabel.text = temperature
+        weatherImageView.image = image
+    }
 }

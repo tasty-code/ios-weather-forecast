@@ -76,7 +76,7 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         ])
     }
     
-    func updateUI(address: String, weather: CurrentWeather) {
+    func updateUI(address: String, weather: CurrentWeather, image: UIImage?) {
         guard let minTemperature = weather.main?.minTemperature,
               let maxTemperature = weather.main?.maxTemperature
         else {
@@ -88,5 +88,7 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         
         guard let temperature = weather.main?.temperature else { return }
         temperatureLabel.text = "\(temperature)"
+        
+        cellImage.image = image
     }
 }

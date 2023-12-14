@@ -7,10 +7,11 @@
 import UIKit
 
 final class ViewController: UIViewController {
-    
-    let locationManager = LocationManager()
-    let weatherManager = WeatherDataManager(networkManager: NetworkManager(),
-                                        currentLocationManager: CurrentLocationManager())
+    private let networkManager = NetworkManager()
+    private let locationManager = LocationManager()
+    private lazy var weatherManager = WeatherDataManager(networkManager: networkManager,
+                                                         currentLocationManager: CurrentLocationManager())
+    private lazy var weatherImageManager = WeatherImageManager(networkManager: networkManager)
     
     private var mainWeatherView: MainWeatherView!
     
@@ -46,9 +47,12 @@ extension ViewController: UICollectionViewDataSource {
         else {
             return WeeklyWeatherCell()
         }
+        guard let icon = weatherManager.weeklyWeather?.list?[indexPath.row].weather?[0].icon else { return WeeklyWeatherCell() }
+        let convertedDate = DateFormatter.convertTimeToString(with: date)
         
-        cell.dateLabel.text = DateFormatter.convertTimeToString(with: date)
-        cell.temperatureLabel.text = "\(temperature)"
+        weatherImageManager.requestImage(name: icon) { image in
+            cell.updateUI(date: convertedDate, temperature: "\(temperature)", image: image)
+        }
         cell.configure()
         
         return cell
@@ -56,12 +60,21 @@ extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CurrentHeaderView.reuseIdentifier, for: indexPath) as? CurrentHeaderView else {
-            return CurrentHeaderView()
+            let headerView = CurrentHeaderView()
+            headerView.headerViewConfigure()
+            return headerView
         }
         
-        if let weatherData = weatherManager.currentWeather {
-            let address = weatherManager.currentLocationManager.getAddress()
-            headerView.updateUI(address: address, weather: weatherData)
+        guard let weatherData = weatherManager.currentWeather else {
+            return headerView
+        }
+        guard let icon = weatherData.weather?.last?.icon else {
+            return headerView
+        }
+        let address = weatherManager.currentLocationManager.getAddress()
+        
+        weatherImageManager.requestImage(name: icon) { image in
+            headerView.updateUI(address: address, weather: weatherData, image: image)
         }
         
         headerView.headerViewConfigure()
