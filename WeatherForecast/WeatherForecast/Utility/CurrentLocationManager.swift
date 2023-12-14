@@ -10,15 +10,15 @@ import CoreLocation
 final class CurrentLocationManager {
     private var locationInfo: CurrentLocationInfo?
     
-    func makeQueries() throws -> [String: String] {
+    func makeQueries() -> [String: String]? {
         guard let longitude = locationInfo?.coordinates?.longitude,
               let latitude = locationInfo?.coordinates?.latitude
         else {
-            throw QueryError.noneCoordinate
+            return nil
         }
         guard let appid = Bundle.main.apiKey
         else {
-            throw QueryError.noneAPIKey
+            return nil
         }
         
         let queries = [

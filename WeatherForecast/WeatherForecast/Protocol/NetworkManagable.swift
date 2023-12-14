@@ -8,5 +8,5 @@
 import Foundation
 
 protocol NetworkManagable {
-    func getData<T: Decodable>(path: String, with queries: [String: String], completion: @escaping (Result<T, Error>) -> Void)
+    func getData<T: Decodable>(path: String, with queries: [String: String]?, completion: @escaping (Result<T, Error>) -> Void)
 }

@@ -18,7 +18,7 @@ final class NetworkManager {
 }
 
 extension NetworkManager: NetworkManagable {
-    func getData<T: Decodable>(path: String, with queries: [String: String], completion: @escaping (Result<T, Error>) -> Void) {
+    func getData<T: Decodable>(path: String, with queries: [String: String]?, completion: @escaping (Result<T, Error>) -> Void) {
         guard let url = urlFormatter.makeURL(path: path, with: queries)
         else {
             return completion(.failure(NetworkError.urlFormattingError))
