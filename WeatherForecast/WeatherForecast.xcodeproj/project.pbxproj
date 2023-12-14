@@ -135,11 +135,27 @@
 			path = URLSession;
 			sourceTree = "<group>";
 		};
+		C3B4C4F92B2AEE7300200CF4 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				C3B4C4FA2B2AEF0000200CF4 /* Location */,
+				DEA4AC8A2B0F38B60094ED6B /* Network */,
+				C3B4C4F52B2ADF4100200CF4 /* Cache */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		C3B4C4FA2B2AEF0000200CF4 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				DEA4AC8F2B0F73DA0094ED6B /* LocationManager.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
 		C3E791922B0AF6DD00257AF6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C3B4C4F52B2ADF4100200CF4 /* Cache */,
-				DEA4AC8A2B0F38B60094ED6B /* Network */,
 				DE04034F2B22A4970031EFB3 /* APIRequest */,
 				DE5133752B1063E600DC6A41 /* Location */,
 				DEE65AB32B0B473D00312FBF /* Weather */,
@@ -202,6 +218,7 @@
 			children = (
 				C79C8D0125ADDDF300EEE3F1 /* Info.plist */,
 				C3E791952B0AF75B00257AF6 /* Resources */,
+				C3B4C4F92B2AEE7300200CF4 /* Utilities */,
 				C3E791922B0AF6DD00257AF6 /* Models */,
 				C3E791932B0AF6E500257AF6 /* Views */,
 				C3E791942B0AF6F100257AF6 /* Controllers */,
@@ -268,7 +285,6 @@
 		DE5133752B1063E600DC6A41 /* Location */ = {
 			isa = PBXGroup;
 			children = (
-				DEA4AC8F2B0F73DA0094ED6B /* LocationManager.swift */,
 				DE5133762B10640400DC6A41 /* LocationData.swift */,
 			);
 			path = Location;

@@ -92,6 +92,8 @@ extension WeatherViewController: LocationUpdateDelegate {
     }
 }
 
+// MARK: - WeatherViewDelegate
+
 extension WeatherViewController: WeatherViewDelegate {
     func requestLocation() {
         locationManager.requestLocation()

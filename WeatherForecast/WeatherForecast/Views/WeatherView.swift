@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 protocol WeatherViewDelegate: AnyObject {
     func requestLocation()
     func fetchAddress() -> String?
