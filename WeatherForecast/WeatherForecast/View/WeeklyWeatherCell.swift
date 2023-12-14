@@ -9,21 +9,21 @@ import UIKit
 
 final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
     
-    lazy var dateLabel: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
-    lazy var temperatureLabel: UILabel = {
+    private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
-    lazy var weatherImageView: UIImageView = {
+    private lazy var weatherImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         

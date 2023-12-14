@@ -154,6 +154,7 @@
 		53D4E0D82B22A5CC00902214 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7FF59F102B0C796F00C6AA24 /* Protocol */,
 				53D4E0DC2B22AAA700902214 /* WeeklyWeatherCell.swift */,
 				7F2DE4F72B22ED9200F2AD8F /* MainWeatherView.swift */,
 				53D4E0E02B231C1400902214 /* CurrentHeaderView.swift */,
@@ -191,10 +192,130 @@
 		53E822CC2B18677A00155FB2 /* URL */ = {
 			isa = PBXGroup;
 			children = (
+				7F5D48A32B2AE48400502063 /* Implementation */,
+				7F5D48A22B2AE47C00502063 /* Interface */,
+			);
+			path = URL;
+			sourceTree = "<group>";
+		};
+		7F5D48962B2AE2F700502063 /* Weather */ = {
+			isa = PBXGroup;
+			children = (
+				7F5D48982B2AE31100502063 /* Implementation */,
+				7F5D48972B2AE30800502063 /* Interface */,
+			);
+			path = Weather;
+			sourceTree = "<group>";
+		};
+		7F5D48972B2AE30800502063 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				7FA62DD52B19F65D0083744C /* WeatherUpdateDelegate.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		7F5D48982B2AE31100502063 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				7FD972482B2813DA00DBDF63 /* WeatherDataManager.swift */,
+				7F5D48942B2ADF0300502063 /* WeatherImageManager.swift */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		7F5D48992B2AE34300502063 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				7F5D489B2B2AE35200502063 /* Implemetation */,
+				7F5D489A2B2AE34D00502063 /* Interface */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		7F5D489A2B2AE34D00502063 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				531424B82B19BEC700DCF22A /* CurrentLocationManagable.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		7F5D489B2B2AE35200502063 /* Implemetation */ = {
+			isa = PBXGroup;
+			children = (
+				7F53C1562B14A1FF0061DD02 /* LocationManager.swift */,
+				531424B62B19BE4600DCF22A /* CurrentLocationManager.swift */,
+			);
+			path = Implemetation;
+			sourceTree = "<group>";
+		};
+		7F5D489C2B2AE3AC00502063 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				7F5D489E2B2AE3BB00502063 /* Implementation */,
+				7F5D489D2B2AE3B600502063 /* Interface */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		7F5D489D2B2AE3B600502063 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				7FA62DD32B19F1170083744C /* NetworkManagable.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		7F5D489E2B2AE3BB00502063 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				53B496682B0DD1C600957314 /* NetworkManager.swift */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		7F5D489F2B2AE3EB00502063 /* URLFormat */ = {
+			isa = PBXGroup;
+			children = (
+				7F5D48A12B2AE40D00502063 /* Implementation */,
+				7F5D48A02B2AE40100502063 /* Interface */,
+			);
+			path = URLFormat;
+			sourceTree = "<group>";
+		};
+		7F5D48A02B2AE40100502063 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				7FF59F112B0C797D00C6AA24 /* URLFormattable.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		7F5D48A12B2AE40D00502063 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				7FF59F152B0CC1AB00C6AA24 /* WeatherURLFormatter.swift */,
+				7F5D48922B2AD9BF00502063 /* WeatherImageURLFormatter.swift */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		7F5D48A22B2AE47C00502063 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				7FF59F132B0CC18300C6AA24 /* APIBaseURLProtocol.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		7F5D48A32B2AE48400502063 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
 				7FF59F0B2B0C78DC00C6AA24 /* WeatherDataURL.swift */,
 				7F5D48902B2AD95A00502063 /* WeatherImageURL.swift */,
 			);
-			path = URL;
+			path = Implementation;
 			sourceTree = "<group>";
 		};
 		7FF59F002B0C481400C6AA24 /* Extension */ = {
@@ -209,13 +330,10 @@
 		7FF59F0D2B0C793F00C6AA24 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				7FF59F152B0CC1AB00C6AA24 /* WeatherURLFormatter.swift */,
-				7F5D48922B2AD9BF00502063 /* WeatherImageURLFormatter.swift */,
-				53B496682B0DD1C600957314 /* NetworkManager.swift */,
-				7F53C1562B14A1FF0061DD02 /* LocationManager.swift */,
-				531424B62B19BE4600DCF22A /* CurrentLocationManager.swift */,
-				7FD972482B2813DA00DBDF63 /* WeatherDataManager.swift */,
-				7F5D48942B2ADF0300502063 /* WeatherImageManager.swift */,
+				7F5D489F2B2AE3EB00502063 /* URLFormat */,
+				7F5D489C2B2AE3AC00502063 /* Network */,
+				7F5D48992B2AE34300502063 /* Location */,
+				7F5D48962B2AE2F700502063 /* Weather */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -223,11 +341,6 @@
 		7FF59F102B0C796F00C6AA24 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
-				7FF59F112B0C797D00C6AA24 /* URLFormattable.swift */,
-				7FF59F132B0CC18300C6AA24 /* APIBaseURLProtocol.swift */,
-				531424B82B19BEC700DCF22A /* CurrentLocationManagable.swift */,
-				7FA62DD32B19F1170083744C /* NetworkManagable.swift */,
-				7FA62DD52B19F65D0083744C /* WeatherUpdateDelegate.swift */,
 				7F2DE4F92B22EF8500F2AD8F /* ReuseIdentifiable.swift */,
 				7FD972462B2813B700DBDF63 /* UIUpdatable.swift */,
 			);
@@ -259,7 +372,6 @@
 			children = (
 				53D4E0D92B22A5D300902214 /* Controller */,
 				53D4E0D82B22A5CC00902214 /* View */,
-				7FF59F102B0C796F00C6AA24 /* Protocol */,
 				7FF59F0D2B0C793F00C6AA24 /* Utility */,
 				7FF59F002B0C481400C6AA24 /* Extension */,
 				53272AE52B0B3EE300A73EF7 /* Model */,
