@@ -8,6 +8,7 @@ import UIKit
 import CoreLocation
 
 final class WeatherViewController: UIViewController {
+    private let locationDataManager = LocationDataManager()
     private let dataManager = WeatherDataManager()
     private let imageFileManager = ImageFileManager()
     
@@ -19,7 +20,9 @@ final class WeatherViewController: UIViewController {
         setUI()
         setRefreshControl()
         
+        locationDataManager.locationDelegate = self
         dataManager.delegate = self
+        
         collectionView.delegate = self
         collectionView.dataSource = self
     }
@@ -133,17 +136,21 @@ extension WeatherViewController {
     }
 }
 
-// MARK: - WeatherDataManagerDelegate
+// MARK: - LocationDataManagerDelegate
 
-extension WeatherViewController: WeatherDataManagerDelegate {
-    func completedLoadData(_ manager: WeatherDataManager) {
-        updateView()
+extension WeatherViewController: LocationDataManagerDelegate {
+    
+    func location(_ manager: LocationDataManager, didLoadCoordinate coordinate: CLLocationCoordinate2D) {
+        dataManager.downloadData(with: coordinate)
     }
     
-    private func updateView() {
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
+    func loaction(_ manager: LocationDataManager, didCompletePlcamark placemark: CLPlacemark?) {
+        guard let placemark else {
+            print("can't look up current address")
+            return
         }
+        
+        dataManager.address = "\(placemark.locality ?? "") \(placemark.subLocality ?? "")"
     }
     
     func viewRequestLocationSettingAlert() {
@@ -167,6 +174,20 @@ extension WeatherViewController: WeatherDataManagerDelegate {
         requestLocationServiceAlert.addAction(openSettingAction)
         requestLocationServiceAlert.addAction(exitAction)
         present(requestLocationServiceAlert, animated: true)
+    }
+}
+
+// MARK: - WeatherDataManagerDelegate
+
+extension WeatherViewController: WeatherDataManagerDelegate {
+    func completedLoadData(_ manager: WeatherDataManager) {
+        updateView()
+    }
+    
+    private func updateView() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
 }
 

@@ -35,7 +35,7 @@ extension LocationDataManager: CLLocationManagerDelegate {
             case .authorizedWhenInUse:
                 manager.startUpdatingLocation()
             case .restricted, .denied:
-                locationDelegate?.notifyDeniedAuthorization()
+                locationDelegate?.viewRequestLocationSettingAlert()
             case .notDetermined:
                 manager.requestWhenInUseAuthorization()
             default:
