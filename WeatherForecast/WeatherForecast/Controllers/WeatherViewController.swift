@@ -18,10 +18,7 @@ final class WeatherViewController: UIViewController, UICollectionViewDelegate {
         
         configureCollectionView()
         configureRefreshControl()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(updateWeatherDisplay), name: Notification.Name("WeatherNetworkChanged"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshWeatherDisplay), name: Notification.Name("WeatherDataRefreshed"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showAlertWhenNoAuthorization), name: Notification.Name("NoAuthorization"), object: nil)
+        configureObserver()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -55,6 +52,13 @@ final class WeatherViewController: UIViewController, UICollectionViewDelegate {
     @objc private func refreshWeatherData(_ sender: Any) {
         weatherManager.refreshData()
     }
+    
+    private func configureObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWeatherDisplay), name: Notification.Name("WeatherNetworkChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshWeatherDisplay), name: Notification.Name("WeatherDataRefreshed"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showAlertWhenNoAuthorization), name: Notification.Name("NoAuthorization"), object: nil)
+    }
+    
 }
 
 // MARK: - CollectionView Layout
@@ -173,8 +177,8 @@ extension WeatherViewController {
 }
 
 
-extension WeatherViewController: AlertDelegate {
-    func setAlert() {
+extension WeatherViewController: CurrentWeatherCollectionReusableViewDelegate {
+    func locationChangeButtonTapped() {
         let alert = UIAlertController(title: "위치 변경", message: "날씨를 받아올 위치의 위도와 경도를 입력하세요", preferredStyle: .alert)
         
         alert.addTextField { (textField: UITextField) -> Void in

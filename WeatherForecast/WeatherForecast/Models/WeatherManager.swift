@@ -33,6 +33,8 @@ final class WeatherManager: NSObject {
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         startLocationUpdate()
+        
+        locationManager.delegate = self
     }
 }
 

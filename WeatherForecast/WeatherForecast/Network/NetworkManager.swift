@@ -32,12 +32,9 @@ final class NetworkManager {
                 
                 do {
                     let result = try JSONDecoder().decode(type.self, from: data)
-                    print(data)
-                    
                     completion(.success(result))
                 }
                 catch {
-                    print(error)
                     completion(.failure(error))
                 }
             }

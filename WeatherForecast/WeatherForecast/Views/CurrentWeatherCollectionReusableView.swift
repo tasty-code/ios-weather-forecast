@@ -7,15 +7,15 @@
 
 import UIKit
 
-protocol AlertDelegate: AnyObject {
-    func setAlert()
+protocol CurrentWeatherCollectionReusableViewDelegate: AnyObject {
+    func locationChangeButtonTapped()
 }
 
 
 final class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     static let identifier = "CurrentWeatherCellIdentifier"
     
-    weak var delegate: AlertDelegate?
+    weak var delegate: CurrentWeatherCollectionReusableViewDelegate?
     
     private let mainStackView: UIStackView = UIStackView(axis: .horizontal)
     private let detailStackView: UIStackView = UIStackView(axis: .vertical)
@@ -98,6 +98,6 @@ final class CurrentWeatherCollectionReusableView: UICollectionReusableView {
     }
     
     @objc func changeButtonTapped() {
-        delegate?.setAlert()
+        delegate?.locationChangeButtonTapped()
     }
 }
