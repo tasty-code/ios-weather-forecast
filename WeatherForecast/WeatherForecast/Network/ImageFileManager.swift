@@ -8,24 +8,21 @@
 import UIKit
 
 struct ImageFileManager {
-    private let fileManager = FileManager.default
-    private let documentURL: URL
+    private static let fileManager = FileManager.default
     
-    init() {
-        if #available(iOS 16.0, *) {
-            documentURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0].appending(path: "new_folder")
-            do {
-                try fileManager.createDirectory(at: documentURL, withIntermediateDirectories: false)
-            } catch {
-                print("directory 생성 실패")
-            }
-        } else {
-            print("ios 16버전 이상으로 업그레이드 해주세요.")
-            documentURL = URL(fileURLWithPath: "")
+    @available(iOS 16.0, *)
+    private static var documentURL = ImageFileManager.fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0].appending(path: "new_folder")
+    
+    @available(iOS 16.0, *)
+    private init() {
+        do {
+            try ImageFileManager.fileManager.createDirectory(at: ImageFileManager.documentURL, withIntermediateDirectories: false)
+        } catch {
+            print("directory 생성 실패")
         }
     }
     
-    func saveImage(image: UIImage, forKey key: String) {
+    static func saveImage(image: UIImage, forKey key: String) {
         if #available(iOS 16.0, *) {
             let fileURL = documentURL.appending(path: key)
             let data = image.pngData() ?? image.jpegData(compressionQuality: 1)
@@ -39,16 +36,21 @@ struct ImageFileManager {
         }
     }
     
-    func getImage(forKey key: String) -> UIImage? {
+    static func getImage(forKey key: String) -> UIImage? {
         var image: UIImage? = nil
         
         if #available(iOS 16.0, *) {
-            let path = documentURL.appending(component: key).path
+            let path = ImageFileManager.documentURL.appending(component: key).path
             image = UIImage(contentsOfFile: path)
         } else {
             print("ios 16버전 이상으로 업그레이드 해주세요.")
         }
         
         return image
+    }
+    
+    static func isExist(forKey key: String) -> Bool {
+        if getImage(forKey: key) == nil { return false }
+        else { return true }
     }
 }
