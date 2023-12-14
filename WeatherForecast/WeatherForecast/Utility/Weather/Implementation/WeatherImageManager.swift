@@ -7,10 +7,9 @@
 
 import UIKit
 
-final class WeatherImageManager {
+final class WeatherImageManager: ImageUpdatable {
     private let networkManager: NetworkManagable
     private let urlFormatter: any URLFormattable = WeatherImageURLFormatter()
-    weak var delegate: UIUpdatable?
     
     init(networkManager: NetworkManagable) {
         self.networkManager = networkManager
@@ -28,4 +27,8 @@ final class WeatherImageManager {
             }
         }
     }
+}
+
+protocol ImageUpdatable: AnyObject {
+    func requestImage(name: String, completion: @escaping (UIImage?) -> ())
 }

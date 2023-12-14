@@ -14,8 +14,8 @@ final class WeatherDataManager: WeatherUpdateDelegate {
     
     weak var delegate: UIUpdatable?
     
-    private(set) var currentWeather: CurrentWeather?
-    private(set) var weeklyWeather: WeeklyWeather?
+    private var currentWeather: CurrentWeather?
+    private var weeklyWeather: WeeklyWeather?
     
     init(networkManager: NetworkManagable, currentLocationManager: CurrentLocationManager) {
         self.networkManager = networkManager
@@ -53,3 +53,38 @@ final class WeatherDataManager: WeatherUpdateDelegate {
         }
     }
 }
+
+extension WeatherDataManager: WeatherDataDelegate {
+    func getCellCount() -> Int? {
+        return weeklyWeather?.list?.count
+    }
+    
+    func getAddress() -> String {
+        let address = currentLocationManager.getAddress()
+        return address
+    }
+    
+    func getCurrentWeatherData() -> CurrentWeather? {
+        return currentWeather
+    }
+    
+    func geticonName() -> String? {
+        return currentWeather?.weather?.last?.icon
+    }
+    
+    func getDataTime(_ index: Int) -> String? {
+        guard let date = weeklyWeather?.list?[index].dataTime else { return nil }
+        let convertedDate = DateFormatter.convertTimeToString(with: date)
+        return convertedDate
+    }
+    
+    func getTemperature(_ index: Int) -> String? {
+        guard let temperature = weeklyWeather?.list?[index].main?.temperature else { return nil }
+        return String(format: "%.1f", temperature)
+    }
+    
+    func getWeeklyIconName(_ index: Int) -> String? {
+        return weeklyWeather?.list?[index].weather?[0].icon
+    }
+}
+

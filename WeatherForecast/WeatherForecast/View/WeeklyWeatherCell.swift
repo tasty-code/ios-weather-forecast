@@ -9,6 +9,15 @@ import UIKit
 
 final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +39,7 @@ final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
         return imageView
     }()
     
-    func configure() {
+    private func configure() {
         addSubview(dateLabel)
         addSubview(temperatureLabel)
         addSubview(weatherImageView)

@@ -11,6 +11,7 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        headerViewConfigure()
     }
     
     required init?(coder: NSCoder) {
@@ -47,7 +48,7 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
     }()
     
     
-    func headerViewConfigure() {
+    private func headerViewConfigure() {
         addSubview(cellImage)
         addSubview(locationLabel)
         addSubview(minMaxLabel)
@@ -84,10 +85,10 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         }
         
         locationLabel.text = address
-        minMaxLabel.text = "최저 \(minTemperature) 최고 \(maxTemperature)"
+        minMaxLabel.text = "최저 \(String(format: "%.1f", minTemperature))  최고 \(String(format: "%.1f", maxTemperature))"
         
         guard let temperature = weather.main?.temperature else { return }
-        temperatureLabel.text = "\(temperature)"
+        temperatureLabel.text = String(format: "%.1f", temperature)
         
         cellImage.image = image
     }
