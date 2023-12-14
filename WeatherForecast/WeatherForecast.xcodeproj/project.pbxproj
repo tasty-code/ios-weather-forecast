@@ -174,8 +174,7 @@
 			children = (
 				C79C8CF725ADDDF200EEE3F1 /* WeatherForecastViewController.swift */,
 			);
-			name = ViewControllers;
-			path = "New Group/ViewControllers";
+			path = "ViewControllers";
 			sourceTree = "<group>";
 		};
 		A6B4512E2B1D6018002FC823 /* Views */ = {
