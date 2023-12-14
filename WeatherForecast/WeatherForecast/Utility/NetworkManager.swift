@@ -8,23 +8,21 @@
 import Foundation
 
 final class NetworkManager {
-    private let urlFormatter: any URLFormattable
     private let session: URLSession
     
-    init(urlFormatter: any URLFormattable, session: URLSession = URLSession.shared) {
-        self.urlFormatter = urlFormatter
+    init(session: URLSession = URLSession.shared) {
         self.session = session
     }
 }
 
 extension NetworkManager: NetworkManagable {
-    func getData<T: Decodable>(path: String, with queries: [String: String]?, completion: @escaping (Result<T, Error>) -> Void) {
-        guard let url = urlFormatter.makeURL(path: path, with: queries)
+    func getData(formatter: any URLFormattable, path: String, with queries: [String: String]?, completion: @escaping (Result<Data, Error>) -> Void) {
+        guard let url = formatter.makeURL(path: path, with: queries)
         else {
             return completion(.failure(NetworkError.urlFormattingError))
         }
         
-        let request = urlFormatter.makeURLRequest(url: url, httpMethodType: .get)
+        let request = formatter.makeURLRequest(url: url, httpMethodType: .get)
         
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -41,12 +39,7 @@ extension NetworkManager: NetworkManagable {
             else {
                 return completion(.failure(NetworkError.emptyDataError))
             }
-            do {
-                let decodingData = try JSONDecoder().decode(T.self, from: data)
-                completion(.success(decodingData))
-            } catch {
-                completion(.failure(NetworkError.decodingError))
-            }
+            completion(.success(data))
         }
         task.resume()
     }

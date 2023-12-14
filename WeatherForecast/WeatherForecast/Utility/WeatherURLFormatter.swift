@@ -8,5 +8,5 @@
 import Foundation
 
 struct WeatherURLFormatter: URLFormattable {
-    typealias T = WeatherURL
+    typealias T = WeatherDataURL
 }

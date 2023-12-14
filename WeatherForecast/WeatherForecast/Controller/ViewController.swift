@@ -9,7 +9,7 @@ import UIKit
 final class ViewController: UIViewController {
     
     let locationManager = LocationManager()
-    let weatherManager = WeatherDataManager(networkManager: NetworkManager(urlFormatter: WeatherURLFormatter()),
+    let weatherManager = WeatherDataManager(networkManager: NetworkManager(),
                                         currentLocationManager: CurrentLocationManager())
     
     private var mainWeatherView: MainWeatherView!

@@ -8,9 +8,9 @@
 import Foundation
 
 final class WeatherDataManager: WeatherUpdateDelegate {
-    
     private let networkManager: NetworkManagable
     let currentLocationManager: CurrentLocationManager
+    private let urlFormatter: any URLFormattable = WeatherURLFormatter()
     
     weak var delegate: UIUpdatable?
     
@@ -22,42 +22,34 @@ final class WeatherDataManager: WeatherUpdateDelegate {
         self.currentLocationManager = currentLocationManager
     }
     
-    func fetchAllWeather() {
-        fetchCurrentWeather { [weak self] (weather: CurrentWeather) in
-            self?.currentWeather = weather
-        }
-        fetchWeeklyWeather { [weak self] (weather: WeeklyWeather) in
-            self?.weeklyWeather = weather
-            DispatchQueue.main.async { [weak self] in
-                self?.delegate?.updateUI()
-            }
-        }
-    }
-    
-    private func fetchCurrentWeather<T: Decodable>(completion: @escaping (T) -> Void) {
-        sendRequest(path: WeatherURL.current.path) { (result: Result<T, Error>) in
-            switch result {
-            case .success(let weather):
-                completion(weather)
-            case .failure(let error):
-                print("\(error)")
-            }
-        }
-    }
-    
-    private func fetchWeeklyWeather<T: Decodable>(completion: @escaping (T) -> Void) {
-        sendRequest(path: WeatherURL.weekly.path) { (result: Result<T, Error>) in
-            switch result {
-            case .success(let weather):
-                completion(weather)
-            case .failure(let error):
-                print("\(error)")
-            }
-        }
-    }
-    
-    private func sendRequest<T: Decodable>(path: String, completion: @escaping (Result<T, Error>) -> Void) {
+    func sendRequest() {
         let queries = currentLocationManager.makeQueries()
-        networkManager.getData(path: path, with: queries, completion: completion)
+        networkManager.getData(formatter: urlFormatter, path: WeatherDataURL.current.path, with: queries) { [weak self] result in
+            switch result {
+            case .success(let data):
+                guard let weather = try? JSONDecoder().decode(CurrentWeather.self, from: data) else {
+                    //Alert Delegate
+                    return
+                }
+                self?.currentWeather = weather
+            case .failure(let error):
+                print("\(error.localizedDescription)")
+            }
+        }
+        networkManager.getData(formatter: urlFormatter, path: WeatherDataURL.weekly.path, with: queries) { [weak self] result in
+            switch result {
+            case .success(let data):
+                guard let weather = try? JSONDecoder().decode(WeeklyWeather.self, from: data) else {
+                    return
+                }
+                self?.weeklyWeather = weather
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.updateUI()
+                }
+            case .failure(let error):
+                print("\(error.localizedDescription)")
+            }
+        }
     }
 }
