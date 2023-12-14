@@ -4,24 +4,24 @@ final class ForecastWeatherCell: UICollectionViewCell {
     
     static let identifier = "ForecastCell"
     
-    let horizontalStackView: UIStackView = {
+    private lazy var horizontalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
         return stackView
     }()
 
-    let weatherImageView: UIImageView = {
+    private lazy var weatherImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
     }()
     
-    let dateLabel: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let dateLabel = UILabel()
         return dateLabel
     }()
     
-    let temperatureLabel: UILabel = {
+    private lazy var temperatureLabel: UILabel = {
         let temperatureLabel = UILabel()
         return temperatureLabel
     }()

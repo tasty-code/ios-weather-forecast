@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -184,8 +184,8 @@
 		C79C8CF225ADDDF200EEE3F1 /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
-				E33065CC2B2A990100889DFE /* Utility */,
 				6BF54A472B156F1E009E93E6 /* LifeCycle */,
+				E33065CC2B2A990100889DFE /* Utility */,
 				E3E7164E2B1067C2006B3C63 /* Protocols */,
 				E3E7161D2B0AFE39006B3C63 /* Models */,
 				6BF54A462B156ECE009E93E6 /* View */,

@@ -3,19 +3,19 @@ import UIKit
 final class HeaderCollectionReusableView: UICollectionReusableView {
     static let identifier = "Header"
     
-    private let headerStackView: UIStackView = {
+    private lazy var headerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 8
         return stackView
     }()
     
-    private let headerImageView: UIImageView = {
+    private lazy var headerImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
     }()
     
-    private let infoStackView: UIStackView = {
+    private lazy var infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 8
@@ -23,29 +23,11 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
         return stackView
     }()
     
-    private let locationLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 16)
-        return label
-    }()
+    private lazy var locationLabel: UILabel = UILabel.createCustomUILabel(of: 16)
     
-    private let minMaxTemperatureLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 16)
-        return label
-    }()
+    private lazy var minMaxTemperatureLabel: UILabel = UILabel.createCustomUILabel(of: 16)
     
-    private let currentTemperatureLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 24)
-        return label
-    }()
+    private lazy var currentTemperatureLabel: UILabel = UILabel.createCustomUILabel(of: 24)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -87,5 +69,16 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
     
     func updateAddress(covertedName: String) {
         locationLabel.text = covertedName
+    }
+}
+
+extension UILabel {
+    
+    static func createCustomUILabel(of size: CGFloat) -> UILabel {
+        let label = UILabel()
+        label.textColor = .black
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: size)
+        return label
     }
 }

@@ -25,14 +25,4 @@ extension NetworkServiceable {
         
         completionHandler(.success(data))
     }
-    
-//    func decoder<T: Decodable> (weatherType: T, data: Data) -> T? {
-//        do {
-//            let decodedData = try JSONDecoder().decode(T.self, from: data)
-//            return decodedData
-//        } catch {
-//            print(NetworkError.decodingError.description)
-//            return nil
-//        }
-//    }
 }

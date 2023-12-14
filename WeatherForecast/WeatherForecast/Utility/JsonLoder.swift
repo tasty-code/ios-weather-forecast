@@ -77,7 +77,7 @@ final class JsonLoader {
                 let decodedData = try JSONDecoder().decode(T.self, from: data)
                 return decodedData
             } catch {
-                print(NetworkError.decodingError.description)
+                print(JsonLoaderError.decodingFail.description)
                 return nil
             }
         }
