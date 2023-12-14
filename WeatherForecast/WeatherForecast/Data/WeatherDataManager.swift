@@ -28,10 +28,12 @@ final class WeatherDataManager {
         iconDataService.delegate = self
     }
     
-    private func setIconCache() {
+    private func storeImageIcon() {
         let group = DispatchGroup()
         forecast?.list.forEach { list in
             let code = list.weather[0].icon
+            if ImageFileManager.isExist(forKey: code) { return }
+            
             DispatchQueue.global().async(group: group) {
                 do {
                     try self.iconDataService.downloadData(type: .icon(code: code))
@@ -59,7 +61,7 @@ final class WeatherDataManager {
 extension WeatherDataManager: ForecastDataServiceDelegate, TodayDataServiceDelegate, IconDataServiceDelegate {
     func forecastDataService(_ service: ForecastDataService, didDownload data: WeatherForecast) {
         forecast = data
-        setIconCache()
+        storeImageIcon()
     }
     
     func todayDataService(_ service: TodayDataService, didDownload data: WeatherToday) {

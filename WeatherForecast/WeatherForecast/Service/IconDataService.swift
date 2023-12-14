@@ -10,7 +10,6 @@ import UIKit
 
 final class IconDataService: DataServiceable {
     weak var delegate: IconDataServiceDelegate?
-    private let imageFileManager = ImageFileManager()
     
     func downloadData(type service: ServiceType) throws {
         guard let url = service.makeURL() else { throw NetworkError.invailedURL }
@@ -21,7 +20,7 @@ final class IconDataService: DataServiceable {
                     print("이미지 변환에 실패했습니다.")
                     return
                 }
-                self.imageFileManager.saveImage(image: image, forKey: service.code)
+                ImageFileManager.saveImage(image: image, forKey: service.code)
                 self.delegate?.didCompleteLoad(self)
             case .failure(let error):
                 print(error)

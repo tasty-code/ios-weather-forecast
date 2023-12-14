@@ -10,7 +10,6 @@ import CoreLocation
 final class WeatherViewController: UIViewController {
     private let locationDataManager = LocationDataManager()
     private let dataManager = WeatherDataManager()
-    private let imageFileManager = ImageFileManager()
     
     private var backgroundImageView: UIImageView!
     private var collectionView: UICollectionView!
@@ -244,7 +243,7 @@ extension WeatherViewController {
         if let image = ImageCacheManager.getCache(forKey: code) {
             imageView.image = image
         } else {
-            guard let image = imageFileManager.getImage(forKey: code) else {
+            guard let image = ImageFileManager.getImage(forKey: code) else {
                 print("fileManager에 해당 image 없음")
                 return
             }
