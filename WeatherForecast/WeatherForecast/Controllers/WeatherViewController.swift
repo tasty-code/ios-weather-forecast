@@ -16,6 +16,8 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     private let locationManager: LocationManager
     private let networkManager: NetworkManager
     
+    private var locationData: LocationData?
+    private var currentModel: Current?
     private var forecastModel: Forecast?
     
     // MARK: - Initializer
@@ -55,27 +57,6 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
         weatherView.addRefreshControl(refreshControl: refreshControl)
     }
     
-    private func updateHeaderView(with locationData: LocationData, _ currentWeather: Current?) {
-        guard let currentWeather = currentWeather else {
-            displayAlert(title: String(describing: NetworkError.decodingError))
-            return
-        }
-        
-        guard let iconID = currentWeather.weather.last?.icon else { return }
-        networkManager.fetchData(for: IconRequest(iconID)) { [weak self] result in
-            switch result {
-            case .success(let rawData):
-                let icon = UIImage(data: rawData)
-                DispatchQueue.main.async {
-                    guard let headerView = self?.weatherView.headerView else { return }
-                    headerView.configureUI(with: locationData.address, weather: currentWeather, icon: icon)
-                }
-            case .failure(let networkError):
-                self?.displayAlert(title: String(describing: networkError))
-            }
-        }
-    }
-    
     @objc
     private func handleRefreshControl() {
         locationManager.requestLocation()
@@ -87,14 +68,16 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
 extension WeatherViewController: LocationUpdateDelegate {
     func updateWeather(with locationData: LocationData) {
         weatherView.endRefreshing()
+        
+        self.locationData = locationData
+        
         let weatherRequest = WeatherRequest(latitude: locationData.latitude,
                                             longitude: locationData.longitude,
                                             weatherType: .current)
         networkManager.fetchData(for: weatherRequest) { [weak self] result in
             switch result {
             case .success(let rawData):
-                let currentWeather = try? JSONDecoder().decode(Current.self, from: rawData)
-                self?.updateHeaderView(with: locationData, currentWeather)
+                self?.currentModel = try? JSONDecoder().decode(Current.self, from: rawData)
             case .failure(let networkError):
                 self?.displayAlert(title: String(describing: networkError))
             }
@@ -107,10 +90,7 @@ extension WeatherViewController: LocationUpdateDelegate {
             switch result {
             case .success(let rawData):
                 self?.forecastModel = try? JSONDecoder().decode(Forecast.self, from: rawData)
-                DispatchQueue.main.async {
-                    guard let weatherView = self?.weatherView else { return }
-                    weatherView.updateCollectionView()
-                }
+                self?.weatherView.reload(with: self?.forecastModel)
             case .failure(let networkError):
                 self?.displayAlert(title: String(describing: networkError))
             }
@@ -122,55 +102,30 @@ extension WeatherViewController: LocationUpdateDelegate {
     }
 }
 
-// MARK: - UICollectionViewDataSource
-
-extension WeatherViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let forecastModel = forecastModel else {
-            return 0
-        }
-        return forecastModel.list.count
+extension WeatherViewController: UIUpdatable {
+    func fetchAddress() -> String? {
+        return locationData?.address
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier,
-                                                            for: indexPath) as? ForecastCell
-        else {
-            return UICollectionViewCell()
-        }
-        
-        guard let forecastModel = forecastModel else {
-            return UICollectionViewCell()
-        }
-        
-        let listData = forecastModel.list[indexPath.row]
-        guard let iconID = listData.weather.last?.icon else {
-            return cell
-        }
+    func fetchCurrentWeather() -> Current? {
+        return currentModel
+    }
+    
+    func fetchForecastWeather() -> Forecast? {
+        return forecastModel
+    }
+    
+    func fetchIcon(with iconID: String, completion: @escaping (UIImage?) -> Void) {
         networkManager.fetchData(for: IconRequest(iconID)) { [weak self] result in
             switch result {
             case .success(let rawData):
                 let icon = UIImage(data: rawData)
                 DispatchQueue.main.async {
-                    cell.configureUI(with: listData, icon: icon)
+                    completion(icon)
                 }
-            case .failure(let networkError):
-                self?.displayAlert(title: String(describing: networkError))
+            case .failure(let error):
+                self?.displayAlert(title: String(describing: error))
             }
         }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                         withReuseIdentifier: WeatherHeaderView.reuseIdentifier,
-                                                                         for: indexPath) as? WeatherHeaderView
-        else {
-            return UICollectionReusableView()
-        }
-        
-        return view
     }
 }

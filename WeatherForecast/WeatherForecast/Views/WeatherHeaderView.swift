@@ -40,7 +40,6 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView(axis: .horizontal,
-                                    spacing: 10,
                                     subViews: [minimumTemperatureLabel, maximumTemperatureLabel])
         
         return stackView
@@ -48,7 +47,7 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private let currentTemperatureLabel: UILabel = {
         let label = UILabel(font: .preferredFont(forTextStyle: .title1), textAlignment: .left)
-        label.text = ""
+        label.text = " "
         
         return label
     }()
@@ -56,7 +55,7 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(axis: .vertical,
                                     alignment: .fill,
-                                    distribution: .fill,
+                                    distribution: .fillProportionally,
                                     spacing: 5,
                                     subViews: [addressLabel, labelStackView, currentTemperatureLabel])
         addSubview(stackView)
@@ -78,6 +77,7 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
             weatherIconView.topAnchor.constraint(equalTo: topAnchor),
             weatherIconView.bottomAnchor.constraint(equalTo: bottomAnchor),
             weatherIconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            weatherIconView.heightAnchor.constraint(equalTo: heightAnchor),
             weatherIconView.widthAnchor.constraint(equalTo: weatherIconView.heightAnchor, multiplier: 1),
             
             contentStackView.topAnchor.constraint(equalTo: topAnchor),
@@ -86,7 +86,7 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
         ])
     }
     
-    func configureUI(with address: String, weather: Current, icon: UIImage?) {
+    func configureUI(with address: String?, weather: Current, icon: UIImage?) {
         let minimumTemperature = weather.main.minimumTemperature
         let maximumTemperature = weather.main.maximumTemperature
         let temperature = weather.main.temperature
