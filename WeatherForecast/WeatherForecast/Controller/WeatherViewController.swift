@@ -14,6 +14,7 @@ final class WeatherViewController: UIViewController {
     private var backgroundImageView: UIImageView!
     private var collectionView: UICollectionView!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
@@ -179,7 +180,11 @@ extension WeatherViewController: LocationDataManagerDelegate {
 // MARK: - WeatherDataManagerDelegate
 
 extension WeatherViewController: WeatherDataManagerDelegate {
-    func completedLoadData(_ manager: WeatherDataManager) {
+    func updateTodayWeatherView(_ manager: WeatherDataManager, with today: WeatherToday) {
+        updateView()
+    }
+    
+    func updateForecastWeatherView(_ manager: WeatherDataManager, with forecast: WeatherForecast) {
         updateView()
     }
     

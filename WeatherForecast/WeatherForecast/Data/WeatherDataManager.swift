@@ -25,7 +25,6 @@ final class WeatherDataManager {
     init() {
         forecastDataService.delegate = self
         todayDataService.delegate = self
-        iconDataService.delegate = self
     }
     
     private func storeImageIcon() {
@@ -48,28 +47,26 @@ final class WeatherDataManager {
     
     func downloadData(with coordinate: CLLocationCoordinate2D) {
         do {
-            try forecastDataService.downloadData(type: .forecast(coordinate: coordinate))
             try todayDataService.downloadData(type: .today(coordinate: coordinate))
+            try forecastDataService.downloadData(type: .forecast(coordinate: coordinate))
         } catch {
             print(error)
         }
     }
 }
 
-// MARK: - ForecastDataServiceDelegate, TodayDataServiceDelegate, IconDataServiceDelegate
+// MARK: - TodayDataServiceDelegate, ForecastDataServiceDelegate
 
-extension WeatherDataManager: ForecastDataServiceDelegate, TodayDataServiceDelegate, IconDataServiceDelegate {
-    func forecastDataService(_ service: ForecastDataService, didDownload data: WeatherForecast) {
-        forecast = data
-        storeImageIcon()
-    }
+extension WeatherDataManager: TodayDataServiceDelegate, ForecastDataServiceDelegate {
     
     func todayDataService(_ service: TodayDataService, didDownload data: WeatherToday) {
         today = data
-        delegate?.completedLoadData(self)
+        delegate?.updateTodayWeatherView(self, with: data)
     }
     
-    func didCompleteLoad(_ service: IconDataService) {
-        delegate?.completedLoadData(self)
+    func forecastDataService(_ service: ForecastDataService, didDownload data: WeatherForecast) {
+        forecast = data
+        storeImageIcon()
+        delegate?.updateForecastWeatherView(self, with: data)
     }
 }
