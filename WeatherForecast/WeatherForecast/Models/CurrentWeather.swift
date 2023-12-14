@@ -9,7 +9,7 @@ import Foundation
 
 struct CurrentWeatherInfo {
     let address: String
-    let icon: String
+    let iconID: String
     let mainInfo: MainInfo
 }
 
