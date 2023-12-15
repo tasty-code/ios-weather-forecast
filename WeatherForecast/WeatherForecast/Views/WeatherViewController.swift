@@ -128,8 +128,11 @@ extension WeatherViewController: WeatherUIDelegate {
         
         Publishers.Zip(forecastInfoPublisher, weatherInfoPublisher)
             .tryMap { (forecast, current) in
-                let test = CurrentWeatherInfo(address: addressString, iconID: current!.weathers.first!.icon, mainInfo: current!.mainInfo)
-                return Item(test, forecast.list)
+                guard let current = current, let weather = current.weathers.first else {
+                    return (nil, forecast.list)
+                }
+                let currentWeatherData = CurrentWeatherInfo(address: addressString, iconID: weather.icon, mainInfo: current.mainInfo)
+                return Item(currentWeatherData, forecast.list)
             }
             .handleEvents(receiveCompletion: { completion in
                 switch completion {
