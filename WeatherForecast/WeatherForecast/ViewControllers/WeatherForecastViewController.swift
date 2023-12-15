@@ -26,6 +26,7 @@ final class WeatherForecastViewController: UIViewController {
         configureRefreshControl()
     }
     
+    @objc
     private func configureWeatherData() {
         let group = DispatchGroup()
         
@@ -65,24 +66,21 @@ final class WeatherForecastViewController: UIViewController {
             
             DispatchQueue.main.async {
                 self.weatherForecastView.collectionView.reloadData()
+                self.weatherForecastView.collectionView.refreshControl?.endRefreshing()
             }
         }
     }
     
     private func configureRefreshControl () {
-        weatherForecastView.collectionView.refreshControl = UIRefreshControl()
-        weatherForecastView.collectionView.refreshControl?.tintColor = .white
-        weatherForecastView.collectionView.refreshControl?.addTarget(
-            self,
-            action: #selector(handleRefreshControl),
-            for: .valueChanged
-        )
-    }
-    
-    @objc
-    private func handleRefreshControl() {
-        configureWeatherData()
-        weatherForecastView.collectionView.refreshControl?.endRefreshing()
+        DispatchQueue.main.async { [weak self] in
+            self?.weatherForecastView.collectionView.refreshControl = UIRefreshControl()
+            self?.weatherForecastView.collectionView.refreshControl?.tintColor = .white
+            self?.weatherForecastView.collectionView.refreshControl?.addTarget(
+                self,
+                action: #selector(self?.configureWeatherData),
+                for: .valueChanged
+            )
+        }
     }
 }
 
