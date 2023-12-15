@@ -51,9 +51,8 @@ final class WeatherForecastView: UIView {
     }
     
     private func configureUI() {
-        self.backgroundColor = .clear
-        
-        self.addSubview(collectionView)
+        backgroundColor = .clear        
+        addSubview(collectionView)
         collectionView.backgroundView = UIImageView(image: UIImage(named: "backgroundImage"))
     }
     
