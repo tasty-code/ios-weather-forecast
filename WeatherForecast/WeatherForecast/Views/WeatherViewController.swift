@@ -1,5 +1,5 @@
 //
-//  WeatherForecast - ViewController.swift
+//  WeatherForecast - WeatherViewController.swift
 //  Created by yagom.
 //  Copyright © yagom. All rights reserved.
 //
@@ -8,7 +8,7 @@ import UIKit
 import Combine
 import CoreLocation
 
-class ViewController: UIViewController {
+class WeatherViewController: UIViewController {
     typealias Item = (CurrentWeatherInfo?, [Forecast])
     enum Section {
         case main
@@ -27,33 +27,13 @@ class ViewController: UIViewController {
     }()
     
     private lazy var collectionView: UICollectionView = {
-        let layout = compositionaLayout
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeCompositionalLayout())
         collectionView.backgroundColor = .none
         collectionView.register(WeatherHeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
         collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.refreshControl = refreshWeather
         return collectionView
-    }()
-    
-    private let compositionaLayout: UICollectionViewCompositionalLayout = {
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.15))
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.6))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: -10, leading: 3, bottom: -10, trailing: 3)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.07))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10)
-        section.boundarySupplementaryItems = [
-            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        ]
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        return layout
     }()
     
     private lazy var refreshWeather: UIRefreshControl = {
@@ -138,7 +118,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: WeatherUIDelegate {
+extension WeatherViewController: WeatherUIDelegate {
     func updateLocationWeather(_ coordinate: CLLocationCoordinate2D, _ addressString: String) {
         let urlManager = WeatherURLManager()
         guard let weatherURLRequest = urlManager.configureURLRequest(lat: coordinate.latitude, lon: coordinate.longitude, apiType: .weather) else { return }
@@ -162,5 +142,26 @@ extension ViewController: WeatherUIDelegate {
             .replaceError(with: (nil, []))
             .assign(to: \.weatherInfo, on: self)
             .store(in: &subscribers)
+    }
+}
+
+extension WeatherViewController {
+    private func makeCompositionalLayout() -> UICollectionViewCompositionalLayout {
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.15))
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.6))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: -10, leading: 3, bottom: -10, trailing: 3)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.07))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10)
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        ]
+        
+        return UICollectionViewCompositionalLayout(section: section)
     }
 }
