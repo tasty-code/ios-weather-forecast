@@ -8,9 +8,15 @@ final class ForecastWeatherCell: UICollectionViewCell {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
+        
+        addSubview(stackView)
+        stackView.addArrangedSubview(temperatureLabel)
+        stackView.addArrangedSubview(weatherImageView)
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
+    
     private lazy var weatherImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
@@ -18,6 +24,10 @@ final class ForecastWeatherCell: UICollectionViewCell {
     
     private lazy var dateLabel: UILabel = {
         let dateLabel = UILabel()
+        
+        addSubview(dateLabel)
+        
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
         return dateLabel
     }()
     
@@ -36,20 +46,12 @@ final class ForecastWeatherCell: UICollectionViewCell {
     }
     
     private func setupViews() {
-        horizontalStackView.addArrangedSubview(temperatureLabel)
-        horizontalStackView.addArrangedSubview(weatherImageView)
-        
-        addSubview(horizontalStackView)
-        addSubview(dateLabel)
-        horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             horizontalStackView.topAnchor.constraint(equalTo: topAnchor),
             horizontalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             horizontalStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-                                                
+        
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(equalTo: topAnchor),
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 16),
@@ -65,11 +67,9 @@ final class ForecastWeatherCell: UICollectionViewCell {
         let date = forecastWeather.fiveDaysForecast[indexPath.row].dt
         guard let formattedDate = dateFormatter(date) else { return }
         
-        DispatchQueue.main.async { [self] in
-            dateLabel.text = formattedDate
-            temperatureLabel.text = "\(forecastWeather.fiveDaysForecast[indexPath.row].temperature.temp)°"
-            weatherImageView.image = icon
-        }
+        dateLabel.text = formattedDate
+        temperatureLabel.text = "\(forecastWeather.fiveDaysForecast[indexPath.row].temperature.temp)°"
+        weatherImageView.image = icon
     }
     
     private func dateFormatter(_ date: Int) -> String?{

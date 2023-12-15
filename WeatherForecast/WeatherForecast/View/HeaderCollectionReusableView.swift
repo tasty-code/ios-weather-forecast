@@ -7,6 +7,12 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 8
+        
+        addSubview(stackView)
+        stackView.addArrangedSubview(headerImageView)
+        stackView.addArrangedSubview(infoStackView)
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -20,6 +26,10 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
         stackView.axis = .vertical
         stackView.spacing = 8
         stackView.distribution = .fillEqually
+        
+        stackView.addArrangedSubview(locationLabel)
+        stackView.addArrangedSubview(minMaxTemperatureLabel)
+        stackView.addArrangedSubview(currentTemperatureLabel)
         return stackView
     }()
     
@@ -39,9 +49,6 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
     }
     
     func setupHeaderStackView() {
-        addSubview(headerStackView)
-        headerStackView.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             headerStackView.topAnchor.constraint(equalTo: topAnchor),
             headerStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
@@ -52,13 +59,6 @@ final class HeaderCollectionReusableView: UICollectionReusableView {
         NSLayoutConstraint.activate([
             headerImageView.widthAnchor.constraint(equalTo: headerImageView.heightAnchor, multiplier: 1.0)
         ])
-        
-        headerStackView.addArrangedSubview(headerImageView)
-        headerStackView.addArrangedSubview(infoStackView)
-        
-        infoStackView.addArrangedSubview(locationLabel)
-        infoStackView.addArrangedSubview(minMaxTemperatureLabel)
-        infoStackView.addArrangedSubview(currentTemperatureLabel)
     }
     
     func updateContent(_ currentWeather: CurrentWeather, icon: UIImage) {

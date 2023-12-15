@@ -92,22 +92,22 @@ extension WeatherViewController: CLLocationManagerDelegate{
         let currentWeatherURL = WeatherURLConfigration(weatherType: .current,coordinate: location.coordinate)
         let forecastWeatherURL = WeatherURLConfigration(weatherType: .forecast, coordinate: location.coordinate)
         
-        currentWeatherURL.checkError { (result: Result<URL,NetworkError>) in
+        currentWeatherURL.checkError { [weak self] (result: Result<URL,NetworkError>) in
             switch result {
                 
             case .success(let success):
-                self.getCurrentWeatherData(url: success)
+                self?.getCurrentWeatherData(url: success)
             case .failure(let failure):
                 print(failure.description)
                 
             }
         }
         
-        forecastWeatherURL.checkError { (result: Result<URL,NetworkError>) in
+        forecastWeatherURL.checkError { [weak self] (result: Result<URL,NetworkError>) in
             switch result {
                 
             case .success(let success):
-                self.getForecastWeatherData(url: success)
+                self?.getForecastWeatherData(url: success)
             case .failure(let failure):
                 print(failure.description)
                 
@@ -161,15 +161,15 @@ extension WeatherViewController {
     }
     
     private func getCurrentWeatherData(url: URL) {
-        networkServiceProvider.fetch(url: url) { (result: Result<Data, NetworkError>) in
+        networkServiceProvider.fetch(url: url) { [weak self] (result: Result<Data, NetworkError>) in
             switch result {
                 
             case .success(let currentWeatherData):
-                guard let decodedCurrentWeather = self.jsonLoader.decode(weatherType: self.current, data: currentWeatherData),
+                guard let decodedCurrentWeather = self?.jsonLoader.decode(weatherType: self?.current, data: currentWeatherData),
                       let decodedCurrentWeather = decodedCurrentWeather else { return }
                 
                 DispatchQueue.main.async {
-                    self.updateHeaderUI(decodedCurrentWeather)
+                    self?.updateHeaderUI(decodedCurrentWeather)
                 }
                 return
             case .failure(let error):
@@ -180,19 +180,19 @@ extension WeatherViewController {
     }
     
     private func getForecastWeatherData(url: URL) {
-        networkServiceProvider.fetch(url: url) { (result: Result<Data, NetworkError>) in
+        networkServiceProvider.fetch(url: url) { [weak self] (result: Result<Data, NetworkError>) in
             switch result {
                 
             case .success(let forecastWeatherData):
                 
-                guard let decodedForecastWeather = self.jsonLoader.decode(weatherType: self.forecast,
+                guard let decodedForecastWeather = self?.jsonLoader.decode(weatherType: self?.forecast,
                                                                           data: forecastWeatherData),
                       let decodedForecastWeather = decodedForecastWeather else { return }
                 
-                self.forecast = decodedForecastWeather
+                self?.forecast = decodedForecastWeather
                 
                 DispatchQueue.main.async {
-                    self.weatherCollectionView.reloadData()
+                    self?.weatherCollectionView.reloadData()
                 }
                 return
             case .failure(let error):
@@ -276,7 +276,9 @@ extension WeatherViewController: UICollectionViewDataSource {
                 case .success(let iconData):
                     guard let fetchedIcon = UIImage(data: iconData) else { return }
                     self?.iconCacheManager.store(with: iconName, icon: fetchedIcon )
-                    cell.updateContent(forecast, indexPath: indexPath, icon: fetchedIcon)
+                    DispatchQueue.main.async { 
+                        cell.updateContent(forecast, indexPath: indexPath, icon: fetchedIcon)
+                    }
                     return
                 case .failure(let error):
                     return print(error.description)
