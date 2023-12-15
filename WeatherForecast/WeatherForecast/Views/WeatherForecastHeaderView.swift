@@ -135,8 +135,12 @@ extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
               let temperatureMax = model.main?.tempMax,
               let temperatureCurrent = model.main?.temp else { return }
 
-        UIImageView.load(from: imageType) { image in
-            self.configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
+        if let image = CacheManager.shared.loadImage(with: imageType) {
+            configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
+        } else {
+            UIImageView.load(from: imageType) { [weak self] image in
+                self?.configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
+            }
         }
     }
     

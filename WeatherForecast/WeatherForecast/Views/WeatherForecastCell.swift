@@ -109,8 +109,13 @@ extension WeatherForecastCell: WeatherForecastCellConfigurable {
 
         guard let temperatureCurrent = model.main?.temp else { return }
         
-        UIImageView.load(from: imageType) { image in
-            self.configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
+        if let image = CacheManager.shared.loadImage(with: imageType) {
+            configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
+        } else {
+            UIImageView.load(from: imageType) { [weak self] image in
+                CacheManager.shared.store(with: imageType, image: image)
+                self?.configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
+            }
         }
     }
 
