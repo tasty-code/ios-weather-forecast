@@ -4,12 +4,13 @@ import CoreLocation
 final class WeatherViewController: UIViewController {
     
     private lazy var weatherCollectionView: WeatherCollectionView = WeatherCollectionView(frame: .zero, collectionViewLayout: createBasicListLayout())
-    private lazy var locationManager = CLLocationManager()
-    private lazy var networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
+    private let locationManager = CLLocationManager()
+    private let networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
+    private let iconCacheManager = IconCacheManager()
+    private let jsonLoader = JsonLoader()
     
     private var forecast: ForecastWeather?
     private var current: CurrentWeather?
-    private let jsonLoader = JsonLoader()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -209,8 +210,8 @@ extension WeatherViewController: GeoConverter {
         guard let indexPath = indexPaths.first,
               let header = weatherCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: indexPath) as? HeaderCollectionReusableView else { return }
         
-        guard let image = currentWeather.weather.first?.icon,
-              let imageURL = WeatherIconURLConfigration(weatherIcon: image).makeURL() else { return }
+        guard let iconName = currentWeather.weather.first?.icon,
+              let imageURL = WeatherIconURLConfigration(weatherIcon: iconName).makeURL() else { return }
         
         let location = CLLocation(latitude: currentWeather.coordinate.latitude, longitude: currentWeather.coordinate.longitude)
         
@@ -229,18 +230,26 @@ extension WeatherViewController: GeoConverter {
             }
         }
         
-        networkServiceProvider.fetch(url: imageURL) { (result: Result<Data, NetworkError>) in
-            switch result {
-                
-            case .success(let iconData):
-                guard let fetchedIcon = UIImage(data: iconData) else { return }
-                DispatchQueue.main.async {
-                    header.updateContent(currentWeather, icon: fetchedIcon)
+        if iconCacheManager.getIcon(with: iconName) == nil {
+            networkServiceProvider.fetch(url: imageURL) { [weak self] (result: Result<Data, NetworkError>) in
+                switch result {
+                    
+                case .success(let iconData):
+                    guard let fetchedIcon = UIImage(data: iconData) else { return }
+                    self?.iconCacheManager.store(with: iconName, icon: fetchedIcon)
+                    DispatchQueue.main.async {
+                        header.updateContent(currentWeather, icon: fetchedIcon)
+                    }
+                    return
+                case .failure(let error):
+                    return print(error.description)
+                    
                 }
-                return
-            case .failure(let error):
-                return print(error.description)
-                
+            }
+        } else {
+            guard let icon = iconCacheManager.getIcon(with: iconName) else { return }
+            DispatchQueue.main.async {
+                header.updateContent(currentWeather, icon: icon)
             }
         }
     }
@@ -257,21 +266,28 @@ extension WeatherViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.identifier, for: indexPath) as? ForecastWeatherCell else { return UICollectionViewCell() }
         
         guard let forecast = forecast,
-              let image = forecast.fiveDaysForecast[indexPath.row].weather.first?.icon,
-              let imageURL = WeatherIconURLConfigration(weatherIcon: image).makeURL() else { return cell}
+              let iconName = forecast.fiveDaysForecast[indexPath.row].weather.first?.icon,
+              let imageURL = WeatherIconURLConfigration(weatherIcon: iconName).makeURL() else { return cell}
         
-        networkServiceProvider.fetch(url: imageURL) { (result: Result<Data, NetworkError>) in
-            switch result {
-                
-            case .success(let iconData):
-                guard let fetchedIcon = UIImage(data: iconData) else { return }
-                cell.updateContent(forecast, indexPath: indexPath, icon: fetchedIcon)
-                return
-            case .failure(let error):
-                return print(error.description)
-                
+        if iconCacheManager.getIcon(with: iconName) == nil {
+            networkServiceProvider.fetch(url: imageURL) { [weak self] (result: Result<Data, NetworkError>) in
+                switch result {
+                    
+                case .success(let iconData):
+                    guard let fetchedIcon = UIImage(data: iconData) else { return }
+                    self?.iconCacheManager.store(with: iconName, icon: fetchedIcon )
+                    cell.updateContent(forecast, indexPath: indexPath, icon: fetchedIcon)
+                    return
+                case .failure(let error):
+                    return print(error.description)
+                    
+                }
             }
+        } else {
+            guard let icon = iconCacheManager.getIcon(with: iconName) else { return cell }
+            cell.updateContent(forecast, indexPath: indexPath, icon: icon)
         }
+        
         return cell
     }
     
