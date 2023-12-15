@@ -44,7 +44,6 @@ class ViewController: UIViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: -10, leading: 3, bottom: -10, trailing: 3)
         
-        
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.07))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
@@ -75,7 +74,8 @@ class ViewController: UIViewController {
         bind()
     }
     
-    @objc private func handleRefreshControl() {
+    @objc
+    private func handleRefreshControl() {
         refreshWeather.beginRefreshing()
         locationManager.locationManger.requestLocation()
         refreshWeather.endRefreshing()
@@ -103,7 +103,7 @@ class ViewController: UIViewController {
                         return WeatherHeaderCollectionView()
                     }
                     cell.configureCell(current)
-                    if let icon = current?.icon {
+                    if let icon = current?.iconID {
                         WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png")!, completion: { image in
                             cell.weatherImage = image
                         })
@@ -142,14 +142,13 @@ extension ViewController: WeatherUIDelegate {
     func updateLocationWeather(_ coordinate: CLLocationCoordinate2D, _ addressString: String) {
         let urlManager = WeatherURLManager()
         guard let weatherURLRequest = urlManager.configureURLRequest(lat: coordinate.latitude, lon: coordinate.longitude, apiType: .weather) else { return }
-        let weatherInfoPublisher = WeatherHTTPClient.publishForecast(from: weatherURLRequest, forecastType: CurrentWeather?.self)
-        
         guard let forecastURLRequest = urlManager.configureURLRequest(lat: coordinate.latitude, lon: coordinate.longitude, apiType: .forecast) else { return }
+        let weatherInfoPublisher = WeatherHTTPClient.publishForecast(from: weatherURLRequest, forecastType: CurrentWeather?.self)
         let forecastInfoPublisher = WeatherHTTPClient.publishForecast(from: forecastURLRequest, forecastType: FiveDayWeatherForecast.self)
         
         Publishers.Zip(forecastInfoPublisher, weatherInfoPublisher)
             .tryMap { (forecast, current) in
-                let test = CurrentWeatherInfo(address: addressString, icon: current!.weathers.first!.icon, mainInfo: current!.mainInfo)
+                let test = CurrentWeatherInfo(address: addressString, iconID: current!.weathers.first!.icon, mainInfo: current!.mainInfo)
                 return Item(test, forecast.list)
             }
             .handleEvents(receiveCompletion: { completion in
