@@ -24,7 +24,6 @@ private enum JsonLoaderError: Error {
 
 final class JsonLoader {
     
-    
     func load<T:Decodable>(type: T, fileName: String) -> T? {
         do {
            let fileURL = try fileURL(of: fileName)

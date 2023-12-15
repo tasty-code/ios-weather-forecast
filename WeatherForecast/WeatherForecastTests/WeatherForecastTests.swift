@@ -70,7 +70,7 @@ final class WeatherForecastTests: XCTestCase {
         XCTAssertNil(weather?.city.name)
     }
     
-    
+    // MARK: - 실제로 통신하는 네트워크 테스트 코드
     
      let coordinate = Coordinate(longitude: 127.3, latitude: 37.6)
      let apiKey = "API_KEY"

@@ -6,7 +6,7 @@ final class WeatherViewController: UIViewController {
     private lazy var weatherCollectionView: WeatherCollectionView = WeatherCollectionView(frame: .zero, collectionViewLayout: createBasicListLayout())
     private let locationManager = CLLocationManager()
     private let networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
-    private let iconCacheManager = IconCacheManager()
+    private let iconCacheManager = CacheManager()
     private let jsonLoader = JsonLoader()
     
     private var forecast: ForecastWeather?
@@ -230,13 +230,13 @@ extension WeatherViewController: GeoConverter {
             }
         }
         
-        if iconCacheManager.getIcon(with: iconName) == nil {
+        if iconCacheManager.getImage(with: iconName) == nil {
             networkServiceProvider.fetch(url: imageURL) { [weak self] (result: Result<Data, NetworkError>) in
                 switch result {
                     
                 case .success(let iconData):
                     guard let fetchedIcon = UIImage(data: iconData) else { return }
-                    self?.iconCacheManager.store(with: iconName, icon: fetchedIcon)
+                    self?.iconCacheManager.storeImage(with: iconName, image: fetchedIcon)
                     DispatchQueue.main.async {
                         header.updateContent(currentWeather, icon: fetchedIcon)
                     }
@@ -247,7 +247,7 @@ extension WeatherViewController: GeoConverter {
                 }
             }
         } else {
-            guard let icon = iconCacheManager.getIcon(with: iconName) else { return }
+            guard let icon = iconCacheManager.getImage(with: iconName) else { return }
             DispatchQueue.main.async {
                 header.updateContent(currentWeather, icon: icon)
             }
@@ -269,13 +269,13 @@ extension WeatherViewController: UICollectionViewDataSource {
               let iconName = forecast.fiveDaysForecast[indexPath.row].weather.first?.icon,
               let imageURL = WeatherIconURLConfigration(weatherIcon: iconName).makeURL() else { return cell}
         
-        if iconCacheManager.getIcon(with: iconName) == nil {
+        if iconCacheManager.getImage(with: iconName) == nil {
             networkServiceProvider.fetch(url: imageURL) { [weak self] (result: Result<Data, NetworkError>) in
                 switch result {
                     
                 case .success(let iconData):
                     guard let fetchedIcon = UIImage(data: iconData) else { return }
-                    self?.iconCacheManager.store(with: iconName, icon: fetchedIcon )
+                    self?.iconCacheManager.storeImage(with: iconName, image: fetchedIcon )
                     DispatchQueue.main.async { 
                         cell.updateContent(forecast, indexPath: indexPath, icon: fetchedIcon)
                     }
@@ -286,7 +286,7 @@ extension WeatherViewController: UICollectionViewDataSource {
                 }
             }
         } else {
-            guard let icon = iconCacheManager.getIcon(with: iconName) else { return cell }
+            guard let icon = iconCacheManager.getImage(with: iconName) else { return cell }
             cell.updateContent(forecast, indexPath: indexPath, icon: icon)
         }
         
