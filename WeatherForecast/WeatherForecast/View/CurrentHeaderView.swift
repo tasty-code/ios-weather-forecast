@@ -22,6 +22,7 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         let imageView = UIImageView()
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
         return imageView
     }()
     
@@ -29,6 +30,7 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         let label = UILabel()
         
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }()
     
@@ -36,41 +38,65 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         let label = UILabel()
         
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }()
     
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         
+        label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }()
     
-    private func headerViewConfigure() {
-        addSubview(cellImage)
-        addSubview(locationLabel)
-        addSubview(minMaxLabel)
-        addSubview(temperatureLabel)
+    private lazy var headerStackView: UIStackView = {
+        let stackView = UIStackView()
         
-        let safeArea = safeAreaLayoutGuide
+        stackView.addArrangedSubview(cellImage)
+        stackView.addArrangedSubview(temperatureLabelStackView)
+        stackView.axis = .horizontal
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .fill
+        stackView.spacing = 8
+        
+        return stackView
+    }()
+    
+    private lazy var locationLabelStackView: UIStackView = {
+        let stackView = UIStackView()
+        
+        stackView.addArrangedSubview(locationLabel)
+        stackView.addArrangedSubview(minMaxLabel)
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        
+        return stackView
+    }()
+    
+    private lazy var temperatureLabelStackView: UIStackView = {
+        let stackView = UIStackView()
+        
+        stackView.addArrangedSubview(locationLabelStackView)
+        stackView.addArrangedSubview(temperatureLabel)
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        
+        return stackView
+    }()
+    
+    private func headerViewConfigure() {
+        addSubview(headerStackView)
+
         NSLayoutConstraint.activate([
-            cellImage.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            cellImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            cellImage.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-            cellImage.widthAnchor.constraint(equalTo: cellImage.heightAnchor, multiplier: 1.0),
-            
-            locationLabel.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            locationLabel.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor),
-            locationLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            
-            minMaxLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor),
-            minMaxLabel.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor),
-            minMaxLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            
-            temperatureLabel.topAnchor.constraint(equalTo: minMaxLabel.bottomAnchor),
-            temperatureLabel.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor),
-            temperatureLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            temperatureLabel.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+            headerStackView.topAnchor.constraint(equalTo: topAnchor),
+            headerStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            headerStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            headerStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            cellImage.widthAnchor.constraint(equalTo: heightAnchor, multiplier: 1.0)
         ])
     }
     

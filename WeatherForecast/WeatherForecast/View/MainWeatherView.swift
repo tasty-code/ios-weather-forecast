@@ -26,17 +26,28 @@ final class MainWeatherView: UIView {
     }
     
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let layout = UICollectionViewCompositionalLayout() { sectionIndex, layoutEnvironment in
+            var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+            configuration.headerMode = .supplementary
+
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.15))
+            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+            let section = NSCollectionLayoutSection.list(using: configuration,
+                                                         layoutEnvironment: layoutEnvironment)
+            section.boundarySupplementaryItems = [header]
+            
+            return section
+        }
         
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self
-        collectionView.delegate = self
         collectionView.register(WeeklyWeatherCell.self, forCellWithReuseIdentifier: WeeklyWeatherCell.reuseIdentifier)
         collectionView.register(CurrentHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentHeaderView.reuseIdentifier)
-//        collectionView.backgroundColor = .clear
+        
         collectionView.refreshControl = UIRefreshControl()
         collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        
         return collectionView
     }()
     
@@ -101,16 +112,6 @@ extension MainWeatherView: UICollectionViewDataSource {
         }
         
         return headerView
-    }
-}
-
-extension MainWeatherView: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height / 13)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.width / 2)
     }
 }
 

@@ -18,8 +18,21 @@ final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
         super.init(coder: coder)
     }
     
+    private lazy var cellStack: UIStackView = {
+        let stackView = UIStackView()
+        
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.addArrangedSubview(temperatureLabel)
+        stackView.addArrangedSubview(weatherImageView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return stackView
+    }()
+    
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
+        
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -27,6 +40,7 @@ final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
     
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
+        
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -34,6 +48,7 @@ final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
     
     private lazy var weatherImageView: UIImageView = {
         let imageView = UIImageView()
+        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
@@ -41,20 +56,19 @@ final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
     
     private func configure() {
         addSubview(dateLabel)
-        addSubview(temperatureLabel)
-        addSubview(weatherImageView)
+        addSubview(cellStack)
         
         NSLayoutConstraint.activate([
-            dateLabel.topAnchor.constraint(equalTo: topAnchor),
+            dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-
-            temperatureLabel.topAnchor.constraint(equalTo: topAnchor),
-            temperatureLabel.trailingAnchor.constraint(equalTo: weatherImageView.leadingAnchor),
+            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+             
+            weatherImageView.heightAnchor.constraint(equalTo: dateLabel.heightAnchor),
+            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor),
             
-            weatherImageView.topAnchor.constraint(equalTo: topAnchor),
-            weatherImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            weatherImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor, multiplier: 1.0)
+            cellStack.topAnchor.constraint(equalTo: contentView.topAnchor),
+            cellStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cellStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
     
