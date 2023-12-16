@@ -18,18 +18,27 @@ final class MainWeatherView: UIView {
         self.locationDelegate = locationDelegate
         super.init(frame: .zero)
         collectionViewConfigure()
+        backgroudImageConfigure()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        collectionViewConfigure()
     }
+    
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.image = UIImage(named: "backgroundImage")
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout() { sectionIndex, layoutEnvironment in
             var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
             configuration.headerMode = .supplementary
-
+            configuration.backgroundColor = .clear
+            
             let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.15))
             let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
             let section = NSCollectionLayoutSection.list(using: configuration,
@@ -60,6 +69,16 @@ final class MainWeatherView: UIView {
             collectionView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
             collectionView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+        ])
+    }
+    
+    private func backgroudImageConfigure() {
+        insertSubview(imageView, at: 0)
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     
