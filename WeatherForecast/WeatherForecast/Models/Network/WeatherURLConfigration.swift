@@ -6,10 +6,10 @@ struct WeatherURLConfigration: APIRequestable {
     var scheme: String = "https"
     var host: String = "api.openweathermap.org"
     var path: String
-    var parameters: [String : String]?
+    var parameters: [String: String]?
     var apiKey: String?
     
-    init(weatherType: WeatherType,coordinate: CLLocationCoordinate2D){
+    init(weatherType: WeatherType, coordinate: CLLocationCoordinate2D){
         
         self.path = "/data/2.5/\(weatherType.rawValue)"
         self.apiKey = createApiKey(name: "API_KEY")
@@ -18,7 +18,8 @@ struct WeatherURLConfigration: APIRequestable {
             "lon": "\(coordinate.longitude)",
             "lat": "\(coordinate.latitude)",
             "appid": apiKey,
-            "units": "metric"
+            "units": "metric",
+            "lang": "kr"
         ]
     }
 }
@@ -27,4 +28,18 @@ enum WeatherType: String {
     
     case current = "weather"
     case forecast = "forecast"
+    
+}
+
+struct WeatherIconURLConfigration: APIRequestable {
+    
+    var scheme: String = "https"
+    var host: String = "openweathermap.org"
+    var path: String
+    var parameters: [String: String]?
+    var apiKey: String?
+    
+    init(weatherIcon: String){
+        self.path = "/img/wn/\(weatherIcon)@2x.png"
+    }
 }
