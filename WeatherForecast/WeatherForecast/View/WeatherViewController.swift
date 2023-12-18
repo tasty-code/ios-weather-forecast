@@ -12,15 +12,30 @@ final class WeatherViewController: UIViewController {
     private var forecast: ForecastWeather?
     private var current: CurrentWeather?
     
+    private lazy var changeLocationButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("위치 변경", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        
+        button.addTarget(self, action: #selector(changeLoction), for: .touchUpInside)
+
+        view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackgroundImageView()
-        setRefreshControl()
         
         locationManagerConfiguration()
         
         weatherCollectionView.dataSource = self
         weatherCollectionView.setCollectionViewConstraints(view: view)
+        
+        setRefreshControl()
+        setChangeLocationButton()
     }
 }
 
@@ -53,11 +68,40 @@ extension WeatherViewController {
         weatherCollectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
+    private func setChangeLocationButton() {
+        NSLayoutConstraint.activate ([
+            changeLocationButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            changeLocationButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        ])
+    }
+    
     @objc func handleRefreshControl() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.weatherCollectionView.reloadData()
             self.weatherCollectionView.refreshControl?.endRefreshing()
         }
+    }
+    
+    @objc func changeLoction() {
+        let alert = UIAlertController(
+            title: "위치 변경",
+            message: "변경할 좌표를 설정해주세요.",
+            preferredStyle: .alert
+        )
+        alert.addTextField { (textField) in
+            textField.placeholder = "위도"
+        }
+        alert.addTextField { (textField) in
+            textField.placeholder = "경도"
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        let settingsAction = UIAlertAction(title: "변경", style: .default)
+        
+        alert.addAction(cancelAction)
+        alert.addAction(settingsAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -300,7 +344,3 @@ extension WeatherViewController: UICollectionViewDataSource {
         return header
     }
 }
-
-
-
-
