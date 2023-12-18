@@ -8,76 +8,145 @@ import UIKit
 import CoreLocation
 
 final class WeatherViewController: UIViewController {
+    
+    enum Section {
+        case main
+    }
+    
     private let locationDataManager = LocationDataManager()
     private let dataManager = WeatherDataManager()
     
     private var backgroundImageView: UIImageView!
     private var collectionView: UICollectionView!
     
+    typealias WeatherDataSource = UICollectionViewDiffableDataSource<Section, WeatherForecast.WeatherList>
+    
+    var dataSource: WeatherDataSource? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUI()
+        configureHierarchy()
+        configureDataSource()
         setRefreshControl()
         
         locationDataManager.locationDelegate = self
         dataManager.delegate = self
-        
         collectionView.delegate = self
-        collectionView.dataSource = self
+    }
+    
+    private func configureHierarchy() {
+        let layout = createLayout()
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        // autoresizingMask: bounds로 적용했을 때, subview의 크기를 어떻게 변경할 것인가에 대한.
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.backgroundColor = UIColor(white: 1, alpha: 0.2)
+        
+        view.addSubview(collectionView)
+    }
+    
+    private func createLayout() -> UICollectionViewLayout {
+        let spacing = CGFloat(10)
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(60))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(spacing)
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [sectionHeader]
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        return layout
+    }
+    
+    
+    private func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<WeatherCollectionViewCell, WeatherForecast.WeatherList> { (cell, indexPath, item) in
+            self.bind(on: cell, indexPath: indexPath)
+        }
+        
+        let headerRegistration = UICollectionView.SupplementaryRegistration
+        <WeatherCollectionHeaderView>(elementKind: UICollectionView.elementKindSectionHeader) { (headerView, string, indexPath) in
+            self.bind(on: headerView)
+        }
+        
+        dataSource = WeatherDataSource(collectionView: collectionView) {
+            (collectionView: UICollectionView, indexPath: IndexPath, identifier: WeatherForecast.WeatherList) -> UICollectionViewCell? in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: identifier)
+        }
+        
+        dataSource?.supplementaryViewProvider = { (view, kind, index) in
+            return self.collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: index)
+        }
     }
 }
+
+// MARK: - Bind view
+
+extension WeatherViewController {
+    private func bind(on header: WeatherCollectionHeaderView) {
+        header.addressLabel.text = dataManager.address
+        if let today = dataManager.today {
+            let temperature = today.main.temp.formatCelsius()
+            let temperatureMin = today.main.tempMin.formatCelsius()
+            let temperatureMax = today.main.tempMax.formatCelsius()
+            let code = today.weather[0].icon
+            
+            header.currentTemperatureLabel.text = temperature
+            header.maxAndMinTemperatureLabel.text = "최저 \(temperatureMin) 최고 \(temperatureMax)"
+            bindImage(imageView: header.headerIconImageView, code: code)
+        }
+    }
+    
+    private func bind(on cell: WeatherCollectionViewCell, indexPath: IndexPath) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd(E) HH시"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        
+        if let forecast = dataManager.forecast {
+            let timeInterval = forecast.list[indexPath.row].dt
+            let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
+            let temperature = forecast.list[indexPath.row].main.temp.formatCelsius()
+            let code = forecast.list[indexPath.row].weather[0].icon
+            
+            cell.dateLabel.text = dateFormatter.string(from: date as Date)
+            cell.temperatureLabel.text = temperature
+            bindImage(imageView: cell.cellIconImageView, code: code)
+        }
+    }
+    
+    private func bindImage(imageView: UIImageView, code: String) {
+        if let image = ImageCacheManager.getCache(forKey: code) {
+            imageView.image = image
+        } else {
+            guard let image = ImageFileManager.getImage(forKey: code) else {
+                print("fileManager에 해당 image 없음")
+                return
+            }
+            ImageCacheManager.setCache(image: image, forKey: code)
+            imageView.image = image
+        }
+    }
+}
+
+
 
 // MARK: - UICollectionViewDelegate
 
 extension WeatherViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-
-extension WeatherViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataManager.forecast?.list.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCollectionViewCell.identifier, for: indexPath) as? WeatherCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        if dataManager.forecast != nil {
-            bind(on: cell, indexPath: indexPath)
-        }
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: WeatherCollectionHeaderView.identifier,
-            for: indexPath) as? WeatherCollectionHeaderView else {
-            return UICollectionReusableView()
-        }
-        if dataManager.address != nil, dataManager.today != nil {
-            bind(on: header)
-        }
-        
-        return header
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension WeatherViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return Constants.General.cell(view: view).size
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return Constants.General.header(view: view).size
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
 }
 
@@ -85,48 +154,19 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
 
 extension WeatherViewController {
     private func setUI() {
-        collectionView = {
-          let layout = UICollectionViewFlowLayout()
-           layout.scrollDirection = .vertical
-           layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-           
-           let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-           view.register(
-               WeatherCollectionViewCell.self,
-               forCellWithReuseIdentifier: WeatherCollectionViewCell.identifier
-           )
-           view.register(
-               WeatherCollectionHeaderView.self,
-               forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-               withReuseIdentifier: WeatherCollectionHeaderView.identifier
-           )
-            view.backgroundColor = UIColor(white: 1, alpha: 0)
-           view.translatesAutoresizingMaskIntoConstraints = false
-           return view
-       }()
-        
         backgroundImageView  = {
             let imageView = UIImageView(frame: .zero)
             imageView.image = UIImage(named: "isaiah")
-            imageView.alpha = 0.7
             imageView.contentMode = .scaleToFill
             imageView.translatesAutoresizingMaskIntoConstraints = false
             return imageView
         }()
-        
-        view.addSubview(collectionView)
-        view.insertSubview(backgroundImageView, at: 0)
+        view.addSubview(backgroundImageView)
         setConstraint()
     }
     
     private func setConstraint() {
         NSLayoutConstraint.activate([
-            // collectionView
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            
             // imageView
             backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -185,13 +225,17 @@ extension WeatherViewController: WeatherDataManagerDelegate {
     }
     
     func updateForecastWeatherView(_ manager: WeatherDataManager, with forecast: WeatherForecast) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, WeatherForecast.WeatherList>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(forecast.list)
+        self.dataSource?.apply(snapshot)
+        
         updateView()
     }
     
     private func updateView() {
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.collectionView.refreshControl?.endRefreshing()
+        DispatchQueue.main.async { [self] in
+            collectionView.refreshControl?.endRefreshing()
         }
     }
 }
@@ -207,53 +251,5 @@ extension WeatherViewController {
     @objc
     private func handleRefreshControl() {
         locationDataManager.startUpdatingLocation()
-    }
-}
-
-// MARK: - Bind view
-
-extension WeatherViewController {
-    private func bind(on header: WeatherCollectionHeaderView) {
-        header.addressLabel.text = dataManager.address
-        if let today = dataManager.today {
-            let temperature = today.main.temp.formatCelsius()
-            let temperatureMin = today.main.tempMin.formatCelsius()
-            let temperatureMax = today.main.tempMax.formatCelsius()
-            let code = today.weather[0].icon
-            
-            header.currentTemperatureLabel.text = temperature
-            header.maxAndMinTemperatureLabel.text = "최저 \(temperatureMin) 최고 \(temperatureMax)"
-            bindImage(imageView: header.headerIconImageView, code: code)
-        }
-    }
-    
-    private func bind(on cell: WeatherCollectionViewCell, indexPath: IndexPath) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM/dd(E) HH시"
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        
-        if let forecast = dataManager.forecast {
-            let timeInterval = forecast.list[indexPath.row].dt
-            let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-            let temperature = forecast.list[indexPath.row].main.temp.formatCelsius()
-            let code = forecast.list[indexPath.row].weather[0].icon
-            
-            cell.dateLabel.text = dateFormatter.string(from: date as Date)
-            cell.temperatureLabel.text = temperature
-            bindImage(imageView: cell.cellIconImageView, code: code)
-        }
-    }
-    
-    private func bindImage(imageView: UIImageView, code: String) {
-        if let image = ImageCacheManager.getCache(forKey: code) {
-            imageView.image = image
-        } else {
-            guard let image = ImageFileManager.getImage(forKey: code) else {
-                print("fileManager에 해당 image 없음")
-                return
-            }
-            ImageCacheManager.setCache(image: image, forKey: code)
-            imageView.image = image
-        }
     }
 }

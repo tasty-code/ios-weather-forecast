@@ -19,7 +19,15 @@ struct WeatherForecast: Decodable {
 // MARK: - WeatherList
 
 extension WeatherForecast {
-    struct WeatherList: Decodable {
+    struct WeatherList: Decodable, Hashable {
+        static func == (lhs: WeatherForecast.WeatherList, rhs: WeatherForecast.WeatherList) -> Bool {
+            return lhs.dt == rhs.dt
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(dt)
+        }
+        
         let dt: Int
         let visibility: Int
         let pop: Double
