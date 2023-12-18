@@ -18,7 +18,7 @@ final class WeatherForecastView: UIView {
                 elementKind: UICollectionView.elementKindSectionHeader,
                 alignment: .top)
             section.boundarySupplementaryItems = [header]
-            
+        
             return section
         }
         

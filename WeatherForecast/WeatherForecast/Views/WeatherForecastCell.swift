@@ -79,7 +79,6 @@ final class WeatherForecastCell: UICollectionViewListCell {
     
     private func configureUI() {
         backgroundConfiguration = .clear()
-        addSubview(dateLabel)
         addSubview(cellTotalStackView)
     }
     
