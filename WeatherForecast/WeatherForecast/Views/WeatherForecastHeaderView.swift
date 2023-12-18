@@ -29,6 +29,13 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         return label
     }()
     
+    private let locationConfigurationButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        
+        return button
+    }()
+    
     private let temperatureMinMaxLabel: UILabel = {
         let label = UILabel()
         label.text = "-"
@@ -46,11 +53,21 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         return label
     }()
     
+    private lazy var locationStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.addArrangedSubview(locationLabel)
+        stackView.addArrangedSubview(locationConfigurationButton)
+        
+        return stackView
+    }()
+    
     private lazy var partialInfoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.addArrangedSubview(locationLabel)
+        stackView.addArrangedSubview(locationStackView)
         stackView.addArrangedSubview(temperatureMinMaxLabel)
         
         return stackView
@@ -104,6 +121,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
             stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             stackView.topAnchor.constraint(equalTo: safeArea.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
         ])
     }
     
@@ -134,7 +152,9 @@ extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
         guard let temperatureMin = model.main?.tempMin,
               let temperatureMax = model.main?.tempMax,
               let temperatureCurrent = model.main?.temp else { return }
-
+        
+        locationConfigurationButton.setTitle("위치설정", for: .normal)
+        
         if let image = CacheManager.shared.loadImage(with: imageType) {
             configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
         } else {

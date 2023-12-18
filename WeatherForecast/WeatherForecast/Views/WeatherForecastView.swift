@@ -17,6 +17,8 @@ final class WeatherForecastView: UIView {
                 layoutSize: headerSize,
                 elementKind: UICollectionView.elementKindSectionHeader,
                 alignment: .top)
+            header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+            
             section.boundarySupplementaryItems = [header]
         
             return section
