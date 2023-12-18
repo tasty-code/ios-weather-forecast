@@ -82,6 +82,24 @@ final class WeatherForecastViewController: UIViewController {
             )
         }
     }
+    
+    @objc
+    func touchLocationConfigurationButton() {
+        let alertController = UIAlertController(title: "위치 변경", message: "변경할 좌표를 선택해주세요", preferredStyle: .alert)
+        
+        let changeAction = UIAlertAction(title: "변경", style: .default)
+        let relocateCurrentAction = UIAlertAction(title: "현재 위치로 재설정", style: .default)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        
+        alertController.addTextField { $0.placeholder = "위도" }
+        alertController.addTextField { $0.placeholder = "경도" }
+        
+        alertController.addAction(changeAction)
+        alertController.addAction(relocateCurrentAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true)
+    }
 }
 
 extension WeatherForecastViewController: UICollectionViewDataSource {

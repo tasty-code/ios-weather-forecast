@@ -14,6 +14,8 @@ protocol WeatherForecastHeaderViewConfigurable {
 }
 
 final class WeatherForecastHeaderView: UICollectionReusableView {
+    weak var delegate: WeatherForecastViewController?
+    
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -29,9 +31,10 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         return label
     }()
     
-    private let locationConfigurationButton: UIButton = {
+    private lazy var locationConfigurationButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.addTarget(delegate, action: #selector(delegate?.touchLocationConfigurationButton), for: .touchUpInside)
         
         return button
     }()
