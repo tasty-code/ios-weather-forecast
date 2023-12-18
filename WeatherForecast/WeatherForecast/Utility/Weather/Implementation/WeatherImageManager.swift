@@ -16,19 +16,26 @@ final class WeatherImageManager: ImageUpdatable {
     }
     
     func requestImage(name: String, completion: @escaping (UIImage?) -> ()) {
-        networkManager.getData(formatter: urlFormatter, path: WeatherImageURL.image(icon: name).path, with: nil) { result in
+        let imagePath = WeatherImageURL.image(icon: name).path
+        
+        if let cachedImage = NSCacheManager.shared.cachedImage(urlString: imagePath) {
+            DispatchQueue.main.async {
+                completion(cachedImage)
+            }
+            return
+        }
+        
+        networkManager.getData(formatter: urlFormatter, path: imagePath, with: nil) { result in
             switch result {
             case .success(let imageData):
+                let weatherImage = UIImage(data: imageData)
+                NSCacheManager.shared.setObject(image: weatherImage, urlString: imagePath)
                 DispatchQueue.main.async {
-                    completion(UIImage(data: imageData))
+                    completion(weatherImage)
                 }
             case .failure(let error):
                 print("\(error)")
             }
         }
     }
-}
-
-protocol ImageUpdatable: AnyObject {
-    func requestImage(name: String, completion: @escaping (UIImage?) -> ())
 }
