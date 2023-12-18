@@ -13,7 +13,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     var dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.font = .systemFont(ofSize: 24)
         label.textAlignment = .center
         
@@ -24,7 +24,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     var temperatureLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.font = .systemFont(ofSize: 24)
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +65,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
             
             // cellIconImageView
             cellIconImageView.topAnchor.constraint(equalTo: self.topAnchor),
-            cellIconImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            cellIconImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             cellIconImageView.widthAnchor.constraint(equalToConstant: 60),
             cellIconImageView.heightAnchor.constraint(equalToConstant: 60),
         ])

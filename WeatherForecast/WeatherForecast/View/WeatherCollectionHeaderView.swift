@@ -19,7 +19,7 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
     let addressLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.font = .systemFont(ofSize: 16)
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +29,7 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
     let maxAndMinTemperatureLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.font = .systemFont(ofSize: 16)
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +40,7 @@ class WeatherCollectionHeaderView: UICollectionReusableView {
     let currentTemperatureLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.font = .systemFont(ofSize: 24)
         
         label.translatesAutoresizingMaskIntoConstraints = false
