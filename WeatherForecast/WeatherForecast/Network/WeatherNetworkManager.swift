@@ -13,8 +13,9 @@ final class WeatherNetworkManager {
     func downloadData(url: URL, completionHandler: @escaping (Result<Data, Error>) -> Void) {
         let request = URLRequest(url: url)
         URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil {
+            if error != nil {
                 completionHandler(.failure(NetworkError.failedTask))
+                return
             }
             guard
                 let response = response as? HTTPURLResponse,
