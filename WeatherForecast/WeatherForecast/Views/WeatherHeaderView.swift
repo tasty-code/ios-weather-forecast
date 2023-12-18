@@ -47,7 +47,6 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private let currentTemperatureLabel: UILabel = {
         let label = UILabel(font: .preferredFont(forTextStyle: .title1), textAlignment: .left)
-        label.text = " "
         
         return label
     }()
@@ -74,15 +73,14 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            weatherIconView.topAnchor.constraint(equalTo: topAnchor),
-            weatherIconView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            weatherIconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            weatherIconView.heightAnchor.constraint(equalTo: heightAnchor),
+            weatherIconView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            weatherIconView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            weatherIconView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.7),
             weatherIconView.widthAnchor.constraint(equalTo: weatherIconView.heightAnchor, multiplier: 1),
             
             contentStackView.topAnchor.constraint(equalTo: topAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: weatherIconView.trailingAnchor, constant: 10)
+            contentStackView.leadingAnchor.constraint(equalTo: weatherIconView.trailingAnchor, constant: 5)
         ])
     }
     

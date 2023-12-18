@@ -80,7 +80,9 @@ extension WeatherViewController: LocationUpdateDelegate {
             switch result {
             case .success(let rawData):
                 self?.forecastModel = try? JSONDecoder().decode(Forecast.self, from: rawData)
-                self?.weatherView.reload(with: self?.forecastModel)
+                DispatchQueue.main.async {
+                    self?.weatherView.reload(with: self?.forecastModel)                    
+                }
             case .failure(let networkError):
                 self?.displayAlert(title: String(describing: networkError))
             }

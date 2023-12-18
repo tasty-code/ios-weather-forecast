@@ -21,7 +21,7 @@ final class WeatherView: UIView {
     }
     
     private weak var delegate: WeatherViewDelegate?
-    private var dataSource: UICollectionViewDiffableDataSource<Section, List>?
+    private lazy var dataSource: UICollectionViewDiffableDataSource<Section, List> = makeDataSource()
     
     // MARK: - UI Components
 
@@ -63,7 +63,7 @@ final class WeatherView: UIView {
         self.delegate = delegate
         super.init(frame: .zero)
         self.setConstraints()
-        self.configureWeatherCollectionView()
+        self.configureRefreshControl()
     }
     
     required init?(coder: NSCoder) {
@@ -95,23 +95,30 @@ final class WeatherView: UIView {
     }
 
     private func makeCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
-        configuration.headerMode = .supplementary
-        configuration.backgroundColor = .clear
-        let compositionalLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+        let compositionalLayout = UICollectionViewCompositionalLayout() { sectionIndex, layoutEnvironment in
+            var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
+            configuration.headerMode = .supplementary
+            configuration.backgroundColor = .clear
+            
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                    heightDimension: .fractionalHeight(0.15))
+            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
+                                                                     elementKind: UICollectionView.elementKindSectionHeader,
+                                                                     alignment: .top)
+            let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
+            section.boundarySupplementaryItems = [header]
+            return section
+        }
         
         return compositionalLayout
     }
     
-    private func configureWeatherCollectionView() {
+    private func configureRefreshControl() {
         weatherCollectionView.refreshControl = refreshControl
-        
-        configureCell()
-        configureHeaderView()
     }
     
-    private func configureCell() {
-        dataSource = UICollectionViewDiffableDataSource<Section, List>(collectionView: weatherCollectionView) { [weak self]
+    private func makeDataSource() -> UICollectionViewDiffableDataSource<Section, List> {
+        let dataSource = UICollectionViewDiffableDataSource<Section, List>(collectionView: weatherCollectionView) { [weak self]
             collectionView, indexPath, item in
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier,
@@ -136,10 +143,6 @@ final class WeatherView: UIView {
             }
             return cell
         }
-    }
-    
-    private func configureHeaderView() {
-        guard let dataSource = dataSource else { return }
         
         dataSource.supplementaryViewProvider = { [weak self]
             collectionView, kind, indexPath in
@@ -162,16 +165,14 @@ final class WeatherView: UIView {
             }
             return headerView
         }
+        
+        return dataSource
     }
     
     // MARK: - Public Methods
 
     func reload(with forecast: Forecast?) {
-        guard let forecast = forecast,
-              let dataSource = dataSource
-        else {
-            return
-        }
+        guard let forecast = forecast else { return }
 
         var snapshot = dataSource.snapshot()
         snapshot.deleteAllItems()
