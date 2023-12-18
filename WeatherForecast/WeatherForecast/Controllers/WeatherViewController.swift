@@ -15,14 +15,18 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     
     private let locationManager: LocationManager
     private let networkManager: NetworkManager
+    private let cacheManager: IconCacheManager
     
+    private var locationData: LocationData?
+    private var currentModel: Current?
     private var forecastModel: Forecast?
     
     // MARK: - Initializer
     
-    init(locationManager: LocationManager, networkManager: NetworkManager) {
+    init(locationManager: LocationManager, networkManager: NetworkManager, cacheManager: IconCacheManager) {
         self.locationManager = locationManager
         self.networkManager = networkManager
+        self.cacheManager = cacheManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -40,7 +44,6 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
         super.viewDidLoad()
         
         configureDelegate()
-        configureRefreshControl()
     }
     
     // MARK: - Private Methods
@@ -48,55 +51,23 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     private func configureDelegate() {
         locationManager.delegate = self
     }
-    
-    private func configureRefreshControl() {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
-        weatherView.addRefreshControl(refreshControl: refreshControl)
-    }
-    
-    private func updateHeaderView(with locationData: LocationData, _ currentWeather: Current?) {
-        guard let currentWeather = currentWeather else {
-            displayAlert(title: String(describing: NetworkError.decodingError))
-            return
-        }
-        guard let headerView = weatherView.headerView else { return }
-        
-        guard let iconID = currentWeather.weather.last?.icon else { return }
-        networkManager.fetchData(for: IconRequest(iconID)) { [weak self] result in
-            switch result {
-            case .success(let rawData):
-                let icon = UIImage(data: rawData)
-                DispatchQueue.main.async {
-                    headerView.configureUI(with: locationData.address, weather: currentWeather, icon: icon)
-                }
-            case .failure(let networkError):
-                self?.displayAlert(title: String(describing: networkError))
-            }
-        }
-    }
-    
-    @objc
-    private func handleRefreshControl() {
-        locationManager.requestLocation()
-        weatherView.endRefreshing()
-    }
 }
 
 // MARK: - LocationUpdateDelegate
 
 extension WeatherViewController: LocationUpdateDelegate {
     func updateWeather(with locationData: LocationData) {
+        weatherView.endRefreshing()
+        
+        self.locationData = locationData
+        
         let weatherRequest = WeatherRequest(latitude: locationData.latitude,
                                             longitude: locationData.longitude,
                                             weatherType: .current)
         networkManager.fetchData(for: weatherRequest) { [weak self] result in
             switch result {
             case .success(let rawData):
-                let currentWeather = try? JSONDecoder().decode(Current.self, from: rawData)
-                DispatchQueue.main.async {
-                    self?.updateHeaderView(with: locationData, currentWeather)
-                }
+                self?.currentModel = try? JSONDecoder().decode(Current.self, from: rawData)
             case .failure(let networkError):
                 self?.displayAlert(title: String(describing: networkError))
             }
@@ -110,8 +81,7 @@ extension WeatherViewController: LocationUpdateDelegate {
             case .success(let rawData):
                 self?.forecastModel = try? JSONDecoder().decode(Forecast.self, from: rawData)
                 DispatchQueue.main.async {
-                    guard let weatherView = self?.weatherView else { return }
-                    weatherView.updateCollectionView()
+                    self?.weatherView.reload(with: self?.forecastModel)                    
                 }
             case .failure(let networkError):
                 self?.displayAlert(title: String(describing: networkError))
@@ -124,55 +94,42 @@ extension WeatherViewController: LocationUpdateDelegate {
     }
 }
 
-// MARK: - UICollectionViewDataSource
+// MARK: - WeatherViewDelegate
 
-extension WeatherViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let forecastModel = forecastModel else {
-            return 0
-        }
-        return forecastModel.list.count
+extension WeatherViewController: WeatherViewDelegate {
+    func requestLocation() {
+        locationManager.requestLocation()
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCell.reuseIdentifier,
-                                                            for: indexPath) as? ForecastCell
-        else {
-            return UICollectionViewCell()
+    func fetchAddress() -> String? {
+        return locationData?.address
+    }
+    
+    func fetchCurrentWeather() -> Current? {
+        return currentModel
+    }
+    
+    func fetchForecastWeather() -> Forecast? {
+        return forecastModel
+    }
+    
+    func fetchIcon(with iconID: String, completion: @escaping (UIImage) -> Void) {
+        if let icon = cacheManager.getIcon(with: iconID) {
+            completion(icon)
+            return
         }
         
-        guard let forecastModel = forecastModel else {
-            return UICollectionViewCell()
-        }
-        
-        let listData = forecastModel.list[indexPath.row]
-        guard let iconID = listData.weather.last?.icon else {
-            return cell
-        }
         networkManager.fetchData(for: IconRequest(iconID)) { [weak self] result in
             switch result {
             case .success(let rawData):
-                let icon = UIImage(data: rawData)
+                guard let icon = UIImage(data: rawData) else { return }
+                self?.cacheManager.store(with: iconID, icon: icon)
                 DispatchQueue.main.async {
-                    cell.configureUI(with: listData, icon: icon)
+                    completion(icon)
                 }
-            case .failure(let networkError):
-                self?.displayAlert(title: String(describing: networkError))
+            case .failure(let error):
+                self?.displayAlert(title: String(describing: error))
             }
         }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                         withReuseIdentifier: WeatherHeaderView.reuseIdentifier,
-                                                                         for: indexPath) as? WeatherHeaderView
-        else {
-            return UICollectionReusableView()
-        }
-        
-        return view
     }
 }

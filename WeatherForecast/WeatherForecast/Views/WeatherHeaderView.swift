@@ -40,7 +40,6 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView(axis: .horizontal,
-                                    spacing: 10,
                                     subViews: [minimumTemperatureLabel, maximumTemperatureLabel])
         
         return stackView
@@ -55,7 +54,7 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(axis: .vertical,
                                     alignment: .fill,
-                                    distribution: .fill,
+                                    distribution: .fillProportionally,
                                     spacing: 5,
                                     subViews: [addressLabel, labelStackView, currentTemperatureLabel])
         addSubview(stackView)
@@ -74,18 +73,18 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            weatherIconView.topAnchor.constraint(equalTo: topAnchor),
-            weatherIconView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            weatherIconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            weatherIconView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            weatherIconView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            weatherIconView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.7),
             weatherIconView.widthAnchor.constraint(equalTo: weatherIconView.heightAnchor, multiplier: 1),
             
             contentStackView.topAnchor.constraint(equalTo: topAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: weatherIconView.trailingAnchor, constant: 10)
+            contentStackView.leadingAnchor.constraint(equalTo: weatherIconView.trailingAnchor, constant: 5)
         ])
     }
     
-    func configureUI(with address: String, weather: Current, icon: UIImage?) {
+    func configureUI(with address: String?, weather: Current, icon: UIImage?) {
         let minimumTemperature = weather.main.minimumTemperature
         let maximumTemperature = weather.main.maximumTemperature
         let temperature = weather.main.temperature
