@@ -66,7 +66,8 @@ class WeatherViewController: UIViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? WeatherCollectionViewCell else {
                 return WeatherCollectionViewCell()
             }
-            WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(itemIdentifier.weather.first!.icon).png")!) { image in
+            guard let url = WeatherURLManager().forecastWeatherIconGetURL(id: itemIdentifier.weather[0].icon) else { return nil }
+            WeatherImageCache.shared.load(from: url) { image in
                 cell.weatherImage = image
             }
             cell.configureCell(to: itemIdentifier)
@@ -84,7 +85,8 @@ class WeatherViewController: UIViewController {
                     }
                     cell.configureCell(current)
                     if let icon = current?.iconID {
-                        WeatherImageCache.shared.load(from: URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png")!, completion: { image in
+                        guard let url = WeatherURLManager().currentWeatherIconGetURL(id: icon) else { return nil}
+                        WeatherImageCache.shared.load(from: url, completion: { image in
                             cell.weatherImage = image
                         })
                     }

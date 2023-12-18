@@ -51,6 +51,22 @@ struct WeatherURLManager {
         
         return URLRequest(url: url)
     }
+    
+    func currentWeatherIconGetURL(id: String) -> URL? {
+        let URL = URLComponents(string: "https://openweathermap.org/img/wn/" + "\(id)@2x.png")
+        guard let url = URL?.url else {
+            return nil
+        }
+        return url
+    }
+    
+    func forecastWeatherIconGetURL(id: String) -> URL? {
+        let URL = URLComponents(string: "https://openweathermap.org/img/wn/" + "\(id).png")
+        guard let url = URL?.url else {
+            return nil
+        }
+        return url
+    }
 }
 
 
