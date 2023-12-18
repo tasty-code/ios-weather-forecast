@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherHeaderCollectionView: UICollectionReusableView {
+class WeatherCollectionViewHeader: UICollectionReusableView {
     private lazy var horizontalStackView: UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -62,7 +62,6 @@ class WeatherHeaderCollectionView: UICollectionReusableView {
         label.font = .boldSystemFont(ofSize: 30)
         return label
     }()
-    
     
     private override init(frame: CGRect) {
         super.init(frame: frame)

@@ -18,7 +18,7 @@ class WeatherViewController: UIViewController {
     private let locationManager = WeatherLocationManager()
     private var subscribers = Set<AnyCancellable>()
     private var weatherDataSource: UICollectionViewDiffableDataSource<Section, Forecast>!
-    private var collectionHeaderRegisteration: UICollectionView.SupplementaryRegistration<WeatherHeaderCollectionView>!
+    private var collectionHeaderRegisteration: UICollectionView.SupplementaryRegistration<WeatherCollectionViewHeader>!
     private var collectionCellRegisteration: UICollectionView.CellRegistration<WeatherCollectionViewCell, Forecast>!
     
     private lazy var backgroundImage: UIImageView = {
@@ -31,7 +31,7 @@ class WeatherViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeCompositionalLayout())
         collectionView.backgroundColor = .none
-        collectionView.register(WeatherHeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
+        collectionView.register(WeatherCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
         collectionView.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.refreshControl = refreshWeather
@@ -66,7 +66,7 @@ class WeatherViewController: UIViewController {
     }
     
     private func registCell() {
-        collectionHeaderRegisteration = UICollectionView.SupplementaryRegistration<WeatherHeaderCollectionView>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
+        collectionHeaderRegisteration = UICollectionView.SupplementaryRegistration<WeatherCollectionViewHeader>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
             guard let current = self.weatherInfo.current,
                   let url = WeatherURLManager().forecastWeatherIconGetURL(id: current.iconID),
                   let nsURL = NSURL(string: url.absoluteString) else { return }
