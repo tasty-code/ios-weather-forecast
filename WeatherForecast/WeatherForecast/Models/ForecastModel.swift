@@ -101,6 +101,7 @@ enum Description: String, Codable {
     case overcastClouds = "overcast clouds"
     case fewClouds = "few clouds"
     case scatterredClouds = "scattered clouds"
+    case heavyIntensityRain = "heavy intensity rain"
 }
 
 enum MainEnum: String, Codable {
