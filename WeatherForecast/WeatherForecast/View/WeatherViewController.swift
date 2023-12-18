@@ -19,7 +19,7 @@ final class WeatherViewController: UIViewController {
         button.titleLabel?.font = .systemFont(ofSize: 16)
         
         button.addTarget(self, action: #selector(changeLoction), for: .touchUpInside)
-
+        
         view.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -61,6 +61,7 @@ extension WeatherViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        
     }
     
     private func setRefreshControl() {
@@ -76,13 +77,15 @@ extension WeatherViewController {
     }
     
     @objc func handleRefreshControl() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.weatherCollectionView.reloadData()
-            self.weatherCollectionView.refreshControl?.endRefreshing()
+        guard let coordinate = locationManager.location?.coordinate else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.refreshData(coordinate: coordinate)
+            self?.weatherCollectionView.refreshControl?.endRefreshing()
         }
     }
     
     @objc func changeLoction() {
+        
         let alert = UIAlertController(
             title: "위치 변경",
             message: "변경할 좌표를 설정해주세요.",
@@ -90,17 +93,31 @@ extension WeatherViewController {
         )
         alert.addTextField { (textField) in
             textField.placeholder = "위도"
+            //            locationManager.location?.coordinate.latitude
         }
         alert.addTextField { (textField) in
             textField.placeholder = "경도"
         }
-        
+       
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        let settingsAction = UIAlertAction(title: "변경", style: .default)
+        let changeCustomLocation = UIAlertAction(title: "변경", style: .default) { [weak self] (_) in
+            guard let userInputLatitude = alert.textFields?[0].text,
+                  let userInputLongitude = alert.textFields?[1].text,
+                  let userInputLatitude = Double(userInputLatitude),
+                  let userInputLongitude = Double(userInputLongitude) else { return }
+            let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: userInputLatitude, longitude: userInputLongitude)
+            self?.refreshData(coordinate: coordinate)
+        }
+        let originalLocation = UIAlertAction(title: "현재 위치로 재설정", style: .default) { [weak self] (_) in
+            guard let coordinate = self?.locationManager.location?.coordinate else { return }
+            self?.refreshData(coordinate: coordinate)
+        }
+        
+        
         
         alert.addAction(cancelAction)
-        alert.addAction(settingsAction)
-        
+        alert.addAction(changeCustomLocation)
+        alert.addAction(originalLocation)
         self.present(alert, animated: true, completion: nil)
     }
 }
@@ -133,30 +150,7 @@ extension WeatherViewController: CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         
-        let currentWeatherURL = WeatherURLConfigration(weatherType: .current,coordinate: location.coordinate)
-        let forecastWeatherURL = WeatherURLConfigration(weatherType: .forecast, coordinate: location.coordinate)
-        
-        currentWeatherURL.checkError { [weak self] (result: Result<URL,NetworkError>) in
-            switch result {
-                
-            case .success(let success):
-                self?.getCurrentWeatherData(url: success)
-            case .failure(let failure):
-                print(failure.description)
-                
-            }
-        }
-        
-        forecastWeatherURL.checkError { [weak self] (result: Result<URL,NetworkError>) in
-            switch result {
-                
-            case .success(let success):
-                self?.getForecastWeatherData(url: success)
-            case .failure(let failure):
-                print(failure.description)
-                
-            }
-        }
+        refreshData(coordinate: location.coordinate)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -183,6 +177,35 @@ extension WeatherViewController: CLLocationManagerDelegate{
 }
 
 extension WeatherViewController {
+    
+    private func refreshData(coordinate: CLLocationCoordinate2D) {
+        
+        let currentWeatherURL = WeatherURLConfigration(weatherType: .current,coordinate: coordinate)
+        let forecastWeatherURL = WeatherURLConfigration(weatherType: .forecast, coordinate: coordinate)
+        
+        currentWeatherURL.checkError { [weak self] (result: Result<URL,NetworkError>) in
+            switch result {
+                
+            case .success(let success):
+                self?.getCurrentWeatherData(url: success)
+            case .failure(let failure):
+                print(failure.description)
+                
+            }
+        }
+        
+        forecastWeatherURL.checkError { [weak self] (result: Result<URL,NetworkError>) in
+            switch result {
+                
+            case .success(let success):
+                self?.getForecastWeatherData(url: success)
+            case .failure(let failure):
+                print(failure.description)
+                
+            }
+        }
+        
+    }
     
     private func showSettingsAlert() {
         let alert = UIAlertController(
@@ -230,7 +253,7 @@ extension WeatherViewController {
             case .success(let forecastWeatherData):
                 
                 guard let decodedForecastWeather = self?.jsonLoader.decode(weatherType: self?.forecast,
-                                                                          data: forecastWeatherData),
+                                                                           data: forecastWeatherData),
                       let decodedForecastWeather = decodedForecastWeather else { return }
                 
                 self?.forecast = decodedForecastWeather
@@ -320,7 +343,7 @@ extension WeatherViewController: UICollectionViewDataSource {
                 case .success(let iconData):
                     guard let fetchedIcon = UIImage(data: iconData) else { return }
                     self?.iconCacheManager.storeImage(with: iconName, image: fetchedIcon )
-                    DispatchQueue.main.async { 
+                    DispatchQueue.main.async {
                         cell.updateContent(forecast, indexPath: indexPath, icon: fetchedIcon)
                     }
                     return
