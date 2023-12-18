@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class WeatherImageManager: ImageUpdatable {
+final class WeatherImageManager: WeatherImageDelegate {
     private let networkManager: NetworkManagable
     private let urlFormatter: any URLFormattable = WeatherImageURLFormatter()
     

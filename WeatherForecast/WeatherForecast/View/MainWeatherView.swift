@@ -9,10 +9,10 @@ import UIKit
 
 final class MainWeatherView: UIView {
     private weak var weatherDataDelegate: WeatherDataDelegate?
-    private weak var imageDelegate: ImageUpdatable?
+    private weak var imageDelegate: WeatherImageDelegate?
     private weak var locationDelegate: LocationRequestDelegate?
     
-    init(weatherDataDelegate: WeatherDataDelegate?, imageDelegate: ImageUpdatable?, locationDelegate: LocationRequestDelegate?) {
+    init(weatherDataDelegate: WeatherDataDelegate?, imageDelegate: WeatherImageDelegate?, locationDelegate: LocationRequestDelegate?) {
         self.weatherDataDelegate = weatherDataDelegate
         self.imageDelegate = imageDelegate
         self.locationDelegate = locationDelegate
