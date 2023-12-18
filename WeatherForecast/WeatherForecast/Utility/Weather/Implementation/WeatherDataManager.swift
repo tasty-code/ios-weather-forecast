@@ -1,5 +1,5 @@
 //
-//  WeatherManager.swift
+//  WeatherDataManager.swift
 //  WeatherForecast
 //
 //  Created by BOMBSGIE on 2023/12/12.
