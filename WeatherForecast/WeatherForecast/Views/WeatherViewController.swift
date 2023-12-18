@@ -9,7 +9,7 @@ import Combine
 import CoreLocation
 
 class WeatherViewController: UIViewController {
-    typealias Item = (CurrentWeatherInfo?, [Forecast])
+    typealias Item = (current: CurrentWeatherInfo?, forecasts: [Forecast])
     enum Section {
         case main
     }
@@ -18,6 +18,8 @@ class WeatherViewController: UIViewController {
     private let locationManager = WeatherLocationManager()
     private var subscribers = Set<AnyCancellable>()
     private var weatherDataSource: UICollectionViewDiffableDataSource<Section, Forecast>!
+    private var collectionHeaderRegisteration: UICollectionView.SupplementaryRegistration<WeatherHeaderCollectionView>!
+    private var collectionCellRegisteration: UICollectionView.CellRegistration<WeatherCollectionViewCell, Forecast>!
     
     private lazy var backgroundImage: UIImageView = {
         let image = UIImageView()
@@ -50,6 +52,8 @@ class WeatherViewController: UIViewController {
         setUpLayouts()
         setUpConstraints()
         
+        registCell()
+        registHeader()
         configureDatasource()
         bind()
     }
@@ -61,38 +65,50 @@ class WeatherViewController: UIViewController {
         refreshWeather.endRefreshing()
     }
     
+    private func registCell() {
+        collectionHeaderRegisteration = UICollectionView.SupplementaryRegistration<WeatherHeaderCollectionView>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
+            guard let current = self.weatherInfo.current,
+                  let url = WeatherURLManager().forecastWeatherIconGetURL(id: current.iconID),
+                  let nsURL = NSURL(string: url.absoluteString) else { return }
+            supplementaryView.configureCell(current)
+            
+            WeatherHTTPClient.updateWeatherIcon(from: URLRequest(url: url), valueHandler: { uiImage in
+                supplementaryView.weatherImage = uiImage
+                WeatherImageCache.shared.store(uiImage, to: nsURL)
+            })
+            .store(in: &self.subscribers)
+        }
+    }
+    
+    private func registHeader() {
+        collectionCellRegisteration = UICollectionView.CellRegistration<WeatherCollectionViewCell, Forecast> { cell, indexPath, item in
+            guard let iconID = item.weather.first?.icon,
+                  let url = WeatherURLManager().forecastWeatherIconGetURL(id: iconID),
+                  let nsURL = NSURL(string: url.absoluteString) else { return }
+            cell.configureCell(to: item)
+            
+            WeatherHTTPClient.updateWeatherIcon(from: URLRequest(url: url)) { uiImage in
+                cell.weatherImage = uiImage
+                WeatherImageCache.shared.store(uiImage, to: nsURL)
+            }
+            .store(in: &self.subscribers)
+        }
+    }
+    
     private func configureDatasource() {
         weatherDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? WeatherCollectionViewCell else {
-                return WeatherCollectionViewCell()
-            }
-            guard let url = WeatherURLManager().forecastWeatherIconGetURL(id: itemIdentifier.weather[0].icon) else { return nil }
-            WeatherImageCache.shared.load(from: url) { image in
-                cell.weatherImage = image
-            }
-            cell.configureCell(to: itemIdentifier)
+            let cell = collectionView.dequeueConfiguredReusableCell(using: self.collectionCellRegisteration, for: indexPath, item: itemIdentifier)
             return cell
         })
+        weatherDataSource.supplementaryViewProvider = { collectionView , kind , indexPath in
+            collectionView.dequeueConfiguredReusableSupplementary(using: self.collectionHeaderRegisteration, for: indexPath)
+        }
     }
     
     func bind() {
         $weatherInfo
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (current, forecast) in
-                self?.weatherDataSource.supplementaryViewProvider = { collectionView , kind , indexPath in
-                    guard let cell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as? WeatherHeaderCollectionView else {
-                        return WeatherHeaderCollectionView()
-                    }
-                    cell.configureCell(current)
-                    if let icon = current?.iconID {
-                        guard let url = WeatherURLManager().currentWeatherIconGetURL(id: icon) else { return nil}
-                        WeatherImageCache.shared.load(from: url, completion: { image in
-                            cell.weatherImage = image
-                        })
-                    }
-                    return cell
-                }
-                
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Forecast>()
                 snapshot.appendSections([.main])
                 snapshot.appendItems(forecast, toSection: .main)
