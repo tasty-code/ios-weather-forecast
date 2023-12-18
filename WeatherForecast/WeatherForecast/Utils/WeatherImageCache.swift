@@ -13,9 +13,16 @@ final class WeatherImageCache {
     
     private let cachedImages = NSCache<NSURL, UIImage>()
     
-    func getImage(url: NSURL) -> UIImage? {
+    func fetch(url: NSURL) -> UIImage? {
         return cachedImages.object(forKey: url)
     }
+    
+    func store(_ uiImage: UIImage?, to nsURL: NSURL) {
+         guard let uiImage = uiImage else {
+             return
+         }
+         cachedImages.setObject(uiImage, forKey: nsURL)
+     }
     
     func load(from url: URL, completion: @escaping (UIImage?) -> Void) {
         guard let nsURL = NSURL(string: url.formatted()) else {
@@ -23,7 +30,7 @@ final class WeatherImageCache {
             return
         }
         
-        if let cacheImage = getImage(url: nsURL) {
+        if let cacheImage = fetch(url: nsURL) {
             DispatchQueue.main.async {
                 completion(cacheImage)
             }
