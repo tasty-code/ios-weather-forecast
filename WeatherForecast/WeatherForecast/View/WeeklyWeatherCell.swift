@@ -18,7 +18,17 @@ final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
         super.init(coder: coder)
     }
     
-    private lazy var cellStack: UIStackView = {
+    private  lazy var containerView: UIView = {
+        let view = UIView()
+        
+        view.addSubview(dateLabel)
+        view.addSubview(labelImageStack)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    private lazy var labelImageStack: UIStackView = {
         let stackView = UIStackView()
         
         stackView.axis = .horizontal
@@ -55,20 +65,22 @@ final class WeeklyWeatherCell: UICollectionViewCell, ReuseIdentifiable {
     }()
     
     private func configure() {
-        addSubview(dateLabel)
-        addSubview(cellStack)
-        
+        contentView.addSubview(containerView)
+    
         NSLayoutConstraint.activate([
-            dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-             
-            weatherImageView.heightAnchor.constraint(equalTo: dateLabel.heightAnchor),
-            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
-            cellStack.topAnchor.constraint(equalTo: contentView.topAnchor),
-            cellStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cellStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            dateLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            
+            labelImageStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            labelImageStack.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            
+            weatherImageView.heightAnchor.constraint(equalToConstant: contentView.frame.size.height),
+            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor)
         ])
     }
     
