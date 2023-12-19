@@ -42,7 +42,6 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureDelegate()
     }
     
@@ -131,5 +130,45 @@ extension WeatherViewController: WeatherViewDelegate {
                 self?.displayAlert(title: String(describing: error))
             }
         }
+    }
+}
+
+extension WeatherViewController: LocationChangeable {
+    func displayLocationInputAlert() {
+        let alert = UIAlertController(title: "위치 변경", message: "변경할 좌표를 선택해주세요", preferredStyle: .alert)
+        
+        alert.addTextField { textField in
+            textField.placeholder = "위도"
+            textField.keyboardType = .decimalPad
+        }
+        
+        alert.addTextField { textField in
+            textField.placeholder = "경도"
+            textField.keyboardType = .decimalPad
+        }
+        
+        let changeAction = UIAlertAction(title: "변경", style: .default) { [weak self] _ in
+            guard let latitudeText = alert.textFields?.first?.text,
+                  let longitudeText = alert.textFields?.last?.text,
+                  let latitude = Double(latitudeText),
+                  let longitude = Double(longitudeText)
+            else {
+                return
+            }
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+            self?.locationManager.convertGeocodeAndUpdate(with: location)
+        }
+        
+        let relocationAction = UIAlertAction(title: "현재 위치로 재설정", style: .default) { [weak self] _ in
+            self?.locationManager.requestLocation()
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        
+        alert.addAction(changeAction)
+        alert.addAction(relocationAction)
+        alert.addAction(cancelAction)
+                
+        present(alert, animated: true)
     }
 }

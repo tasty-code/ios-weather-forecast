@@ -28,20 +28,7 @@ final class LocationManager: NSObject {
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
-            if let error = error {
-                self?.delegate?.didFailedUpdateLocaion(error: error)
-                return
-            }
-        
-            guard let placemark = placemarks?.last else { return }
-            
-            guard let address = self?.combineAddress(with: placemark) else { return }
-            
-            self?.delegate?.updateWeather(with: LocationData(coordinate: location.coordinate,
-                                                      address: address))
-        }
+        convertGeocodeAndUpdate(with: location)
     }
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -61,6 +48,23 @@ extension LocationManager: CLLocationManagerDelegate {
 extension LocationManager {
     func requestLocation() {
         locationManager.requestLocation()
+    }
+    
+    func convertGeocodeAndUpdate(with location: CLLocation) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            if let error = error {
+                self?.delegate?.didFailedUpdateLocaion(error: error)
+                return
+            }
+        
+            guard let placemark = placemarks?.last else { return }
+            
+            guard let address = self?.combineAddress(with: placemark) else { return }
+            
+            self?.delegate?.updateWeather(with: LocationData(coordinate: location.coordinate,
+                                                      address: address))
+        }
     }
     
     private func combineAddress(with placemark: CLPlacemark) -> String {

@@ -20,6 +20,7 @@ final class WeatherView: UIView {
         case main
     }
     
+    private weak var headerViewDelegate: LocationChangeable?
     private weak var delegate: WeatherViewDelegate?
     private lazy var dataSource: UICollectionViewDiffableDataSource<Section, List> = makeDataSource()
     
@@ -59,8 +60,9 @@ final class WeatherView: UIView {
     
     // MARK: - Initializer
 
-    init(delegate: WeatherViewDelegate) {
+    init(delegate: WeatherViewDelegate & LocationChangeable) {
         self.delegate = delegate
+        self.headerViewDelegate = delegate
         super.init(frame: .zero)
         self.setConstraints()
         self.configureRefreshControl()
@@ -159,6 +161,8 @@ final class WeatherView: UIView {
             else {
                 return WeatherHeaderView()
             }
+            
+            headerView.delegate = self?.headerViewDelegate
             
             self?.delegate?.fetchIcon(with: iconID) { icon in
                 headerView.configureUI(with: address, weather: weatherData, icon: icon)

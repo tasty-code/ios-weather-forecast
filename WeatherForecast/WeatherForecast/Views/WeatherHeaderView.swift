@@ -9,6 +9,8 @@ import UIKit
 
 final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
+    weak var delegate: LocationChangeable?
+    
     private lazy var weatherIconView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -20,14 +22,12 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
     private let addressLabel: UILabel = {
         let label = UILabel(textAlignment: .left)
-        label.text = " - "
         
         return label
     }()
     
     private let minimumTemperatureLabel: UILabel = {
         let label = UILabel(textAlignment: .left)
-        label.text = " - "
         
         return label
     }()
@@ -62,6 +62,16 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
         return stackView
     }()
     
+    private lazy var changeLocationButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("위치설정", for: .normal)
+        button.addTarget(self, action: #selector(changeLocationButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(button)
+        
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setConstraints()
@@ -80,8 +90,16 @@ final class WeatherHeaderView: UICollectionReusableView, Reusable {
             
             contentStackView.topAnchor.constraint(equalTo: topAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: weatherIconView.trailingAnchor, constant: 5)
+            contentStackView.leadingAnchor.constraint(equalTo: weatherIconView.trailingAnchor, constant: 5),
+            
+            changeLocationButton.topAnchor.constraint(equalTo: topAnchor),
+            changeLocationButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15)
         ])
+    }
+    
+    @objc
+    private func changeLocationButtonTapped() {
+        delegate?.displayLocationInputAlert()
     }
     
     func configureUI(with address: String?, weather: Current, icon: UIImage?) {
