@@ -6,7 +6,6 @@ typealias LocationCompletion = (Result<(CLLocationCoordinate2D, CLPlacemark), Lo
 final class LocationManager: NSObject {
     private let manager = CLLocationManager()
     private var locationCompletion: LocationCompletion?
-    private var didFindLocation: Bool = false
     
     override init() {
         super.init()
@@ -17,19 +16,20 @@ final class LocationManager: NSObject {
         manager.requestWhenInUseAuthorization()
     }
     
-    func request(completion: @escaping LocationCompletion){
-        if !didFindLocation {
-            manager.requestLocation()
-            didFindLocation = true
-        }
-        
+    func request(coordinate: CLLocationCoordinate2D?, completion: @escaping LocationCompletion){
+        coordinate == nil ? manager.requestLocation() : fetchPlacemark(for: coordinate)
+
         locationCompletion = completion
     }
     
-    private func fetchPlacemark(for location: CLLocation) {
+    private func fetchPlacemark(for coordinate: CLLocationCoordinate2D?) {
         guard let completion = locationCompletion else {
             return
         }
+        
+        guard let coordinate = coordinate else { return }
+        
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         
         let geocoder = CLGeocoder()
         let locale = Locale(identifier: "Ko-kr")
@@ -52,18 +52,12 @@ extension LocationManager: CLLocationManagerDelegate {
             return
         }
         
-        if didFindLocation {
-            didFindLocation = false
-            fetchPlacemark(for: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude))
-        }
+        fetchPlacemark(for: coordinate)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        if didFindLocation {
-            didFindLocation = false
-            fetchPlacemark(for: CLLocation(latitude: DefaultLocation.latitude, longitude: DefaultLocation.longitude))
-            locationCompletion?(.failure(LocationError.didFailFetchLocationError))
-        }
+        fetchPlacemark(for: CLLocationCoordinate2D(latitude: .defaultLatitude, longitude: .defaultLongitude))
+        locationCompletion?(.failure(LocationError.didFailFetchLocationError))
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
