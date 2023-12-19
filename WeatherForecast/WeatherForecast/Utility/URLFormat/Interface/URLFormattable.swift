@@ -10,19 +10,21 @@ import Foundation
 protocol URLFormattable {
     associatedtype T: APIBaseURLProtocol
     
-    func makeURL(path: String, with queries: [String: String]) -> URL?
+    func makeURL(path: String, with queries: [String: String]?) -> URL?
     func makeURLRequest(url: URL, httpMethodType: HTTPMethod) -> URLRequest
 }
 
 extension URLFormattable {
-    func makeURL(path: String, with queries: [String: String]) -> URL? {
+    func makeURL(path: String, with queries: [String: String]?) -> URL? {
         let urlString = "\(T.baseURLString)"
         var urlComponents = URLComponents(string: urlString)
         urlComponents?.path = "\(path)"
-        let queryItems = queries.map {
-            URLQueryItem(name: $0.key, value: $0.value)
+        if let queries = queries {
+            let queryItems = queries.map {
+                URLQueryItem(name: $0.key, value: $0.value)
+            }
+            urlComponents?.queryItems = queryItems
         }
-        urlComponents?.queryItems = queryItems
         return urlComponents?.url
     }
     

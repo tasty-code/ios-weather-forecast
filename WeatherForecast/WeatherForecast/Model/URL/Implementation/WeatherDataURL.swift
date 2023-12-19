@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum WeatherURL: APIBaseURLProtocol {
+enum WeatherDataURL: APIBaseURLProtocol {
     static let baseURLString = "https://api.openweathermap.org"
     
     case current
