@@ -22,6 +22,5 @@ extension URLSession: HTTPClient {
                 return (data, httpResponse)
             }
             .eraseToAnyPublisher()
-            
     }
 }

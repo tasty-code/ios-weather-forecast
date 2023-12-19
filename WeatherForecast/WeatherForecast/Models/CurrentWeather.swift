@@ -7,6 +7,12 @@
 
 import Foundation
 
+struct CurrentWeatherInfo {
+    let address: String
+    let iconID: String
+    let mainInfo: MainInfo
+}
+
 struct CurrentWeather: Decodable {
     let coordinate: Coordinate
     let weathers: [Weather]
