@@ -33,7 +33,7 @@ final class WeatherDataManager: WeatherUpdateDelegate {
                 }
                 self?.currentWeather = weather
             case .failure(let error):
-                print("\(error.localizedDescription)")
+                print("\(error)")
             }
         }
         networkManager.getData(formatter: urlFormatter, path: WeatherDataURL.weekly.path, with: queries) { [weak self] result in
@@ -48,7 +48,7 @@ final class WeatherDataManager: WeatherUpdateDelegate {
                     self?.delegate?.updateUI()
                 }
             case .failure(let error):
-                print("\(error.localizedDescription)")
+                print("\(error)")
             }
         }
     }
