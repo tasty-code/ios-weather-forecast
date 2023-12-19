@@ -1,5 +1,5 @@
 //
-//  WeatherForecast - ViewController.swift
+//  WeatherForecast - WeatherViewController.swift
 //  Created by yagom.
 //  Copyright © yagom. All rights reserved.
 //
@@ -136,8 +136,6 @@ extension WeatherViewController {
         }
     }
 }
-
-
 
 // MARK: - UICollectionViewDelegate
 

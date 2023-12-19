@@ -74,9 +74,9 @@ class WeatherCollectionViewCell: UICollectionViewCell {
             temperatureLabel.trailingAnchor.constraint(equalTo: cellIconImageView.leadingAnchor),
             
             // cellIconImageView
-            cellIconImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            cellIconImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            cellIconImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            cellIconImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            cellIconImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            cellIconImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             cellIconImageView.widthAnchor.constraint(equalToConstant: 60),
         ])
     }
