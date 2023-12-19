@@ -6,7 +6,7 @@ final class WeatherViewController: UIViewController {
     private lazy var weatherCollectionView: WeatherCollectionView = WeatherCollectionView(frame: .zero, collectionViewLayout: createBasicListLayout())
     private let locationManager = CLLocationManager()
     private let networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
-    private let iconCacheManager = CacheManager()
+    private let cacheManager = CacheManager()
     private let jsonLoader = JsonLoader()
     
     private var forecast: ForecastWeather?
@@ -41,6 +41,7 @@ final class WeatherViewController: UIViewController {
 
 //MARK: - Configuration
 extension WeatherViewController {
+    
     private func setBackgroundImageView() {
         let backgroundImage = UIImage(named: "wallpaper")
         let backgroundImageView = UIImageView(image: backgroundImage)
@@ -85,7 +86,6 @@ extension WeatherViewController {
     }
     
     @objc func changeLoction() {
-        
         let alert = UIAlertController(
             title: "위치 변경",
             message: "변경할 좌표를 설정해주세요.",
@@ -93,7 +93,6 @@ extension WeatherViewController {
         )
         alert.addTextField { (textField) in
             textField.placeholder = "위도"
-            //            locationManager.location?.coordinate.latitude
         }
         alert.addTextField { (textField) in
             textField.placeholder = "경도"
@@ -113,8 +112,6 @@ extension WeatherViewController {
             self?.refreshData(coordinate: coordinate)
         }
         
-        
-        
         alert.addAction(cancelAction)
         alert.addAction(changeCustomLocation)
         alert.addAction(originalLocation)
@@ -130,15 +127,16 @@ extension WeatherViewController {
         layoutConfig.backgroundColor = .clear
         layoutConfig.headerMode = .supplementary
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalHeight(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.1))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.15))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        section.boundarySupplementaryItems = [header]
-        let layout = UICollectionViewCompositionalLayout(section: section)
+        let layout = UICollectionViewCompositionalLayout() { section, environment in
+        
+            let section = NSCollectionLayoutSection.list(using: layoutConfig, layoutEnvironment: environment)
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
+            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
+                                                                     elementKind: UICollectionView.elementKindSectionHeader,
+                                                                     alignment: .top)
+            section.boundarySupplementaryItems = [header]
+            return section
+        }
         
         return layout
     }
@@ -241,7 +239,6 @@ extension WeatherViewController {
                 return
             case .failure(let error):
                 return print(error.description)
-                
             }
         }
     }
@@ -264,7 +261,6 @@ extension WeatherViewController {
                 return
             case .failure(let error):
                 return print(error.description)
-                
             }
         }
     }
@@ -272,6 +268,7 @@ extension WeatherViewController {
 
 //MARK: - UpdateHeader
 extension WeatherViewController: GeoConverter {
+    
     private func updateHeaderUI(_ currentWeather: CurrentWeather) {
         let indexPaths = weatherCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader)
         guard let indexPath = indexPaths.first,
@@ -283,7 +280,6 @@ extension WeatherViewController: GeoConverter {
         let location = CLLocation(latitude: currentWeather.coordinate.latitude, longitude: currentWeather.coordinate.longitude)
         
         convertToAddressWith(location: location) { (result: Result<String, GeoConverterError>) in
-            
             switch result {
                 
             case .success(let name):
@@ -293,28 +289,26 @@ extension WeatherViewController: GeoConverter {
                 return
             case .failure(let fail):
                 return print(fail.description)
-                
             }
         }
         
-        if iconCacheManager.getImage(with: iconName) == nil {
+        if cacheManager.getImage(with: iconName) == nil {
             networkServiceProvider.fetch(url: imageURL) { [weak self] (result: Result<Data, NetworkError>) in
                 switch result {
                     
                 case .success(let iconData):
                     guard let fetchedIcon = UIImage(data: iconData) else { return }
-                    self?.iconCacheManager.storeImage(with: iconName, image: fetchedIcon)
+                    self?.cacheManager.storeImage(with: iconName, image: fetchedIcon)
                     DispatchQueue.main.async {
                         header.updateContent(currentWeather, icon: fetchedIcon)
                     }
                     return
                 case .failure(let error):
                     return print(error.description)
-                    
                 }
             }
         } else {
-            guard let icon = iconCacheManager.getImage(with: iconName) else { return }
+            guard let icon = cacheManager.getImage(with: iconName) else { return }
             DispatchQueue.main.async {
                 header.updateContent(currentWeather, icon: icon)
             }
@@ -324,6 +318,7 @@ extension WeatherViewController: GeoConverter {
 
 // MARK: - UICollectionViewDataSource
 extension WeatherViewController: UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let forecast = forecast else { return 0 }
         return forecast.fiveDaysForecast.count
@@ -336,24 +331,23 @@ extension WeatherViewController: UICollectionViewDataSource {
               let iconName = forecast.fiveDaysForecast[indexPath.row].weather.first?.icon,
               let imageURL = WeatherIconURLConfigration(weatherIcon: iconName).makeURL() else { return cell}
         
-        if iconCacheManager.getImage(with: iconName) == nil {
+        if cacheManager.getImage(with: iconName) == nil {
             networkServiceProvider.fetch(url: imageURL) { [weak self] (result: Result<Data, NetworkError>) in
                 switch result {
                     
                 case .success(let iconData):
                     guard let fetchedIcon = UIImage(data: iconData) else { return }
-                    self?.iconCacheManager.storeImage(with: iconName, image: fetchedIcon )
+                    self?.cacheManager.storeImage(with: iconName, image: fetchedIcon )
                     DispatchQueue.main.async {
                         cell.updateContent(forecast, indexPath: indexPath, icon: fetchedIcon)
                     }
                     return
                 case .failure(let error):
                     return print(error.description)
-                    
                 }
             }
         } else {
-            guard let icon = iconCacheManager.getImage(with: iconName) else { return cell }
+            guard let icon = cacheManager.getImage(with: iconName) else { return cell }
             cell.updateContent(forecast, indexPath: indexPath, icon: icon)
         }
         

@@ -1,6 +1,7 @@
 import UIKit
 
 final class HeaderCollectionReusableView: UICollectionReusableView {
+    
     static let identifier = "Header"
     
     private lazy var headerStackView: UIStackView = {

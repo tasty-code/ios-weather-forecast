@@ -9,7 +9,7 @@ final class ForecastWeatherCell: UICollectionViewCell {
         stackView.axis = .horizontal
         stackView.alignment = .center
         
-        addSubview(stackView)
+        contentView.addSubview(stackView)
         stackView.addArrangedSubview(temperatureLabel)
         stackView.addArrangedSubview(weatherImageView)
         
@@ -25,7 +25,7 @@ final class ForecastWeatherCell: UICollectionViewCell {
     private lazy var dateLabel: UILabel = {
         let dateLabel = UILabel()
         
-        addSubview(dateLabel)
+        contentView.addSubview(dateLabel)
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         return dateLabel
@@ -47,15 +47,15 @@ final class ForecastWeatherCell: UICollectionViewCell {
     
     private func setupViews() {
         NSLayoutConstraint.activate([
-            horizontalStackView.topAnchor.constraint(equalTo: topAnchor),
-            horizontalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            horizontalStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            horizontalStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            horizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            horizontalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            dateLabel.topAnchor.constraint(equalTo: topAnchor),
-            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 16),
-            dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            dateLabel.topAnchor.constraint(equalTo: horizontalStackView.topAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            dateLabel.bottomAnchor.constraint(equalTo: horizontalStackView.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([

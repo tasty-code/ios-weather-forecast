@@ -1,6 +1,7 @@
 import Foundation
 
 private enum JsonLoaderError: Error {
+    
     case unknownFile
     case dataConvertFail
     case notJsonData
