@@ -33,6 +33,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     
     lazy var cellIconImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -44,11 +45,20 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         addSubview(temperatureLabel)
         addSubview(cellIconImageView)
         
+        configureCell()
         setConstraint()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureCell() {
+        let borderLayer = CALayer()
+        borderLayer.backgroundColor = UIColor.gray.cgColor
+        borderLayer.frame = CGRect(x: 10, y: frame.size.height - 1, width: frame.size.width, height: 1)
+        
+        layer.addSublayer(borderLayer)
     }
     
     private func setConstraint() {
@@ -64,10 +74,10 @@ class WeatherCollectionViewCell: UICollectionViewCell {
             temperatureLabel.trailingAnchor.constraint(equalTo: cellIconImageView.leadingAnchor),
             
             // cellIconImageView
-            cellIconImageView.topAnchor.constraint(equalTo: self.topAnchor),
-            cellIconImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            cellIconImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            cellIconImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            cellIconImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             cellIconImageView.widthAnchor.constraint(equalToConstant: 60),
-            cellIconImageView.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
 }
