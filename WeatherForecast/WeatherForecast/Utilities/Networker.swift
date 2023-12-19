@@ -1,15 +1,10 @@
-import Foundation
 import UIKit
 
 struct Networker {
-    private let networkManager: NetworkManager
-
-    init(request: Requestable) {
-        self.networkManager = NetworkManager(request: request)
-    }
+    private let networkManager = NetworkManager()
     
-    func fetchWeatherData<T: Decodable>(completion: @escaping (T) -> Void) {
-        networkManager.fetch { (result: Result<T, NetworkError>) in
+    func fetchWeatherData<T: Decodable>(request: Requestable, completion: @escaping (T) -> Void) {
+        networkManager.fetch(request: request) { (result: Result<T, NetworkError>) in
             switch result {
             case .success(let weatherResponse):
                 completion(weatherResponse)
@@ -19,8 +14,8 @@ struct Networker {
         }
     }
     
-    func fetchImage(completion: @escaping (UIImage) -> Void) {
-        networkManager.fetchImage { result in
+    func fetchImage(request: Requestable, completion: @escaping (UIImage) -> Void) {
+        networkManager.fetchImage(request: request) { result in
             switch result {
             case .success(let image):
                 completion(image)

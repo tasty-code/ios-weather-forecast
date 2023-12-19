@@ -5,12 +5,14 @@ final class WeatherForecastViewController: UIViewController {
     private let weatherForecastView = WeatherForecastView()
     
     private let locator = Locator()
-    private var networker: Networker?
+    private let networker = Networker()
     
     private var currentWeathermodel: Model.CurrentWeather?
     private var fiveDaysWeatherModel: Model.FiveDaysWeather?
     private var coordinate: CLLocationCoordinate2D?
     private var placemark: CLPlacemark?
+    
+    private let locationGroup = DispatchGroup()
     
     override func loadView() {
         view = weatherForecastView
@@ -26,58 +28,57 @@ final class WeatherForecastViewController: UIViewController {
         configureRefreshControl()
     }
     
-    @objc
+    @objc 
     private func configureWeatherData() {
-        let group = DispatchGroup()
-        
-        group.enter()
+        locationGroup.enter()
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            self?.locator.requestData { coordinate, placemark in
-                self?.coordinate = coordinate
-                self?.placemark = placemark
-                group.leave()
+            guard let self = self else { return }
+            self.locator.requestData(coordinate: coordinate) { coordinate, placemark in
+                self.coordinate = coordinate
+                self.placemark = placemark
+                self.locationGroup.leave()
             }
         }
         
-        group.notify(queue: .global(qos: .userInteractive)) {
-            guard let coordinate = self.coordinate else {
-                return
-            }
+        locationGroup.notify(queue: .global(qos: .userInteractive)) {
+            guard let coordinate = self.coordinate else { return }
+            let networkGroup = DispatchGroup()
             
-            group.enter()
+            networkGroup.enter()
             DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-                self?.networker = Networker(request: WeatherAPI.current(coordinate))
-                self?.networker?.fetchWeatherData { (result: Model.CurrentWeather) in
-                    self?.currentWeathermodel = result
-                    group.leave()
+                guard let self = self else { return }
+                networker.fetchWeatherData(request: WeatherAPI.current(coordinate)) { (result: Model.CurrentWeather) in
+                    self.currentWeathermodel = result
+                    networkGroup.leave()
                 }
             }
             
-            group.enter()
+            networkGroup.enter()
             DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-                self?.networker = Networker(request: WeatherAPI.fiveDays(coordinate))
-                self?.networker?.fetchWeatherData { (result: Model.FiveDaysWeather) in
-                    self?.fiveDaysWeatherModel = result
-                    group.leave()
+                guard let self = self else { return }
+                networker.fetchWeatherData(request: WeatherAPI.fiveDays(coordinate)) { (result: Model.FiveDaysWeather) in
+                    self.fiveDaysWeatherModel = result
+                    networkGroup.leave()
                 }
             }
-            
-            group.wait()
-            
-            DispatchQueue.main.async {
-                self.weatherForecastView.collectionView.reloadData()
-                self.weatherForecastView.collectionView.refreshControl?.endRefreshing()
+
+            networkGroup.wait()
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                weatherForecastView.collectionView.reloadData()
+                weatherForecastView.collectionView.refreshControl?.endRefreshing()
             }
         }
     }
     
     private func configureRefreshControl () {
         DispatchQueue.main.async { [weak self] in
-            self?.weatherForecastView.collectionView.refreshControl = UIRefreshControl()
-            self?.weatherForecastView.collectionView.refreshControl?.tintColor = .white
-            self?.weatherForecastView.collectionView.refreshControl?.addTarget(
+            guard let self = self else { return }
+            weatherForecastView.collectionView.refreshControl = UIRefreshControl()
+            weatherForecastView.collectionView.refreshControl?.tintColor = .white
+            weatherForecastView.collectionView.refreshControl?.addTarget(
                 self,
-                action: #selector(self?.configureWeatherData),
+                action: #selector(configureWeatherData),
                 for: .valueChanged
             )
         }
@@ -87,18 +88,46 @@ final class WeatherForecastViewController: UIViewController {
     func touchLocationConfigurationButton() {
         let alertController = UIAlertController(title: "위치 변경", message: "변경할 좌표를 선택해주세요", preferredStyle: .alert)
         
-        let changeAction = UIAlertAction(title: "변경", style: .default)
-        let relocateCurrentAction = UIAlertAction(title: "현재 위치로 재설정", style: .default)
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let changeAction = UIAlertAction(title: "변경", style: .default) { [weak self] _ in
+            
+            guard let self = self,
+                  let textFields = alertController.textFields,
+                  let latitudeString = textFields[0].text,
+                  let longitudeString = textFields[1].text,
+                  let latitude = Double(latitudeString),
+                  let longitude = Double(longitudeString) else {
+                return
+            }
+            
+            coordinate?.latitude = latitude
+            coordinate?.longitude = longitude
+            configureWeatherData()
+        }
         
-        alertController.addTextField { $0.placeholder = "위도" }
-        alertController.addTextField { $0.placeholder = "경도" }
+        let relocateCurrentAction = UIAlertAction(title: "현재 위치로 재설정", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            
+            coordinate = nil
+            configureWeatherData()
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+    
+        alertController.addTextField { textfield in
+            textfield.placeholder = "위도"
+            textfield.keyboardType = .decimalPad
+        }
+        
+        alertController.addTextField { textfield in
+            textfield.placeholder = "경도"
+            textfield.keyboardType = .decimalPad
+        }
         
         alertController.addAction(changeAction)
         alertController.addAction(relocateCurrentAction)
         alertController.addAction(cancelAction)
         
-        self.present(alertController, animated: true)
+        present(alertController, animated: true)
     }
 }
 
@@ -121,12 +150,13 @@ extension WeatherForecastViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: WeatherForecastHeaderView.identifier, for: indexPath) as? WeatherForecastHeaderView else {
             return WeatherForecastHeaderView()
         }
         
         header.configure(placemark, using: currentWeathermodel)
-      
+        
         return header
     }
 }
