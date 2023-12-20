@@ -8,7 +8,7 @@ protocol GeoConverter {
 
 extension GeoConverter {
     
-    func convertToAddressWith(location: CLLocation, completionHandler: @escaping (Result<String,GeoConverterError>) -> Void) {
+    func convertToAddressWith(location: CLLocation, completionHandler: @escaping (Result<String, GeoConverterError>) -> Void) {
         let geoCoder = CLGeocoder()
         
         geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in

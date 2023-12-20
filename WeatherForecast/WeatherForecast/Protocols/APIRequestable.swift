@@ -32,7 +32,6 @@ extension APIRequestable {
     }
     
     func checkError(completionHandler: @escaping (Result<URL, NetworkError>) -> Void) {
-        
         guard let _ = apiKey else {
             return completionHandler(.failure(.invalidAPIKEYName))
         }

@@ -8,7 +8,6 @@ enum NetworkError: Error {
     case invalidAPIKEYName
     
     var description: String {
-        
         switch self {
             
         case .invalidUrl:

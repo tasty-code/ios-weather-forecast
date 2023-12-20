@@ -31,12 +31,12 @@ final class WeatherViewController: UIViewController {
         
         locationManagerConfiguration()
         
+        networkServiceProvider.delegate = self
         weatherCollectionView.dataSource = self
         weatherCollectionView.setCollectionViewConstraints(view: view)
         
         setRefreshControl()
         setChangeLocationButton()
-        networkServiceProvider.delegate = self
     }
 }
 
@@ -63,7 +63,6 @@ extension WeatherViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        
     }
     
     private func setRefreshControl() {
@@ -179,10 +178,10 @@ extension WeatherViewController: AlertDelegate {
     
     private func refreshData(coordinate: CLLocationCoordinate2D) {
         
-        let currentWeatherURL = WeatherURLConfigration(weatherType: .current,coordinate: coordinate)
+        let currentWeatherURL = WeatherURLConfigration(weatherType: .current, coordinate: coordinate)
         let forecastWeatherURL = WeatherURLConfigration(weatherType: .forecast, coordinate: coordinate)
         
-        currentWeatherURL.checkError { [weak self] (result: Result<URL,NetworkError>) in
+        currentWeatherURL.checkError { [weak self] (result: Result<URL, NetworkError>) in
             switch result {
                 
             case .success(let success):
@@ -192,7 +191,7 @@ extension WeatherViewController: AlertDelegate {
             }
         }
         
-        forecastWeatherURL.checkError { [weak self] (result: Result<URL,NetworkError>) in
+        forecastWeatherURL.checkError { [weak self] (result: Result<URL, NetworkError>) in
             switch result {
                 
             case .success(let success):
@@ -257,8 +256,7 @@ extension WeatherViewController: AlertDelegate {
                 
             case .success(let forecastWeatherData):
                 
-                guard let decodedForecastWeather = self?.jsonLoader.decode(weatherType: self?.forecast,
-                                                                           data: forecastWeatherData),
+                guard let decodedForecastWeather = self?.jsonLoader.decode(weatherType: self?.forecast, data: forecastWeatherData),
                       let decodedForecastWeather = decodedForecastWeather else { return }
                 
                 self?.forecast = decodedForecastWeather

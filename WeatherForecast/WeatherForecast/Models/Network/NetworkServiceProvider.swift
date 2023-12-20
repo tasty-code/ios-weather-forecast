@@ -10,9 +10,8 @@ final class NetworkServiceProvider: NetworkServiceable {
     }
     
     func fetch<T> (url: URL, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
-        session.dataTask(with: url) { data, response, error in
-            self.handlingDataResponse(data: data, response: response, error: error) { (result: Result<Data, NetworkError>) in
-                
+        session.dataTask(with: url) { [weak self] (data, response, error) in
+            self?.handlingDataResponse(data: data, response: response, error: error) { (result: Result<Data, NetworkError>) in
                 switch result {
                     
                 case .success(let success):
@@ -20,7 +19,7 @@ final class NetworkServiceProvider: NetworkServiceable {
                     completionHandler(.success(successData))
                 case .failure(let failure):
                     DispatchQueue.main.async{
-                        self.delegate?.invalidedCoordinateAlert()
+                        self?.delegate?.invalidedCoordinateAlert()
                     }
                     return print(failure.description)
                 }
