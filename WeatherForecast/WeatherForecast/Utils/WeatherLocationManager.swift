@@ -24,7 +24,7 @@ final class WeatherLocationManager: NSObject {
         locationManger.delegate = self
     }
 
-    private func getAddress(from coordinate: CLLocationCoordinate2D) {
+    func getAddress(from coordinate: CLLocationCoordinate2D) {
         let geocoder = CLGeocoder()
         let locale = Locale(identifier: "ko-kR")
         geocoder.reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude), preferredLocale: locale, completionHandler: { placemarks, error in
@@ -40,7 +40,7 @@ final class WeatherLocationManager: NSObject {
                 self.delegate?.updateLocationWeather(coordinate, address)
             }
         })
-    }
+    }	
 }
 
 extension WeatherLocationManager: CLLocationManagerDelegate {
