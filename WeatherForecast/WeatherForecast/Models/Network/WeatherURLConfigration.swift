@@ -22,6 +22,7 @@ struct WeatherURLConfigration: APIRequestable {
             "lang": "kr"
         ]
     }
+
 }
 
 enum WeatherType: String {

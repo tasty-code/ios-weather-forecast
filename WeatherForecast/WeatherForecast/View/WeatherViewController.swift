@@ -36,6 +36,7 @@ final class WeatherViewController: UIViewController {
         
         setRefreshControl()
         setChangeLocationButton()
+        networkServiceProvider.delegate = self
     }
 }
 
@@ -174,7 +175,7 @@ extension WeatherViewController: CLLocationManagerDelegate{
     }
 }
 
-extension WeatherViewController {
+extension WeatherViewController: AlertDelegate {
     
     private func refreshData(coordinate: CLLocationCoordinate2D) {
         
@@ -188,7 +189,6 @@ extension WeatherViewController {
                 self?.getCurrentWeatherData(url: success)
             case .failure(let failure):
                 print(failure.description)
-                
             }
         }
         
@@ -202,15 +202,23 @@ extension WeatherViewController {
                 
             }
         }
-        
+    }
+    
+    func invalidedCoordinateAlert() {
+        let alert = UIAlertController(title: "좌표 오류",
+                                      message: "잘못된 위도, 경도 입니다.",
+                                      preferredStyle: .alert
+        )
+        let confirmAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alert.addAction(confirmAction)
+        self.present(alert, animated: true, completion: nil)
     }
     
     private func showSettingsAlert() {
-        let alert = UIAlertController(
-            title: "위치 권한이 거부되었습니다",
-            message: "앱의 모든 기능을 사용하려면 설정에서 위치 권한을 허용해주세요.",
-            preferredStyle: .alert
-        )
+        let alert = UIAlertController(title: "위치 권한이 거부되었습니다",
+                                      message: "앱의 모든 기능을 사용하려면 설정에서 위치 권한을 허용해주세요.",
+                                      preferredStyle: .alert
+                                      )
         
         let cancelAction = UIAlertAction(title: "취소", style: .destructive, handler: nil)
         let settingsAction = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
