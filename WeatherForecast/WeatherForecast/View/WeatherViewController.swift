@@ -94,11 +94,11 @@ extension WeatherViewController {
         
         alert.addTextField { (textField) in
             textField.placeholder = "위도"
-            textField.keyboardType = .numberPad
+            textField.keyboardType = .decimalPad
         }
         alert.addTextField { (textField) in
             textField.placeholder = "경도"
-            textField.keyboardType = .numberPad
+            textField.keyboardType = .decimalPad
         }
        
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
