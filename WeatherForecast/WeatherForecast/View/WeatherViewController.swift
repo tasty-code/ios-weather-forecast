@@ -91,11 +91,11 @@ extension WeatherViewController {
             message: "변경할 좌표를 설정해주세요.",
             preferredStyle: .alert
         )
+        
         alert.addTextField { (textField) in
             textField.placeholder = "위도"
             textField.keyboardType = .numberPad
         }
-        
         alert.addTextField { (textField) in
             textField.placeholder = "경도"
             textField.keyboardType = .numberPad
