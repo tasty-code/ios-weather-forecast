@@ -59,7 +59,8 @@ final class ForecastWeatherCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor, multiplier: 1)
+            weatherImageView.widthAnchor.constraint(equalTo: weatherImageView.heightAnchor, multiplier: 1),
+            weatherImageView.heightAnchor.constraint(equalToConstant: contentView.frame.height)
         ])
     }
     
