@@ -28,6 +28,8 @@ final class ViewController: UIViewController {
         locationManager.currentLocationManager = weatherManager.currentLocationManager
         locationManager.weatherDelgate = weatherManager
     }
+    
+    
 }
 
 extension ViewController: MainWeatherViewDelegate {
@@ -71,4 +73,33 @@ extension ViewController: UIUpdatable {
     func updateUI() {
         mainWeatherView.updateUI()
     }
+}
+
+extension ViewController: AlertDelegate {
+    func showLocationSettingAlert() {
+        let alert = UIAlertController(title: "위치변경", message: "변경할 좌표를 선택해주세요", preferredStyle: .alert)
+        alert.addTextField { UITextField in
+            UITextField.placeholder = "위도"
+        }
+        alert.addTextField { UITextField in
+            UITextField.placeholder = "경도"
+        }
+        let change = UIAlertAction(title: "변경", style: .default) { _ in
+            //TODO: do something
+        }
+        let resetLocation = UIAlertAction(title: "현재 위치로 재설정", style: .default) { [weak self] _ in
+            self?.locationManager.updateLocation()
+        }
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        
+        alert.addAction(change)
+        alert.addAction(resetLocation)
+        alert.addAction(cancel)
+        
+        present(alert, animated: true)
+    }
+}
+
+protocol AlertDelegate: AnyObject {
+    func showLocationSettingAlert()
 }
