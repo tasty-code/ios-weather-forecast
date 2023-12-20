@@ -20,6 +20,8 @@ class WeatherViewController: UIViewController {
     private var weatherDataSource: UICollectionViewDiffableDataSource<Section, Forecast>!
     private var collectionHeaderRegisteration: UICollectionView.SupplementaryRegistration<WeatherCollectionViewHeader>!
     private var collectionCellRegisteration: UICollectionView.CellRegistration<WeatherCollectionViewCell, Forecast>!
+    private var lat: Double?
+    private var lon: Double?
     
     private lazy var backgroundImage: UIImageView = {
         let image = UIImageView()
@@ -61,7 +63,11 @@ class WeatherViewController: UIViewController {
     @objc
     private func handleRefreshControl() {
         refreshWeather.beginRefreshing()
-        locationManager.locationManger.requestLocation()
+        if lat == nil || lon == nil {
+            locationManager.locationManger.requestLocation()
+        } else {
+            locationManager.getAddress(from: CLLocationCoordinate2D(latitude: lat ?? 37.533603, longitude: lon ?? 126.963416))
+        }
         refreshWeather.endRefreshing()
     }
     
@@ -105,24 +111,29 @@ class WeatherViewController: UIViewController {
         }
     }
     
-    @objc 
+    @objc
     func addressSettingButtonTapped(_ sender: UIButton) {
         let alert = UIAlertController(title: "위치변경", message: "변경할 좌표를 선택해주세요", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "변경", style: .destructive, handler: { _ in
+        let okAction = UIAlertAction(title: "변경", style: .destructive, handler: { [self] _ in
             guard let latText = alert.textFields?[0].text, let lonText = alert.textFields?[1].text,
                   let lat = Double(latText), let lon = Double(lonText) else { return }
+            self.lat = lat
+            self.lon = lon
             print("위도:", lat, "경도", lon)
-            let loaction = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+            let loaction = CLLocationCoordinate2D(latitude: lat , longitude: lon)
             self.locationManager.getAddress(from: loaction)
         })
-        let refreshAction = UIAlertAction(title: "현재 위치로 재설정", style: .default, handler: { _ in
-            self.locationManager.locationManger.requestLocation()
+        let currentLocationWeatherAction = UIAlertAction(title: "현재 위치로 재설정", style: .default, handler: { [self] _ in
+            locationManager.locationManger.requestLocation()
+            lat = locationManager.locationManger.location?.coordinate.latitude
+            lon = locationManager.locationManger.location?.coordinate.longitude
+            print("위도:", lat, "경도", lon)
             debugPrint("날씨가 새로고침 됨.")
         })
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         
-        alert.addActions([okAction, refreshAction, cancelAction])
-    
+        alert.addActions([okAction, currentLocationWeatherAction, cancelAction])
+        
         alert.addTextField() { (textField) in
             textField.placeholder = "위도"
             textField.keyboardType = .decimalPad
