@@ -20,6 +20,7 @@
 		A64F0E122B1059E600FC988F /* Requestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F0E112B1059E600FC988F /* Requestable.swift */; };
 		A64F0E192B10679A00FC988F /* RequestDataTaskable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64F0E182B10679A00FC988F /* RequestDataTaskable.swift */; };
 		A65FDB3A2B30301C002958A4 /* APIKeyList.plist in Resources */ = {isa = PBXBuildFile; fileRef = A65FDB392B30301C002958A4 /* APIKeyList.plist */; };
+		A69E70322B343CCB00FBEA4A /* Cacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69E70312B343CCB00FBEA4A /* Cacheable.swift */; };
 		A6A891622B0F25C400D2AC27 /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A891612B0F25C400D2AC27 /* Networker.swift */; };
 		A6AA0AEF2B18484F005750B9 /* LocationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AA0AEE2B18484F005750B9 /* LocationError.swift */; };
 		A6AFCADF2B0DFBB3004CACBF /* Networkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */; };
@@ -75,6 +76,7 @@
 		A64F0E112B1059E600FC988F /* Requestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requestable.swift; sourceTree = "<group>"; };
 		A64F0E182B10679A00FC988F /* RequestDataTaskable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDataTaskable.swift; sourceTree = "<group>"; };
 		A65FDB392B30301C002958A4 /* APIKeyList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = APIKeyList.plist; sourceTree = "<group>"; };
+		A69E70312B343CCB00FBEA4A /* Cacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacheable.swift; sourceTree = "<group>"; };
 		A6A891612B0F25C400D2AC27 /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 		A6AA0AEE2B18484F005750B9 /* LocationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationError.swift; path = WeatherForecast/Errors/LocationError.swift; sourceTree = SOURCE_ROOT; };
 		A6AFCADE2B0DFBB3004CACBF /* Networkable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networkable.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				0EFE82702B0EE2A00021B2EF /* KeyAuthenticatable.swift */,
 				A64F0E0A2B0F69DF00FC988F /* RequestSessionable.swift */,
 				A64F0E182B10679A00FC988F /* RequestDataTaskable.swift */,
+				A69E70312B343CCB00FBEA4A /* Cacheable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				A6CDCA7F2B2C2CC40057940B /* CacheManager.swift in Sources */,
 				A60EE1782B28266500053252 /* UIImageView+Extension.swift in Sources */,
 				A6AFCADF2B0DFBB3004CACBF /* Networkable.swift in Sources */,
+				A69E70322B343CCB00FBEA4A /* Cacheable.swift in Sources */,
 				A64F0E192B10679A00FC988F /* RequestDataTaskable.swift in Sources */,
 				A6CACFE12B1D60D400B5FEA5 /* WeatherForecastView.swift in Sources */,
 				0E468CB32B0DDD6A00201507 /* NetworkError.swift in Sources */,

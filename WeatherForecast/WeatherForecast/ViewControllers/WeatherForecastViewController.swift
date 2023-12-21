@@ -10,10 +10,9 @@ final class WeatherForecastViewController: UIViewController {
     private var currentWeathermodel: Model.CurrentWeather?
     private var fiveDaysWeatherModel: Model.FiveDaysWeather?
     private var coordinate: CLLocationCoordinate2D?
+
     private var placemark: CLPlacemark?
-    
-    private let locationGroup = DispatchGroup()
-    
+
     override func loadView() {
         view = weatherForecastView
     }
@@ -28,60 +27,85 @@ final class WeatherForecastViewController: UIViewController {
         configureRefreshControl()
     }
     
-    @objc 
+    @objc
     private func configureWeatherData() {
+        let locationGroup = DispatchGroup()
         locationGroup.enter()
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let self = self else { return }
-            self.locator.requestData(coordinate: coordinate) { coordinate, placemark in
-                self.coordinate = coordinate
-                self.placemark = placemark
-                self.locationGroup.leave()
-            }
+            self?.requestData(group: locationGroup)
         }
-        
-        locationGroup.notify(queue: .global(qos: .userInteractive)) {
-            guard let coordinate = self.coordinate else { return }
+
+        locationGroup.notify(queue: .global(qos: .userInteractive)) { [weak self] in
+            guard let self = self else { return }
+            guard let coordinate = coordinate else { return }
+            
             let networkGroup = DispatchGroup()
             
-            networkGroup.enter()
-            DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-                guard let self = self else { return }
-                networker.fetchWeatherData(request: WeatherAPI.current(coordinate)) { (result: Model.CurrentWeather) in
-                    self.currentWeathermodel = result
-                    networkGroup.leave()
-                }
-            }
-            
-            networkGroup.enter()
-            DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-                guard let self = self else { return }
-                networker.fetchWeatherData(request: WeatherAPI.fiveDays(coordinate)) { (result: Model.FiveDaysWeather) in
-                    self.fiveDaysWeatherModel = result
-                    networkGroup.leave()
-                }
-            }
+            fetchCurrentWeatherData(coordinate: coordinate, group: networkGroup)
+            fetchFiveDaysWeatherData(coordinate: coordinate, group: networkGroup)
+            reloadCollectionViewOnMainQueue(group: networkGroup)
+        }
+    }
 
-            networkGroup.wait()
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                weatherForecastView.collectionView.reloadData()
-                weatherForecastView.collectionView.refreshControl?.endRefreshing()
+    private func requestData(group: DispatchGroup) {
+        locator.requestData(coordinate: coordinate) { [weak self] coordinate, placemark in
+            
+            self?.coordinate = coordinate
+            self?.placemark = placemark
+            group.leave()
+        }
+    }
+
+    private func fetchCurrentWeatherData(coordinate: CLLocationCoordinate2D, group: DispatchGroup) {
+        group.enter()
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let self = self else { return }
+            networker.fetchWeatherData(request: WeatherAPI.current(coordinate)) { (result: Model.CurrentWeather) in
+                self.currentWeathermodel = result
+                group.leave()
             }
+        }
+    }
+
+    private func fetchFiveDaysWeatherData(coordinate: CLLocationCoordinate2D, group: DispatchGroup) {
+        group.enter()
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let self = self else { return }
+            networker.fetchWeatherData(request: WeatherAPI.fiveDays(coordinate)) { (result: Model.FiveDaysWeather) in
+                self.fiveDaysWeatherModel = result
+                group.leave()
+            }
+        }
+    }
+
+    private func reloadCollectionViewOnMainQueue(group: DispatchGroup) {
+        group.wait()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            weatherForecastView.collectionView.reloadData()
+            weatherForecastView.collectionView.refreshControl?.endRefreshing()
         }
     }
     
     private func configureRefreshControl () {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+            
             weatherForecastView.collectionView.refreshControl = UIRefreshControl()
             weatherForecastView.collectionView.refreshControl?.tintColor = .white
             weatherForecastView.collectionView.refreshControl?.addTarget(
                 self,
-                action: #selector(configureWeatherData),
+                action: #selector(refreshWeatherData),
                 for: .valueChanged
             )
         }
+    }
+    
+    @objc
+    func refreshWeatherData() {
+        coordinate = nil
+        configureWeatherData()
     }
     
     @objc
