@@ -9,34 +9,34 @@ final class LocationManager: NSObject {
     
     override init() {
         super.init()
-        
-        manager.delegate = self
-        manager.distanceFilter = kCLDistanceFilterNone
-        manager.desiredAccuracy = kCLLocationAccuracyKilometer
-        manager.requestWhenInUseAuthorization()
+
+        setupLocationManager()
     }
     
+    private func setupLocationManager() {
+            manager.delegate = self
+            manager.distanceFilter = kCLDistanceFilterNone
+            manager.desiredAccuracy = kCLLocationAccuracyBest
+            manager.requestWhenInUseAuthorization()
+        }
+    
     func request(coordinate: CLLocationCoordinate2D?, completion: @escaping LocationCompletion){
-        coordinate == nil ? manager.requestLocation() : fetchPlacemark(for: coordinate)
-
         locationCompletion = completion
+        
+        coordinate == nil ? manager.requestLocation() : fetchPlacemark(for: coordinate)
     }
     
     private func fetchPlacemark(for coordinate: CLLocationCoordinate2D?) {
-        guard let completion = locationCompletion else {
-            return
-        }
+        guard let completion = locationCompletion else { return }
         
         guard let coordinate = coordinate else { return }
         
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        
         let geocoder = CLGeocoder()
         let locale = Locale(identifier: "Ko-kr")
         
         geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { placemarks, _ in
-            guard let placemarks = placemarks,
-                  let address = placemarks.last else {
+            guard let address = placemarks?.last else {
                 return completion(.failure(LocationError.noPlacemarkError))
             }
             
@@ -57,6 +57,7 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         fetchPlacemark(for: CLLocationCoordinate2D(latitude: .defaultLatitude, longitude: .defaultLongitude))
+        
         locationCompletion?(.failure(LocationError.didFailFetchLocationError))
     }
     
