@@ -61,33 +61,52 @@ final class GraphView: UIView {
         
         drawTemperatureLineByType(rect, lineType: .maxTemp(lists: lists))
         drawTemperatureLineByType(rect, lineType: .minTemp(lists: lists))
-        drawTemperatureLineByType(rect, lineType: .humidity(lists: lists))
+//        drawTemperatureLineByType(rect, lineType: .humidity(lists: lists))
     }
 }
 
 // MARK: View Drawing Methods
 extension GraphView {
+    
     private func drawTemperatureLineByType(_ rect: CGRect, lineType: GraphLineType) {
-        let line = UIBezierPath(rect: CGRect(x: rect.origin.x + Constants.defaultPadding,
-                                             y: rect.origin.y + Constants.defaultPadding,
-                                             width: rect.width - Constants.defaultPadding,
-                                             height: rect.height - Constants.defaultPadding))
+        let line = UIBezierPath()
         line.lineWidth = Constants.defaultStrokeWidth
         line.lineCapStyle = Constants.strokeLineCap
         line.lineJoinStyle = Constants.strokeLineJoin
         lineType.strokeLineColor.set()
         let data = lineType.graphData
-        guard let high = data.max(),
-              let low = data.min()
-        else { return }
-        let ratio = rect.height / 100 * (high - low)
+        
+        print(data)
         
         for index in 1...6 {
-            if index == 0 {
-                line.move(to: CGPoint(x: rect.minX, y: rect.height - data[index] * ratio))
+            let currentTemp = data[index]
+            var currentTempPositionY = 0.0
+            
+            if currentTemp > 0 {
+                currentTempPositionY = (currentTemp / 50)
+                
             } else {
-                line.addLine(to: CGPoint(x: rect.minX / 6 * CGFloat(index), y: rect.height - data[index] * ratio))
+                currentTempPositionY = (currentTemp / -50)
+                
             }
+            
+            if index == 1 {
+                if currentTemp > 0 {
+                    line.move(to: CGPoint(x: rect.minX, y: rect.maxY * currentTempPositionY))
+                } else {
+                    line.move(to: CGPoint(x: rect.minX, y: (rect.maxY * currentTempPositionY) + (rect.height / 2)))
+                }
+            } else {
+                if currentTemp > 0 {
+                    line.addLine(to: CGPoint(x: rect.maxX / 6 * CGFloat(index), y: rect.maxY * currentTempPositionY))
+                } else {
+                    line.addLine(to: CGPoint(x: rect.maxX / 6 * CGFloat(index), y: (rect.maxY * currentTempPositionY) + (rect.height / 2)))
+                }
+                
+            }
+            
         }
+        
+        line.stroke()
     }
 }
