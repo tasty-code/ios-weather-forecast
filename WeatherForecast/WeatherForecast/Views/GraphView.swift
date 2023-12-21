@@ -68,7 +68,12 @@ final class GraphView: UIView {
 // MARK: View Drawing Methods
 extension GraphView {
     
-    private func drawTemperatureLineByType(_ rect: CGRect, lineType: GraphLineType) {
+    private func drawTemperatureLineByType(_ newRect: CGRect, lineType: GraphLineType) {
+        let newRect = CGRect(x: newRect.origin.x + Constants.defaultPadding,
+                             y: newRect.origin.y + Constants.defaultPadding,
+                             width: newRect.width - Constants.defaultPadding,
+                             height: newRect.height - Constants.defaultPadding)
+        
         let line = UIBezierPath()
         line.lineWidth = Constants.defaultStrokeWidth
         line.lineCapStyle = Constants.strokeLineCap
@@ -76,35 +81,29 @@ extension GraphView {
         lineType.strokeLineColor.set()
         let data = lineType.graphData
         
-        print(data)
-        
         for index in 1...6 {
             let currentTemp = data[index]
             var currentTempPositionY = 0.0
             
             if currentTemp > 0 {
                 currentTempPositionY = (currentTemp / 50)
-                
             } else {
                 currentTempPositionY = (currentTemp / -50)
-                
             }
             
             if index == 1 {
                 if currentTemp > 0 {
-                    line.move(to: CGPoint(x: rect.minX, y: rect.maxY * currentTempPositionY))
+                    line.move(to: CGPoint(x: newRect.minX, y: newRect.maxY * currentTempPositionY))
                 } else {
-                    line.move(to: CGPoint(x: rect.minX, y: (rect.maxY * currentTempPositionY) + (rect.height / 2)))
+                    line.move(to: CGPoint(x: newRect.minX, y: (newRect.maxY * currentTempPositionY) + (newRect.height / 2)))
                 }
             } else {
                 if currentTemp > 0 {
-                    line.addLine(to: CGPoint(x: rect.maxX / 6 * CGFloat(index), y: rect.maxY * currentTempPositionY))
+                    line.addLine(to: CGPoint(x: newRect.maxX / 6 * CGFloat(index), y: newRect.maxY * currentTempPositionY))
                 } else {
-                    line.addLine(to: CGPoint(x: rect.maxX / 6 * CGFloat(index), y: (rect.maxY * currentTempPositionY) + (rect.height / 2)))
+                    line.addLine(to: CGPoint(x: newRect.maxX / 6 * CGFloat(index), y: (newRect.maxY * currentTempPositionY) + (newRect.height / 2)))
                 }
-                
             }
-            
         }
         
         line.stroke()
