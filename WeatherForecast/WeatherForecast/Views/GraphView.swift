@@ -61,18 +61,17 @@ final class GraphView: UIView {
         
         drawTemperatureLineByType(rect, lineType: .maxTemp(lists: lists))
         drawTemperatureLineByType(rect, lineType: .minTemp(lists: lists))
-//        drawTemperatureLineByType(rect, lineType: .humidity(lists: lists))
+        drawHumidityLineByType(rect, lineType: .humidity(lists: lists))
     }
 }
 
 // MARK: View Drawing Methods
 extension GraphView {
-    
-    private func drawTemperatureLineByType(_ newRect: CGRect, lineType: GraphLineType) {
-        let newRect = CGRect(x: newRect.origin.x + Constants.defaultPadding,
-                             y: newRect.origin.y + Constants.defaultPadding,
-                             width: newRect.width - Constants.defaultPadding,
-                             height: newRect.height - Constants.defaultPadding)
+    private func drawTemperatureLineByType(_ rect: CGRect, lineType: GraphLineType) {
+        let newRect = CGRect(x: rect.origin.x + Constants.defaultPadding,
+                             y: rect.origin.y + Constants.defaultPadding,
+                             width: rect.width - Constants.defaultPadding,
+                             height: rect.height - Constants.defaultPadding)
         
         let line = UIBezierPath()
         line.lineWidth = Constants.defaultStrokeWidth
@@ -103,6 +102,33 @@ extension GraphView {
                 } else {
                     line.addLine(to: CGPoint(x: newRect.maxX / 6 * CGFloat(index), y: (newRect.maxY * currentTempPositionY) + (newRect.height / 2)))
                 }
+            }
+        }
+        
+        line.stroke()
+    }
+    
+    private func drawHumidityLineByType(_ rect: CGRect, lineType: GraphLineType) {
+        let newRect = CGRect(x: rect.origin.x + Constants.defaultPadding,
+                             y: rect.origin.y + Constants.defaultPadding,
+                             width: rect.width - Constants.defaultPadding,
+                             height: rect.height - Constants.defaultPadding)
+        
+        let line = UIBezierPath()
+        line.lineWidth = Constants.defaultStrokeWidth
+        line.lineCapStyle = Constants.strokeLineCap
+        line.lineJoinStyle = Constants.strokeLineJoin
+        lineType.strokeLineColor.set()
+        let data = lineType.graphData
+        
+        for index in 1...6 {
+            let currentHumidity = data[index]
+            let ratio = currentHumidity / 100
+            
+            if index == 1 {
+                line.move(to: CGPoint(x: newRect.minX, y: (1 - ratio) * newRect.height))
+            } else {
+                line.addLine(to: CGPoint(x: newRect.maxX / 6 * CGFloat(index), y: (1 - ratio) * newRect.height))
             }
         }
         
