@@ -102,7 +102,3 @@ extension ViewController: AlertDelegate {
         present(alert, animated: true)
     }
 }
-
-protocol AlertDelegate: AnyObject {
-    func showLocationSettingAlert()
-}
