@@ -16,6 +16,27 @@ final class LocationManager: NSObject {
         super.init()
         self.manager.delegate = self
     }
+    
+    func convertCLLocation(latitude: String, longitude: String) -> CLLocation? {
+        guard let latitude = Double(latitude),
+              let longitude = Double(longitude)
+        else { return nil }
+        
+        return CLLocation(latitude: latitude, longitude: longitude)
+    }
+    
+    func sendConvertedLocationRequest(location: CLLocation)  {
+        CLGeocoder().reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            guard let placemark = placemarks?.last else { return }
+            self?.currentLocationManager?.updateLocationInfo(with: placemark)
+            self?.weatherDelgate?.sendRequest()
+        }
+    }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
@@ -33,17 +54,7 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        
-        CLGeocoder().reverseGeocodeLocation(location) { [weak self] placemarks, error in
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            }
-            
-            guard let placemark = placemarks?.last else { return }
-            self?.currentLocationManager?.updateLocationInfo(with: placemark)
-            self?.weatherDelgate?.sendRequest()
-        }
+        sendConvertedLocationRequest(location: location)
         manager.stopUpdatingLocation()
     }
     

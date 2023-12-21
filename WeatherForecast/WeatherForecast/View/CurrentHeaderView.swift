@@ -31,6 +31,7 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
     
     private lazy var locationLabel: UILabel = {
         let label = UILabel()
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
     }()
     
@@ -52,7 +53,8 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         
         button.setTitle("위치설정", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        
+        button.addTarget(self, action: #selector(showLocationSettingAlert), for: .touchUpInside)
+        button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return button
     }()
     
@@ -129,5 +131,9 @@ final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
         temperatureLabel.text = String(format: "%.1f", temperature)
         
         cellImage.image = image
+    }
+    
+    @objc private func showLocationSettingAlert() {
+        delegate?.showLocationSettingAlert()
     }
 }

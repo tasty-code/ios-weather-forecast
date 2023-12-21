@@ -84,8 +84,11 @@ extension ViewController: AlertDelegate {
         alert.addTextField { UITextField in
             UITextField.placeholder = "경도"
         }
-        let change = UIAlertAction(title: "변경", style: .default) { _ in
-            //TODO: do something
+        
+        let change = UIAlertAction(title: "변경", style: .default) { [weak self] _ in
+            guard let latitude = alert.textFields?[0].text, let longitude = alert.textFields?[1].text else { return }
+            guard let location = self?.locationManager.convertCLLocation(latitude: longitude, longitude: latitude) else { return }
+            self?.locationManager.sendConvertedLocationRequest(location: location)
         }
         let resetLocation = UIAlertAction(title: "현재 위치로 재설정", style: .default) { [weak self] _ in
             self?.locationManager.updateLocation()
