@@ -149,8 +149,10 @@ extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
         
         guard let imageType = model.weather?[0].icon else { return }
         
-        guard let locality = placemark.locality,
-              let subLocality = placemark.subLocality else { return }
+        guard let locality = placemark.locality
+                ?? placemark.subAdministrativeArea else { return }
+        
+        guard let subLocality = placemark.subLocality else { return }
         
         guard let temperatureMin = model.main?.tempMin,
               let temperatureMax = model.main?.tempMax,
