@@ -10,10 +10,10 @@ import UIKit
 final class GraphViewController: UIViewController {
     // MARK: View Components
     private lazy var backgroundImageView: UIImageView = {
-        let image = UIImage(named: "RootViewBackground")
+        let image = UIImage(named: "GraphViewBackground")
         let imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -25,7 +25,11 @@ final class GraphViewController: UIViewController {
     }()
     
     // MARK: Properties
-    var lists: [List]?
+    var lists: [List]? {
+        didSet {
+            graphView.setNeedsDisplay()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
