@@ -55,6 +55,7 @@ class WeatherCollectionViewHeader: UICollectionReusableView {
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
     }()
     
