@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0402A78A2B327882005AE613 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0402A7892B327882005AE613 /* GraphViewController.swift */; };
 		043F174E2B0AEB1800084087 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F174D2B0AEB1800084087 /* WeatherModel.swift */; };
 		043F17502B0AF10E00084087 /* ForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F174F2B0AF10E00084087 /* ForecastModel.swift */; };
 		043F17532B0AF30800084087 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F17522B0AF30800084087 /* NetworkManager.swift */; };
@@ -30,7 +31,6 @@
 		04AAABB12B196EEA00A541EC /* DateFormattingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAABB02B196EEA00A541EC /* DateFormattingService.swift */; };
 		04AAABB62B19A58900A541EC /* LocationRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AAABB52B19A58900A541EC /* LocationRequestable.swift */; };
 		04EA02672B2C27D300B2D768 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EA02662B2C27D300B2D768 /* GraphView.swift */; };
-		04EA026B2B2C29F100B2D768 /* GraphLineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EA026A2B2C29F100B2D768 /* GraphLineType.swift */; };
 		C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */; };
 		C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */; };
 		C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */; };
@@ -61,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0402A7892B327882005AE613 /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		043F174D2B0AEB1800084087 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		043F174F2B0AF10E00084087 /* ForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastModel.swift; sourceTree = "<group>"; };
 		043F17522B0AF30800084087 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -84,7 +85,6 @@
 		04AAABB02B196EEA00A541EC /* DateFormattingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormattingService.swift; sourceTree = "<group>"; };
 		04AAABB52B19A58900A541EC /* LocationRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRequestable.swift; sourceTree = "<group>"; };
 		04EA02662B2C27D300B2D768 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
-		04EA026A2B2C29F100B2D768 /* GraphLineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphLineType.swift; sourceTree = "<group>"; };
 		C79C8CF025ADDDF200EEE3F1 /* WeatherForecast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherForecast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -144,7 +144,6 @@
 				043F174D2B0AEB1800084087 /* WeatherModel.swift */,
 				043F174F2B0AF10E00084087 /* ForecastModel.swift */,
 				043F175B2B0B6C9B00084087 /* ServiceType.swift */,
-				04EA026A2B2C29F100B2D768 /* GraphLineType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -310,6 +309,7 @@
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
+				0402A7892B327882005AE613 /* GraphViewController.swift */,
 				04AAAB5B2B16FA1400A541EC /* Views */,
 				040AB0352B0DCB6600A1EA78 /* Services */,
 				043F17512B0AF2FD00084087 /* Utilities */,
@@ -512,6 +512,7 @@
 				04AAABA92B196AEE00A541EC /* IconDataService.swift in Sources */,
 				04AAABAF2B196E1900A541EC /* DateFormattable.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
+				0402A78A2B327882005AE613 /* GraphViewController.swift in Sources */,
 				04AAAB952B187CF300A541EC /* WeatherDataService.swift in Sources */,
 				04AAAB912B1878EB00A541EC /* DataDownloadable.swift in Sources */,
 				CBEC24E02B27EAA700371D7D /* CacheManager.swift in Sources */,
@@ -523,7 +524,6 @@
 				04AAABB12B196EEA00A541EC /* DateFormattingService.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				04AAABA52B189EB000A541EC /* DataServiceDelegate.swift in Sources */,
-				04EA026B2B2C29F100B2D768 /* GraphLineType.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
 				04AAAB9D2B18935E00A541EC /* JSONFormatter.swift in Sources */,
 				043F17562B0AF97300084087 /* Bundle+APIKey.swift in Sources */,

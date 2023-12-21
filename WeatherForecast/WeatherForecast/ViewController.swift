@@ -42,6 +42,14 @@ final class ViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var navigationButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("그래프 띄우기", for: .normal)
+        button.addTarget(self, action: #selector(pushGraphView), for: .touchUpInside)
+        return button
+    }()
+    
     // MARK: - Dependencies
     private lazy var weatherDataService: DataDownloadable = WeatherDataService(dataServiceDelegate: self)
     private lazy var forecastDataService: DataDownloadable = ForecastDataService(dataServiceDelegate: self)
@@ -71,6 +79,24 @@ final class ViewController: UIViewController {
         collectionView.register(CollectionReusableHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionReusableHeaderView.reuseIdentifier)
         setUpLayout()
         setUpConstraints()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size, with: coordinator)
+//        
+//        coordinator.animate { [weak self] _ in
+//            guard let self = self else { return }
+//            
+//            if size.width > size.height {
+//                guard let lists = forecastModel?.list else { return }
+//                collectionView.isHidden = true
+//                graphView.lists = lists
+//                graphView.isHidden = false
+//            } else {
+//                collectionView.isHidden = false
+//                graphView.isHidden = true
+//            }
+//        }
     }
 }
 
@@ -113,6 +139,12 @@ extension ViewController {
         }
         
         present(alert, animated: true)
+    }
+    
+    @objc private func pushGraphView() {
+        let graphViewController = GraphViewController()
+        graphViewController.lists = forecastModel?.list
+        self.navigationController?.pushViewController(graphViewController, animated: true)
     }
 }
 
@@ -162,8 +194,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
 // MARK: Autolayout Methods
 extension ViewController {
     private func setUpLayout() {
-        self.view.addSubview(backgroundImageView)
-        self.view.addSubview(collectionView)
+        self.view.addSubviews([backgroundImageView, collectionView, navigationButton])
     }
     
     private func setUpConstraints() {
@@ -176,9 +207,15 @@ extension ViewController {
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.collectionViewDefaultPadding),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.collectionViewDefaultPadding),
+//            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.collectionViewDefaultPadding),
+            collectionView.bottomAnchor.constraint(equalTo: navigationButton.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.collectionViewDefaultPadding),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.collectionViewDefaultPadding),
+        ])
+        
+        NSLayoutConstraint.activate([
+            navigationButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            navigationButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.collectionViewDefaultPadding),
         ])
     }
 }
