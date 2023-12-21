@@ -1,6 +1,6 @@
 import UIKit
 
-final class CacheManager {
+final class CacheManager: Cacheable {
     static let shared = CacheManager()
     private static let cache = NSCache<NSString, UIImage>()
     
@@ -9,9 +9,7 @@ final class CacheManager {
     func loadImage(with imageID: String) -> UIImage? {
         let id = NSString(string: imageID)
         
-        if let image = CacheManager.cache.object(forKey: id) {
-            return image
-        }
+        if let image = CacheManager.cache.object(forKey: id) { return image }
 
         return nil
     }
