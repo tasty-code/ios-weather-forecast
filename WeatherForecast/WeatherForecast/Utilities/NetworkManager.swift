@@ -57,10 +57,3 @@ final class NetworkManager: Networkable {
         }.resume()
     }
 }
-
-//if !url.absoluteString.hasPrefix(".png") {
-//    let weatherResponse = try JSONDecoder().decode(T.self, from: data)
-//    completion(.success(weatherResponse))
-//} else {
-//    completion(.success(data as! T))
-//}
