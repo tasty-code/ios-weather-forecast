@@ -63,10 +63,10 @@ class WeatherViewController: UIViewController {
     @objc
     private func handleRefreshControl() {
         refreshWeather.beginRefreshing()
-        if lat == nil || lon == nil {
-            locationManager.locationManger.requestLocation()
+        if let lat = lat, let lon = lon {
+            locationManager.getAddress(from: CLLocationCoordinate2D(latitude: lat, longitude: lon))
         } else {
-            locationManager.getAddress(from: CLLocationCoordinate2D(latitude: lat ?? 37.533603, longitude: lon ?? 126.963416))
+            locationManager.locationManger.requestLocation()
         }
         refreshWeather.endRefreshing()
     }
@@ -119,15 +119,11 @@ class WeatherViewController: UIViewController {
                   let lat = Double(latText), let lon = Double(lonText) else { return }
             self.lat = lat
             self.lon = lon
-            print("위도:", lat, "경도", lon)
             let loaction = CLLocationCoordinate2D(latitude: lat , longitude: lon)
             self.locationManager.getAddress(from: loaction)
         })
         let currentLocationWeatherAction = UIAlertAction(title: "현재 위치로 재설정", style: .default, handler: { [self] _ in
             locationManager.locationManger.requestLocation()
-            lat = locationManager.locationManger.location?.coordinate.latitude
-            lon = locationManager.locationManger.location?.coordinate.longitude
-            print("위도:", lat, "경도", lon)
             debugPrint("날씨가 새로고침 됨.")
         })
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
@@ -178,6 +174,8 @@ class WeatherViewController: UIViewController {
 
 extension WeatherViewController: WeatherUIDelegate {
     func updateLocationWeather(_ coordinate: CLLocationCoordinate2D, _ addressString: String) {
+        lat = coordinate.latitude
+        lon = coordinate.longitude
         let urlManager = WeatherURLManager()
         guard let weatherURLRequest = urlManager.configureURLRequest(lat: coordinate.latitude, lon: coordinate.longitude, apiType: .weather) else { return }
         guard let forecastURLRequest = urlManager.configureURLRequest(lat: coordinate.latitude, lon: coordinate.longitude, apiType: .forecast) else { return }
