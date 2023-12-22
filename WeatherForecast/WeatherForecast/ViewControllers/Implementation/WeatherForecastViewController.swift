@@ -3,20 +3,20 @@ import CoreLocation
 
 final class WeatherForecastViewController: UIViewController {
     private let weatherForecastView = WeatherForecastView()
-    
-    private let locator = Locator()
-    private let networker = Networker()
+
+    let locationManager: LocationManagerable = LocationManager()
+    let networkManager: NetworkManagerable = NetworkManager()
     
     private var currentWeathermodel: Model.CurrentWeather?
     private var fiveDaysWeatherModel: Model.FiveDaysWeather?
+    
     private var coordinate: CLLocationCoordinate2D?
-
     private var placemark: CLPlacemark?
-
+    
     override func loadView() {
         view = weatherForecastView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,16 +26,15 @@ final class WeatherForecastViewController: UIViewController {
         configureWeatherData()
         configureRefreshControl()
     }
-    
+}
+
+extension WeatherForecastViewController: WeatherForecastViewControllerConfigurable {
     @objc
-    private func configureWeatherData() {
+    func configureWeatherData() {
         let group = DispatchGroup()
         
         group.enter()
-        //            requestData {
-        //                group.leave()
-        //            }
-        requestData(coordinate: coordinate) {
+        fetchLocationData {
             group.leave()
         }
         
@@ -58,37 +57,7 @@ final class WeatherForecastViewController: UIViewController {
         }
     }
     
-    private func requestData(coordinate: CLLocationCoordinate2D?, completion: @escaping () -> Void) {
-        locator.requestData(coordinate: coordinate) { [weak self] coordinate, placemark in
-            self?.coordinate = coordinate
-            self?.placemark = placemark
-            completion()
-        }
-    }
-    
-    private func fetchCurrentWeatherData(coordinate: CLLocationCoordinate2D, completion: @escaping () -> Void) {
-        networker.fetchWeatherData(request: WeatherAPI.current(coordinate)) { (result: Model.CurrentWeather) in
-            self.currentWeathermodel = result
-            completion()
-        }
-    }
-    
-    private func fetchFiveDaysWeatherData(coordinate: CLLocationCoordinate2D, completion: @escaping () -> Void) {
-        networker.fetchWeatherData(request: WeatherAPI.fiveDays(coordinate)) { (result: Model.FiveDaysWeather) in
-            self.fiveDaysWeatherModel = result
-            completion()
-        }
-    }
-    
-    private func fetchUI() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            weatherForecastView.collectionView.reloadData()
-            weatherForecastView.collectionView.refreshControl?.endRefreshing()
-        }
-    }
-    
-    private func configureRefreshControl () {
+    func configureRefreshControl () {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
@@ -96,18 +65,56 @@ final class WeatherForecastViewController: UIViewController {
             weatherForecastView.collectionView.refreshControl?.tintColor = .white
             weatherForecastView.collectionView.refreshControl?.addTarget(
                 self,
-                action: #selector(refreshWeatherData),
+                action: #selector(refreshUI),
                 for: .valueChanged
             )
         }
     }
+}
+
+extension WeatherForecastViewController: Locatable {
+    func fetchLocationData(completion: @escaping () -> Void) {
+        requestData(coordinate: coordinate) { [weak self] coordinate, placemark in
+            self?.coordinate = coordinate
+            self?.placemark = placemark
+            completion()
+        }
+    }
+}
+
+extension WeatherForecastViewController: Networkable {
+    private func fetchCurrentWeatherData(coordinate: CLLocationCoordinate2D, completion: @escaping () -> Void) {
+        fetchWeatherData(request: WeatherAPI.current(coordinate)) { (result: Model.CurrentWeather) in
+            self.currentWeathermodel = result
+            completion()
+        }
+    }
+    
+    private func fetchFiveDaysWeatherData(coordinate: CLLocationCoordinate2D, completion: @escaping () -> Void) {
+        fetchWeatherData(request: WeatherAPI.fiveDays(coordinate)) { (result: Model.FiveDaysWeather) in
+            self.fiveDaysWeatherModel = result
+            completion()
+        }
+    }
+}
+
+extension WeatherForecastViewController: UIConfigurable {
+    func fetchUI() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            weatherForecastView.collectionView.reloadData()
+            weatherForecastView.collectionView.refreshControl?.endRefreshing()
+        }
+    }
     
     @objc
-    func refreshWeatherData() {
+    func refreshUI() {
         coordinate = nil
         configureWeatherData()
     }
-    
+}
+
+extension WeatherForecastViewController: AlertControllerConfigurable {
     @objc
     func touchLocationConfigurationButton() {
         let alertController = UIAlertController(title: "위치 변경", message: "변경할 좌표를 선택해주세요", preferredStyle: .alert)
