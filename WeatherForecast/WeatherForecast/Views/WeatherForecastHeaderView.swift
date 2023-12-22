@@ -160,12 +160,10 @@ extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
         
         locationConfigurationButton.setTitle("위치설정", for: .normal)
         
-        if let image = CacheManager.shared.loadImage(with: imageType) {
+        
+        UIImageView.load(from: imageType) { [weak self] image in
+            guard let self = self else { return }
             configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
-        } else {
-            UIImageView.load(from: imageType) { [weak self] image in
-                self?.configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
-            }
         }
     }
     
