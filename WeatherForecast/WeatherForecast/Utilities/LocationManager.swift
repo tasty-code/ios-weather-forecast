@@ -20,7 +20,7 @@ final class LocationManager: NSObject {
             manager.requestWhenInUseAuthorization()
         }
     
-    func request(coordinate: CLLocationCoordinate2D?, completion: @escaping LocationCompletion){
+    func request(coordinate: CLLocationCoordinate2D?, completion: @escaping LocationCompletion) {
         locationCompletion = completion
         
         coordinate == nil ? manager.requestLocation() : fetchPlacemark(for: coordinate)
@@ -52,6 +52,7 @@ extension LocationManager: CLLocationManagerDelegate {
             return
         }
         
+        manager.stopUpdatingLocation()
         fetchPlacemark(for: coordinate)
     }
     
