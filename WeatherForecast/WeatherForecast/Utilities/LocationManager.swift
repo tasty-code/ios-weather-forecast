@@ -27,20 +27,21 @@ final class LocationManager: NSObject {
     }
     
     private func fetchPlacemark(for coordinate: CLLocationCoordinate2D?) {
-        guard let completion = locationCompletion else { return }
-        
         guard let coordinate = coordinate else { return }
         
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         let geocoder = CLGeocoder()
         let locale = Locale(identifier: "Ko-kr")
         
-        geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { placemarks, _ in
+        geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { [weak self] placemarks, _ in
+            guard let self = self else { return }
             guard let address = placemarks?.last else {
-                return completion(.failure(LocationError.noPlacemarkError))
+                locationCompletion?(.failure(LocationError.noPlacemarkError))
+                return
             }
             
-            completion(.success((location.coordinate, address)))
+            locationCompletion?(.success((location.coordinate, address)))
+            locationCompletion = nil
         }
     }
 }
