@@ -1,4 +1,4 @@
-protocol WeatherForecastViewControllerConfigurable {
+protocol WeatherForecastViewControllerConfigurable: AnyObject {
     func configureWeatherData()
     func configureRefreshControl()
 }
