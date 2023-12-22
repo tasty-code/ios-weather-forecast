@@ -1,6 +1,6 @@
 import CoreLocation
 
-protocol Locatable: AnyObject, LocationManagerable {
+protocol Locatable: AnyObject {
     var locationManager: LocationManagerable { get }
 
     func requestData(coordinate: CLLocationCoordinate2D?,completion: @escaping (CLLocationCoordinate2D, CLPlacemark) -> Void)

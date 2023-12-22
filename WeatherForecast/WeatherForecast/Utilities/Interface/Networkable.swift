@@ -1,6 +1,6 @@
 import UIKit
 
-protocol Networkable: AnyObject, NetworkManagerable {
+protocol Networkable: AnyObject {
     var networkManager: NetworkManagerable { get }
 
     func fetchWeatherData<T: Decodable>(request: Requestable, completion: @escaping (T) -> Void)
