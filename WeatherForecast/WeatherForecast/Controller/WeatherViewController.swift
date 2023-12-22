@@ -9,10 +9,6 @@ import CoreLocation
 
 final class WeatherViewController: UIViewController {
     
-    enum Section {
-        case main
-    }
-    
     private let locationDataManager = LocationDataManager()
     private let dataManager = WeatherDataManager()
     
@@ -20,8 +16,7 @@ final class WeatherViewController: UIViewController {
     private var collectionView: UICollectionView!
     
     typealias WeatherDataSource = UICollectionViewDiffableDataSource<Section, WeatherForecast.WeatherList>
-    
-    var dataSource: WeatherDataSource? = nil
+    private var dataSource: WeatherDataSource? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,58 +29,6 @@ final class WeatherViewController: UIViewController {
         locationDataManager.locationDelegate = self
         dataManager.delegate = self
         collectionView.delegate = self
-    }
-    
-    private func configureHierarchy() {
-        let layout = createLayout()
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-        // autoresizingMask: bounds로 적용했을 때, subview의 크기를 어떻게 변경할 것인가에 대한.
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = UIColor(white: 1, alpha: 0.2)
-        view.addSubview(collectionView)
-    }
-    
-    private func createLayout() -> UICollectionViewLayout {
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.08))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.16))
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .top
-        )
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.boundarySupplementaryItems = [sectionHeader]
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        
-        return layout
-    }
-    
-    
-    private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<WeatherCollectionViewCell, WeatherForecast.WeatherList> { (cell, indexPath, item) in
-            self.bind(on: cell, indexPath: indexPath)
-        }
-        
-        let headerRegistration = UICollectionView.SupplementaryRegistration
-        <WeatherCollectionHeaderView>(elementKind: UICollectionView.elementKindSectionHeader) { (headerView, string, indexPath) in
-            self.bind(on: headerView)
-        }
-        
-        dataSource = WeatherDataSource(collectionView: collectionView) {
-            (collectionView: UICollectionView, indexPath: IndexPath, identifier: WeatherForecast.WeatherList) -> UICollectionViewCell? in
-            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: identifier)
-        }
-        
-        dataSource?.supplementaryViewProvider = { (view, kind, index) in
-            return self.collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: index)
-        }
     }
 }
 
@@ -142,6 +85,69 @@ extension WeatherViewController {
 extension WeatherViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+    }
+}
+
+// MARK: - CollectionView Compositional Layout Section
+
+extension WeatherViewController {
+    enum Section {
+        case main
+    }
+}
+
+// MARK: - Configure CollectionView Layout
+
+extension WeatherViewController {
+    private func configureHierarchy() {
+        let layout = createLayout()
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        // autoresizingMask: bounds로 적용했을 때, subview의 크기를 어떻게 변경할 것인가에 대한.
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.backgroundColor = UIColor(white: 1, alpha: 0.2)
+        view.addSubview(collectionView)
+    }
+    
+    private func createLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.08))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.16))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [sectionHeader]
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        return layout
+    }
+    
+    
+    private func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<WeatherCollectionViewCell, WeatherForecast.WeatherList> { (cell, indexPath, item) in
+            self.bind(on: cell, indexPath: indexPath)
+        }
+        
+        let headerRegistration = UICollectionView.SupplementaryRegistration
+        <WeatherCollectionHeaderView>(elementKind: UICollectionView.elementKindSectionHeader) { (headerView, string, indexPath) in
+            self.bind(on: headerView)
+        }
+        
+        dataSource = WeatherDataSource(collectionView: collectionView) {
+            (collectionView: UICollectionView, indexPath: IndexPath, identifier: WeatherForecast.WeatherList) -> UICollectionViewCell? in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: identifier)
+        }
+        
+        dataSource?.supplementaryViewProvider = { (view, kind, index) in
+            return self.collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: index)
+        }
     }
 }
 
