@@ -13,6 +13,7 @@ protocol WeatherViewDelegate: AnyObject {
     func fetchCurrentWeather() -> Current?
     func fetchForecastWeather() -> Forecast?
     func fetchIcon(with iconID: String, completion: @escaping (UIImage) -> Void)
+    func displayLocationInputAlert()
 }
 
 final class WeatherView: UIView {
@@ -159,6 +160,8 @@ final class WeatherView: UIView {
             else {
                 return WeatherHeaderView()
             }
+            
+            headerView.delegate = self?.delegate
             
             self?.delegate?.fetchIcon(with: iconID) { icon in
                 headerView.configureUI(with: address, weather: weatherData, icon: icon)

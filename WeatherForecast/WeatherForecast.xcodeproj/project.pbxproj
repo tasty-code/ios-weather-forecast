@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		C340595E2B196D9800AE0703 /* ForecastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C340595D2B196D9800AE0703 /* ForecastCell.swift */; };
 		C34059602B199CAA00AE0703 /* WeatherHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C340595F2B199CAA00AE0703 /* WeatherHeaderView.swift */; };
-		C3B4C4F72B2ADF7D00200CF4 /* IconCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B4C4F62B2ADF7D00200CF4 /* IconCacheManager.swift */; };
+		C3B4C4F72B2ADF7D00200CF4 /* ImageMemoryCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B4C4F62B2ADF7D00200CF4 /* ImageMemoryCacheManager.swift */; };
 		C3E791992B0B3F1F00257AF6 /* Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E791982B0B3F1F00257AF6 /* Current.swift */; };
 		C3FDB0692B0B434200006C49 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FDB0682B0B434200006C49 /* Forecast.swift */; };
 		C3FDB0852B0C402F00006C49 /* WeatherAPI.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3FDB0842B0C402F00006C49 /* WeatherAPI.plist */; };
@@ -35,6 +35,7 @@
 		DEA4AC8C2B0F61350094ED6B /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA4AC8B2B0F61350094ED6B /* URLSessionProtocol.swift */; };
 		DEA4AC8E2B0F61D70094ED6B /* URLSessionDataTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA4AC8D2B0F61D70094ED6B /* URLSessionDataTaskProtocol.swift */; };
 		DEA4AC902B0F73DA0094ED6B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA4AC8F2B0F73DA0094ED6B /* LocationManager.swift */; };
+		DEE33B742B31CEE4009FD763 /* ImageCacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE33B732B31CEE4009FD763 /* ImageCacheable.swift */; };
 		DEE65AB52B0B475000312FBF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE65AB42B0B475000312FBF /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -58,7 +59,7 @@
 /* Begin PBXFileReference section */
 		C340595D2B196D9800AE0703 /* ForecastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCell.swift; sourceTree = "<group>"; };
 		C340595F2B199CAA00AE0703 /* WeatherHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherHeaderView.swift; sourceTree = "<group>"; };
-		C3B4C4F62B2ADF7D00200CF4 /* IconCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCacheManager.swift; sourceTree = "<group>"; };
+		C3B4C4F62B2ADF7D00200CF4 /* ImageMemoryCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMemoryCacheManager.swift; sourceTree = "<group>"; };
 		C3E791982B0B3F1F00257AF6 /* Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Current.swift; path = WeatherForecast/Models/Weather/Current.swift; sourceTree = SOURCE_ROOT; };
 		C3FDB0682B0B434200006C49 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Forecast.swift; path = WeatherForecast/Models/Weather/Forecast.swift; sourceTree = SOURCE_ROOT; };
 		C3FDB0842B0C402F00006C49 /* WeatherAPI.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WeatherAPI.plist; sourceTree = "<group>"; };
@@ -90,6 +91,7 @@
 		DEA4AC8B2B0F61350094ED6B /* URLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProtocol.swift; sourceTree = "<group>"; };
 		DEA4AC8D2B0F61D70094ED6B /* URLSessionDataTaskProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDataTaskProtocol.swift; sourceTree = "<group>"; };
 		DEA4AC8F2B0F73DA0094ED6B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		DEE33B732B31CEE4009FD763 /* ImageCacheable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheable.swift; sourceTree = "<group>"; };
 		DEE65AB42B0B475000312FBF /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,7 +123,8 @@
 		C3B4C4F52B2ADF4100200CF4 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				C3B4C4F62B2ADF7D00200CF4 /* IconCacheManager.swift */,
+				DEE33B722B31CEC6009FD763 /* Implementations */,
+				DEE33B712B31CEBD009FD763 /* Protocols */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -309,6 +312,22 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		DEE33B712B31CEBD009FD763 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				DEE33B732B31CEE4009FD763 /* ImageCacheable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		DEE33B722B31CEC6009FD763 /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				C3B4C4F62B2ADF7D00200CF4 /* ImageMemoryCacheManager.swift */,
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
 		DEE65AB32B0B473D00312FBF /* Weather */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,11 +481,12 @@
 				DEA4AC8C2B0F61350094ED6B /* URLSessionProtocol.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				DE5133772B10640400DC6A41 /* LocationData.swift in Sources */,
+				DEE33B742B31CEE4009FD763 /* ImageCacheable.swift in Sources */,
 				C3FDB0892B0CA2E900006C49 /* NetworkError.swift in Sources */,
 				DE0403552B22ABB20031EFB3 /* AlertDisplayable.swift in Sources */,
 				DE5133792B106F1000DC6A41 /* WeatherType.swift in Sources */,
 				DE3952522B19AA0700E13106 /* UIComponents.swift in Sources */,
-				C3B4C4F72B2ADF7D00200CF4 /* IconCacheManager.swift in Sources */,
+				C3B4C4F72B2ADF7D00200CF4 /* ImageMemoryCacheManager.swift in Sources */,
 				DE3952502B1999AF00E13106 /* Reusable.swift in Sources */,
 				C3FDB0872B0C47B300006C49 /* WeatherRequest.swift in Sources */,
 				DEA4AC892B0F38140094ED6B /* APIRequest.swift in Sources */,

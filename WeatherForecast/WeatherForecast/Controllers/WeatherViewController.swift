@@ -15,7 +15,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     
     private let locationManager: LocationManager
     private let networkManager: NetworkManager
-    private let cacheManager: IconCacheManager
+    private let cacheManager: ImageCacheable
     
     private var locationData: LocationData?
     private var currentModel: Current?
@@ -23,7 +23,7 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     
     // MARK: - Initializer
     
-    init(locationManager: LocationManager, networkManager: NetworkManager, cacheManager: IconCacheManager) {
+    init(locationManager: LocationManager, networkManager: NetworkManager, cacheManager: ImageCacheable) {
         self.locationManager = locationManager
         self.networkManager = networkManager
         self.cacheManager = cacheManager
@@ -42,7 +42,6 @@ final class WeatherViewController: UIViewController, AlertDisplayable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureDelegate()
     }
     
@@ -114,7 +113,7 @@ extension WeatherViewController: WeatherViewDelegate {
     }
     
     func fetchIcon(with iconID: String, completion: @escaping (UIImage) -> Void) {
-        if let icon = cacheManager.getIcon(with: iconID) {
+        if let icon = cacheManager.fetch(by: iconID) {
             completion(icon)
             return
         }
@@ -123,7 +122,7 @@ extension WeatherViewController: WeatherViewDelegate {
             switch result {
             case .success(let rawData):
                 guard let icon = UIImage(data: rawData) else { return }
-                self?.cacheManager.store(with: iconID, icon: icon)
+                self?.cacheManager.store(with: iconID, image: icon)
                 DispatchQueue.main.async {
                     completion(icon)
                 }
@@ -131,5 +130,44 @@ extension WeatherViewController: WeatherViewDelegate {
                 self?.displayAlert(title: String(describing: error))
             }
         }
+        
+    }
+    func displayLocationInputAlert() {
+        let alert = UIAlertController(title: "위치 변경", message: "변경할 좌표를 선택해주세요", preferredStyle: .alert)
+        
+        alert.addTextField { textField in
+            textField.placeholder = "위도"
+            textField.keyboardType = .decimalPad
+        }
+        
+        alert.addTextField { textField in
+            textField.placeholder = "경도"
+            textField.keyboardType = .decimalPad
+        }
+        
+        let changeAction = UIAlertAction(title: "변경", style: .default) { [weak self] _ in
+            guard let latitudeText = alert.textFields?.first?.text,
+                  let longitudeText = alert.textFields?.last?.text,
+                  let latitude = Double(latitudeText),
+                  let longitude = Double(longitudeText)
+            else {
+                return
+            }
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+            self?.locationManager.convertGeocodeAndUpdate(with: location)
+        }
+        
+        let relocationAction = UIAlertAction(title: "현재 위치로 재설정", style: .default) { [weak self] _ in
+            self?.locationManager.requestLocation()
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        
+        alert.addAction(changeAction)
+        alert.addAction(relocationAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+        
     }
 }

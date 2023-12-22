@@ -10,7 +10,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private let locationManager = LocationManager()
     private let networkManager = NetworkManager()
-    private let cacheManager = IconCacheManager()
+    private let cacheManager = ImageMemoryCacheManager()
     
     var window: UIWindow?
 
