@@ -49,13 +49,15 @@ final class ForecastWeatherCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             horizontalStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
             horizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            horizontalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            horizontalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            horizontalStackView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.3)
         ])
         
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(equalTo: horizontalStackView.topAnchor),
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            dateLabel.bottomAnchor.constraint(equalTo: horizontalStackView.bottomAnchor)
+            dateLabel.bottomAnchor.constraint(equalTo: horizontalStackView.bottomAnchor),
+            dateLabel.trailingAnchor.constraint(equalTo: horizontalStackView.leadingAnchor)
         ])
         
         NSLayoutConstraint.activate([
