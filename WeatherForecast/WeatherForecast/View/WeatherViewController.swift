@@ -8,9 +8,9 @@ final class WeatherViewController: UIViewController {
     private let networkServiceProvider = NetworkServiceProvider(session: URLSession.shared)
     private let cacheManager = CacheManager()
     private let jsonLoader = JsonLoader()
-    
     private var forecast: ForecastWeather?
     private var current: CurrentWeather?
+    
     
     private lazy var changeLocationButton: UIButton = {
         let button = UIButton()
@@ -28,13 +28,9 @@ final class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackgroundImageView()
-        
         locationManagerConfiguration()
-        
-        networkServiceProvider.delegate = self
         weatherCollectionView.dataSource = self
         weatherCollectionView.setCollectionViewConstraints(view: view)
-        
         setRefreshControl()
         setChangeLocationButton()
     }
@@ -79,9 +75,8 @@ extension WeatherViewController {
     
     @objc func handleRefreshControl() {
         guard let coordinate = locationManager.location?.coordinate else { return }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             self?.refreshData(coordinate: coordinate)
-            self?.weatherCollectionView.refreshControl?.endRefreshing()
         }
     }
     
@@ -100,7 +95,7 @@ extension WeatherViewController {
             textField.placeholder = "경도"
             textField.keyboardType = .decimalPad
         }
-       
+        
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         let changeCustomLocation = UIAlertAction(title: "변경", style: .default) { [weak self] (_) in
             guard let userInputLatitude = alert.textFields?[0].text,
@@ -131,7 +126,7 @@ extension WeatherViewController {
         layoutConfig.headerMode = .supplementary
         
         let layout = UICollectionViewCompositionalLayout() { section, environment in
-        
+            
             let section = NSCollectionLayoutSection.list(using: layoutConfig, layoutEnvironment: environment)
             let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
             let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
@@ -150,7 +145,6 @@ extension WeatherViewController: CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
-        
         refreshData(coordinate: location.coordinate)
     }
     
@@ -177,7 +171,7 @@ extension WeatherViewController: CLLocationManagerDelegate{
     }
 }
 
-extension WeatherViewController: AlertDelegate {
+extension WeatherViewController {
     
     private func refreshData(coordinate: CLLocationCoordinate2D) {
         
@@ -220,7 +214,7 @@ extension WeatherViewController: AlertDelegate {
         let alert = UIAlertController(title: "위치 권한이 거부되었습니다",
                                       message: "앱의 모든 기능을 사용하려면 설정에서 위치 권한을 허용해주세요.",
                                       preferredStyle: .alert
-                                      )
+        )
         
         let cancelAction = UIAlertAction(title: "취소", style: .destructive, handler: nil)
         let settingsAction = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
@@ -247,7 +241,11 @@ extension WeatherViewController: AlertDelegate {
                     self?.updateHeaderUI(decodedCurrentWeather)
                 }
                 return
+                
             case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.invalidedCoordinateAlert()
+                }
                 return print(error.description)
             }
         }
@@ -264,11 +262,15 @@ extension WeatherViewController: AlertDelegate {
                 
                 self?.forecast = decodedForecastWeather
                 
-                DispatchQueue.main.async {
+                DispatchQueue.main.async() {
                     self?.weatherCollectionView.reloadData()
+                    self?.weatherCollectionView.refreshControl?.endRefreshing()
                 }
                 return
             case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.invalidedCoordinateAlert()
+                }
                 return print(error.description)
             }
         }

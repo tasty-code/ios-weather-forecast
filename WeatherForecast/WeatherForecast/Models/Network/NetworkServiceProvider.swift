@@ -2,7 +2,6 @@ import Foundation
 
 final class NetworkServiceProvider: NetworkServiceable {
     
-    var delegate: AlertDelegate?
     let session: URLSessionProtocol
     
     init(session: URLSessionProtocol = URLSession.shared) {
@@ -18,10 +17,7 @@ final class NetworkServiceProvider: NetworkServiceable {
                     guard let successData = success as? T else { return }
                     completionHandler(.success(successData))
                 case .failure(let failure):
-                    DispatchQueue.main.async{
-                        self?.delegate?.invalidedCoordinateAlert()
-                    }
-                    return print(failure.description)
+                    completionHandler(.failure(failure))
                 }
             }
         }.resume()
