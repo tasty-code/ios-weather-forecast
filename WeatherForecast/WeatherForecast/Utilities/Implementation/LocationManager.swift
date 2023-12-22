@@ -3,22 +3,30 @@ import UIKit
 
 typealias LocationCompletion = (Result<(CLLocationCoordinate2D, CLPlacemark), LocationError>) -> Void
 
-final class LocationManager: NSObject {
+protocol LocationManagerable {
+    func request(coordinate: CLLocationCoordinate2D?, completion: @escaping LocationCompletion)
+}
+
+extension LocationManagerable {
+    func request(coordinate: CLLocationCoordinate2D?, completion: @escaping LocationCompletion) { }
+}
+
+final class LocationManager: NSObject, LocationManagerable {
     private let manager = CLLocationManager()
     private var locationCompletion: LocationCompletion?
     
     override init() {
         super.init()
-
+        
         setupLocationManager()
     }
     
     private func setupLocationManager() {
-            manager.delegate = self
-            manager.distanceFilter = kCLDistanceFilterNone
-            manager.desiredAccuracy = kCLLocationAccuracyBest
-            manager.requestWhenInUseAuthorization()
-        }
+        manager.delegate = self
+        manager.distanceFilter = kCLDistanceFilterNone
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.requestWhenInUseAuthorization()
+    }
     
     func request(coordinate: CLLocationCoordinate2D?, completion: @escaping LocationCompletion) {
         locationCompletion = completion

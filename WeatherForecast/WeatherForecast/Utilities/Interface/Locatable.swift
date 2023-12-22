@@ -1,8 +1,12 @@
 import CoreLocation
 
-struct Locator {
-    private let locationManager = LocationManager()
-    
+protocol Locatable: AnyObject, LocationManagerable {
+    var locationManager: LocationManagerable { get }
+
+    func requestData(coordinate: CLLocationCoordinate2D?,completion: @escaping (CLLocationCoordinate2D, CLPlacemark) -> Void)
+}
+
+extension Locatable {
     func requestData(coordinate: CLLocationCoordinate2D?,completion: @escaping (CLLocationCoordinate2D, CLPlacemark) -> Void) {
 
         locationManager.request(coordinate: coordinate) { result in
