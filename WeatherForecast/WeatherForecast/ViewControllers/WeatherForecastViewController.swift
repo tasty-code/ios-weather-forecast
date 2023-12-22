@@ -29,60 +29,60 @@ final class WeatherForecastViewController: UIViewController {
     
     @objc
     private func configureWeatherData() {
-        let locationGroup = DispatchGroup()
-        locationGroup.enter()
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            self?.requestData(group: locationGroup)
+        let group = DispatchGroup()
+        
+        group.enter()
+        //            requestData {
+        //                group.leave()
+        //            }
+        requestData(coordinate: coordinate) {
+            group.leave()
         }
-
-        locationGroup.notify(queue: .global(qos: .userInteractive)) { [weak self] in
+        
+        group.notify(queue: .global(qos: .userInteractive)) { [weak self] in
             guard let self = self else { return }
             guard let coordinate = coordinate else { return }
             
-            let networkGroup = DispatchGroup()
+            group.enter()
+            fetchCurrentWeatherData(coordinate: coordinate) {
+                group.leave()
+            }
             
-            fetchCurrentWeatherData(coordinate: coordinate, group: networkGroup)
-            fetchFiveDaysWeatherData(coordinate: coordinate, group: networkGroup)
-            reloadCollectionViewOnMainQueue(group: networkGroup)
+            group.enter()
+            fetchFiveDaysWeatherData(coordinate: coordinate) {
+                group.leave()
+            }
+            
+            group.wait()
+            fetchUI()
         }
     }
-
-    private func requestData(group: DispatchGroup) {
+    
+    private func requestData(coordinate: CLLocationCoordinate2D?, completion: @escaping () -> Void) {
         locator.requestData(coordinate: coordinate) { [weak self] coordinate, placemark in
-            
             self?.coordinate = coordinate
             self?.placemark = placemark
-            group.leave()
+            completion()
         }
     }
-
-    private func fetchCurrentWeatherData(coordinate: CLLocationCoordinate2D, group: DispatchGroup) {
-        group.enter()
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let self = self else { return }
-            networker.fetchWeatherData(request: WeatherAPI.current(coordinate)) { (result: Model.CurrentWeather) in
-                self.currentWeathermodel = result
-                group.leave()
-            }
+    
+    private func fetchCurrentWeatherData(coordinate: CLLocationCoordinate2D, completion: @escaping () -> Void) {
+        networker.fetchWeatherData(request: WeatherAPI.current(coordinate)) { (result: Model.CurrentWeather) in
+            self.currentWeathermodel = result
+            completion()
         }
     }
-
-    private func fetchFiveDaysWeatherData(coordinate: CLLocationCoordinate2D, group: DispatchGroup) {
-        group.enter()
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let self = self else { return }
-            networker.fetchWeatherData(request: WeatherAPI.fiveDays(coordinate)) { (result: Model.FiveDaysWeather) in
-                self.fiveDaysWeatherModel = result
-                group.leave()
-            }
+    
+    private func fetchFiveDaysWeatherData(coordinate: CLLocationCoordinate2D, completion: @escaping () -> Void) {
+        networker.fetchWeatherData(request: WeatherAPI.fiveDays(coordinate)) { (result: Model.FiveDaysWeather) in
+            self.fiveDaysWeatherModel = result
+            completion()
         }
     }
-
-    private func reloadCollectionViewOnMainQueue(group: DispatchGroup) {
-        group.wait()
+    
+    private func fetchUI() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            
             weatherForecastView.collectionView.reloadData()
             weatherForecastView.collectionView.refreshControl?.endRefreshing()
         }
@@ -136,7 +136,7 @@ final class WeatherForecastViewController: UIViewController {
         }
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-    
+        
         alertController.addTextField { textfield in
             textfield.placeholder = "위도"
             textfield.keyboardType = .decimalPad
