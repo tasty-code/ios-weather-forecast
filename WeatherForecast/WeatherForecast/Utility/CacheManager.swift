@@ -1,6 +1,7 @@
 import UIKit
 
 final class CacheManager {
+    
     private static let shared = NSCache<NSString, UIImage>()
 
     func getImage(with imageID: String) -> UIImage? {

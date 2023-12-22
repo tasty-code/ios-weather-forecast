@@ -9,16 +9,15 @@ final class NetworkServiceProvider: NetworkServiceable {
     }
     
     func fetch<T> (url: URL, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
-        session.dataTask(with: url) { data, response, error in
-            self.handlingDataResponse(data: data, response: response, error: error) { (result: Result<Data, NetworkError>) in
-                
+        session.dataTask(with: url) { [weak self] (data, response, error) in
+            self?.handlingDataResponse(data: data, response: response, error: error) { (result: Result<Data, NetworkError>) in
                 switch result {
                     
                 case .success(let success):
                     guard let successData = success as? T else { return }
                     completionHandler(.success(successData))
                 case .failure(let failure):
-                    return print(failure.description)
+                    completionHandler(.failure(failure))
                 }
             }
         }.resume()
