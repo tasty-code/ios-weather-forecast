@@ -93,10 +93,12 @@ extension CollectionViewCell {
     }
     
     private func drawUnderBorder() {
-        let border = CALayer()
-        border.frame = CGRect(x: frame.origin.x, y: frame.height - Constants.bottomBorderLineHeight, width: frame.width, height: Constants.bottomBorderLineHeight)
-        border.backgroundColor = UIColor.white.cgColor
-        contentView.layer.addSublayer(border)
+        if contentView.layer.sublayers?.count == 0 {
+            let border = CALayer()
+            border.frame = CGRect(x: frame.origin.x, y: frame.height - Constants.bottomBorderLineHeight, width: frame.width, height: Constants.bottomBorderLineHeight)
+            border.backgroundColor = UIColor.white.cgColor
+            contentView.layer.addSublayer(border)
+        }
     }
 }
 
