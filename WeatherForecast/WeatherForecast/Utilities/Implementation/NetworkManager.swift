@@ -1,20 +1,15 @@
 import Foundation
 import UIKit
 
-final class NetworkManager: Networkable {
-    private let request: Requestable?
+final class NetworkManager: NetworkManagerable {
     private let session: RequestSessionable
-    private var url: URL?
     
-    init(request: Requestable?, session: RequestSessionable = URLSession.shared) {
-        self.request = request
+    init(session: RequestSessionable = URLSession.shared) {
         self.session = session
     }
     
-    func fetch<T: Decodable>(completion: @escaping (Result<T, NetworkError>) -> Void) {
-        guard let url = self.request?.path else {
-            return
-        }
+    func fetch<T: Decodable>(request: Requestable?, completion: @escaping (Result<T, NetworkError>) -> Void) {
+        guard let url = request?.path else { return }
         
         session.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -39,10 +34,8 @@ final class NetworkManager: Networkable {
         }.resume()
     }
     
-    func fetchImage(completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
-        guard let url = self.request?.path else {
-            return
-        }
+    func fetchImage(request: Requestable?, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
+        guard let url = request?.path else { return }
         
         session.dataTask(with: url) { data, response, error in
             if let error = error {

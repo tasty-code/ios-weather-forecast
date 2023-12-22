@@ -10,10 +10,12 @@ extension WeatherForecastHeaderViewIdentifying {
 }
 
 protocol WeatherForecastHeaderViewConfigurable {
-    func startConfigure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) throws
+    func configure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?)
 }
 
 final class WeatherForecastHeaderView: UICollectionReusableView {
+    weak var delegate: WeatherForecastViewController?
+    
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -23,36 +25,53 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
     
     private let locationLabel: UILabel = {
         let label = UILabel()
+        label.text = "-"
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
+    private lazy var locationConfigurationButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.addTarget(delegate, action: #selector(delegate?.touchLocationConfigurationButton), for: .touchUpInside)
+        
+        return button
+    }()
+    
     private let temperatureMinMaxLabel: UILabel = {
         let label = UILabel()
+        label.text = "-"
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
     private let temperatureCurrentLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 30, weight: .bold)
+        label.text = "-"
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 30, weight: .bold)
         
         return label
+    }()
+    
+    private lazy var locationStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.addArrangedSubview(locationLabel)
+        stackView.addArrangedSubview(locationConfigurationButton)
+        
+        return stackView
     }()
     
     private lazy var partialInfoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.addArrangedSubview(locationLabel)
+        stackView.addArrangedSubview(locationStackView)
         stackView.addArrangedSubview(temperatureMinMaxLabel)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
     }()
@@ -63,7 +82,6 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
         stackView.distribution = .fillEqually
         stackView.addArrangedSubview(partialInfoStackView)
         stackView.addArrangedSubview(temperatureCurrentLabel)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
     }()
@@ -106,6 +124,7 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
             stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             stackView.topAnchor.constraint(equalTo: safeArea.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
         ])
     }
     
@@ -124,30 +143,27 @@ final class WeatherForecastHeaderView: UICollectionReusableView {
 }
 
 extension WeatherForecastHeaderView: WeatherForecastHeaderViewConfigurable {
-    func startConfigure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) throws {
-        
+    func configure(_ placemark: CLPlacemark?, using model: Model.CurrentWeather?) {
         guard let model = model,
-              let placemark = placemark else {
-            throw WeatherForecastHeaderViewError.didFailFetchHeaderData
-        }
+              let placemark = placemark else { return }
         
-        guard let imageType = model.weather?[0].icon else {
-            throw WeatherForecastCellError.noExistedImage
-        }
+        guard let imageType = model.weather?[0].icon else { return }
         
-        guard let locality = placemark.locality,
-              let subLocality = placemark.subLocality else {
-            throw WeatherForecastHeaderViewError.noExistedLocality
-        }
+        guard let locality = placemark.locality
+                ?? placemark.subAdministrativeArea else { return }
+        
+        guard let subLocality = placemark.subLocality else { return }
         
         guard let temperatureMin = model.main?.tempMin,
               let temperatureMax = model.main?.tempMax,
-              let temperatureCurrent = model.main?.temp else {
-            throw WeatherForecastHeaderViewError.noExistedTemperature
-        }
-
-        UIImage.load(from: imageType) { image in
-            self.configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
+              let temperatureCurrent = model.main?.temp else { return }
+        
+        locationConfigurationButton.setTitle("위치설정", for: .normal)
+        
+        
+        UIImageView.load(from: imageType) { [weak self] image in
+            guard let self = self else { return }
+            configure(image: image, locality: locality, subLocality: subLocality, temperatureMin: temperatureMin, temperatureMax: temperatureMax, temperatureCurrent: temperatureCurrent)
         }
     }
     

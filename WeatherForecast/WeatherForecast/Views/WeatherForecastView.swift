@@ -17,8 +17,10 @@ final class WeatherForecastView: UIView {
                 layoutSize: headerSize,
                 elementKind: UICollectionView.elementKindSectionHeader,
                 alignment: .top)
-            section.boundarySupplementaryItems = [header]
+            header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
             
+            section.boundarySupplementaryItems = [header]
+        
             return section
         }
         
@@ -51,9 +53,8 @@ final class WeatherForecastView: UIView {
     }
     
     private func configureUI() {
-        self.backgroundColor = .clear
-        
-        self.addSubview(collectionView)
+        backgroundColor = .clear        
+        addSubview(collectionView)
         collectionView.backgroundView = UIImageView(image: UIImage(named: "backgroundImage"))
     }
     

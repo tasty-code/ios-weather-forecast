@@ -9,7 +9,7 @@ extension WeatherForecastCellIdentifying {
 }
 
 protocol WeatherForecastCellConfigurable {
-    func startConfigure(using model: Model.FiveDaysWeather.List?) throws
+    func configure(using model: Model.FiveDaysWeather.List?)
 }
 
 final class WeatherForecastCell: UICollectionViewListCell {
@@ -79,7 +79,6 @@ final class WeatherForecastCell: UICollectionViewListCell {
     
     private func configureUI() {
         backgroundConfiguration = .clear()
-        addSubview(dateLabel)
         addSubview(cellTotalStackView)
     }
     
@@ -100,27 +99,18 @@ final class WeatherForecastCell: UICollectionViewListCell {
 }
 
 extension WeatherForecastCell: WeatherForecastCellConfigurable {
-    func startConfigure(using model: Model.FiveDaysWeather.List?) throws {
-        guard let model = model else {
-            throw WeatherForecastCellError.didFailFetchCellData
-        }
-        
-        guard let imageType = model.weather?[0].icon else {
-            throw WeatherForecastCellError.noExistedImage
-        }
-
-        guard let date = model.dt else {
-            throw WeatherForecastCellError.noExistedDate
-        }
+    func configure(using model: Model.FiveDaysWeather.List?) {
+        guard let model = model else { return }
+        guard let imageType = model.weather?[0].icon else { return }
+        guard let date = model.dt else { return }
         
         let dateString = DateFormatter.toString(by: date)
+
+        guard let temperatureCurrent = model.main?.temp else { return }
         
-        guard let temperatureCurrent = model.main?.temp else {
-            throw WeatherForecastCellError.noExistedTemperature
-        }
-        
-        UIImage.load(from: imageType) { image in
-            self.configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
+        UIImageView.load(from: imageType) { [weak self] image in
+            guard let self = self else { return }
+            configure(image: image, date: dateString, temperatureCurrent: temperatureCurrent)
         }
     }
 
