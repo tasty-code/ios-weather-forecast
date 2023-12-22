@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol AlertDelegate: AnyObject {
+protocol AlertPresentable: AnyObject {
     func showLocationSettingAlert()
 }

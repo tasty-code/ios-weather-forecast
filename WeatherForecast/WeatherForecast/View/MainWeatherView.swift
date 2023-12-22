@@ -8,9 +8,9 @@
 import UIKit
 
 final class MainWeatherView: UIView {
-    private weak var delegate: (MainWeatherViewDelegate & AlertDelegate)?
+    private weak var delegate: (MainWeatherViewDelegate & AlertPresentable)?
 
-    init(delegate: (MainWeatherViewDelegate & AlertDelegate)?) {
+    init(delegate: (MainWeatherViewDelegate & AlertPresentable)?) {
         self.delegate = delegate
         super.init(frame: .zero)
         collectionViewConfigure()

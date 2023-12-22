@@ -75,7 +75,7 @@ extension ViewController: UIUpdatable {
     }
 }
 
-extension ViewController: AlertDelegate {
+extension ViewController: AlertPresentable {
     func showLocationSettingAlert() {
         let alert = UIAlertController(title: "위치변경", message: "변경할 좌표를 선택해주세요", preferredStyle: .alert)
         alert.addTextField { UITextField in
@@ -87,8 +87,7 @@ extension ViewController: AlertDelegate {
         
         let change = UIAlertAction(title: "변경", style: .default) { [weak self] _ in
             guard let latitude = alert.textFields?[0].text, let longitude = alert.textFields?[1].text else { return }
-            guard let location = self?.locationManager.convertCLLocation(latitude: longitude, longitude: latitude) else { return }
-            self?.locationManager.sendConvertedLocationRequest(location: location)
+            self?.locationManager.changeLocation(latitude: latitude, longitude: longitude)
         }
         let resetLocation = UIAlertAction(title: "현재 위치로 재설정", style: .default) { [weak self] _ in
             self?.locationManager.updateLocation()

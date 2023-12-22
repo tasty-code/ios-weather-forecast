@@ -17,7 +17,12 @@ final class LocationManager: NSObject {
         self.manager.delegate = self
     }
     
-    func convertCLLocation(latitude: String, longitude: String) -> CLLocation? {
+    func changeLocation(latitude: String, longitude: String) {
+        guard let location = convertCLLocation(latitude: latitude, longitude: longitude) else { return }
+        sendConvertedLocationRequest(location: location)
+    }
+    
+    private func convertCLLocation(latitude: String, longitude: String) -> CLLocation? {
         guard let latitude = Double(latitude),
               let longitude = Double(longitude)
         else { return nil }
@@ -25,7 +30,7 @@ final class LocationManager: NSObject {
         return CLLocation(latitude: latitude, longitude: longitude)
     }
     
-    func sendConvertedLocationRequest(location: CLLocation)  {
+    private func sendConvertedLocationRequest(location: CLLocation)  {
         CLGeocoder().reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
                 print(error.localizedDescription)

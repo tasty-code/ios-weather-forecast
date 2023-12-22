@@ -9,7 +9,7 @@ import UIKit
 
 final class CurrentHeaderView: UICollectionReusableView, ReuseIdentifiable {
     
-    weak var delegate: AlertDelegate?
+    weak var delegate: AlertPresentable?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
