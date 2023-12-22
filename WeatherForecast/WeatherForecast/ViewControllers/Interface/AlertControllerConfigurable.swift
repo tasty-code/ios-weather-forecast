@@ -1,0 +1,3 @@
+protocol AlertControllerConfigurable {
+    func touchLocationConfigurationButton()
+}
