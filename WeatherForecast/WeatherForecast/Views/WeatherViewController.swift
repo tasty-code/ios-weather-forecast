@@ -145,8 +145,6 @@ class WeatherViewController: UIViewController {
             .sink { [weak self] (current, forecast) in
                 var snapshot = NSDiffableDataSourceSnapshot<Section, Forecast>()
                 snapshot.appendSections([.main])
-                self?.weatherDataSource.apply(snapshot)
-                
                 snapshot.appendItems(forecast, toSection: .main)
                 snapshot.reloadSections([.main])
                 self?.weatherDataSource.apply(snapshot)
