@@ -13,6 +13,7 @@ protocol WeatherViewDelegate: AnyObject {
     func fetchCurrentWeather() -> Current?
     func fetchForecastWeather() -> Forecast?
     func fetchIcon(with iconID: String, completion: @escaping (UIImage) -> Void)
+    func displayLocationInputAlert()
 }
 
 final class WeatherView: UIView {
@@ -20,7 +21,6 @@ final class WeatherView: UIView {
         case main
     }
     
-    private weak var headerViewDelegate: LocationChangeable?
     private weak var delegate: WeatherViewDelegate?
     private lazy var dataSource: UICollectionViewDiffableDataSource<Section, List> = makeDataSource()
     
@@ -60,9 +60,8 @@ final class WeatherView: UIView {
     
     // MARK: - Initializer
 
-    init(delegate: WeatherViewDelegate & LocationChangeable) {
+    init(delegate: WeatherViewDelegate) {
         self.delegate = delegate
-        self.headerViewDelegate = delegate
         super.init(frame: .zero)
         self.setConstraints()
         self.configureRefreshControl()
@@ -162,7 +161,7 @@ final class WeatherView: UIView {
                 return WeatherHeaderView()
             }
             
-            headerView.delegate = self?.headerViewDelegate
+            headerView.delegate = self?.delegate
             
             self?.delegate?.fetchIcon(with: iconID) { icon in
                 headerView.configureUI(with: address, weather: weatherData, icon: icon)

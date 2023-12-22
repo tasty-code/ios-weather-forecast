@@ -9,7 +9,7 @@ import UIKit
 
 final class WeatherHeaderView: UICollectionReusableView, Reusable {
     
-    weak var delegate: LocationChangeable?
+    weak var delegate: WeatherViewDelegate?
     
     private lazy var weatherIconView: UIImageView = {
         let imageView = UIImageView()

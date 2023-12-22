@@ -130,10 +130,8 @@ extension WeatherViewController: WeatherViewDelegate {
                 self?.displayAlert(title: String(describing: error))
             }
         }
+        
     }
-}
-
-extension WeatherViewController: LocationChangeable {
     func displayLocationInputAlert() {
         let alert = UIAlertController(title: "위치 변경", message: "변경할 좌표를 선택해주세요", preferredStyle: .alert)
         
@@ -168,7 +166,8 @@ extension WeatherViewController: LocationChangeable {
         alert.addAction(changeAction)
         alert.addAction(relocationAction)
         alert.addAction(cancelAction)
-                
+        
         present(alert, animated: true)
+        
     }
 }
