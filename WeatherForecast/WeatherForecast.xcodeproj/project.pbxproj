@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0402A78A2B327882005AE613 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0402A7892B327882005AE613 /* GraphViewController.swift */; };
+		0402A7912B3517C7005AE613 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0402A7902B3517C7005AE613 /* GraphViewController.swift */; };
 		043F174E2B0AEB1800084087 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F174D2B0AEB1800084087 /* WeatherModel.swift */; };
 		043F17502B0AF10E00084087 /* ForecastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F174F2B0AF10E00084087 /* ForecastModel.swift */; };
 		043F17532B0AF30800084087 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043F17522B0AF30800084087 /* NetworkManager.swift */; };
@@ -61,7 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0402A7892B327882005AE613 /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
+		0402A7902B3517C7005AE613 /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		043F174D2B0AEB1800084087 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		043F174F2B0AF10E00084087 /* ForecastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastModel.swift; sourceTree = "<group>"; };
 		043F17522B0AF30800084087 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -309,7 +309,7 @@
 				C79C8CF325ADDDF200EEE3F1 /* AppDelegate.swift */,
 				C79C8CF525ADDDF200EEE3F1 /* SceneDelegate.swift */,
 				C79C8CF725ADDDF200EEE3F1 /* ViewController.swift */,
-				0402A7892B327882005AE613 /* GraphViewController.swift */,
+				0402A7902B3517C7005AE613 /* GraphViewController.swift */,
 				04AAAB5B2B16FA1400A541EC /* Views */,
 				040AB0352B0DCB6600A1EA78 /* Services */,
 				043F17512B0AF2FD00084087 /* Utilities */,
@@ -512,7 +512,7 @@
 				04AAABA92B196AEE00A541EC /* IconDataService.swift in Sources */,
 				04AAABAF2B196E1900A541EC /* DateFormattable.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
-				0402A78A2B327882005AE613 /* GraphViewController.swift in Sources */,
+				0402A7912B3517C7005AE613 /* GraphViewController.swift in Sources */,
 				04AAAB952B187CF300A541EC /* WeatherDataService.swift in Sources */,
 				04AAAB912B1878EB00A541EC /* DataDownloadable.swift in Sources */,
 				CBEC24E02B27EAA700371D7D /* CacheManager.swift in Sources */,

@@ -27,6 +27,7 @@ final class GraphViewController: UIViewController {
     // MARK: Properties
     var lists: [List]? {
         didSet {
+            graphView.lists = lists
             graphView.setNeedsDisplay()
         }
     }

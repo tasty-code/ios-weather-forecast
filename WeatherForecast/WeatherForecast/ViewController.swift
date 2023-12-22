@@ -83,9 +83,7 @@ final class ViewController: UIViewController {
                 self.navigationController?.pushViewController(graphViewController, animated: true)
             } else {
                 self.navigationController?.popToRootViewController(animated: true)
-                
-                // 이 부분 어케 해야할지 모르겠음
-                self.collectionView.setNeedsLayout()
+                self.collectionView.reloadData()
             }
         }
     }
