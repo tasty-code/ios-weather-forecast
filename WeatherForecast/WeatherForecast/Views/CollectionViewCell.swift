@@ -48,8 +48,8 @@ final class CollectionViewCell: UICollectionViewCell, CollectionViewCellIdentify
     
     // MARK: - Public
     func configureCell(_ item: List) {
-        if let dateText = item.dateTxt {
-            dateAndHourLabel.text = dateFormattingService.format(with: dateText, from: Constants.dateTextFormatBefore, to: Constants.dateTextFormatAfter)
+        if let date = item.date {
+            dateAndHourLabel.text = dateFormattingService.format(with: date, from: Constants.dateTextFormatBefore, to: Constants.dateTextFormatAfter)
         }
         
         if let temperature = item.main?.temp {
@@ -93,10 +93,16 @@ extension CollectionViewCell {
     }
     
     private func drawUnderBorder() {
-        let border = CALayer()
-        border.frame = CGRect(x: frame.origin.x, y: frame.height - Constants.bottomBorderLineHeight, width: frame.width, height: Constants.bottomBorderLineHeight)
-        border.backgroundColor = CGColor(red: 255, green: 255, blue: 255, alpha: 1)
-        contentView.layer.addSublayer(border)
+        guard let layCount = contentView.layer.sublayers?.count else {
+            return
+        }
+        
+        if layCount == 3 {
+            let border = CALayer()
+            border.frame = CGRect(x: frame.origin.x, y: frame.height - Constants.bottomBorderLineHeight, width: frame.width, height: Constants.bottomBorderLineHeight)
+            border.backgroundColor = UIColor.white.cgColor
+            contentView.layer.addSublayer(border)
+        }
     }
 }
 

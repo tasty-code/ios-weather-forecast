@@ -45,12 +45,21 @@ final class ViewController: UIViewController {
     // MARK: - Dependencies
     private lazy var weatherDataService: DataDownloadable = WeatherDataService(dataServiceDelegate: self)
     private lazy var forecastDataService: DataDownloadable = ForecastDataService(dataServiceDelegate: self)
-    private let locationManager = LocationManager()
+    private let locationManager: LocationManager
     
     // MARK: - Properties
     private var weatherModel: WeatherModel? = nil
     private var forecastModel: ForecastModel? = nil
     private var currentPlacemark: CLPlacemark? = nil
+    
+    init(locationManager: LocationManager) {
+        self.locationManager = locationManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("Failed to initialize ViewController")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +71,21 @@ final class ViewController: UIViewController {
         collectionView.register(CollectionReusableHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionReusableHeaderView.reuseIdentifier)
         setUpLayout()
         setUpConstraints()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate { [weak self] _ in
+            guard let self = self else { return }
+            
+            if size.width > size.height {
+                let graphViewController = GraphViewController()
+                graphViewController.lists = forecastModel?.list
+                self.navigationController?.pushViewController(graphViewController, animated: true)
+            } else {
+                self.navigationController?.popToRootViewController(animated: true)
+                self.collectionView.reloadData()
+            }
+        }
     }
 }
 
@@ -104,6 +128,12 @@ extension ViewController {
         }
         
         present(alert, animated: true)
+    }
+    
+    private func pushGraphViewController() {
+        let graphViewController = GraphViewController()
+        graphViewController.lists = forecastModel?.list
+        self.navigationController?.pushViewController(graphViewController, animated: true)
     }
 }
 
@@ -153,8 +183,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
 // MARK: Autolayout Methods
 extension ViewController {
     private func setUpLayout() {
-        self.view.addSubview(backgroundImageView)
-        self.view.addSubview(collectionView)
+        self.view.addSubviews([backgroundImageView, collectionView])
     }
     
     private func setUpConstraints() {
@@ -185,6 +214,10 @@ extension ViewController: WeatherForecastDataServiceDelegate {
         } else {
             collectionView.reloadItems(at: headerViewIndexPaths)
         }
+        
+        if collectionView.refreshControl?.isRefreshing == true {
+            collectionView.refreshControl?.endRefreshing()
+        }
     }
     
     func notifyForecastModelDidUpdate(dataService: DataDownloadable, model: ForecastModel?) {
@@ -196,6 +229,13 @@ extension ViewController: WeatherForecastDataServiceDelegate {
         } else {
             collectionView.reloadItems(at: cellIndexPaths)
         }
+        
+        if collectionView.refreshControl?.isRefreshing == true {
+            collectionView.refreshControl?.endRefreshing()
+        }
+        
+        guard let graphViewController = self.navigationController?.viewControllers.last as? GraphViewController else { return }
+        graphViewController.lists = model?.list
     }
 }
 
@@ -215,10 +255,6 @@ extension ViewController: LocationManagerDelegate {
             locationManager.reverseGeocodeLocation(location: location)
             self?.weatherDataService.downloadData(serviceType: .weather(coordinate: location.coordinate, apiKey: apiKey))
             self?.forecastDataService.downloadData(serviceType: .forecast(coordinate: location.coordinate, apiKey: apiKey))
-        }
-        
-        if collectionView.refreshControl?.isRefreshing == true {
-            collectionView.refreshControl?.endRefreshing()
         }
     }
 }

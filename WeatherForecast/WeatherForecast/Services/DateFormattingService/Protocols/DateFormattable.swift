@@ -8,5 +8,5 @@
 import Foundation
 
 protocol DateFormattable {
-    func format(with dateText: String, from format1: String, to format2: String) -> String
+    func format(with timestamp: Int, from format1: String, to format2: String) -> String
 }
